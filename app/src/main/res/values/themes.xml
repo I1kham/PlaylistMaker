@@ -2,7 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        @color/my_light_background
+        <item name="colorPrimary">@color/my_light_background</item>
+        @color/my_light_text
+        <item name="colorSecondary">@color/white</item>
+
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

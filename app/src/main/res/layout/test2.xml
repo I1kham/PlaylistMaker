@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/home_page_head_text"
-            android:layout_marginHorizontal="12dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="start|center"
@@ -62,9 +62,8 @@
                 app:icon="@drawable/search_icon"
                 app:iconGravity="textStart"
                 app:iconTint="@color/YP_black"
-                app:iconTintMode="src_in"></Button>
-
-
+                app:iconTintMode="src_in"
+                ></Button>
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +88,8 @@
                 app:icon="@drawable/media_library"
                 app:iconGravity="textStart"
                 app:iconTint="@color/YP_black"
-                app:iconTintMode="src_in"></Button>
+                app:iconTintMode="src_in"
+                ></Button>
         </LinearLayout>
 
         <LinearLayout

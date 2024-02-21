@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MediaLib">
+
+    <TextView
+        android:id="@+id/media_Lib_text_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/my_light_background"
+        android:gravity="center"
+        android:text="@string/media_library"
+        android:textColor="@color/YP_black"
+        android:textSize="24sp"
+/>
+</androidx.constraintlayout.widget.ConstraintLayout>
