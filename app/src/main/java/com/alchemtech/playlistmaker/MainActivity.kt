@@ -3,9 +3,7 @@ package com.alchemtech.playlistmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,22 +11,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-
-        val searchBut = findViewById<Button>(R.id.Search_but)
+        val searchBut = findViewById<Button>(R.id.buttonSearch)
 
         searchBut.setOnClickListener {
-            val searchButIntent = Intent(this@MainActivity,Search :: class.java )
+            val searchButIntent = Intent(this@MainActivity, SearchActivity::class.java)
             startActivity(searchButIntent)
         }
 
 
-        val mediaLibBut = findViewById<Button>(R.id.media_library_button)
+        val mediaLibBut = findViewById<Button>(R.id.buttonMediaLibrary)
         mediaLibBut.setOnClickListener {
-            val mediaLibButIntent = Intent(this@MainActivity, MediaLib::class.java)
+            val mediaLibButIntent = Intent(this@MainActivity, MediaLibActivity::class.java)
             startActivity(mediaLibButIntent)
         }
 
-        val settingsBut = findViewById<Button>(R.id.Settings_button)
+        val settingsBut = findViewById<Button>(R.id.buttonSettings)
         settingsBut.setOnClickListener {
             val settingsButIntent = Intent(this@MainActivity, SettingsActivity::class.java)
             startActivity(settingsButIntent)

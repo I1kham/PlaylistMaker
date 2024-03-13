@@ -5,16 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 
-class Search : AppCompatActivity() {
+class MediaLibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_media_library)
 
-        val back = findViewById<TextView>(R.id.search_text_View)
+        val back = findViewById<TextView>(R.id.media_Lib_text_View)
         back.setOnClickListener {
-            val backIntent = Intent(this@Search,MainActivity ::class.java)
-            startActivity(backIntent)
+            finish()
         }
+
+
 
     }
 }

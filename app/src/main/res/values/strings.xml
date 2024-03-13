@@ -4,10 +4,19 @@
     <string name="Search_button">Поиск</string>
     <string name="media_library_button">Медиатека</string>
     <string name="Settings_button">Настройки</string>
-    <string name="Dark_theme_switch_settings">"    "Темная тема</string> <!--todo разобраться с форматированием текста на разных кнопках, костыль в действии -->
+    <string name="Dark_theme_switch_settings">"   "Темная тема</string> <!--todo разобраться с форматированием текста на разных кнопках, костыль в действии -->
     <string name="Share_app">Поделиться приложением</string>
     <string name="to_support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
     <string name="media_library">Медиатека... Будет....</string>
     <string name="search_activity">будет поиск</string>
+    <string name="toSupportMailSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="toSupportDefaultMail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="supportMail">4habibulin@gmail.com</string>
+    <string name="toSupportUri">mailto:</string>
+    <string name="buttonShareApp">https://practicum.yandex.ru/android-developer/</string>
+    <string name="buttonShareAppTitle">попробуй и узнаешь</string>
+    <string name="linkTermsOfUse">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="searchActivityHead">Поиск</string>
+
 </resources>
