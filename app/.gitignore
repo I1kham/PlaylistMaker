@@ -23,3 +23,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#*.xml test files todo проверить, залетят ли фалы для экспериментов в commit
+test?.xml
