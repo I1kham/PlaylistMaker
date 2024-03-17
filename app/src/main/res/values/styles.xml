@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="mainActivityButtonsStyle">
+    <style name="mainActivityButtonsStyle" parent = "Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_weight">1</item>
         <item name="android:theme">@style/Base.Theme.PlaylistMaker</item>
         <item name="android:textAlignment">center</item>
