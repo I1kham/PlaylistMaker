@@ -31,30 +31,53 @@
         android:id="@+id/buttonDarkThemeSwitch"
         style="@style/settingsActivityButtonsStyle"
         android:layout_width="match_parent"
-        android:text="@string/Dark_theme_switch_settings" />
+        android:layout_height="wrap_content"
+        android:text="@string/Dark_theme_switch_settings"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
         android:id="@+id/buttonShareApp"
-        style="@style/settingsActivityButtonsStyle"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/transparent"
+        android:fontFamily="@font/ys_display_regular"
+        android:foregroundGravity="center_vertical"
+        android:gravity="start|center_horizontal|center_vertical"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:text="@string/Share_app"
-        app:icon="@android:drawable/ic_menu_share" />
-
+        android:textAllCaps="false"
+        android:textColor="@color/YP_black"
+        android:textSize="18sp"
+        app:icon="@drawable/share_app"
+        app:iconGravity="end"
+        app:iconSize="8dp"
+        app:iconTint="@color/YP_text_gray"
+        app:iconTintMode="src_in" />
+<!--todo переделать кнопки с нуля
+    использовать не стандартные библиотеки-->
 
     <Button
         android:id="@+id/buttonToSupport"
         style="@style/settingsActivityButtonsStyle"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/to_support"
-        app:icon="@drawable/support" />
+        app:icon="@drawable/support"
+        app:iconSize="16dp" />
 
 
     <Button
         android:id="@+id/buttonTermsOfUse"
         style="@style/settingsActivityButtonsStyle"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/terms_of_use"
-        app:icon="@drawable/terms_of_use" />
+        app:icon="@drawable/terms_of_use_2"
+        app:iconSize="5dp"
+        app:iconTintMode="src_in" />
 
 </LinearLayout>
 

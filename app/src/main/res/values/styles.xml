@@ -18,17 +18,21 @@
 
     </style>
 
-    <style name="settingsActivityButtonsStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="settingsActivityButtonsStyle" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:theme">@style/Theme.SettingsActivity</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginHorizontal">16dp</item>
         <item name="android:foregroundGravity">left|center</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">18sp</item>
-        <item name="iconGravity">end</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="iconGravity">end</item>
+        <item name="iconTint">@color/black</item>
+        <item name="startIconMinSize">16dp</item>
+
+
     </style>
 
     <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer.Search">
