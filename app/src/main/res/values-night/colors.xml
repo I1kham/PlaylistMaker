@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="mainActivityBackground">#3772E7</color>
+    <color name="mainActivityBackground">#1A1B22</color>
     <color name="mainActivityHeadText">#FFFFFF</color>
     <color name="mainActivityButtonsBackground">#FFFFFF</color>
     <color name="mainActivityButtonsText">#1A1B22</color>
     <color name="mainActivityButtonsIcon">#1A1B22</color>
-    <color name="transparent">#00000000</color>
-    <color name="settingsActivityButtonsIcon">#AEAFB4</color>
-    <color name="settingsActivityButtonsText">#000000</color>
-    <color name="settingsActivityHeadText">#1A1B22</color>
-    <color name="searchActivitySearchTextViewBackground">#E6E8EB</color>
-    <color name="searchActivitySearchTextViewText">#AEAFB4</color>
-    <color name="lightStatusBar">#FEF7FF</color>
+    <color name="transparent">#00E6E8EB</color>
+    <color name="settingsActivityButtonsIcon">#FFFFFF</color>
+    <color name="settingsActivityButtonsText">#FFFFFF</color>
+    <color name="settingsActivityHeadText">#FFFFFF</color>
+    <color name="searchActivitySearchTextViewBackground">#FFFFFF</color>
+    <color name="searchActivitySearchTextViewText">#1A1B22</color>
 
     <color name="black">#000000</color>
     <color name="YP_white">#FFFFFFFF</color>
@@ -24,4 +23,4 @@
     <color name="YP_light_background">#3772E7</color> <!-- цвет фона для светлой темы -->
     <color name="YP_light_text">#FFFFFFFF</color> <!-- цвет текста белый-->
     <color name="YP_dark_background">#1A1B22</color> <!-- цвет фона для темной темы темы -->
-</resources>
+   </resources>

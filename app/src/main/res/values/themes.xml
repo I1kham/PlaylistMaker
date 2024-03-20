@@ -1,34 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/YP_light_background</item>
-        <!--        цвет фона кнопок главного экрана-->
-        <item name="colorPrimary">@color/YP_white</item>
-        <!-- цвет заголовка главного экрана-->
-        <item name="android:textColor">@color/YP_white</item>
-        <!--        цвет текста кнопок главного экрана-->
-        <item name="colorOnPrimary">@color/YP_black</item>
-        <item name="android:statusBarColor">@color/YP_light_background</item>
+
+        <item name="android:statusBarColor">@color/mainActivityBackground</item>
 
 
     </style>
 
-<style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
-    <!--        настройки для экрана настроек-->
-    <item name="android:background">@color/YP_white</item>
-    <!--        цвет фона кнопок экрана-->
-    <item name="colorPrimary">@color/YP_white</item>
-    <!-- цвет заголовка главного экрана-->
-    <item name="android:textColor">@color/YP_white</item>
-    <!--        цвет текста кнопок экрана-->
-    <item name="colorOnPrimary">@color/YP_black</item>
-    <item name="android:statusBarColor">@color/YP_white</item>
+    <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
 
-</style>
+        <item name="android:statusBarColor">@color/lightStatusBar</item>
 
-    <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer" >
+    </style>
 
-        <item name="android:backgroundTint">@color/YP_light_gray</item>
+    <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer">
+
+        <item name="android:statusBarColor">@color/lightStatusBar</item>
 
     </style>
 </resources>

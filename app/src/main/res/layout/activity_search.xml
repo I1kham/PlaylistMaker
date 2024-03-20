@@ -4,68 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/searchActivityPage"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="0dp"
-    android:gravity="start|center_horizontal|center_vertical"
+    android:layout_height="match_parent"
+    android:gravity="start|center_horizontal"
     android:orientation="vertical">
 
 
     <Button
         android:id="@+id/pageSearchPreview"
         style="@style/settingsActivityButtonsStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="0dp"
+        android:layout_height="66dp"
         android:fontFamily="@font/ys_display_regular"
-        android:gravity="start"
         android:text="@string/searchActivityHead"
         android:textSize="22sp"
         app:icon="?attr/actionModeCloseDrawable"
         app:iconGravity="textStart"
-        app:iconPadding="12dp" />
+        app:iconSize="16dp"
+        app:iconTint="@color/settingsActivityButtonsText" />
 
 
     <LinearLayout
         android:id="@+id/searchContainer"
         style="@style/ThemeOverlay.AppCompat.DayNight.SearchContainer.Search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/searchActivitySearchTextViewBackground"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="5dp"
-            android:background="@color/transparent"
-            android:backgroundTint="@color/YP_light_gray"
-            android:src="@android:drawable/ic_menu_search" />
+            android:layout_marginStart="12dp"
+            android:src="@drawable/search_icon"
+            app:tint="@color/searchActivitySearchTextViewText" />
 
 
         <EditText
             android:id="@+id/inputEditText"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:layout_marginStart="4dp"
             android:background="@color/transparent"
             android:backgroundTintMode="multiply"
             android:hint="@string/searchActivityHead"
             android:inputType="text"
             android:maxLines="1"
             android:textColor="@color/YP_black"
-            android:textColorHint="@color/YP_text_gray" />
+            android:textColorHint="@color/searchActivitySearchTextViewText" />
 
         <ImageView
             android:id="@+id/clearIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             android:layout_gravity="center"
             android:background="@color/transparent"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="gone" />
-
+            android:visibility="gone"
+            app:tint="@color/searchActivitySearchTextViewText" />
+        <!--gone-->
 
     </LinearLayout>
 </LinearLayout>
