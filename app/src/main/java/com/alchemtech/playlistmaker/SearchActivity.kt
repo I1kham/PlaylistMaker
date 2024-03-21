@@ -13,25 +13,26 @@ import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
 
-   private var inputString: String = AMOUNT_DEF
+    private var inputString: String = AMOUNT_DEF
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
 
-
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val back = findViewById<Button>(R.id.pageSearchPreview)
-        val inputEditText  = findViewById<EditText>(R.id.inputEditText)
+        val inputEditText = findViewById<EditText>(R.id.inputEditText)
         back.setOnClickListener {
+
             finish()
         }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
 
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
 
@@ -46,20 +47,23 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (savedInstanceState != null) {
-                    onSaveInstanceState(savedInstanceState)
-                    inputString= s.toString()
-                }
+                inputString = s.toString()
             }
         }
+
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
-
-
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(/* key = */ STRING_AMOUNT, /* value = */ inputString)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val inputEditText = findViewById<EditText>(R.id.inputEditText)
+        inputEditText.setText(savedInstanceState.getString(STRING_AMOUNT))
     }
     // В Kotlin для создания константной переменной мы используем companion object.
 // Ключ должен быть константным, чтобы мы точно знали, что он не изменится

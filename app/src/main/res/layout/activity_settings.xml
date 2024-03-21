@@ -50,7 +50,7 @@
         android:id="@+id/buttonTermsOfUse"
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/terms_of_use"
-        app:icon="@drawable/terms_of_use_2" />
+        app:icon="@drawable/terms_of_use" />
 
 </LinearLayout>
 

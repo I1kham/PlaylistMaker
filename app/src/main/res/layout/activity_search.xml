@@ -12,9 +12,11 @@
     <Button
         android:id="@+id/pageSearchPreview"
         style="@style/settingsActivityButtonsStyle"
+        android:layout_width="match_parent"
         android:layout_height="66dp"
         android:fontFamily="@font/ys_display_regular"
         android:text="@string/searchActivityHead"
+        android:textFontWeight="500"
         android:textSize="22sp"
         app:icon="?attr/actionModeCloseDrawable"
         app:iconGravity="textStart"
@@ -44,14 +46,15 @@
 
         <EditText
             android:id="@+id/inputEditText"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_width="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
             android:background="@color/transparent"
             android:backgroundTintMode="multiply"
             android:hint="@string/searchActivityHead"
+            android:textFontWeight="400"
             android:inputType="text"
             android:maxLines="1"
             android:textColor="@color/YP_black"
@@ -59,12 +62,12 @@
 
         <ImageView
             android:id="@+id/clearIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="4dp"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/close"
             android:visibility="gone"
             app:tint="@color/searchActivitySearchTextViewText" />
         <!--gone-->
