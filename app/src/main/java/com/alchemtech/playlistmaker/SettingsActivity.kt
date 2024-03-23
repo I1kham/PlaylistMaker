@@ -42,9 +42,16 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
                 type = "text/plain"
             }
-            val shareIntent =
-                Intent.createChooser(buttonShareAppIntent, getString(R.string.buttonShareAppTitle))
-            startActivity(shareIntent)
+//            val shareIntent =
+//                Intent.createChooser(buttonShareAppIntent, getString(R.string.buttonShareAppTitle))
+//            startActivity(shareIntent)
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
+                type = "text/plain"
+                startActivity(Intent.createChooser(this, getString(R.string.buttonShareAppTitle)))
+            }
+
         }
         val buttonTermsOfUse = findViewById<Button>(R.id.buttonTermsOfUse)
         buttonTermsOfUse.setOnClickListener {

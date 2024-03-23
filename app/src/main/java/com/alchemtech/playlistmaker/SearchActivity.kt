@@ -1,29 +1,39 @@
 package com.alchemtech.playlistmaker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
+
+    private var inputString: String = AMOUNT_DEF
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+
+        val clearButton = findViewById<ImageView>(R.id.clearIcon)
         val back = findViewById<Button>(R.id.pageSearchPreview)
+        val inputEditText = findViewById<EditText>(R.id.inputEditText)
         back.setOnClickListener {
+
             finish()
         }
 
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
-
         clearButton.setOnClickListener {
             inputEditText.setText("")
+
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -32,48 +42,37 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                clearButton.isVisible = !(s.isNullOrEmpty())
+
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // empty
+                inputString = s.toString()
             }
         }
+
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
-
-        // Значение savedInstanceState равно null в том случае, если activity нечего восстанавливать.
-        // То есть не произошло ситуации, при которой необходимо сохранить состояние
-        if (savedInstanceState != null) {
-            this.inputEditText = savedInstanceState.getString(STRING_AMOUNT, AMOUNT_DEF)
-        }
-
-
     }
-
-    private var inputEditText: String = AMOUNT_DEF
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(STRING_AMOUNT, inputEditText)
+        outState.putString(/* key = */ STRING_AMOUNT, /* value = */ inputString)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val inputEditText = findViewById<EditText>(R.id.inputEditText)
+        inputEditText.setText(savedInstanceState.getString(STRING_AMOUNT))
+    }
     // В Kotlin для создания константной переменной мы используем companion object.
 // Ключ должен быть константным, чтобы мы точно знали, что он не изменится
-    companion object {
+
+    private companion object {
         const val STRING_AMOUNT = "STRING_AMOUNT"
         const val AMOUNT_DEF = ""
-
-    }
-
-}
-
-private fun clearButtonVisibility(s: CharSequence?): Int {
-    return if (s.isNullOrEmpty()) {
-        View.GONE
-    } else {
-        View.VISIBLE
     }
 }
+
 
 

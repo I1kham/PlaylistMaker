@@ -1,35 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!--        цвет фона кнопок главного экрана-->
-        <item name="colorPrimary">@color/YP_white</item>
-        <item name="background">@color/YP_dark_background</item>
-        <!--   цвет текста ночной темы -->
-        <!--        цвет текста кнопок главного экрана-->
-        <item name="colorOnPrimary">@color/YP_black</item>
-        <item name="colorButtonNormal">@color/YP_black</item>
-        <item name="android:statusBarColor">@color/YP_dark_background</item>
+
+        <item name="android:statusBarColor">@color/mainActivityBackground</item>
 
     </style>
 
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!--        цвет фона кнопок главного экрана-->
-        <item name="colorPrimary">@color/YP_white</item>
-        <item name="background">@color/YP_dark_background</item>
-        <!--   цвет текста ночной темы -->
-        <!--        цвет текста кнопок экрана-->
-        <item name="colorOnPrimary">@color/YP_white</item>
-        <item name="colorButtonNormal">@color/YP_white</item>
-        <item name="android:statusBarColor">@color/YP_dark_background</item>
+
+        <item name="android:statusBarColor">@color/mainActivityBackground</item>
+
 
 
     </style>
 
     <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer">
 
-        <item name="android:backgroundTint">@color/YP_white</item>
+        <item name="android:statusBarColor">@color/mainActivityBackground</item>
     </style>
 
 </resources>
