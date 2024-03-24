@@ -1,15 +1,16 @@
 package com.alchemtech.playlistmaker
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.*
 
 class SettingsActivity : AppCompatActivity() {
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -63,9 +64,7 @@ class SettingsActivity : AppCompatActivity() {
 
         }
 
-
-        val dayNightSwitch = findViewById<Switch>(R.id.dayNightSwitch)
-        dayNightSwitch.setOnCheckedChangeListener { _, isChecked ->
+        findViewById<Switch>(R.id.dayNightSwitch).setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setDefaultNightMode(MODE_NIGHT_YES)
             } else {

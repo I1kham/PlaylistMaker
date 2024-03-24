@@ -81,7 +81,7 @@
         android:id="@+id/forwardButTrackCard"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center|end"
         android:layout_marginEnd="20dp"
         android:src="@drawable/terms_of_use"
         app:tint="@color/forwardButTrackCardIcon" />
