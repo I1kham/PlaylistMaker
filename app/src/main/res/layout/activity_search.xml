@@ -41,6 +41,7 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginStart="12dp"
             android:src="@drawable/search_icon"
+            android:backgroundTint="@color/transparent"
             app:tint="@color/searchActivitySearchTextViewText" />
 
 

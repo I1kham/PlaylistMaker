@@ -1,22 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
-
     </style>
 
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <item name="android:backgroundTint">@color/mainActivityBackground</item>
+        <item name="android:background">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
-
-
-
+        <item name="android:enforceStatusBarContrast">true</item>
     </style>
 
     <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer">
-
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
     </style>
 
