@@ -10,10 +10,8 @@
         android:id="@+id/media_Lib_text_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/YP_light_background"
         android:gravity="center"
         android:text="@string/media_library"
-        android:textColor="@color/YP_black"
-        android:textSize="24sp"
-/>
+        android:textColor="#6200EA"
+        android:textSize="24sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

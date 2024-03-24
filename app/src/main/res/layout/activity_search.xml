@@ -56,7 +56,7 @@
             android:hint="@string/searchActivityHead"
             android:textFontWeight="400"
             android:inputType="text"
-            android:maxLines="1"
+            android:lines="1"
             android:textColor="@color/YP_black"
             android:textColorHint="@color/searchActivitySearchTextViewText" />
 
@@ -73,4 +73,14 @@
         <!--gone-->
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackCardsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/search_track_card" />
+
 </LinearLayout>

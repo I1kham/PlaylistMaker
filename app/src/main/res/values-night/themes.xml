@@ -8,7 +8,7 @@
 
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-
+        <item name="android:backgroundTint">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
 
 
