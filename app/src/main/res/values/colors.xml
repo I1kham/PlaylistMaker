@@ -13,6 +13,8 @@
     <color name="searchActivitySearchTextViewBackground">#E6E8EB</color>
     <color name="searchActivitySearchTextViewText">#AEAFB4</color>
     <color name="lightStatusBar">#FEF7FF</color>
+    <color name="forwardButTrackCardIcon">#AEAFB4</color>
+
 
     <color name="YP_black">#1A1B22</color>
 

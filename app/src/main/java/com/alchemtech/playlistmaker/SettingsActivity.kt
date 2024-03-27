@@ -1,12 +1,16 @@
 package com.alchemtech.playlistmaker
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Switch
+import androidx.appcompat.app.AppCompatDelegate.*
 
 class SettingsActivity : AppCompatActivity() {
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -37,14 +41,12 @@ class SettingsActivity : AppCompatActivity() {
 
         val buttonShareApp = findViewById<Button>(R.id.buttonShareApp)
         buttonShareApp.setOnClickListener {
-            val buttonShareAppIntent = Intent().apply {
+            Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
                 type = "text/plain"
             }
-//            val shareIntent =
-//                Intent.createChooser(buttonShareAppIntent, getString(R.string.buttonShareAppTitle))
-//            startActivity(shareIntent)
+
             Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
@@ -56,13 +58,19 @@ class SettingsActivity : AppCompatActivity() {
         val buttonTermsOfUse = findViewById<Button>(R.id.buttonTermsOfUse)
         buttonTermsOfUse.setOnClickListener {
 
-            val buttonTermsOfUseIntent = Intent(Intent.ACTION_VIEW,Uri.parse(getString(R.string.linkTermsOfUse)))
+            val buttonTermsOfUseIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkTermsOfUse)))
             startActivity(buttonTermsOfUseIntent)
 
         }
 
+        findViewById<Switch>(R.id.dayNightSwitch).setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                setDefaultNightMode(MODE_NIGHT_YES)
+            } else {
+                setDefaultNightMode(MODE_NIGHT_NO)
+            }
+        }
     }
 
-
 }
-

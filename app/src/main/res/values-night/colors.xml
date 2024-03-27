@@ -6,12 +6,13 @@
     <color name="mainActivityButtonsBackground">#FFFFFF</color>
     <color name="mainActivityButtonsText">#1A1B22</color>
     <color name="mainActivityButtonsIcon">#1A1B22</color>
-    <color name="transparent">#00E6E8EB</color>
+    <color name="transparent">#00000000</color>
     <color name="settingsActivityButtonsIcon">#FFFFFF</color>
     <color name="settingsActivityButtonsText">#FFFFFF</color>
     <color name="settingsActivityHeadText">#FFFFFF</color>
     <color name="searchActivitySearchTextViewBackground">#FFFFFF</color>
     <color name="searchActivitySearchTextViewText">#1A1B22</color>
+    <color name="forwardButTrackCardIcon">#FFFFFF</color>
 
     <color name="YP_black">#1A1B22</color>
 
