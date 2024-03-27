@@ -17,8 +17,4 @@
     <string name="buttonShareAppTitle">попробуй и узнаешь</string>
     <string name="linkTermsOfUse">https://yandex.ru/legal/practicum_offer/</string>
     <string name="searchActivityHead">Поиск</string>
-    <string name="no_artist">NoData</string>
-    <string name="no_duration">##:##:##</string>
-    <string name="no_title">NoData</string>
-
 </resources>

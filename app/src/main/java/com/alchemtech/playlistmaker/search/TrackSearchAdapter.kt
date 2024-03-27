@@ -13,9 +13,7 @@ class TrackSearchAdapter(private val trackListOf : List<Track>) : RecyclerView.A
 
     }
 
-    override fun getItemCount(): Int {
-        return trackListOf.size
-    }
+    override fun getItemCount() = trackListOf.size
 
     override fun onBindViewHolder(viewHolder: TrackCardViewHolder, position: Int) {
         viewHolder.bind(trackListOf[position])

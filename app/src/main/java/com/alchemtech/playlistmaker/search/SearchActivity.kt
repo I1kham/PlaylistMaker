@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.Track
 
+
 class SearchActivity : AppCompatActivity() {
 
     private var inputString: String = ""
