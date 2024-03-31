@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/transparent"
+    android:outlineAmbientShadowColor="@color/transparent"
+    android:outlineSpotShadowColor="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/albumCover"
+            style="@style/albumCoverStyle"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center|start"
+            android:layout_marginStart="13dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/track_album_default" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/trackTitle"
+                style="@style/trackCardTextView"
+                android:textSize="16sp"
+                tools:text="Track Name"/>
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/trackArtist"
+                    style="@style/trackCardTextView"
+                    tools:text="Track Artist"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    style="@style/albumCoverStyle"
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    android:backgroundTint="@color/forwardButTrackCardIcon" />
+
+                <TextView
+                    android:id="@+id/trackDuration"
+                    style="@style/trackCardTextView"
+                    tools:text="Track Duration"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/forwardButTrackCard"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:scaleType="fitEnd"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/terms_of_use"
+            app:tint="@color/forwardButTrackCardIcon" />
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
