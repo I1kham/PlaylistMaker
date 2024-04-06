@@ -17,4 +17,8 @@
     <string name="buttonShareAppTitle">попробуй и узнаешь</string>
     <string name="linkTermsOfUse">https://yandex.ru/legal/practicum_offer/</string>
     <string name="searchActivityHead">Поиск</string>
+    <string name="data_not_found">Ничего не нашлось</string>
+    <string name="no_connection">Проблемы со связью</string>
+    <string name="no_connection2">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="updateButNoConnectionText">Обновить</string>
 </resources>

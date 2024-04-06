@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/trackTitle"
-                style="@style/trackCardTextView"
+                style="@style/cardTextView"
                 android:textSize="16sp"
                 tools:text="Track Name"/>
 
@@ -48,7 +48,7 @@
 
                 <TextView
                     android:id="@+id/trackArtist"
-                    style="@style/trackCardTextView"
+                    style="@style/cardTextView"
                     tools:text="Track Artist"
                     android:textSize="13sp" />
 
@@ -62,7 +62,7 @@
 
                 <TextView
                     android:id="@+id/trackDuration"
-                    style="@style/trackCardTextView"
+                    style="@style/cardTextView"
                     tools:text="Track Duration"
                     android:textSize="13sp" />
 

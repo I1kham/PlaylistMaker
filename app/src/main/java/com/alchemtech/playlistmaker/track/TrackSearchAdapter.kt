@@ -1,10 +1,9 @@
-package com.alchemtech.playlistmaker.search
+package com.alchemtech.playlistmaker.track
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.Track
 
 class TrackSearchAdapter(private val trackListOf : List<Track>) : RecyclerView.Adapter<TrackCardViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TrackCardViewHolder {
