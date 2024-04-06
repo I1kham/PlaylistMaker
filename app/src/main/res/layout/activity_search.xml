@@ -61,7 +61,9 @@
             android:singleLine="true"
             android:textColor="@color/YP_black"
             android:textColorHint="@color/searchActivitySearchTextViewText"
-            android:textFontWeight="400" />
+            android:textFontWeight="400"
+            android:textCursorDrawable="@drawable/cursor"
+            android:textSelectHandle="@color/transparent"/>
 
         <ImageView
             android:id="@+id/clearIcon"

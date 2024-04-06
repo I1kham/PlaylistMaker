@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class SearchActivity : AppCompatActivity() {
-    private var inputString = ""
+    //
     private val tracksListOf = ArrayList<Track>()
 
     private val searchingBaseUrl = "https://itunes.apple.com"
@@ -41,6 +42,7 @@ class SearchActivity : AppCompatActivity() {
     private val trackAdapter = TrackSearchAdapter(tracksListOf)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_search)
 
         val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
@@ -55,6 +57,10 @@ class SearchActivity : AppCompatActivity() {
 
         clearButWorking()
 
+        textWatcher()
+    }
+
+    private fun textWatcher() {
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -67,7 +73,9 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                inputString = s.toString()
+                //empty
+                //inputString = s.toString()
+                //searchTrack(s.toString())
             }
         }
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
@@ -137,7 +145,7 @@ class SearchActivity : AppCompatActivity() {
         noConnectionLinearLayout.visibility = View.VISIBLE
     }
 
-   private fun allErrLayoutsGONE() {
+    private fun allErrLayoutsGONE() {
         val noDataLineraLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLineraLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
@@ -176,7 +184,8 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputString)
+        val inputText = findViewById<TextView>(R.id.inputEditText).text
+        outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
