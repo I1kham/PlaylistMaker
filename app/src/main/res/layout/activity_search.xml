@@ -5,7 +5,6 @@
     android:id="@+id/searchActivityPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="start|center_horizontal"
     android:orientation="vertical">
 
 
@@ -85,42 +84,40 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        android:theme="@style/cardTextView"
-        android:textSize="19sp"
-        android:textFontWeight="500"
-        android:text="@string/SearchHistoryTitle"
         android:gravity="center"
-        android:visibility="gone"/>
+        android:text="@string/SearchHistoryTitle"
+        android:textFontWeight="500"
+        android:textSize="19sp"
+        android:theme="@style/cardTextView"
+        android:visibility="visible" />
 <!--    gone -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackCardsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/search_track_card" />
-
-
-        <TextView
-            android:id="@+id/clearHistoryBut"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@drawable/search_history_clear_but"
-            android:backgroundTint="@color/blackWhite"
-            android:text="@string/SearchHistoryClearBut"
-            android:textColor="@color/whiteBlack"
-            android:textFontWeight="500"
-            android:theme="@style/cardTextView"
-            android:visibility="visible" />
-        <!--    gone  -->
-
-
-        <LinearLayout
+    <TextView
+        android:id="@+id/clearHistoryBut"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginVertical="12dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/search_history_clear_but"
+        android:backgroundTint="@color/blackWhite"
+        android:gravity="center"
+        android:text="@string/SearchHistoryClearBut"
+        android:textColor="@color/whiteBlack"
+        android:textFontWeight="500"
+        android:theme="@style/cardTextView"
+        android:visibility="visible" />
+    <!--    gone  -->
+    <LinearLayout
             android:id="@+id/noData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,4 +197,8 @@
         </LinearLayout>
 
 
-    </LinearLayout>
+
+
+
+
+</LinearLayout>

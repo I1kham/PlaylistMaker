@@ -14,14 +14,9 @@ class App : Application() {
 
     private fun switchTheme() {
         setDefaultNightMode(
-            this.getSharedPreferences(/* name = */ DARK_THEME.toString(), /* mode = */ MODE_PRIVATE).getInt(DARK_THEME.toString(),1)
-            )
+            this.getSharedPreferences(/* name = */ DARK_THEME.toString(), /* mode = */ MODE_PRIVATE)
+                .getInt(DARK_THEME.toString(), 1)
+        )
 
     }
-
-
-    private fun tracksHistory(){
-// todo
-    }
-
 }

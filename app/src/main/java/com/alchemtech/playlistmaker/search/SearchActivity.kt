@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -30,16 +31,18 @@ class SearchActivity : AppCompatActivity() {
     private var historyList = mutableListOf<Track>()
     private var tracksList = mutableListOf<Track>()
 
+    @SuppressLint("NotifyDataSetChanged")
     private val onItemClickTrack = { track: Track ->
         historyList.remove(track)
         if (historyList.lastIndex < (MAX_HISTORY_LIST_SIZE - 1)) {
-            historyList.add(historyList.lastIndex,track)
+            historyList.add(track)
             println(track.trackId) //todo
             println(historyList.lastIndex)
         } else {
             historyList.removeAt(0)
-            historyList.add(historyList.lastIndex,track)
+            historyList.add(track)
         }
+        findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
     }
 
     private val searchingBaseUrl = "https://itunes.apple.com"
@@ -101,9 +104,10 @@ class SearchActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.clearHistoryBut).setOnClickListener {
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
-            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.INVISIBLE
+            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
 
             historyList.clear()
+            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
         }
 
     }
@@ -174,9 +178,6 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
             tracksList.clear()
-            // trackAdapter.notifyDataSetChanged()
-//            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
-//                TrackSearchAdapter(tracksList) //todo
             showTrackList(tracksList)
             allErrLayoutsGONE()
         }
