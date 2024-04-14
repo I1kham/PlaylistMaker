@@ -21,4 +21,6 @@
     <string name="no_connection">Проблемы со связью</string>
     <string name="no_connection2">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="updateButNoConnectionText">Обновить</string>
+    <string name="SearchHistoryTitle">Вы искали</string>
+    <string name="SearchHistoryClearBut">Очистить историю</string>
 </resources>

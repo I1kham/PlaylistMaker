@@ -68,6 +68,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/transparent</item>
         <item name="android:textColor">@color/settingsActivityHeadText</item>
+        <item name="android:textAllCaps">false</item>
 
     </style>
 

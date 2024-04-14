@@ -6,6 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 
 class TrackSearchAdapter(private val trackListOf : List<Track>) : RecyclerView.Adapter<TrackCardViewHolder>() {
+
+    var onItemClick: ((Track) -> Unit)? = null
+
+
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TrackCardViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.search_track_card, viewGroup, false)
         return TrackCardViewHolder(view)
@@ -16,5 +21,6 @@ class TrackSearchAdapter(private val trackListOf : List<Track>) : RecyclerView.A
 
     override fun onBindViewHolder(viewHolder: TrackCardViewHolder, position: Int) {
         viewHolder.bind(trackListOf[position])
+        viewHolder.itemView.setOnClickListener { onItemClick?.invoke(trackListOf[position]) }
     }
-}
+    }

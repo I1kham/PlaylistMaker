@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -28,8 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class SearchActivity : AppCompatActivity() {
-    //
-    private val tracksListOf = ArrayList<Track>()
+
+    private var tracksList = mutableListOf<Track>()
+
+    private val searchHistory = SearchHistory()
 
     private val searchingBaseUrl = "https://itunes.apple.com"
 
@@ -39,7 +42,8 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val searchService = retrofit.create(TrackApiService::class.java)
-    private val trackAdapter = TrackSearchAdapter(tracksListOf)
+    private var trackAdapter = TrackSearchAdapter(tracksList)
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,6 +52,12 @@ class SearchActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
 
         recyclerView.adapter = trackAdapter
+
+        trackAdapter.onItemClick =
+            { track: Track ->
+                searchHistory.addTrackToHistoryList(track)
+                println("ffffffffffffffffffff")
+            }
 
         inputEditTextWorking()
 
@@ -58,6 +68,31 @@ class SearchActivity : AppCompatActivity() {
         clearButWorking()
 
         textWatcher()
+
+        clearButSearchHistory()
+
+        if (historyList.size > 0) {
+            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
+            findViewById<Button>(R.id.clearHistoryBut).visibility = View.VISIBLE
+            //trackAdapter= TrackSearchAdapter(historyList)
+            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
+                TrackSearchAdapter(historyList.reversed())
+            //trackAdapter.notifyDataSetChanged()
+        }
+
+
+    }
+
+    private fun clearButSearchHistory() {
+
+        findViewById<Button>(R.id.clearHistoryBut).setOnClickListener {
+            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
+            findViewById<Button>(R.id.clearHistoryBut).visibility = View.GONE
+            historyList.clear()
+            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
+                TrackSearchAdapter(emptyList())
+        }
+
     }
 
     private fun textWatcher() {
@@ -125,7 +160,7 @@ class SearchActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
-            tracksListOf.clear()
+            tracksList.clear()
             trackAdapter.notifyDataSetChanged()
             allErrLayoutsGONE()
         }
@@ -153,7 +188,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchTrack(text: String) {
-        tracksListOf.clear()
+        tracksList.clear()
         trackAdapter.notifyDataSetChanged()
         searchService.search(text)
             .enqueue(object : Callback<TracksResponse> {
@@ -164,10 +199,10 @@ class SearchActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
 
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            tracksListOf.addAll(response.body()?.results!!)
+                            tracksList.addAll(response.body()?.results!!)
                             trackAdapter.notifyDataSetChanged()
                         }
-                        if (tracksListOf.isEmpty()) {
+                        if (tracksList.isEmpty()) {
                             noDataErrLayoutVISIBLE()
                         }
                     } else {
@@ -186,18 +221,34 @@ class SearchActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         val inputText = findViewById<TextView>(R.id.inputEditText).text
         outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
+
+        searchHistory.setHistoryListToSharePreferences(
+            getSharedPreferences(
+                SAVED_TRACKS,
+                MODE_PRIVATE
+            ), historyList
+        )
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(savedInstanceState.getString(TEXTTOSAVE))
+        historyList = searchHistory.getHistoryListFromSharePreferences(
+            getSharedPreferences(
+                SAVED_TRACKS,
+                MODE_PRIVATE
+            )
+        )
+
     }
+
     // В Kotlin для создания константной переменной мы используем companion object.
 // Ключ должен быть константным, чтобы мы точно знали, что он не изменится
 
     private companion object {
         const val TEXTTOSAVE = ""
+
     }
 }
 

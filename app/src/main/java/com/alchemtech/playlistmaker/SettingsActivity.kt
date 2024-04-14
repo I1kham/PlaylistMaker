@@ -117,7 +117,7 @@ class SettingsActivity : AppCompatActivity() {
             DARK_THEME.toString(),
             1
         )) {
-            2 -> {
+            2-> {
                 findViewById<Switch>(R.id.dayNightSwitch).isChecked = true
             }
             else -> findViewById<Switch>(R.id.dayNightSwitch).isChecked = false

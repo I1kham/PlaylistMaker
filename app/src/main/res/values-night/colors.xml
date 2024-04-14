@@ -10,6 +10,7 @@
     <color name="settingsActivityButtonsIcon">#FFFFFF</color>
     <color name="settingsActivityButtonsText">#FFFFFF</color>
     <color name="settingsActivityHeadText">#FFFFFF</color>
+    <color name="searchActivityClearButText">#1A1B22</color>
     <color name="searchActivitySearchTextViewBackground">#FFFFFF</color>
     <color name="searchActivitySearchTextViewText">#1A1B22</color>
     <color name="forwardButTrackCardIcon">#FFFFFF</color>
