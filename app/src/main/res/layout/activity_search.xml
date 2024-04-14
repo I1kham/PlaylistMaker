@@ -42,7 +42,7 @@
             android:layout_marginStart="12dp"
             android:backgroundTint="@color/transparent"
             android:src="@drawable/search_icon"
-            app:tint="@color/searchActivitySearchTextViewText" />
+            app:tint="@color/grayBlack" />
 
 
         <EditText
@@ -60,7 +60,7 @@
             android:lines="1"
             android:singleLine="true"
             android:textColor="@color/YP_black"
-            android:textColorHint="@color/searchActivitySearchTextViewText"
+            android:textColorHint="@color/grayBlack"
             android:textFontWeight="400"
             android:textCursorDrawable="@drawable/cursor"
             android:textSelectHandle="@color/transparent"/>
@@ -74,7 +74,7 @@
             android:background="@color/transparent"
             android:src="@drawable/close"
             android:visibility="gone"
-            app:tint="@color/searchActivitySearchTextViewText" />
+            app:tint="@color/grayBlack" />
         <!--gone-->
 
     </LinearLayout>
@@ -98,29 +98,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/search_track_card" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_gravity="center"
-        android:background="@drawable/search_history_clear_but"
-        android:visibility="visible">
 
-        <Button
+        <TextView
             android:id="@+id/clearHistoryBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/search_history_clear_but"
+            android:backgroundTint="@color/blackWhite"
             android:text="@string/SearchHistoryClearBut"
+            android:textColor="@color/whiteBlack"
             android:textFontWeight="500"
             android:theme="@style/cardTextView"
-            android:visibility="gone" />
+            android:visibility="visible" />
         <!--    gone  -->
-    </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/noData"
@@ -193,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:backgroundTint="@color/settingsActivityHeadText"
+                android:backgroundTint="@color/blackWhite"
                 android:fontFamily="@font/ys_display_regular"
                 android:text="@string/updateButNoConnectionText"
                 android:textFontWeight="500"

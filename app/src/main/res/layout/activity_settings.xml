@@ -15,7 +15,7 @@
         android:layout_marginHorizontal="0dp"
         android:text="@string/Settings_button"
         android:textSize="22sp"
-        android:textColor="@color/settingsActivityHeadText"
+        android:textColor="@color/blackWhite"
         app:icon="@drawable/car_ui_icon_arrow_back"
         app:iconGravity="start"
         app:iconPadding="12dp"

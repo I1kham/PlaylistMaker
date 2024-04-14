@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.search
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -27,12 +26,21 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 class SearchActivity : AppCompatActivity() {
-
+    private var historyList = mutableListOf<Track>()
     private var tracksList = mutableListOf<Track>()
 
-    private val searchHistory = SearchHistory()
+    private val onItemClickTrack = { track: Track ->
+        historyList.remove(track)
+        if (historyList.lastIndex < (MAX_HISTORY_LIST_SIZE - 1)) {
+            historyList.add(historyList.lastIndex,track)
+            println(track.trackId) //todo
+            println(historyList.lastIndex)
+        } else {
+            historyList.removeAt(0)
+            historyList.add(historyList.lastIndex,track)
+        }
+    }
 
     private val searchingBaseUrl = "https://itunes.apple.com"
 
@@ -42,22 +50,13 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val searchService = retrofit.create(TrackApiService::class.java)
-    private var trackAdapter = TrackSearchAdapter(tracksList)
-    @SuppressLint("CutPasteId")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        getHistory()
         setContentView(R.layout.activity_search)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-
-        recyclerView.adapter = trackAdapter
-
-        trackAdapter.onItemClick =
-            { track: Track ->
-                searchHistory.addTrackToHistoryList(track)
-                println("ffffffffffffffffffff")
-            }
 
         inputEditTextWorking()
 
@@ -71,26 +70,40 @@ class SearchActivity : AppCompatActivity() {
 
         clearButSearchHistory()
 
-        if (historyList.size > 0) {
-            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
-            findViewById<Button>(R.id.clearHistoryBut).visibility = View.VISIBLE
-            //trackAdapter= TrackSearchAdapter(historyList)
-            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
-                TrackSearchAdapter(historyList.reversed())
-            //trackAdapter.notifyDataSetChanged()
-        }
+        workHistoryList(historyList)
 
+        showTrackList(historyList)
 
     }
 
+    private fun workHistoryList(list: MutableList<Track>) {
+        if (list.isNotEmpty()) {
+            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
+
+            tracksList.addAll(
+                list
+            )
+        }
+
+    }
+
+    private fun showTrackList(list: MutableList<Track>) {
+        val trackAdapter = TrackSearchAdapter(list)
+        val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
+        trackAdapter.onItemClick = onItemClickTrack as (Track) -> Unit
+        recyclerView.adapter = trackAdapter
+
+    }
+
+
     private fun clearButSearchHistory() {
 
-        findViewById<Button>(R.id.clearHistoryBut).setOnClickListener {
+        findViewById<TextView>(R.id.clearHistoryBut).setOnClickListener {
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
-            findViewById<Button>(R.id.clearHistoryBut).visibility = View.GONE
+            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.INVISIBLE
+
             historyList.clear()
-            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
-                TrackSearchAdapter(emptyList())
         }
 
     }
@@ -161,7 +174,10 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
             tracksList.clear()
-            trackAdapter.notifyDataSetChanged()
+            // trackAdapter.notifyDataSetChanged()
+//            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter =
+//                TrackSearchAdapter(tracksList) //todo
+            showTrackList(tracksList)
             allErrLayoutsGONE()
         }
     }
@@ -189,7 +205,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchTrack(text: String) {
         tracksList.clear()
-        trackAdapter.notifyDataSetChanged()
+        // trackAdapter.notifyDataSetChanged()
         searchService.search(text)
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(
@@ -200,7 +216,8 @@ class SearchActivity : AppCompatActivity() {
 
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracksList.addAll(response.body()?.results!!)
-                            trackAdapter.notifyDataSetChanged()
+                            showTrackList(tracksList)// todo
+                            //   trackAdapter.notifyDataSetChanged()
                         }
                         if (tracksList.isEmpty()) {
                             noDataErrLayoutVISIBLE()
@@ -215,6 +232,7 @@ class SearchActivity : AppCompatActivity() {
 
                 }
             })
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -222,7 +240,7 @@ class SearchActivity : AppCompatActivity() {
         val inputText = findViewById<TextView>(R.id.inputEditText).text
         outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
 
-        searchHistory.setHistoryListToSharePreferences(
+        SearchHistory().setHistoryListToSharePreferences(
             getSharedPreferences(
                 SAVED_TRACKS,
                 MODE_PRIVATE
@@ -234,10 +252,18 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(savedInstanceState.getString(TEXTTOSAVE))
-        historyList = searchHistory.getHistoryListFromSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
+        getHistory()
+
+    }
+
+    private fun getHistory() {
+        historyList.clear()
+        historyList.addAll(
+            SearchHistory().getHistoryListFromSharePreferences(
+                getSharedPreferences(
+                    SAVED_TRACKS,
+                    MODE_PRIVATE
+                )
             )
         )
 

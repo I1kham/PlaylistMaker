@@ -19,4 +19,9 @@ class App : Application() {
 
     }
 
+
+    private fun tracksHistory(){
+// todo
+    }
+
 }

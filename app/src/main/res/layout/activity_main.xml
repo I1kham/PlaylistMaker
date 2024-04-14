@@ -16,7 +16,7 @@
         android:gravity="start|center"
         android:text="@string/Panel_Header"
         android:textAlignment="viewStart"
-        android:textColor="@color/mainActivityHeadText"
+        android:textColor="@color/allWhite"
         android:textFontWeight="500"
         android:textIsSelectable="false"
         android:textSize="22sp"

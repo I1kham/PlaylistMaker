@@ -2,18 +2,18 @@
 <resources>
 
     <color name="mainActivityBackground">#1A1B22</color>
-    <color name="mainActivityHeadText">#FFFFFF</color>
-    <color name="mainActivityButtonsBackground">#FFFFFF</color>
-    <color name="mainActivityButtonsText">#1A1B22</color>
-    <color name="mainActivityButtonsIcon">#1A1B22</color>
+    <color name="allWhite">#FFFFFF</color>
+<!--    <color name="allWhite">#FFFFFF</color>-->
+<!--    <color name="allBlack">#1A1B22</color>-->
+    <color name="allBlack">#1A1B22</color>
     <color name="transparent">#00000000</color>
-    <color name="settingsActivityButtonsIcon">#FFFFFF</color>
+    <color name="grayWhite">#FFFFFF</color>
     <color name="settingsActivityButtonsText">#FFFFFF</color>
-    <color name="settingsActivityHeadText">#FFFFFF</color>
-    <color name="searchActivityClearButText">#1A1B22</color>
+    <color name="blackWhite">#FFFFFF</color>
+    <color name="whiteBlack">#1A1B22</color>
     <color name="searchActivitySearchTextViewBackground">#FFFFFF</color>
-    <color name="searchActivitySearchTextViewText">#1A1B22</color>
-    <color name="forwardButTrackCardIcon">#FFFFFF</color>
+    <color name="grayBlack">#1A1B22</color>
+<!--    <color name="grayWhite">#FFFFFF</color>-->
 
     <color name="YP_black">#1A1B22</color>
 

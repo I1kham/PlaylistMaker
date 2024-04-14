@@ -7,7 +7,12 @@ import com.alchemtech.playlistmaker.R
 
 class TrackSearchAdapter(private val trackListOf : List<Track>) : RecyclerView.Adapter<TrackCardViewHolder>() {
 
-    var onItemClick: ((Track) -> Unit)? = null
+    var onItemClick = {track : Track -> Unit }
+//        {track : Track ->
+//
+//        SearchHistory().addTrackToHistoryList(track, trackListOf as MutableList<Track>)
+//        println("ADDED")
+//    }
 
 
 
