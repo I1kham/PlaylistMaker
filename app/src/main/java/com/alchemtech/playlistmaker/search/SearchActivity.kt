@@ -28,21 +28,33 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
-    private var historyList = mutableListOf<Track>()
-    private var tracksList = mutableListOf<Track>()
+    private var historyList = arrayListOf<Track>()
+    private var tracksList = arrayListOf<Track>()
 
     @SuppressLint("NotifyDataSetChanged")
     private val onItemClickTrack = { track: Track ->
-        historyList.remove(track)
+        //  historyList.remove(track)
         if (historyList.lastIndex < (MAX_HISTORY_LIST_SIZE - 1)) {
-            historyList.add(track)
-            println(track.trackId) //todo
-            println(historyList.lastIndex)
+            addingTrackToList(track)
         } else {
-            historyList.removeAt(0)
+            historyList.removeLast()
+            addingTrackToList(track)
+        }
+        trackListChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun trackListChanged() {
+        findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+    }
+
+    private fun addingTrackToList(track: Track) {
+        println("before size" + historyList.size)
+        if (historyList.size > 1) {
+            historyList.add(0, track)
+        } else {
             historyList.add(track)
         }
-        findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
     }
 
     private val searchingBaseUrl = "https://itunes.apple.com"
@@ -85,7 +97,7 @@ class SearchActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
 
             tracksList.addAll(
-                list
+                list.asReversed()
             )
         }
 
@@ -94,12 +106,12 @@ class SearchActivity : AppCompatActivity() {
     private fun showTrackList(list: MutableList<Track>) {
         val trackAdapter = TrackSearchAdapter(list)
         val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-        trackAdapter.onItemClick = onItemClickTrack as (Track) -> Unit
+        onItemClickTrack.also { trackAdapter.onItemClick = it }
         recyclerView.adapter = trackAdapter
 
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
     private fun clearButSearchHistory() {
 
         findViewById<TextView>(R.id.clearHistoryBut).setOnClickListener {
@@ -107,7 +119,8 @@ class SearchActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
 
             historyList.clear()
-            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+            trackListChanged()
+
         }
 
     }
@@ -167,6 +180,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun clearButWorking() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         clearButton.setOnClickListener {
@@ -178,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
             tracksList.clear()
-            showTrackList(tracksList)
+             trackListChanged()
             allErrLayoutsGONE()
         }
     }
@@ -204,9 +218,9 @@ class SearchActivity : AppCompatActivity() {
         noConnectionLinearLayout.visibility = View.GONE
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack(text: String) {
         tracksList.clear()
-        // trackAdapter.notifyDataSetChanged()
         searchService.search(text)
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(
@@ -217,8 +231,6 @@ class SearchActivity : AppCompatActivity() {
 
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracksList.addAll(response.body()?.results!!)
-                            showTrackList(tracksList)// todo
-                            //   trackAdapter.notifyDataSetChanged()
                         }
                         if (tracksList.isEmpty()) {
                             noDataErrLayoutVISIBLE()
@@ -233,7 +245,7 @@ class SearchActivity : AppCompatActivity() {
 
                 }
             })
-
+        trackListChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -241,13 +253,14 @@ class SearchActivity : AppCompatActivity() {
         val inputText = findViewById<TextView>(R.id.inputEditText).text
         outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
 
-        SearchHistory().setHistoryListToSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            ), historyList
-        )
+        saveHistory()
     }
+
+    override fun onPause() {
+        super.onPause()
+        saveHistory()
+    }
+
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
@@ -257,21 +270,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun saveHistory() {
+        SearchHistory().setHistoryListToSharePreferences(
+            getSharedPreferences(
+                SAVED_TRACKS,
+                MODE_PRIVATE
+            ), historyList
+        )
+    }
+
     private fun getHistory() {
-        historyList.clear()
-        historyList.addAll(
-            SearchHistory().getHistoryListFromSharePreferences(
-                getSharedPreferences(
-                    SAVED_TRACKS,
-                    MODE_PRIVATE
-                )
+        historyList = SearchHistory().getHistoryListFromSharePreferences(
+            getSharedPreferences(
+                SAVED_TRACKS,
+                MODE_PRIVATE
             )
         )
 
     }
-
-    // В Kotlin для создания константной переменной мы используем companion object.
-// Ключ должен быть константным, чтобы мы точно знали, что он не изменится
 
     private companion object {
         const val TEXTTOSAVE = ""

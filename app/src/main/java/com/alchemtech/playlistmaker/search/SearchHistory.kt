@@ -10,30 +10,21 @@ const val SAVED_TRACKS = ""
 
 class SearchHistory : AppCompatActivity() {
 
-    fun getHistoryListFromSharePreferences(sharedPreferences: SharedPreferences): MutableList<Track> {
+    fun getHistoryListFromSharePreferences(sharedPreferences: SharedPreferences): ArrayList<Track> {
 
-        try {
-            val json = sharedPreferences.getString(SAVED_TRACKS, null)
-                ?: return null as MutableList<Track>
-            println("Restoring")
-            println(json) // todo
 
-            return Gson().fromJson(json, Array<Track>::class.java).toMutableList()
-        }
-        catch (e : NullPointerException){
-            return mutableListOf<Track>()
-        }
+        val json = sharedPreferences.getString(SAVED_TRACKS, "null")
+            ?: return ArrayList()
+        return Gson().fromJson(json, Array<Track>::class.java).toList() as ArrayList
 
     }
 
 
     fun setHistoryListToSharePreferences(
         sharedPreferences: SharedPreferences,
-        list: MutableList<Track>,
+        list: ArrayList<Track>,
     ) {
         val json = Gson().toJson(list)
-        println("SAVING") //TODO
-        println(json) // todo
         sharedPreferences.edit()
             .putString(SAVED_TRACKS, json)
             .apply()

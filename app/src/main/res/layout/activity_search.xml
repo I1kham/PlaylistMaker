@@ -77,6 +77,10 @@
         <!--gone-->
 
     </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/searchHistoryTitle"
@@ -89,7 +93,7 @@
         android:textFontWeight="500"
         android:textSize="19sp"
         android:theme="@style/cardTextView"
-        android:visibility="visible" />
+        android:visibility="gone" />
 <!--    gone -->
 
     <androidx.recyclerview.widget.RecyclerView
@@ -115,8 +119,9 @@
         android:textColor="@color/whiteBlack"
         android:textFontWeight="500"
         android:theme="@style/cardTextView"
-        android:visibility="visible" />
+        android:visibility="gone" />
     <!--    gone  -->
+    </LinearLayout>
     <LinearLayout
             android:id="@+id/noData"
             android:layout_width="wrap_content"
