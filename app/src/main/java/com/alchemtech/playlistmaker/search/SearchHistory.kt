@@ -16,10 +16,8 @@ class SearchHistory : AppCompatActivity() {
 
 
         val json =
-            sharedPreferences.getString(SAVED_TRACKS, "null")
-        if (json == "null") {
-            return mutableListOf()
-        }
+            sharedPreferences.getString(/* key = */ SAVED_TRACKS, /* defValue = */ null)
+                ?: return mutableListOf()
         return Gson().fromJson<Any>(
             json,
             object : TypeToken<MutableList<Track?>?>() {}.type

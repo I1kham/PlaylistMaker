@@ -282,19 +282,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getHistory() {
-        val a = SearchHistory().getHistoryListFromSharePreferences(
+        historyList = SearchHistory().getHistoryListFromSharePreferences(
             getSharedPreferences(
                 SAVED_TRACKS,
                 MODE_PRIVATE
             )
         )
-        historyList = a
-        try {
-        } catch (e: NullPointerException) {
-
-        }
-
-
     }
 
     private fun focusLogic() {
