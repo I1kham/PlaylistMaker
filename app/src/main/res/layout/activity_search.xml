@@ -19,7 +19,7 @@
         android:textSize="22sp"
         app:icon="?attr/actionModeCloseDrawable"
         app:iconGravity="textStart"
-        app:iconSize="16dp"
+        app:iconSize="24dp"
         app:iconTint="@color/settingsActivityButtonsText" />
 
 
