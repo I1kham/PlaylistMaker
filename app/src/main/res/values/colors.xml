@@ -2,24 +2,31 @@
 <resources>
 
     <color name="mainActivityBackground">#3772E7</color>
-<!--    <color name="allWhite">#FFFFFF</color>-->
+    <!--    <color name="allWhite">#FFFFFF</color>-->
     <color name="allWhite">#FFFFFF</color>
-<!--    <color name="allBlack">#1A1B22</color>-->
-    <color name="allBlack">#1A1B22</color>
+    <!--    <color name="allBlack">#1A1B22</color>-->
+    <color name="all_YP_Black">#1A1B22</color>
     <color name="transparent">#00000000</color>
-    <color name="grayWhite">#AEAFB4</color>
-    <color name="settingsActivityButtonsText">#000000</color>
-    <color name="blackWhite">#1A1B22</color>
-    <color name="whiteBlack">#FFFFFF</color>
-    <color name="searchActivitySearchTextViewBackground">#E6E8EB</color>
+    <color name="YP_gray_White">#AEAFB4</color>
+    <color name="black_White">#000000</color>
+    <color name="YP_black_White">#1A1B22</color>
+    <color name="white_YP_Black">#FFFFFF</color>
+    <color name="gray_white">#E6E8EB</color>
     <color name="grayBlack">#AEAFB4</color>
     <color name="lightStatusBar">#FEF7FF</color>
-<!--    <color name="grayWhite">#AEAFB4</color>-->
+    <color name="YP_AAL_gray">#AEAFB4</color>
+    <!--    <color name="grayWhite">#AEAFB4</color>-->
+
 
 
     <color name="YP_black">#1A1B22</color>
 
-    <color name="YP_light_background">#3772E7</color> <!-- цвет фона для светлой темы -->
+    <color name="YP_light_background">#3772E7</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color> <!-- цвет фона для светлой темы -->
     <!-- цвет текста белый-->
     <!-- цвет фона для темной темы темы -->
 </resources>
