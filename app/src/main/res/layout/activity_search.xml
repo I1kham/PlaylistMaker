@@ -20,7 +20,7 @@
         app:icon="?attr/actionModeCloseDrawable"
         app:iconGravity="textStart"
         app:iconSize="24dp"
-        app:iconTint="@color/settingsActivityButtonsText" />
+        app:iconTint="@color/black_White" />
 
 
     <LinearLayout
@@ -30,7 +30,7 @@
         android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/searchActivitySearchTextViewBackground"
+        android:backgroundTint="@color/gray_white"
         android:orientation="horizontal">
 
         <ImageView
@@ -113,10 +113,10 @@
         android:layout_marginVertical="12dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/search_history_clear_but"
-        android:backgroundTint="@color/blackWhite"
+        android:backgroundTint="@color/YP_black_White"
         android:gravity="center"
         android:text="@string/SearchHistoryClearBut"
-        android:textColor="@color/whiteBlack"
+        android:textColor="@color/white_YP_Black"
         android:textFontWeight="500"
         android:theme="@style/cardTextView"
         android:visibility="gone" />
@@ -193,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:backgroundTint="@color/blackWhite"
+                android:backgroundTint="@color/YP_black_White"
                 android:fontFamily="@font/ys_display_regular"
                 android:text="@string/updateButNoConnectionText"
                 android:textFontWeight="500"
