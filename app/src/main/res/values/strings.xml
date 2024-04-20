@@ -4,7 +4,7 @@
     <string name="Search_button">Поиск</string>
     <string name="media_library_button">Медиатека</string>
     <string name="Settings_button">Настройки</string>
-    <string name="Dark_theme_switch_settings">" "Темная тема</string> <!--todo разобраться с форматированием текста на разных кнопках, костыль в действии -->
+    <string name="Dark_theme_switch_settings">" "Темная тема</string>
     <string name="Share_app">Поделиться приложением</string>
     <string name="to_support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
@@ -21,4 +21,6 @@
     <string name="no_connection">Проблемы со связью</string>
     <string name="no_connection2">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="updateButNoConnectionText">Обновить</string>
+    <string name="SearchHistoryTitle">Вы искали</string>
+    <string name="SearchHistoryClearBut">Очистить историю</string>
 </resources>

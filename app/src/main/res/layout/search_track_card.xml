@@ -58,7 +58,7 @@
                     android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="@color/forwardButTrackCardIcon" />
+                    android:backgroundTint="@color/grayWhite" />
 
                 <TextView
                     android:id="@+id/trackDuration"
@@ -78,7 +78,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
             android:src="@drawable/terms_of_use"
-            app:tint="@color/forwardButTrackCardIcon" />
+            app:tint="@color/grayWhite" />
 
 
     </LinearLayout>
