@@ -58,7 +58,7 @@
                     android:layout_height="4dp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
-                    android:backgroundTint="@color/YP_gray_White" />
+                    android:backgroundTint="@color/grayWhite" />
 
                 <TextView
                     android:id="@+id/trackDuration"
@@ -78,7 +78,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
             android:src="@drawable/terms_of_use"
-            app:tint="@color/YP_gray_White" />
+            app:tint="@color/grayWhite" />
 
 
     </LinearLayout>

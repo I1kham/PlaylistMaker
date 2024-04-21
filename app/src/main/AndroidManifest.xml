@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
     <application
-        android:name=".App"
+        android:name="com.alchemtech.playlistmaker.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/music_library_2_svgrepo_com"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PlaylistMaker"
-        tools:targetApi="31">
-        <activity
-            android:name=".PlayerActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-<!--        <activity-->
-<!--            android:name=".FullscreenActivity"-->
-<!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_fullscreen"-->
-<!--            android:theme="@style/Base.Theme.PlaylistMaker.Fullscreen" /> todo чтото появилось странное-->
+        tools:targetApi="31"
+        android:icon="@drawable/music_library_2_svgrepo_com">
         <activity
             android:name=".search.SearchActivity"
             android:exported="false"

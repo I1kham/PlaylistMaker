@@ -5,17 +5,15 @@
     <color name="allWhite">#FFFFFF</color>
 <!--    <color name="allWhite">#FFFFFF</color>-->
 <!--    <color name="allBlack">#1A1B22</color>-->
-    <color name="all_YP_Black">#1A1B22</color>
+    <color name="allBlack">#1A1B22</color>
     <color name="transparent">#00000000</color>
-    <color name="YP_gray_White">#FFFFFF</color>
-    <color name="black_White">#FFFFFF</color>
-    <color name="YP_black_White">#FFFFFF</color>
-    <color name="white_YP_Black">#1A1B22</color>
-    <color name="gray_white">#FFFFFF</color>
+    <color name="grayWhite">#FFFFFF</color>
+    <color name="settingsActivityButtonsText">#FFFFFF</color>
+    <color name="blackWhite">#FFFFFF</color>
+    <color name="whiteBlack">#1A1B22</color>
+    <color name="searchActivitySearchTextViewBackground">#FFFFFF</color>
     <color name="grayBlack">#1A1B22</color>
-    <color name="YP_AAL_gray">#AEAFB4</color>
 <!--    <color name="grayWhite">#FFFFFF</color>-->
-    <color name="icon_lightGray_darkGray">#535459</color>
 
     <color name="YP_black">#1A1B22</color>
 

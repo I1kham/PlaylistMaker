@@ -15,11 +15,11 @@
         android:layout_marginHorizontal="0dp"
         android:text="@string/Settings_button"
         android:textSize="22sp"
-        android:textColor="@color/YP_black_White"
+        android:textColor="@color/blackWhite"
         app:icon="@drawable/car_ui_icon_arrow_back"
         app:iconGravity="start"
         app:iconPadding="12dp"
-        app:iconTint="@color/black_White"        />
+        app:iconTint="@color/settingsActivityButtonsText"        />
 
     <Switch
         android:id="@+id/dayNightSwitch"
