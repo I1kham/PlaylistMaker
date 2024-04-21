@@ -36,35 +36,4 @@ class SearchHistory : AppCompatActivity() {
             .apply()
     }
 
-    fun addTrackToList(track: Track) {
-
-        var historyList = getHistoryListFromSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            )
-        )
-        historyList.remove(track)
-        if (historyList.isEmpty()) {
-            historyList.add(track)
-        } else {
-            if (historyList.size < MAX_HISTORY_LIST_SIZE) {
-                historyList.add(0, track)
-
-            } else {
-                historyList.removeLast()
-                historyList.add(0, track)
-            }
-        }
-
-        setHistoryListToSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            ), historyList
-        )
-
-    }
-
-
 }

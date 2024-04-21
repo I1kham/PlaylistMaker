@@ -17,13 +17,13 @@
         <activity
             android:name=".PlayerActivity"
             android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-<!--        <activity-->
-<!--            android:name=".FullscreenActivity"-->
-<!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_fullscreen"-->
-<!--            android:theme="@style/Base.Theme.PlaylistMaker.Fullscreen" /> todo чтото появилось странное-->
+            android:theme="@style/Base.Theme.PlaylistMaker" />
+        <activity
+            android:name=".FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/Base.Theme.PlaylistMaker.Fullscreen" />
         <activity
             android:name=".search.SearchActivity"
             android:exported="false"
