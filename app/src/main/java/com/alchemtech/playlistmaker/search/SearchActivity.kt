@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private val onItemClickToTrackCard = { track: Track ->
-        // trackCardClicking(track)
+         trackCardClicking(track)
         trackCardToPlayer(track)
     }
 
