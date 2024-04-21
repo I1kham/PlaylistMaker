@@ -1,6 +1,8 @@
 package com.alchemtech.playlistmaker.track
 
-data class Track (
+import java.io.Serializable
+
+data class Track(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя;
     val trackTimeMillis: Long, // Продолжительность трека
@@ -10,6 +12,6 @@ data class Track (
     val releaseDate : String, // год релиза
     val primaryGenreName : String, //жанр трека
     val country : String // страна исполнителя
-){
+) : Serializable {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 }
