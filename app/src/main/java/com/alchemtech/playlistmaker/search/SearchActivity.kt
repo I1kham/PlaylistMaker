@@ -23,6 +23,7 @@ import com.alchemtech.playlistmaker.track.Track
 import com.alchemtech.playlistmaker.track.TrackApiService
 import com.alchemtech.playlistmaker.track.TrackSearchAdapter
 import com.alchemtech.playlistmaker.track.TracksResponse
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,20 +32,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
-    private var historyList = mutableListOf<Track>()
+    private var historyList: MutableList<Track> = mutableListOf<Track>()
     private val tracksList = arrayListOf<Track>()
 
 
     private val onItemClickToHistoryTrackCard = { track: Track ->
-        // trackCardClicking(track)
-        trackCardToPlayer(track)
+        trackCardClicking(track)
     }
-
     private val onItemClickToTrackCard = { track: Track ->
-        // trackCardClicking(track)
-        trackCardToPlayer(track)
+        val a = Gson().toJson(track)
+        val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+            putExtra( "track",
+              track
+            )
+        }
+        startActivity(trackCardClickIntent)
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private fun trackCardClicking(track: Track) {
         historyList.remove(track)
@@ -61,17 +64,6 @@ class SearchActivity : AppCompatActivity() {
         }
         findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
 
-    }
-
-
-    private fun trackCardToPlayer(track: Track){
-        val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            putExtra(
-                "track",
-                track
-            )
-        }
-        startActivity(trackCardClickIntent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
