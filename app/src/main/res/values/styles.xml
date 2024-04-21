@@ -17,10 +17,10 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/all_YP_Black</item>
+        <item name="android:textColor">@color/allBlack</item>
         <!--        icon-->
         <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/all_YP_Black</item>
+        <item name="iconTint">@color/allBlack</item>
         <item name="iconTintMode">src_in</item>
         <item name="iconSize">19dp</item>
     </style>
@@ -34,16 +34,16 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_marginEnd">6dp</item>
         <item name="android:backgroundTint">@color/transparent</item>
-        <!--        text-->
-        <item name="android:textColor">@color/black_White</item>
+<!--        text-->
+        <item name="android:textColor">@color/settingsActivityButtonsText</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textFontWeight">400</item>
-        <!--        icon-->
+<!--        icon-->
         <item name="iconGravity">end</item>
         <item name="iconSize">24dp</item>
-        <item name="iconTint">@color/YP_gray_White</item>
+        <item name="iconTint">@color/grayWhite</item>
 
     </style>
 
@@ -67,37 +67,9 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/transparent</item>
-        <item name="android:textColor">@color/YP_black_White</item>
+        <item name="android:textColor">@color/blackWhite</item>
         <item name="android:textAllCaps">false</item>
 
-    </style>
-
-    <style name="playerTrackInformationTitle" parent="cardTextView">
-        <item name="android:layout_marginTop">9dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAlignment">viewStart</item>
-        <item name="android:textColor">@color/YP_AAL_gray</item>
-            </style>
-
-    <style name="playerTrackData" parent="playerTrackInformationTitle">
-      <item name="android:layout_marginStart">5sp</item>
-        <item name="android:textAlignment">viewEnd</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black_White</item>
-    </style>
-
-
-    <style name="Widget.Base.Theme.PlaylistMaker.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
-
-    <style name="Widget.Base.Theme.PlaylistMaker.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
 </resources>
