@@ -2,6 +2,7 @@ package com.alchemtech.playlistmaker.search
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.alchemtech.playlistmaker.PlayerActivity
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.track.Track
 import com.alchemtech.playlistmaker.track.TrackApiService
@@ -33,10 +35,14 @@ class SearchActivity : AppCompatActivity() {
     private val tracksList = arrayListOf<Track>()
 
 
+    private val onItemClickToHistoryTrackCard = { track: Track ->
+        // trackCardClicking(track)
+        trackCardToPlayer(track)
+    }
+
     private val onItemClickToTrackCard = { track: Track ->
-        trackCardClicking(track)
-
-
+         trackCardClicking(track)
+        trackCardToPlayer(track)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -55,6 +61,17 @@ class SearchActivity : AppCompatActivity() {
         }
         findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
 
+    }
+
+
+    private fun trackCardToPlayer(track: Track){
+        val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+            putExtra(
+                "track",
+                track
+            )
+        }
+        startActivity(trackCardClickIntent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,8 +103,8 @@ class SearchActivity : AppCompatActivity() {
 
             val trackAdapter = TrackSearchAdapter(historyList)
             val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-            onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
-            recyclerView.adapter = trackAdapter // todo снести кликер
+            onItemClickToHistoryTrackCard.also { trackAdapter.onItemClick = it }
+            recyclerView.adapter = trackAdapter // todo кликер для списка истории
         } else disableHistoryList()
 
     }
