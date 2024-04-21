@@ -56,7 +56,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun collectionName(track: Track) {
         val collectionName = findViewById<TextView>(R.id.collectionNameText)
-        if (track.collectionName.isNullOrEmpty()) {
+        if (!track.collectionName.isNullOrEmpty()) {
             collectionName.text = track.collectionName
         } else {
             collectionName.visibility = View.GONE
