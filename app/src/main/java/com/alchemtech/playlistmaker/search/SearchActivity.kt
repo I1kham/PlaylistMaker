@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -41,9 +43,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private val onItemClickToTrackCard = { track: Track ->
-         trackCardClicking(track)
+        trackCardClicking(track)
         trackCardToPlayer(track)
     }
+
+    private val searchRunnable = Runnable { searchTrack() }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun trackCardClicking(track: Track) {
@@ -64,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun trackCardToPlayer(track: Track){
+    private fun trackCardToPlayer(track: Track) {
         val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
             putExtra(
                 "track",
@@ -104,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
             val trackAdapter = TrackSearchAdapter(historyList)
             val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
             onItemClickToHistoryTrackCard.also { trackAdapter.onItemClick = it }
-            recyclerView.adapter = trackAdapter // todo кликер для списка истории
+            recyclerView.adapter = trackAdapter
         } else disableHistoryList()
 
     }
@@ -145,10 +149,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val clearButton = findViewById<ImageView>(R.id.clearIcon)
-                clearButton.isVisible = !(s.isNullOrEmpty())
+                clearButVisibility(s)
                 textChangeLogic(s)
                 focusLogic()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -160,6 +164,11 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
     }
 
+    private fun clearButVisibility(s: CharSequence?) {
+        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        clearButton.isVisible = !(s.isNullOrEmpty())
+    }
+
     private fun inputEditTextWorking() {
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         inputEditText.setOnClickListener {
@@ -168,7 +177,7 @@ class SearchActivity : AppCompatActivity() {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                     // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                    searchTrack(inputEditText.text.toString())
+                    searchTrack()
                     val inputMethodManager =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
@@ -180,9 +189,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun upDateSearchWorking() {
         val upDateBut = findViewById<Button>(R.id.updateButNoConnection)
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         upDateBut.setOnClickListener {
-            searchTrack(inputEditText.text.toString())
+            searchTrack()
         }
     }
 
@@ -225,14 +233,16 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun allErrLayoutsGONE() {
-        val noDataLineraLayout = findViewById<LinearLayout>(R.id.noData)
-        noDataLineraLayout.visibility = View.GONE
+        val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
+        noDataLinearLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.GONE
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun searchTrack(text: String) {
+    private fun searchTrack( ) {
+        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
+        val text =  inputEditText.text.toString()
         val searchingBaseUrl = "https://itunes.apple.com"
         val retrofit = Retrofit.Builder()
             .baseUrl(searchingBaseUrl)
@@ -270,8 +280,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val inputText = findViewById<TextView>(R.id.inputTextForSearching).text
-        outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
-
+        outState.putString(/* key = */ TEXT_TO_SAVE, /* value = */ inputText.toString())
         saveHistory()
     }
 
@@ -284,7 +293,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        inputEditText.setText(savedInstanceState.getString(TEXTTOSAVE))
+        inputEditText.setText(savedInstanceState.getString(TEXT_TO_SAVE))
         getHistory()
 
     }
@@ -323,9 +332,16 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun searchDebounce() {
+        val handler = Handler(Looper.getMainLooper())
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
 
     private companion object {
-        const val TEXTTOSAVE = ""
+        const val TEXT_TO_SAVE = ""
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
 
     }
 }
