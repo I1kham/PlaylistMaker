@@ -112,7 +112,7 @@ class PlayerActivity : AppCompatActivity() {
         val play = findViewById<ImageView>(R.id.playBut)
         play.setImageResource(R.drawable.pause_but)
         playerState = STATE_PLAYING
-        startGetCurrentPositionTask() // todo
+        startGetCurrentPositionTask()
     }
 
     private fun startGetCurrentPositionTask() {
