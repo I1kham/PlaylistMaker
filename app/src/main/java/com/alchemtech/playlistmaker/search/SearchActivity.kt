@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -241,6 +242,7 @@ class SearchActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack( ) {
+        progressBarVISIBLE()
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         val text =  inputEditText.text.toString()
         val searchingBaseUrl = "https://itunes.apple.com"
@@ -255,6 +257,7 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<TracksResponse>,
                     response: Response<TracksResponse>,
                 ) {
+                    progressBarINVISIBLE()
                     if (response.isSuccessful) {
 
                         if (response.body()?.results?.isNotEmpty() == true) {
@@ -336,6 +339,17 @@ class SearchActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun progressBarVISIBLE(){
+        allErrLayoutsGONE()
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun progressBarINVISIBLE(){
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.GONE
     }
 
 
