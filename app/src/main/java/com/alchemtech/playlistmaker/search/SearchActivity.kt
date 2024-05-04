@@ -39,19 +39,29 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val onItemClickToHistoryTrackCard = { track: Track ->
-        // trackCardClicking(track)
-        trackCardToPlayer(track)
+        if (clickDebounce()) {
+            // trackCardClicking(track)
+            trackCardToPlayer(track)
+        }
     }
 
     private val onItemClickToTrackCard = { track: Track ->
-        trackCardClicking(track)
-        trackCardToPlayer(track)
+        if (clickDebounce()) {
+            trackCardClicking(track)
+            trackCardToPlayer(track)
+        }
     }
 
     private val searchRunnable = Runnable { searchTrack() }
 
+    private var isClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
     @SuppressLint("NotifyDataSetChanged")
     private fun trackCardClicking(track: Track) {
+
+
         historyList.remove(track)
         if (historyList.isEmpty()) {
             historyList.add(track)
@@ -65,19 +75,21 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
-
     }
 
 
     private fun trackCardToPlayer(track: Track) {
-        val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            putExtra(
-                "track",
-                track
-            )
-        }
+
+        val trackCardClickIntent =
+            Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+                putExtra(
+                    "track",
+                    track
+                )
+            }
         startActivity(trackCardClickIntent)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +110,15 @@ class SearchActivity : AppCompatActivity() {
 
         enableHistoryList()
 
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     private fun enableHistoryList() {
@@ -241,10 +262,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun searchTrack( ) {
+    private fun searchTrack() {
         progressBarVISIBLE()
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        val text =  inputEditText.text.toString()
+        val text = inputEditText.text.toString()
         val searchingBaseUrl = "https://itunes.apple.com"
         val retrofit = Retrofit.Builder()
             .baseUrl(searchingBaseUrl)
@@ -341,13 +362,13 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    private fun progressBarVISIBLE(){
+    private fun progressBarVISIBLE() {
         allErrLayoutsGONE()
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun progressBarINVISIBLE(){
+    private fun progressBarINVISIBLE() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         progressBar.visibility = View.GONE
     }
@@ -356,7 +377,7 @@ class SearchActivity : AppCompatActivity() {
     private companion object {
         const val TEXT_TO_SAVE = ""
         const val SEARCH_DEBOUNCE_DELAY = 2000L
-
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
 
