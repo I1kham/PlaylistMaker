@@ -263,41 +263,44 @@ class SearchActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
-        progressBarVISIBLE()
+
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         val text = inputEditText.text.toString()
-        val searchingBaseUrl = "https://itunes.apple.com"
-        val retrofit = Retrofit.Builder()
-            .baseUrl(searchingBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        tracksList.clear()
-        retrofit.create(TrackApiService::class.java).search(text)
-            .enqueue(object : Callback<TracksResponse> {
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>,
-                ) {
-                    progressBarINVISIBLE()
-                    if (response.isSuccessful) {
+        if(!text.isNullOrEmpty()) {
+            progressBarVISIBLE()
+            val searchingBaseUrl = "https://itunes.apple.com"
+            val retrofit = Retrofit.Builder()
+                .baseUrl(searchingBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            tracksList.clear()
+            retrofit.create(TrackApiService::class.java).search(text)
+                .enqueue(object : Callback<TracksResponse> {
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>,
+                    ) {
+                        progressBarINVISIBLE()
+                        if (response.isSuccessful) {
 
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            tracksList.addAll(response.body()?.results!!)
-                            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                tracksList.addAll(response.body()?.results!!)
+                                findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+                            }
+                            if (tracksList.isEmpty()) {
+                                noDataErrLayoutVISIBLE()
+                            }
+                        } else {
+                            noConnectionErrLayoutVISIBLE()
                         }
-                        if (tracksList.isEmpty()) {
-                            noDataErrLayoutVISIBLE()
-                        }
-                    } else {
-                        noConnectionErrLayoutVISIBLE()
                     }
-                }
 
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    noConnectionErrLayoutVISIBLE()
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        noConnectionErrLayoutVISIBLE()
 
-                }
-            })
+                    }
+                })
+        }
 
     }
 
