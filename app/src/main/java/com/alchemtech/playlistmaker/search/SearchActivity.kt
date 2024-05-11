@@ -40,15 +40,14 @@ class SearchActivity : AppCompatActivity() {
 
     private val onItemClickToHistoryTrackCard = { track: Track ->
         if (clickDebounce()) {
-            // trackCardClicking(track)
-            trackCardToPlayer(track)
+            navigateToPlayer(track)
         }
     }
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {
-            trackCardClicking(track)
-            trackCardToPlayer(track)
+            clickOnTrack(track)
+            navigateToPlayer(track)
         }
     }
 
@@ -59,7 +58,7 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun trackCardClicking(track: Track) {
+    private fun clickOnTrack(track: Track) {
 
 
         historyList.remove(track)
@@ -78,8 +77,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun trackCardToPlayer(track: Track) {
-
+    private fun navigateToPlayer(track: Track) {
         val trackCardClickIntent =
             Intent(this@SearchActivity, PlayerActivity::class.java).apply {
                 putExtra(
@@ -194,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
     private fun inputEditTextWorking() {
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         inputEditText.setOnClickListener {
-            allErrLayoutsGONE()
+            setAllErrLayoutsGONE()
             inputEditText.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
@@ -235,26 +233,26 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
             tracksList.clear()
-            allErrLayoutsGONE()
+            setAllErrLayoutsGONE()
             findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
         }
     }
 
-    private fun noDataErrLayoutVISIBLE() {
+    private fun setNoDataErrLayoutVisible() {
         val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLinearLayout.visibility = View.VISIBLE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.GONE
     }
 
-    private fun noConnectionErrLayoutVISIBLE() {
+    private fun setNoConnectionErrLayoutVisible() {
         val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLinearLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.VISIBLE
     }
 
-    private fun allErrLayoutsGONE() {
+    private fun setAllErrLayoutsGONE() {
         val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLinearLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
@@ -267,7 +265,7 @@ class SearchActivity : AppCompatActivity() {
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         val text = inputEditText.text.toString()
         if(!text.isNullOrEmpty()) {
-            progressBarVISIBLE()
+            setProgressBarVisible()
             val searchingBaseUrl = "https://itunes.apple.com"
             val retrofit = Retrofit.Builder()
                 .baseUrl(searchingBaseUrl)
@@ -280,7 +278,7 @@ class SearchActivity : AppCompatActivity() {
                         call: Call<TracksResponse>,
                         response: Response<TracksResponse>,
                     ) {
-                        progressBarINVISIBLE()
+                        setProgressBarGone()
                         if (response.isSuccessful) {
 
                             if (response.body()?.results?.isNotEmpty() == true) {
@@ -288,15 +286,15 @@ class SearchActivity : AppCompatActivity() {
                                 findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
                             }
                             if (tracksList.isEmpty()) {
-                                noDataErrLayoutVISIBLE()
+                                setNoDataErrLayoutVisible()
                             }
                         } else {
-                            noConnectionErrLayoutVISIBLE()
+                            setNoConnectionErrLayoutVisible()
                         }
                     }
 
                     override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                        noConnectionErrLayoutVISIBLE()
+                        setNoConnectionErrLayoutVisible()
 
                     }
                 })
@@ -365,13 +363,13 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    private fun progressBarVISIBLE() {
-        allErrLayoutsGONE()
+    private fun setProgressBarVisible() {
+        setAllErrLayoutsGONE()
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun progressBarINVISIBLE() {
+    private fun setProgressBarGone() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         progressBar.visibility = View.GONE
     }

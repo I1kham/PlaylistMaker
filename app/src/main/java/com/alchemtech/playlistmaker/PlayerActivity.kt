@@ -19,15 +19,7 @@ import java.util.Locale
 
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity() {
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
 
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
-
-    }
 
     private var playerState = STATE_DEFAULT
 
@@ -241,6 +233,14 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
     }
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
 
+        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
+
+    }
 }
 
