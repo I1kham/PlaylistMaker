@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -36,17 +39,28 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val onItemClickToHistoryTrackCard = { track: Track ->
-        // trackCardClicking(track)
-        trackCardToPlayer(track)
+        if (clickDebounce()) {
+            navigateToPlayer(track)
+        }
     }
 
     private val onItemClickToTrackCard = { track: Track ->
-         trackCardClicking(track)
-        trackCardToPlayer(track)
+        if (clickDebounce()) {
+            clickOnTrack(track)
+            navigateToPlayer(track)
+        }
     }
 
+    private val searchRunnable = Runnable { searchTrack() }
+
+    private var isClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun trackCardClicking(track: Track) {
+    private fun clickOnTrack(track: Track) {
+
+
         historyList.remove(track)
         if (historyList.isEmpty()) {
             historyList.add(track)
@@ -60,19 +74,20 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
-
     }
 
 
-    private fun trackCardToPlayer(track: Track){
-        val trackCardClickIntent = Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            putExtra(
-                "track",
-                track
-            )
-        }
+    private fun navigateToPlayer(track: Track) {
+        val trackCardClickIntent =
+            Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+                putExtra(
+                    "track",
+                    track
+                )
+            }
         startActivity(trackCardClickIntent)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +110,15 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     private fun enableHistoryList() {
 
         if (historyList.isNotEmpty()) {
@@ -104,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
             val trackAdapter = TrackSearchAdapter(historyList)
             val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
             onItemClickToHistoryTrackCard.also { trackAdapter.onItemClick = it }
-            recyclerView.adapter = trackAdapter // todo кликер для списка истории
+            recyclerView.adapter = trackAdapter
         } else disableHistoryList()
 
     }
@@ -145,10 +169,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val clearButton = findViewById<ImageView>(R.id.clearIcon)
-                clearButton.isVisible = !(s.isNullOrEmpty())
+                clearButVisibility(s)
                 textChangeLogic(s)
                 focusLogic()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -160,15 +184,20 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
     }
 
+    private fun clearButVisibility(s: CharSequence?) {
+        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        clearButton.isVisible = !(s.isNullOrEmpty())
+    }
+
     private fun inputEditTextWorking() {
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         inputEditText.setOnClickListener {
-            allErrLayoutsGONE()
+            setAllErrLayoutsGONE()
             inputEditText.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                     // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
-                    searchTrack(inputEditText.text.toString())
+                    searchTrack()
                     val inputMethodManager =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
@@ -180,9 +209,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun upDateSearchWorking() {
         val upDateBut = findViewById<Button>(R.id.updateButNoConnection)
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         upDateBut.setOnClickListener {
-            searchTrack(inputEditText.text.toString())
+            searchTrack()
         }
     }
 
@@ -205,73 +233,79 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
 
             tracksList.clear()
-            allErrLayoutsGONE()
+            setAllErrLayoutsGONE()
             findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
         }
     }
 
-    private fun noDataErrLayoutVISIBLE() {
+    private fun setNoDataErrLayoutVisible() {
         val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLinearLayout.visibility = View.VISIBLE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.GONE
     }
 
-    private fun noConnectionErrLayoutVISIBLE() {
+    private fun setNoConnectionErrLayoutVisible() {
         val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
         noDataLinearLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.VISIBLE
     }
 
-    private fun allErrLayoutsGONE() {
-        val noDataLineraLayout = findViewById<LinearLayout>(R.id.noData)
-        noDataLineraLayout.visibility = View.GONE
+    private fun setAllErrLayoutsGONE() {
+        val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
+        noDataLinearLayout.visibility = View.GONE
         val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
         noConnectionLinearLayout.visibility = View.GONE
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun searchTrack(text: String) {
-        val searchingBaseUrl = "https://itunes.apple.com"
-        val retrofit = Retrofit.Builder()
-            .baseUrl(searchingBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        tracksList.clear()
-        retrofit.create(TrackApiService::class.java).search(text)
-            .enqueue(object : Callback<TracksResponse> {
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>,
-                ) {
-                    if (response.isSuccessful) {
+    private fun searchTrack() {
 
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            tracksList.addAll(response.body()?.results!!)
-                            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
+        val text = inputEditText.text.toString()
+        if(!text.isNullOrEmpty()) {
+            setProgressBarVisible()
+            val searchingBaseUrl = "https://itunes.apple.com"
+            val retrofit = Retrofit.Builder()
+                .baseUrl(searchingBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            tracksList.clear()
+            retrofit.create(TrackApiService::class.java).search(text)
+                .enqueue(object : Callback<TracksResponse> {
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>,
+                    ) {
+                        setProgressBarGone()
+                        if (response.isSuccessful) {
+
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                tracksList.addAll(response.body()?.results!!)
+                                findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+                            }
+                            if (tracksList.isEmpty()) {
+                                setNoDataErrLayoutVisible()
+                            }
+                        } else {
+                            setNoConnectionErrLayoutVisible()
                         }
-                        if (tracksList.isEmpty()) {
-                            noDataErrLayoutVISIBLE()
-                        }
-                    } else {
-                        noConnectionErrLayoutVISIBLE()
                     }
-                }
 
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    noConnectionErrLayoutVISIBLE()
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        setNoConnectionErrLayoutVisible()
 
-                }
-            })
+                    }
+                })
+        }
 
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val inputText = findViewById<TextView>(R.id.inputTextForSearching).text
-        outState.putString(/* key = */ TEXTTOSAVE, /* value = */ inputText.toString())
-
+        outState.putString(/* key = */ TEXT_TO_SAVE, /* value = */ inputText.toString())
         saveHistory()
     }
 
@@ -284,7 +318,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        inputEditText.setText(savedInstanceState.getString(TEXTTOSAVE))
+        inputEditText.setText(savedInstanceState.getString(TEXT_TO_SAVE))
         getHistory()
 
     }
@@ -323,10 +357,28 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun searchDebounce() {
+        val handler = Handler(Looper.getMainLooper())
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun setProgressBarVisible() {
+        setAllErrLayoutsGONE()
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun setProgressBarGone() {
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar.visibility = View.GONE
+    }
+
 
     private companion object {
-        const val TEXTTOSAVE = ""
-
+        const val TEXT_TO_SAVE = ""
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
 

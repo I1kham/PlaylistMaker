@@ -77,50 +77,54 @@
         <!--gone-->
 
     </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/searchHistoryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/SearchHistoryTitle"
-        android:textFontWeight="500"
-        android:textSize="19sp"
-        android:theme="@style/cardTextView"
-        android:visibility="gone" />
-<!--    gone -->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackCardsRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="12dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/search_track_card" />
-    <TextView
-        android:id="@+id/clearHistoryBut"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginVertical="12dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/search_history_clear_but"
-        android:backgroundTint="@color/YP_black_White"
-        android:gravity="center"
-        android:text="@string/SearchHistoryClearBut"
-        android:textColor="@color/white_YP_Black"
-        android:textFontWeight="500"
-        android:theme="@style/cardTextView"
-        android:visibility="gone" />
-    <!--    gone  -->
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/searchHistoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/SearchHistoryTitle"
+            android:textFontWeight="500"
+            android:textSize="19sp"
+            android:theme="@style/cardTextView"
+            android:visibility="gone" />
+        <!--    gone -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackCardsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/search_track_card" />
+
+
+        <TextView
+            android:id="@+id/clearHistoryBut"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="12dp"
+            android:background="@drawable/search_history_clear_but"
+            android:backgroundTint="@color/YP_black_White"
+            android:gravity="center"
+            android:text="@string/SearchHistoryClearBut"
+            android:textColor="@color/white_YP_Black"
+            android:textFontWeight="500"
+            android:theme="@style/cardTextView"
+            android:visibility="gone" />
+        <!--    gone  -->
     </LinearLayout>
     <LinearLayout
             android:id="@+id/noData"
@@ -201,9 +205,14 @@
 
         </LinearLayout>
 
-
-
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="140dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/YP_light_background"
+        android:visibility="gone" />
 
 
 </LinearLayout>
