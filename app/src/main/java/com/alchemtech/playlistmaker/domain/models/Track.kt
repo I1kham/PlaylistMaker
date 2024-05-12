@@ -13,7 +13,7 @@ data class Track(
     val primaryGenreName: String, //жанр трека
     val country: String, // страна исполнителя
     val previewUrl: String,
-    val artworkUrl512: String
+   // val artworkUrl512: String
 ) : Serializable {
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
     // todo проверить, надо ли переместить этот код в интерфейс?

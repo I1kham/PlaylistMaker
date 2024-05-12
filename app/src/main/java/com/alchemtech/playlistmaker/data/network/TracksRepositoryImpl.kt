@@ -21,7 +21,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                     it.primaryGenreName,
                     it.country,
                     it.previewUrl,
-                    it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+                 //   it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
                 )
             }
         } else {

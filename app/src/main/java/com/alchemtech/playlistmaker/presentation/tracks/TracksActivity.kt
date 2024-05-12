@@ -24,8 +24,15 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.data.SharedPreferences.MAX_HISTORY_LIST_SIZE
 import com.alchemtech.playlistmaker.data.SharedPreferences.SAVED_TRACKS
 import com.alchemtech.playlistmaker.data.SharedPreferences.SearchHistory
+import com.alchemtech.playlistmaker.data.dto.TracksSearchResponse
+import com.alchemtech.playlistmaker.data.network.TrackApiService
 import com.alchemtech.playlistmaker.domain.models.Track
 import com.alchemtech.playlistmaker.presentation.player.PlayerActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class TracksActivity : AppCompatActivity() {
 
@@ -262,38 +269,54 @@ class TracksActivity : AppCompatActivity() {
         if(!text.isNullOrEmpty()) {
             setProgressBarVisible()
             tracksList.clear()
-//            val searchingBaseUrl = "https://itunes.apple.com"
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl(searchingBaseUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//
-//            retrofit.create(TrackApiService::class.java).searchTracks(text)
-//                .enqueue(object : Callback<TracksSearchResponse> {
-//                    override fun onResponse(
-//                        call: Call<TracksSearchResponse>,
-//                        response: Response<TracksSearchResponse>,
-//                    ) {
-//                        setProgressBarGone()
-//                        if (response.isSuccessful) {
-//
-//                            if (response.body()?.results?.isNotEmpty() == true) {
-//                                tracksList.addAll(response.body()?.results!!)
-//                                findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
-//                            }
-//                            if (tracksList.isEmpty()) {
-//                                setNoDataErrLayoutVisible()
-//                            }
-//                        } else {
-//                            setNoConnectionErrLayoutVisible()
-//                        }
-//                    } //todo переносится в RetrofitNetworkClient
-//
-//                    override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
-//                        setNoConnectionErrLayoutVisible()
-//
-//                    }
-//                })
+            val searchingBaseUrl = "https://itunes.apple.com"
+            val retrofit = Retrofit.Builder()
+                .baseUrl(searchingBaseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            retrofit.create(TrackApiService::class.java).searchTracks(text)
+                .enqueue(object : Callback<TracksSearchResponse> {
+                    override fun onResponse(
+                        call: Call<TracksSearchResponse>,
+                        response: Response<TracksSearchResponse>,
+                    ) {
+                        setProgressBarGone()
+                        if (response.isSuccessful) {
+
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                val a = response.body()?.results!! // todo костыль
+                                val b =a.map {
+                                    Track(
+                                        it.trackName,
+                                        it.artistName,
+                                        it.trackTimeMillis,
+                                        it.artworkUrl100,
+                                        it.trackId,
+                                        it.collectionName,
+                                        it.releaseDate,
+                                        it.primaryGenreName,
+                                        it.country,
+                                        it.previewUrl,
+                                        //   it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+                                    )
+                                }
+                                tracksList.addAll(b)
+                                findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+                            }
+                            if (tracksList.isEmpty()) {
+                                setNoDataErrLayoutVisible()
+                            }
+                        } else{
+                            setNoConnectionErrLayoutVisible()
+                        }
+                    } //todo переносится в RetrofitNetworkClient
+
+                    override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
+                        setNoConnectionErrLayoutVisible()
+
+                    }
+                })
         }
 
     }
