@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker
+package com.alchemtech.playlistmaker.presentation.settings
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import com.alchemtech.playlistmaker.presentation.themeSwitcher.DARK_THEME
+import com.alchemtech.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("UseSwitchCompatOrMaterialCode")

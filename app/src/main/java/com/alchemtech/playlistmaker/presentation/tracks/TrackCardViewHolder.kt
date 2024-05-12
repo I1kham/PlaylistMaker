@@ -1,11 +1,12 @@
-package com.alchemtech.playlistmaker.track
+package com.alchemtech.playlistmaker.presentation.tracks
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.UiCalculator
+import com.alchemtech.playlistmaker.domain.UiCalculator
+import com.alchemtech.playlistmaker.domain.models.Track
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat

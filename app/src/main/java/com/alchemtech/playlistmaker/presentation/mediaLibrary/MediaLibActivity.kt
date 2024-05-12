@@ -1,8 +1,9 @@
-package com.alchemtech.playlistmaker
+package com.alchemtech.playlistmaker.presentation.mediaLibrary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.alchemtech.playlistmaker.R
 
 class MediaLibActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

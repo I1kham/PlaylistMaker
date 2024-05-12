@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker
+package com.alchemtech.playlistmaker.presentation.player
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -10,7 +10,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.alchemtech.playlistmaker.track.Track
+import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.domain.models.Track
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
@@ -196,7 +197,7 @@ class PlayerActivity : AppCompatActivity() {
         val albumCover: ImageView = findViewById(R.id.playerAlbumCover)
 
         Glide.with(this)
-            .load(track.getCoverArtwork())
+            .load(track.artworkUrl512) //getCoverArtwork()) todo del after test
             .placeholder(R.drawable.track_album_default_big)
             .centerCrop()
             .transform(

@@ -1,8 +1,8 @@
-package com.alchemtech.playlistmaker.search
+package com.alchemtech.playlistmaker.data.SharedPreferences
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-import com.alchemtech.playlistmaker.track.Track
+import com.alchemtech.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -35,36 +35,4 @@ class SearchHistory : AppCompatActivity() {
             .putString(SAVED_TRACKS, json)
             .apply()
     }
-
-    fun addTrackToList(track: Track) {
-
-        var historyList = getHistoryListFromSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            )
-        )
-        historyList.remove(track)
-        if (historyList.isEmpty()) {
-            historyList.add(track)
-        } else {
-            if (historyList.size < MAX_HISTORY_LIST_SIZE) {
-                historyList.add(0, track)
-
-            } else {
-                historyList.removeLast()
-                historyList.add(0, track)
-            }
-        }
-
-        setHistoryListToSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            ), historyList
-        )
-
-    }
-
-
 }
