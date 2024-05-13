@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.player
+package com.alchemtech.playlistmaker.data.dto
 
 import android.media.MediaPlayer
 import android.os.Bundle
