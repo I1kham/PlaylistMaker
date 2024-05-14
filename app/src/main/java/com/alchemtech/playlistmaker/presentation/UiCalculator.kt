@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.domain
+package com.alchemtech.playlistmaker.presentation
 
 import android.content.Context
 import android.util.TypedValue

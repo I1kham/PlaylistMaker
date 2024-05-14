@@ -21,13 +21,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.data.SharedPreferences.MAX_HISTORY_LIST_SIZE
-import com.alchemtech.playlistmaker.data.SharedPreferences.SAVED_TRACKS
-import com.alchemtech.playlistmaker.data.SharedPreferences.SearchHistory
-import com.alchemtech.playlistmaker.data.dto.PlayerActivity
 import com.alchemtech.playlistmaker.data.dto.TracksSearchResponse
 import com.alchemtech.playlistmaker.data.network.TrackApiService
 import com.alchemtech.playlistmaker.domain.models.Track
+import com.alchemtech.playlistmaker.presentation.MAX_HISTORY_LIST_SIZE
+import com.alchemtech.playlistmaker.presentation.SAVED_TRACKS
+import com.alchemtech.playlistmaker.presentation.SearchHistory
+import com.alchemtech.playlistmaker.presentation.player.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -269,6 +269,8 @@ class TracksActivity : AppCompatActivity() {
         if(!text.isNullOrEmpty()) {
             setProgressBarVisible()
             tracksList.clear()
+
+
             val searchingBaseUrl = "https://itunes.apple.com"
             val retrofit = Retrofit.Builder()
                 .baseUrl(searchingBaseUrl)

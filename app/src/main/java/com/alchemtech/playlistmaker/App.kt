@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.themeSwitcher
+package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode

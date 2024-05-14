@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.domain.UiCalculator
+import com.alchemtech.playlistmaker.presentation.UiCalculator
 import com.alchemtech.playlistmaker.domain.models.Track
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

@@ -1,7 +1,7 @@
-package com.alchemtech.playlistmaker
+package com.alchemtech.playlistmaker.domain
 
+import com.alchemtech.playlistmaker.data.dto.TracksRepositoryImpl
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient
-import com.alchemtech.playlistmaker.data.network.TracksRepositoryImpl
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl

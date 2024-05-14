@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.presentation.themeSwitcher.DARK_THEME
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.DARK_THEME
 
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("UseSwitchCompatOrMaterialCode")

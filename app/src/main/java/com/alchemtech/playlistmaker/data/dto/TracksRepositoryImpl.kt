@@ -1,7 +1,6 @@
-package com.alchemtech.playlistmaker.data.network
+package com.alchemtech.playlistmaker.data.dto
 
-import com.alchemtech.playlistmaker.data.dto.TracksSearchRequest
-import com.alchemtech.playlistmaker.data.dto.TracksSearchResponse
+import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.models.Track
 

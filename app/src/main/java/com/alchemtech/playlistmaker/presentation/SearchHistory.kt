@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.data.SharedPreferences
+package com.alchemtech.playlistmaker.presentation
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
