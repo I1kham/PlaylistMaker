@@ -197,7 +197,7 @@ class PlayerActivity : AppCompatActivity() {
         val albumCover: ImageView = findViewById(R.id.playerAlbumCover)
 
         Glide.with(this)
-            .load(track.getCoverArtwork())
+            .load(track.artworkUrl512)
             .placeholder(R.drawable.track_album_default_big)
             .centerCrop()
             .transform(

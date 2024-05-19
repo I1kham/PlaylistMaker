@@ -6,7 +6,7 @@ import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl
 
-object Creator {
+object SearchCreator {
     private fun getTracksRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }

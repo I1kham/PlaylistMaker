@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.domain.Creator
+import com.alchemtech.playlistmaker.domain.SearchCreator
 import com.alchemtech.playlistmaker.domain.TracksResponseContainer
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.models.Track
@@ -277,7 +277,7 @@ class TracksActivity : AppCompatActivity() {
 
                 setProgressBarVisible()
                 tracksList.clear()
-                val tracksInteractor = Creator.provideTracksInteractor()
+                val tracksInteractor = SearchCreator.provideTracksInteractor()
                 val tracksConsumer = object : TracksInteractor.TracksConsumer {
                     override fun consume(foundTracks: TracksResponseContainer) {
                         if (foundTracks.tracksList.isEmpty()) {

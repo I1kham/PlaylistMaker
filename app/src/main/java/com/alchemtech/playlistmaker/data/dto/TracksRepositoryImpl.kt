@@ -13,15 +13,15 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                 Track(
                     it.trackName,
                     it.artistName,
-                    it.trackTimeMillis,
+                    it.getFormattedTrackTimeMillis(it.trackTimeMillis.toString()),
                     it.artworkUrl100,
                     it.trackId,
                     it.collectionName,
-                    it.releaseDate,
+                    it.getFormattedTrackReleaseDate(it.releaseDate),
                     it.primaryGenreName,
                     it.country,
                     it.previewUrl,
-                    //   it.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+                    it.getArtworkUrl512(it.artworkUrl100)
                 )
             }, responseResultCode = response.resultCode)
         } else {

@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.data.dto
 
-data class TrackDto(
+data class TrackDtoForTrackDto(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя;
     val trackTimeMillis: Long, // Продолжительность трека
@@ -11,4 +11,4 @@ data class TrackDto(
     val primaryGenreName: String, //жанр трека
     val country: String, // страна исполнителя
     val previewUrl: String,
-)
+) : TrackDtoForTrackReformatImpl()
