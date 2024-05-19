@@ -1,11 +1,11 @@
 package com.alchemtech.playlistmaker.presentation.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.alchemtech.playlistmaker.presentation.mediaLibrary.MediaLibActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.presentation.mediaLibrary.MediaLibActivity
 import com.alchemtech.playlistmaker.presentation.settings.SettingsActivity
 import com.alchemtech.playlistmaker.presentation.tracks.TracksActivity
 

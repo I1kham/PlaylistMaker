@@ -1,7 +1,5 @@
 package com.alchemtech.playlistmaker.data.dto
 
-import java.io.Serializable
-
 data class TrackDto(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя;
@@ -13,4 +11,4 @@ data class TrackDto(
     val primaryGenreName: String, //жанр трека
     val country: String, // страна исполнителя
     val previewUrl: String,
-): Serializable
+)
