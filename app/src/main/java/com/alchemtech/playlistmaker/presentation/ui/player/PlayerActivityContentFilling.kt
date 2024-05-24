@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.player
+package com.alchemtech.playlistmaker.presentation.ui.player
 
 import android.view.View
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
@@ -11,7 +11,7 @@ class PlayerActivityContentFilling (track : Track, binding: ActivityPlayerBindin
     }
 
     private fun trackTimeMillis(track: Track, binding: ActivityPlayerBinding) {
-        binding.trackTimeMillisText.text = track.trackTimeMillis
+        binding.trackTimeMillisText.text = track.trackTimeMillis.toString() // TODO:  
     }
 
     private fun collectionName(track: Track, binding: ActivityPlayerBinding) {

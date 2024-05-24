@@ -1,10 +1,10 @@
-package com.alchemtech.playlistmaker.domain.utils
+package com.alchemtech.playlistmaker.domain.player
 
 import android.media.MediaPlayer
-
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 
-interface PlayerInteractor {
+/* объект заготовка */
+interface Player {
     var playerState : Int
 
     fun pausePlayer(player: MediaPlayer, binding: ActivityPlayerBinding)

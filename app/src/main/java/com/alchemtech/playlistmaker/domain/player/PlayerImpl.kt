@@ -1,10 +1,10 @@
-package com.alchemtech.playlistmaker.domain.utils
+package com.alchemtech.playlistmaker.domain.player
 
 import android.media.MediaPlayer
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 
-class PlayerInteractorImpl:PlayerInteractor {
+class PlayerImpl: Player {
     override var playerState : Int
         get() = playerState
         set(value) {playerState=value}

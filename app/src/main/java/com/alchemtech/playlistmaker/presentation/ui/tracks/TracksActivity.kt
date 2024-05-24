@@ -1,9 +1,8 @@
-package com.alchemtech.playlistmaker.presentation.tracks
+package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,17 +21,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.domain.HasInternetConnectionCreator
+import com.alchemtech.playlistmaker.domain.HistoryListCreator
 import com.alchemtech.playlistmaker.domain.SearchCreator
 import com.alchemtech.playlistmaker.domain.TracksResponseContainer
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.models.Track
-import com.alchemtech.playlistmaker.presentation.MAX_HISTORY_LIST_SIZE
-import com.alchemtech.playlistmaker.presentation.SAVED_TRACKS
-import com.alchemtech.playlistmaker.presentation.SearchHistory
-import com.alchemtech.playlistmaker.presentation.player.PlayerActivity
+import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 
 
 class TracksActivity : AppCompatActivity() {
+    private val MAX_HISTORY_LIST_SIZE = 10
 
     private var historyList = mutableListOf<Track>()
     private val tracksList = mutableListOf<Track>()
@@ -267,7 +266,8 @@ class TracksActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
-        if (hasInternetConnection(this)) {
+
+        if (HasInternetConnectionCreator(this).isChecked) {
 
 
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
@@ -304,7 +304,7 @@ class TracksActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         val inputText = findViewById<TextView>(R.id.inputTextForSearching).text
         outState.putString(/* key = */ TEXT_TO_SAVE, /* value = */ inputText.toString())
-        saveHistory()
+        // saveHistory() todo
     }
 
     override fun onPause() {
@@ -322,21 +322,14 @@ class TracksActivity : AppCompatActivity() {
     }
 
     private fun saveHistory() {
-        SearchHistory().setHistoryListToSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            ), this.historyList
-        )
+
+        HistoryListCreator.set(historyList, this)
     }
 
     private fun getHistory() {
-        historyList = SearchHistory().getHistoryListFromSharePreferences(
-            getSharedPreferences(
-                SAVED_TRACKS,
-                MODE_PRIVATE
-            )
-        )
+        historyList.clear()
+        historyList.addAll(HistoryListCreator.get(this))
+
     }
 
     private fun focusLogic() {
@@ -365,10 +358,11 @@ class TracksActivity : AppCompatActivity() {
     private fun setProgressBarVisible() {
         setAllErrLayoutsGONE()
         runOnUiThread {
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        progressBar.visibility = View.VISIBLE
+            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+            progressBar.visibility = View.VISIBLE
+        }
     }
-}
+
     private fun setProgressBarGone() {
         runOnUiThread {
             val progressBar = findViewById<ProgressBar>(R.id.progressBar)
@@ -382,18 +376,4 @@ class TracksActivity : AppCompatActivity() {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-}
-
-fun hasInternetConnection(context: Context): Boolean {
-    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    var wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-    if (wifiInfo != null && wifiInfo.isConnected) {
-        return true
-    }
-    wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-    if (wifiInfo != null && wifiInfo.isConnected) {
-        return true
-    }
-    wifiInfo = cm.activeNetworkInfo
-    return wifiInfo != null && wifiInfo.isConnected
 }

@@ -1,0 +1,39 @@
+package com.alchemtech.playlistmaker.data.dto.sharePreferences
+
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.Serializable
+
+interface SharedPrefImpl : SharedPref {
+    override fun getSavedPref(name: String, key: String, context: Context): List<TrackDto>? {
+        4
+        val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
+        val json =
+            shared
+                .getString(/* key = */ key,
+                    /* defValue = */ null
+                )
+                ?: return emptyList<TrackDto>()
+        println("empty")
+        return Gson().fromJson<TrackDto>(
+            json,
+            object : TypeToken<List<TrackDto?>?>
+                () {}.type
+        ) as List<TrackDto>?
+
+
+    }
+
+    override fun setSavedPref(name: String, key: String, objects: Serializable, context: Context) {
+        val json = Gson().toJson(objects)
+
+        context.getSharedPreferences(name, MODE_PRIVATE).edit()
+            .putString(/* key = */ key, /* value = */ json)
+            .apply()
+    }
+
+
+}

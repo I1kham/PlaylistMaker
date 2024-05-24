@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.player
+package com.alchemtech.playlistmaker.presentation.ui.player
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
-
 
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity() {
@@ -162,8 +161,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun trackTimeMillis(track: Track) {
         val trackTimeMillis: TextView = findViewById(R.id.trackTimeMillisText)
-        trackTimeMillis.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        trackTimeMillis.text = track.getTimeString()
+
     }
 
     private fun collectionName(track: Track) {
@@ -178,7 +177,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun releaseDateFill(track: Track) {
         val releaseDate = findViewById<TextView>(R.id.releaseDateText)
-        releaseDate.text = track.releaseDate.substring(0 until 4) + " год"
+        releaseDate.text = track.getReleaseDateString()
         val primaryGenreName = findViewById<TextView>(R.id.primaryGenreNameText)
         primaryGenreName.text = track.primaryGenreName
     }
@@ -197,7 +196,7 @@ class PlayerActivity : AppCompatActivity() {
         val albumCover: ImageView = findViewById(R.id.playerAlbumCover)
 
         Glide.with(this)
-            .load(track.artworkUrl512)
+            .load(track.getArtworkUrl512())
             .placeholder(R.drawable.track_album_default_big)
             .centerCrop()
             .transform(
@@ -234,6 +233,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
     }
+
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1

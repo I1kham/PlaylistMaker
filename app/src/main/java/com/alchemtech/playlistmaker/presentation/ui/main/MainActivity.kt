@@ -1,13 +1,13 @@
-package com.alchemtech.playlistmaker.presentation.main
+package com.alchemtech.playlistmaker.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.presentation.mediaLibrary.MediaLibActivity
-import com.alchemtech.playlistmaker.presentation.settings.SettingsActivity
-import com.alchemtech.playlistmaker.presentation.tracks.TracksActivity
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
+import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
+import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation
+package com.alchemtech.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.util.TypedValue

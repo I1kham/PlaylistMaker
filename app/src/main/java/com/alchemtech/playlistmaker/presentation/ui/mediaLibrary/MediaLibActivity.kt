@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.mediaLibrary
+package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

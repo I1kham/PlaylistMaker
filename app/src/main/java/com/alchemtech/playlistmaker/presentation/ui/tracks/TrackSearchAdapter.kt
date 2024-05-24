@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.tracks
+package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
