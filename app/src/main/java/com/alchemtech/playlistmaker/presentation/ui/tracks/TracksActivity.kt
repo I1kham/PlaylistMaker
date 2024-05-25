@@ -30,50 +30,26 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 
 
 class TracksActivity : AppCompatActivity() {
-    private val MAX_HISTORY_LIST_SIZE = 10
 
-    private var historyList = mutableListOf<Track>()
     private val tracksList = mutableListOf<Track>()
-private val history = HistoryCreator
-    private val onItemClickToHistoryTrackCard = { track: Track ->
-        if (clickDebounce()) {
-            navigateToPlayer(track)
-        }
-    }
+    private val history = HistoryCreator
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {
-            clickOnTrack(track)
+            addTrackToHistoryList(track)
             navigateToPlayer(track)
+            enableHistoryList()
         }
     }
 
     private val searchRunnable = Runnable { searchTrack() }
 
-    private var isClickAllowed = true
+    private var isClickAllowed: Boolean = true
 
     private val handler = Handler(Looper.getMainLooper())
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun clickOnTrack(track: Track) {
-//
-//
-//        historyList.remove(track)
-//        if (historyList.isEmpty()) {
-//            historyList.add(track)
-//        } else {
-//            if (historyList.size < MAX_HISTORY_LIST_SIZE) {
-//                historyList.add(0, track)
-//
-//            } else {
-//                historyList.removeLast()
-//                historyList.add(0, track)
-//            }
-//        }
-
-        history.addTrack(track) // TODO:
-        findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+    private fun addTrackToHistoryList(track: Track) {
+        history.addTrack(track)
     }
 
 
@@ -120,21 +96,21 @@ private val history = HistoryCreator
     }
 
     private fun enableHistoryList() {
+        runOnUiThread {
+            if (tracksList.isEmpty()) {
+                val a = history.getTrackList()
+                if (a.isNotEmpty()) {
+                    findViewById<TextView>(R.id.clearHistoryBut).visibility = View.VISIBLE
+                    findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
 
-        //  if (historyList.isNotEmpty()) {
-       if (history.getTrackList().isNotEmpty()) {
-            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.VISIBLE
-            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
+                    val trackAdapter = TrackSearchAdapter(a)
+                    val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
 
-            val trackAdapter = TrackSearchAdapter(
-               // historyList
-                history.getTrackList()
-            )
-            val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-            onItemClickToHistoryTrackCard.also { trackAdapter.onItemClick = it }
-            recyclerView.adapter = trackAdapter
-        } else disableHistoryList()
-
+                    onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
+                    recyclerView.adapter = trackAdapter
+                } else disableHistoryList()
+            }
+        }
     }
 
     private fun disableHistoryList() {
@@ -158,11 +134,8 @@ private val history = HistoryCreator
         findViewById<TextView>(R.id.clearHistoryBut).setOnClickListener {
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
             findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
-
-          //  historyList.clear()
             history.clearTracksList()
-            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
-
+            enableTrackList()
         }
 
     }
@@ -232,14 +205,13 @@ private val history = HistoryCreator
         clearButton.setOnClickListener {
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
             inputEditText.setText("")
-
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-
             tracksList.clear()
             setAllErrLayoutsGONE()
             findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
+            enableHistoryList()
         }
     }
 
@@ -310,7 +282,6 @@ private val history = HistoryCreator
         super.onSaveInstanceState(outState)
         val inputText = findViewById<TextView>(R.id.inputTextForSearching).text
         outState.putString(/* key = */ TEXT_TO_SAVE, /* value = */ inputText.toString())
-        // saveHistory() todo
     }
 
     override fun onPause() {
@@ -324,22 +295,14 @@ private val history = HistoryCreator
         val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
         inputEditText.setText(savedInstanceState.getString(TEXT_TO_SAVE))
         getHistory()
-
     }
 
     private fun saveHistory() {
-
-      //  HistoryListCreator.set(historyList, this)
-        history.setTrackListToDb(this)
+        history.writeTrackListToDb(this)
     }
 
     private fun getHistory() {
-//        historyList.clear()
-//        historyList.addAll(HistoryListCreator.get(this))
-
-        history.getTrackListFromDb(this)
-
-
+        history.readTrackListFromDb(this)
     }
 
     private fun focusLogic() {
@@ -379,7 +342,6 @@ private val history = HistoryCreator
             progressBar.visibility = View.GONE
         }
     }
-
 
     private companion object {
         const val TEXT_TO_SAVE = ""

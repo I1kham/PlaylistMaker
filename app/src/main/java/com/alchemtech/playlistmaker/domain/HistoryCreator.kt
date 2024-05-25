@@ -4,7 +4,7 @@ import android.content.Context
 import com.alchemtech.playlistmaker.domain.models.Track
 
 object HistoryCreator : TrackListHistory {
-  private  val listHistory = mutableListOf<Track>()
+    private val listHistory = mutableListOf<Track>()
     private const val MAX_HISTORY_LIST_SIZE = 10
 
     fun addTrack(track: Track): List<Track> {
@@ -16,7 +16,6 @@ object HistoryCreator : TrackListHistory {
 
             if (listHistory.size < MAX_HISTORY_LIST_SIZE) {
                 listHistory.add(0, track)
-
             } else {
                 (listHistory).removeLast()
                 listHistory.add(0, track)
@@ -25,24 +24,25 @@ object HistoryCreator : TrackListHistory {
         return emptyList()
     }
 
-    fun addList(list: List<Track>){
+    fun addList(list: List<Track>) {
         listHistory.clear()
         listHistory.map { list }
     }
-    fun getTrackListFromDb(context: Context)/*: List<Track>*/ {
-listHistory.clear()
+
+    fun readTrackListFromDb(context: Context) {
+        listHistory.clear()
         listHistory.addAll(readTracksList(context))
-        //return readTracksList(context)
     }
-    fun setTrackListToDb(context: Context) {
+
+    fun writeTrackListToDb(context: Context) {
         writeTrackList(listHistory, context)
     }
 
-    fun getTrackList():List<Track>{
-        return listHistory. toList()
+    fun getTrackList():  List<Track> { 
+        return listHistory
     }
 
-    fun clearTracksList(){
+    fun clearTracksList() {
         listHistory.clear()
     }
 }
