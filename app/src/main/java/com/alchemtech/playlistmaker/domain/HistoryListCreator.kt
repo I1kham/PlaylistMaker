@@ -4,6 +4,9 @@ import android.content.Context
 import com.alchemtech.playlistmaker.domain.models.Track
 
 object HistoryListCreator : TrackListHistory {
+
+
+
     fun get(context: Context): List<Track> {
         return readTracksList( context)
     }

@@ -21,10 +21,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.domain.HasInternetConnectionCreator
-import com.alchemtech.playlistmaker.domain.HistoryListCreator
+import com.alchemtech.playlistmaker.domain.HistoryCreator
+import com.alchemtech.playlistmaker.domain.InternetCheckCreator
 import com.alchemtech.playlistmaker.domain.SearchCreator
-import com.alchemtech.playlistmaker.domain.TracksResponseContainer
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.models.Track
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
@@ -35,7 +34,7 @@ class TracksActivity : AppCompatActivity() {
 
     private var historyList = mutableListOf<Track>()
     private val tracksList = mutableListOf<Track>()
-
+private val history = HistoryCreator
     private val onItemClickToHistoryTrackCard = { track: Track ->
         if (clickDebounce()) {
             navigateToPlayer(track)
@@ -58,20 +57,22 @@ class TracksActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun clickOnTrack(track: Track) {
+//
+//
+//        historyList.remove(track)
+//        if (historyList.isEmpty()) {
+//            historyList.add(track)
+//        } else {
+//            if (historyList.size < MAX_HISTORY_LIST_SIZE) {
+//                historyList.add(0, track)
+//
+//            } else {
+//                historyList.removeLast()
+//                historyList.add(0, track)
+//            }
+//        }
 
-
-        historyList.remove(track)
-        if (historyList.isEmpty()) {
-            historyList.add(track)
-        } else {
-            if (historyList.size < MAX_HISTORY_LIST_SIZE) {
-                historyList.add(0, track)
-
-            } else {
-                historyList.removeLast()
-                historyList.add(0, track)
-            }
-        }
+        history.addTrack(track) // TODO:
         findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
     }
 
@@ -120,11 +121,15 @@ class TracksActivity : AppCompatActivity() {
 
     private fun enableHistoryList() {
 
-        if (historyList.isNotEmpty()) {
+        //  if (historyList.isNotEmpty()) {
+       if (history.getTrackList().isNotEmpty()) {
             findViewById<TextView>(R.id.clearHistoryBut).visibility = View.VISIBLE
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
 
-            val trackAdapter = TrackSearchAdapter(historyList)
+            val trackAdapter = TrackSearchAdapter(
+               // historyList
+                history.getTrackList()
+            )
             val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
             onItemClickToHistoryTrackCard.also { trackAdapter.onItemClick = it }
             recyclerView.adapter = trackAdapter
@@ -154,7 +159,8 @@ class TracksActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
             findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
 
-            historyList.clear()
+          //  historyList.clear()
+            history.clearTracksList()
             findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
 
         }
@@ -267,7 +273,7 @@ class TracksActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
 
-        if (HasInternetConnectionCreator(this).isChecked) {
+        if (InternetCheckCreator(this).isChecked) {
 
 
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
@@ -279,11 +285,11 @@ class TracksActivity : AppCompatActivity() {
                 tracksList.clear()
                 val tracksInteractor = SearchCreator.provideTracksInteractor()
                 val tracksConsumer = object : TracksInteractor.TracksConsumer {
-                    override fun consume(foundTracks: TracksResponseContainer) {
-                        if (foundTracks.tracksList.isEmpty()) {
+                    override fun consume(foundedTracks: List<Track>) {
+                        if (foundedTracks.isEmpty()) {
                             setNoDataErrLayoutVisible()
                         } else {
-                            tracksList.addAll(foundTracks.tracksList)
+                            tracksList.addAll(foundedTracks)
                             enableTrackList()
                         }
                         setProgressBarGone()
@@ -323,12 +329,16 @@ class TracksActivity : AppCompatActivity() {
 
     private fun saveHistory() {
 
-        HistoryListCreator.set(historyList, this)
+      //  HistoryListCreator.set(historyList, this)
+        history.setTrackListToDb(this)
     }
 
     private fun getHistory() {
-        historyList.clear()
-        historyList.addAll(HistoryListCreator.get(this))
+//        historyList.clear()
+//        historyList.addAll(HistoryListCreator.get(this))
+
+        history.getTrackListFromDb(this)
+
 
     }
 

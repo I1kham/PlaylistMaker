@@ -3,7 +3,7 @@ package com.alchemtech.playlistmaker.domain
 import android.content.Context
 import com.alchemtech.playlistmaker.data.network.CheckInternetConnectionImpl
 
-class HasInternetConnectionCreator(context: Context) {
+class InternetCheckCreator(context: Context) {
     val isChecked = checked(context)
 
 
