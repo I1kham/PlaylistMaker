@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.domain
+package com.alchemtech.playlistmaker.domain.creators
 
 import android.content.Context
 import com.alchemtech.playlistmaker.data.network.CheckInternetConnectionImpl

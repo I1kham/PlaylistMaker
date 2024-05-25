@@ -1,9 +1,10 @@
-package com.alchemtech.playlistmaker.domain
+package com.alchemtech.playlistmaker.domain.creators
 
 import android.content.Context
+import com.alchemtech.playlistmaker.domain.db.ListTrackDbReadWrite
 import com.alchemtech.playlistmaker.domain.models.Track
 
-object HistoryCreator : TrackListHistory {
+object ListTrackDbReadWriteCreator : ListTrackDbReadWrite {
     private val listHistory = mutableListOf<Track>()
     private const val MAX_HISTORY_LIST_SIZE = 10
 

@@ -21,10 +21,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.domain.HistoryCreator
-import com.alchemtech.playlistmaker.domain.InternetCheckCreator
-import com.alchemtech.playlistmaker.domain.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
+import com.alchemtech.playlistmaker.domain.creators.InternetCheckCreator
+import com.alchemtech.playlistmaker.domain.creators.ListTrackDbReadWriteCreator
+import com.alchemtech.playlistmaker.domain.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.models.Track
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 
@@ -32,7 +32,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 class TracksActivity : AppCompatActivity() {
 
     private val tracksList = mutableListOf<Track>()
-    private val history = HistoryCreator
+    private val history = ListTrackDbReadWriteCreator
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {

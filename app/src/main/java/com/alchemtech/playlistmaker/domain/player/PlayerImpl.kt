@@ -3,11 +3,10 @@ package com.alchemtech.playlistmaker.domain.player
 import android.media.MediaPlayer
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
+import com.alchemtech.playlistmaker.domain.models.Track
 
 class PlayerImpl: Player {
-    override var playerState : Int
-        get() = playerState
-        set(value) {playerState=value}
+    override var playerState : Int = - 1
 
     override fun pausePlayer(player: MediaPlayer, binding: ActivityPlayerBinding) {
         player.pause()
@@ -30,6 +29,17 @@ class PlayerImpl: Player {
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer(player, binding)
             }
+        }
+    }
+
+    override fun preparePlayer(player: MediaPlayer, binding: ActivityPlayerBinding,track: Track) {
+       player.setDataSource(track.previewUrl)
+        player.prepareAsync()
+        player.setOnPreparedListener{
+            playerState = STATE_PREPARED
+        }
+        player.setOnCompletionListener {
+            playerState = STATE_PREPARED
         }
     }
     companion object {
