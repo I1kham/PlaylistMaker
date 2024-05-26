@@ -23,6 +23,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
 .idea
 .build
+# my notes
+*readme.txt
+# todo gitIgnore

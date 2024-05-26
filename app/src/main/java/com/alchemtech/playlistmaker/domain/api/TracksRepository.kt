@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.domain.api
 
-import com.alchemtech.playlistmaker.domain.models.Track
+import com.alchemtech.playlistmaker.domain.entity.Track
 
 /*объект заготовка для Use case, для вызова метода поиска*/
 interface TracksRepository {

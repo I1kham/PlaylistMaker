@@ -4,7 +4,7 @@ import com.alchemtech.playlistmaker.data.dto.request.TracksSearchRequest
 import com.alchemtech.playlistmaker.data.dto.response.TracksSearchResponse
 import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
-import com.alchemtech.playlistmaker.domain.models.Track
+import com.alchemtech.playlistmaker.domain.entity.Track
 
 /*todo
 *  объект отправляющий запрос в сеть и

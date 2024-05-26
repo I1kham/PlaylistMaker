@@ -21,18 +21,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.creators.InternetCheckCreator
+import com.alchemtech.playlistmaker.creators.ListTrackDbReadWriteCreator
+import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
-import com.alchemtech.playlistmaker.domain.creators.InternetCheckCreator
-import com.alchemtech.playlistmaker.domain.creators.ListTrackDbReadWriteCreator
-import com.alchemtech.playlistmaker.domain.creators.SearchCreator
-import com.alchemtech.playlistmaker.domain.models.Track
+import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 
 
 class TracksActivity : AppCompatActivity() {
 
     private val tracksList = mutableListOf<Track>()
-    private val history = ListTrackDbReadWriteCreator
+    private val history = ListTrackDbReadWriteCreator.provideListTrackDb(this)
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {
@@ -245,16 +245,15 @@ class TracksActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
 
-        if (InternetCheckCreator(this).isChecked) {
-
-
+        tracksList.clear()
+        if (InternetCheckCreator.provideInternetCheck(this)) {
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
             val text = inputEditText.text
 
             if (!text.isNullOrEmpty()) {
 
                 setProgressBarVisible()
-                tracksList.clear()
+//                tracksList.clear()
                 val tracksInteractor = SearchCreator.provideTracksInteractor()
                 val tracksConsumer = object : TracksInteractor.TracksConsumer {
                     override fun consume(foundedTracks: List<Track>) {
@@ -298,11 +297,11 @@ class TracksActivity : AppCompatActivity() {
     }
 
     private fun saveHistory() {
-        history.writeTrackListToDb(this)
+        history.writeTrackListToDb()
     }
 
     private fun getHistory() {
-        history.readTrackListFromDb(this)
+        history.readTrackListFromDb()
     }
 
     private fun focusLogic() {
@@ -319,6 +318,7 @@ class TracksActivity : AppCompatActivity() {
             disableHistoryList()
         } else {
             enableHistoryList()
+            setAllErrLayoutsGONE()
         }
     }
 

@@ -1,8 +1,8 @@
 package com.alchemtech.playlistmaker.domain.db
 
 import android.content.Context
-import com.alchemtech.playlistmaker.data.dto.sharePreferences.SharedPrefImpl
-import com.alchemtech.playlistmaker.domain.models.Track
+import com.alchemtech.playlistmaker.data.dto.repository.SharedPrefImpl
+import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
 interface TrackDbReadWrite : SharedPrefImpl {

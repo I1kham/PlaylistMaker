@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.domain.models
+package com.alchemtech.playlistmaker.domain.entity
 
 import java.io.Serializable
 import java.text.SimpleDateFormat

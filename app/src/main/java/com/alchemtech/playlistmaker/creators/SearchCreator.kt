@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.domain.creators
+package com.alchemtech.playlistmaker.creators
 
 import com.alchemtech.playlistmaker.data.dto.repository.TracksRepositoryImpl
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient

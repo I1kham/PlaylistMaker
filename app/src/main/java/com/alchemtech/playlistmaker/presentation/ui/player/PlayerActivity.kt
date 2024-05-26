@@ -1,142 +1,50 @@
 package com.alchemtech.playlistmaker.presentation.ui.player
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.creators.PlayerCreator
+import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
-import com.alchemtech.playlistmaker.domain.models.Track
-import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.domain.player.PlayerInteractorImplUseCase
 
 @Suppress("DEPRECATION")
-open class PlayerActivity : AppCompatActivity(), UiCalculator {
-
-
-    private var playerState = STATE_DEFAULT
-
-    private var mediaPlayer = MediaPlayer()
-
-    var mainThreadHandler = Handler(Looper.getMainLooper())
-
-    private val currentPositionTask = createUpdateCurrentPositionTask()
-
+open class PlayerActivity : AppCompatActivity() {
+    private var track: Track? = null
+    private var binding: ActivityPlayerBinding? = null
+    var player: PlayerInteractorImplUseCase? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        track = intent.getSerializableExtra("track") as Track
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        PlayerCreator.providePlayer(binding!!, this, track!!).also { player = it }
+        PlayerDataFillingCreator.provide(this, binding!!, track!!)
+
+        setContentView(binding!!.root)
 
         backButWorking()
 
-        val track = intent.getSerializableExtra("track") as Track
-
-        PlayerFilling(track = track, binding, this)
-
-        preparePlayer()
-
-        playButWorking()
-    }
-
-    private fun killCurrentPositionTask() {
-        mainThreadHandler.removeCallbacks(
-            currentPositionTask
-        )
-    }
-
-    private fun createUpdateCurrentPositionTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-
-                val currentPosition = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
-                val playTime = findViewById<TextView>(R.id.playTime)
-
-                playTime.text = currentPosition
-
-                mainThreadHandler.postDelayed(this, DEBOUNCE_GET_CURRENT_POSITION)
-
-            }
-        }
+        playBut()
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        player!!.pausePlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        player!!.release()
     }
 
-    private fun playButWorking() {
-        findViewById<ImageView>(R.id.playBut).setOnClickListener {
-            playbackControl()
-        }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        player!!.playbackControl()
     }
-
-    private fun startPlayer() {
-        mediaPlayer.start()
-        val play = findViewById<ImageView>(R.id.playBut)
-        play.setImageResource(R.drawable.pause_but)
-        playerState = STATE_PLAYING
-        startGetCurrentPositionTask()
-    }
-
-    private fun startGetCurrentPositionTask() {
-        mainThreadHandler.post(
-            currentPositionTask
-        )
-    }
-
-    private fun playbackControl() {
-        when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        val play = findViewById<ImageView>(R.id.playBut)
-        play.setImageResource(R.drawable.play_but)
-        playerState = STATE_PAUSED
-        killCurrentPositionTask()
-    }
-
-    private fun preparePlayer() {
-        val track = intent.getSerializableExtra("track") as Track
-        val play = findViewById<ImageView>(R.id.playBut)
-
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            play.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            killCurrentPositionTask()
-            val playTime = findViewById<TextView>(R.id.playTime)
-            playTime.text = "00:00"
-            play.setImageResource(R.drawable.play_but)
-            playerState = STATE_PREPARED
-
-        }
-    }
-
     private fun backButWorking() {
         val back = findViewById<Button>(R.id.playerPreview)
         back.setOnClickListener {
@@ -144,14 +52,10 @@ open class PlayerActivity : AppCompatActivity(), UiCalculator {
         }
     }
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
-
+    private fun playBut() {
+        binding!!.playBut.setOnClickListener {
+            player!!.playbackControl()
+        }
     }
 }
 
