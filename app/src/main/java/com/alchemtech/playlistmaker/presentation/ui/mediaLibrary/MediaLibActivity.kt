@@ -1,8 +1,8 @@
 package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
 
 class MediaLibActivity : AppCompatActivity() {
@@ -14,8 +14,5 @@ class MediaLibActivity : AppCompatActivity() {
         back.setOnClickListener {
             finish()
         }
-
-
-
     }
 }

@@ -5,8 +5,6 @@ import com.alchemtech.playlistmaker.data.dto.response.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/*todo класс для настройки и реализации заготовки NetworkClient
-*  retrofit */
 class RetrofitNetworkClient : NetworkClient {
     private val searchingBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()

@@ -30,7 +30,5 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), U
                 .centerCrop()
                 .transform(RoundedCorners(dpToPx(2f, itemView.context)))
                 .into(albumCover)
-
     }
-
 }

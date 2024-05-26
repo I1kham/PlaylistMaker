@@ -14,7 +14,7 @@ import com.alchemtech.playlistmaker.domain.player.PlayerInteractorImplUseCase
 open class PlayerActivity : AppCompatActivity() {
     private var track: Track? = null
     private var binding: ActivityPlayerBinding? = null
-    var player: PlayerInteractorImplUseCase? = null
+    private var player: PlayerInteractorImplUseCase? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,11 +22,8 @@ open class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         PlayerCreator.providePlayer(binding!!, this, track!!).also { player = it }
         PlayerDataFillingCreator.provide(this, binding!!, track!!)
-
         setContentView(binding!!.root)
-
         backButWorking()
-
         playBut()
     }
 
@@ -45,6 +42,7 @@ open class PlayerActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         player!!.playbackControl()
     }
+
     private fun backButWorking() {
         val back = findViewById<Button>(R.id.playerPreview)
         back.setOnClickListener {

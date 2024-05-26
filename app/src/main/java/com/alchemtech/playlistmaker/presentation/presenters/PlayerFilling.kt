@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.ui.player
+package com.alchemtech.playlistmaker.presentation.presenters
 
 import android.content.Context
 import android.view.View

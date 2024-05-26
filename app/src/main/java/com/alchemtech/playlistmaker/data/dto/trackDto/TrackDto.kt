@@ -1,7 +1,5 @@
 package com.alchemtech.playlistmaker.data.dto.trackDto
 
-/* todo
-*   объект для хранения полученного списка от сервера*/
 data class TrackDto(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя;

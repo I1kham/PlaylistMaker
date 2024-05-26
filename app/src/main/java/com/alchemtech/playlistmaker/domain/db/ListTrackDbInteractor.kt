@@ -1,11 +1,11 @@
 package com.alchemtech.playlistmaker.domain.db
 
 import android.content.Context
-import com.alchemtech.playlistmaker.data.dto.repository.SharedPrefImpl
+import com.alchemtech.playlistmaker.data.dto.repository.SharedPrefInteractorImpl
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class ListTrackDbInteractor(val context: Context) : SharedPrefImpl { // TODO: UseCase using and working TrackHistoryList
+class ListTrackDbInteractor(val context: Context) : SharedPrefInteractorImpl {
     private val listHistory: MutableList<Track> = mutableListOf()
     fun addTrack(track: Track): List<Track> {
 

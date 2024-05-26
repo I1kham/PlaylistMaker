@@ -2,14 +2,14 @@ package com.alchemtech.playlistmaker.data.dto.repository
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import com.alchemtech.playlistmaker.domain.api.SharedPref
 import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
+import com.alchemtech.playlistmaker.domain.api.SharedPref
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
-interface SharedPrefImpl : SharedPref {
-     override fun getSavedPref(name: String, key: String, context: Context ): List<TrackDto>? {
+interface SharedPrefInteractorImpl : SharedPref {
+    override fun getSavedPref(name: String, key: String, context: Context): List<TrackDto>? {
 
         val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
         val json =
@@ -24,8 +24,6 @@ interface SharedPrefImpl : SharedPref {
             object : TypeToken<List<TrackDto?>?>
                 () {}.type
         ) as List<TrackDto>?
-
-
     }
 
     override fun setSavedPref(name: String, key: String, objects: Serializable, context: Context) {
@@ -35,6 +33,4 @@ interface SharedPrefImpl : SharedPref {
             .putString(/* key = */ key, /* value = */ json)
             .apply()
     }
-
-
 }
