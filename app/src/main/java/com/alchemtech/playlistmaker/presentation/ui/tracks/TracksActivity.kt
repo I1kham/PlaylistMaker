@@ -150,7 +150,7 @@ class TracksActivity : AppCompatActivity() {
                 clearButVisibility(s)
                 textChangeLogic(s)
                 focusLogic()
-                //    searchDebounce() todo
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
