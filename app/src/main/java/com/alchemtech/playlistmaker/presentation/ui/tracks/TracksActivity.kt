@@ -249,7 +249,7 @@ a=InternetCheckCreator
 
         tracksList.clear()
 
-        if (a!!.provideInternetCheck(this)/*InternetCheckCreator.provideInternetCheck(this)*/) {
+        if (a!!.provideInternetCheck(this)) {
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
             val text = inputEditText.text
 
