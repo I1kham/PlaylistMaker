@@ -5,7 +5,7 @@ import com.alchemtech.playlistmaker.data.repository.SharedPreferencesRepositoryI
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class ListTrackDbInteractor(val context: Context) : SharedPreferencesRepositoryImpl {
+class ListTrackDbUseCase(val context: Context) : SharedPreferencesRepositoryImpl {
     private val listHistory: MutableList<Track> = mutableListOf()
     fun addTrack(track: Track): List<Track> {
 

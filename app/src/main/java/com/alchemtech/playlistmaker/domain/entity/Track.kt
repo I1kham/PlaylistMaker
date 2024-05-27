@@ -15,7 +15,6 @@ data class Track(
     val primaryGenreName: String, //жанр трека
     val country: String, // страна исполнителя
     val previewUrl: String, //случайные 30 сек трека
-    //  val artworkUrl512: String // ссыдка на большое изображение обложки
 ) : Serializable {
     fun getArtworkUrl512(): Any {
         return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
