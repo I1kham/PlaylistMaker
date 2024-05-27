@@ -5,6 +5,7 @@ import com.alchemtech.playlistmaker.data.network.CheckInternetConnectionImpl
 
 object InternetCheckCreator {
     fun provideInternetCheck(context: Context): Boolean {
-        return CheckInternetConnectionImpl(context).consume()
+
+        return CheckInternetConnectionImpl().consume(context)
     }
 }

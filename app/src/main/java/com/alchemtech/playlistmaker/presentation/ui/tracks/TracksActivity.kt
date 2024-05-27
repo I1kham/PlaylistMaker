@@ -42,6 +42,8 @@ class TracksActivity : AppCompatActivity() {
         }
     }
 
+    private var a : InternetCheckCreator? =null
+
     private val searchRunnable = Runnable { searchTrack() }
 
     private var isClickAllowed: Boolean = true
@@ -69,7 +71,7 @@ class TracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         getHistory()
         setContentView(R.layout.activity_search)
-
+a=InternetCheckCreator
         inputEditTextWorking()
 
         upDateSearchWorking()
@@ -246,14 +248,15 @@ class TracksActivity : AppCompatActivity() {
     private fun searchTrack() {
 
         tracksList.clear()
-        if (InternetCheckCreator.provideInternetCheck(this)) {
+
+        if (a!!.provideInternetCheck(this)/*InternetCheckCreator.provideInternetCheck(this)*/) {
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
             val text = inputEditText.text
 
             if (!text.isNullOrEmpty()) {
 
                 setProgressBarVisible()
-//                tracksList.clear()
+
                 val tracksInteractor = SearchCreator.provideTracksInteractor()
                 val tracksConsumer = object : TracksInteractor.TracksConsumer {
                     override fun consume(foundedTracks: List<Track>) {

@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.data.dto.repository
+package com.alchemtech.playlistmaker.data.repository
 
 import com.alchemtech.playlistmaker.data.dto.request.TracksSearchRequest
 import com.alchemtech.playlistmaker.data.dto.response.TracksSearchResponse
