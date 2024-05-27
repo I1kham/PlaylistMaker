@@ -1,20 +1,17 @@
-package com.alchemtech.playlistmaker.domain.impl
+package com.alchemtech.playlistmaker.domain.player
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerInteractorImpl(
-    val binding:ActivityPlayerBinding,
-    val context: Context,
-    val track: Track,
+class PlayerUseCase(
+    private val binding: ActivityPlayerBinding,
+    private val track: Track,
 ) :
     PlayerInteractor {
     override var playerState: Int = STATE_DEFAULT
@@ -42,7 +39,7 @@ class PlayerInteractorImpl(
         startGetCurrentPositionTask()
     }
 
-   override fun release() {
+    override fun release() {
         mediaPlayer.release()
         killCurrentPositionTask()
     }

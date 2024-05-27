@@ -1,13 +1,12 @@
 package com.alchemtech.playlistmaker.creators
 
-import android.content.Context
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.domain.impl.PlayerInteractorImpl
+import com.alchemtech.playlistmaker.domain.player.PlayerUseCase
 
 object PlayerCreator {
 
-    fun providePlayer( binding: ActivityPlayerBinding,  context: Context,  track: Track): PlayerInteractorImpl {
-        return PlayerInteractorImpl(binding,  context,  track)
+    fun providePlayer( binding: ActivityPlayerBinding, track: Track): PlayerUseCase {
+        return PlayerUseCase(binding,  track)
     }
 }

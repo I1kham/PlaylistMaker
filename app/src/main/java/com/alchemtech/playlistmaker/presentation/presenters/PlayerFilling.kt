@@ -10,7 +10,7 @@ import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class PlayerFilling(val track: Track, val binding: ActivityPlayerBinding,val context: Context) : UiCalculator {
+class PlayerFilling(private val track: Track, private val binding: ActivityPlayerBinding,private val context: Context) : UiCalculator {
     init {
         trackArtist()
         trackTimeMillis()
