@@ -5,7 +5,4 @@ import android.content.Context
 interface CheckInternetConnection {
     fun checkConnection( ): Boolean
 
-    interface checkConsumer{
-        fun consume(isChecked : Boolean)
-    }
 }

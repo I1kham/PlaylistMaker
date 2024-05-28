@@ -2,12 +2,13 @@ package com.alchemtech.playlistmaker.domain.db
 
 import android.content.Context
 import com.alchemtech.playlistmaker.data.repository.SharedPreferencesRepositoryImpl
+import com.alchemtech.playlistmaker.domain.api.PreferencesRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class ListTrackDbUseCase(val context: Context) : SharedPreferencesRepositoryImpl {
+class ListTrackDbUseCase(val context: Context) : PreferencesRepository,SharedPreferencesRepositoryImpl {
     private val listHistory: MutableList<Track> = mutableListOf()
-    fun addTrack(track: Track): List<Track> {
+   override fun addTrack(track: Track) {
 
         listHistory.remove(track)
         if (listHistory.isEmpty()) {
@@ -21,23 +22,22 @@ class ListTrackDbUseCase(val context: Context) : SharedPreferencesRepositoryImpl
                 listHistory.add(0, track)
             }
         }
-        return emptyList()
     }
 
-    fun readTrackListFromDb() {
+   override fun readTrackListFromDb() {
         listHistory.clear()
         listHistory.addAll(readTracksList())
     }
 
-    fun writeTrackListToDb() {
+ override   fun writeTrackListToDb() {
         writeTrackList(listHistory)
     }
 
-    fun getTrackList(): List<Track> {
+ override   fun getTrackList(): List<Track> {
         return listHistory
     }
 
-    fun clearTracksList() {
+ override   fun clearTracksList() {
         listHistory.clear()
     }
 
@@ -80,4 +80,5 @@ class ListTrackDbUseCase(val context: Context) : SharedPreferencesRepositoryImpl
         const val SAVED_LIST = "SAVED_LIST"
         const val MAX_HISTORY_LIST_SIZE = 10
     }
+    
 }

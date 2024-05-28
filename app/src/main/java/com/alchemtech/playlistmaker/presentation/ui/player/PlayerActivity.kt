@@ -8,13 +8,14 @@ import com.alchemtech.playlistmaker.creators.PlayerCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerUseCase
 
 @Suppress("DEPRECATION")
 open class PlayerActivity : AppCompatActivity() {
     private var track: Track? = null
     private var binding: ActivityPlayerBinding? = null
-    private var player: PlayerUseCase? = null
+    private var player: PlayerInteractor? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
