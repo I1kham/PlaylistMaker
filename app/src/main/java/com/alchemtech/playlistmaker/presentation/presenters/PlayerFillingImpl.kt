@@ -5,13 +5,17 @@ import android.view.View
 import android.widget.ImageView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
+import com.alchemtech.playlistmaker.domain.api.PlayerFilling
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class PlayerFilling(private val track: Track, private val binding: ActivityPlayerBinding,private val context: Context) : UiCalculator {
+class PlayerFillingImpl(private val track: Track, private val binding: ActivityPlayerBinding, private val context: Context) : PlayerFilling, UiCalculator {
     init {
+start()
+    }
+    override fun start() {
         trackArtist()
         trackTimeMillis()
         collectionName()

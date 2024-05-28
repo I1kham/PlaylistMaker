@@ -3,12 +3,12 @@ package com.alchemtech.playlistmaker.data.repository
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
-import com.alchemtech.playlistmaker.domain.api.PreferencesRepository
+import com.alchemtech.playlistmaker.domain.api.DbRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
-interface SharedPreferencesRepositoryImpl : PreferencesRepository {
+interface SharedDbRepositoryImpl : DbRepository {
     override fun getSavedPref(name: String, key: String, context: Context): List<TrackDto>? {
 
         val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)

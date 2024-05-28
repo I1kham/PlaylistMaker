@@ -1,7 +1,6 @@
 package com.alchemtech.playlistmaker.creators
 
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
-import com.alchemtech.playlistmaker.domain.api.PreferencesRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerUseCase

@@ -1,12 +1,12 @@
 package com.alchemtech.playlistmaker.domain.db
 
 import android.content.Context
-import com.alchemtech.playlistmaker.data.repository.SharedPreferencesRepositoryImpl
-import com.alchemtech.playlistmaker.domain.api.PreferencesRepository
+import com.alchemtech.playlistmaker.data.repository.SharedDbRepositoryImpl
+import com.alchemtech.playlistmaker.domain.api.DbRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class ListTrackDbUseCase(val context: Context) : PreferencesRepository,SharedPreferencesRepositoryImpl {
+class ListTrackDbUseCase(val context: Context) : DbRepository,SharedDbRepositoryImpl {
     private val listHistory: MutableList<Track> = mutableListOf()
    override fun addTrack(track: Track) {
 
@@ -80,5 +80,5 @@ class ListTrackDbUseCase(val context: Context) : PreferencesRepository,SharedPre
         const val SAVED_LIST = "SAVED_LIST"
         const val MAX_HISTORY_LIST_SIZE = 10
     }
-    
+
 }

@@ -5,7 +5,7 @@ import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-interface PreferencesRepository {
+interface DbRepository {
     fun getSavedPref(name:String, key : String, context: Context): List<TrackDto>?
     fun setSavedPref(name:String, key : String, objects: Serializable, context: Context)
     fun addTrack( track: Track)

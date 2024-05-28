@@ -56,7 +56,7 @@ class PlayerUseCase(
         }
     }
 
-    override fun preparePlayer() {
+    fun preparePlayer() {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
