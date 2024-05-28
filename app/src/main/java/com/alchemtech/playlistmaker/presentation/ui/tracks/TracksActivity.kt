@@ -24,6 +24,7 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.InternetCheckCreator
 import com.alchemtech.playlistmaker.creators.ListTrackDbReadWriteCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
+import com.alchemtech.playlistmaker.domain.api.CheckInternetConnection
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
@@ -42,7 +43,7 @@ class TracksActivity : AppCompatActivity() {
         }
     }
 
-    private var a : InternetCheckCreator? =null
+    private var internetCheck: CheckInternetConnection? = null
 
     private val searchRunnable = Runnable { searchTrack() }
 
@@ -71,7 +72,7 @@ class TracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         getHistory()
         setContentView(R.layout.activity_search)
-a=InternetCheckCreator
+internetCheck=InternetCheckCreator.provideInternetCheck(this)
         inputEditTextWorking()
 
         upDateSearchWorking()
@@ -249,7 +250,7 @@ a=InternetCheckCreator
 
         tracksList.clear()
 
-        if (a!!.provideInternetCheck(this)) {
+        if (internetCheck!!.checkConnection()) {
             val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
             val text = inputEditText.text
 

@@ -29,7 +29,7 @@ class PlayerUseCase(
         playerState = STATE_PAUSED
         binding.playBut.setImageResource(R.drawable.play_but)
         killCurrentPositionTask()
-        startGetCurrentPositionTask()
+       // startGetCurrentPositionTask()
     }
 
     override fun startPlayer() {
