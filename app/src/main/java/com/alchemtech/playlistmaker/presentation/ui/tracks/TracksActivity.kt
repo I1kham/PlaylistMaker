@@ -22,7 +22,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.InternetCheckCreator
-import com.alchemtech.playlistmaker.creators.ListTrackDbReadWriteCreator
+import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.CheckInternetConnection
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
@@ -33,7 +33,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 class TracksActivity : AppCompatActivity() {
 
     private val tracksList = mutableListOf<Track>()
-    private val history = ListTrackDbReadWriteCreator.provideListTrackDb(this)
+    private val history = ListTrackRepositoryCreator.provideListTrackDb(this)
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {

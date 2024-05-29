@@ -3,13 +3,12 @@ package com.alchemtech.playlistmaker.data.repository
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
-import com.alchemtech.playlistmaker.domain.api.DbRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
-interface SharedDbRepositoryImpl : DbRepository {
-    override fun getSavedPref(name: String, key: String, context: Context): List<TrackDto>? {
+class SharedHistoryRepositoryImpl(val name: String, val key: String, val context: Context) : HistoryRepository {
+    override fun getSavedPref(): List<TrackDto>? {
 
         val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
         val json =
@@ -26,7 +25,7 @@ interface SharedDbRepositoryImpl : DbRepository {
         ) as List<TrackDto>?
     }
 
-    override fun setSavedPref(name: String, key: String, objects: Serializable, context: Context) {
+    override fun setSavedPref( objects: Serializable ) {
         val json = Gson().toJson(objects)
 
         context.getSharedPreferences(name, MODE_PRIVATE).edit()

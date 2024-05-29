@@ -1,14 +1,22 @@
-package com.alchemtech.playlistmaker.domain.db
+package com.alchemtech.playlistmaker.domain.useCase
 
 import android.content.Context
-import com.alchemtech.playlistmaker.data.repository.SharedDbRepositoryImpl
-import com.alchemtech.playlistmaker.domain.api.DbRepository
+import com.alchemtech.playlistmaker.creators.HistoryRepositoryCreator
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class ListTrackDbUseCase(val context: Context) : DbRepository,SharedDbRepositoryImpl {
+class TrackHistoryUseCaseImpl(val context: Context) : TrackHistoryUseCase {
+
     private val listHistory: MutableList<Track> = mutableListOf()
-   override fun addTrack(track: Track) {
+
+  private  val historyRepository =
+      HistoryRepositoryCreator.provideHistoryRepository(
+          name = SAVED_TRACKS,
+          key = SAVED_LIST,
+          context = context
+      )
+
+    override fun addTrack(track: Track) {
 
         listHistory.remove(track)
         if (listHistory.isEmpty()) {
@@ -24,26 +32,26 @@ class ListTrackDbUseCase(val context: Context) : DbRepository,SharedDbRepository
         }
     }
 
-   override fun readTrackListFromDb() {
+    override fun readTrackListFromDb() {
         listHistory.clear()
         listHistory.addAll(readTracksList())
     }
 
- override   fun writeTrackListToDb() {
+    override fun writeTrackListToDb() {
         writeTrackList(listHistory)
     }
 
- override   fun getTrackList(): List<Track> {
+    override fun getTrackList(): List<Track> {
         return listHistory
     }
 
- override   fun clearTracksList() {
+    override fun clearTracksList() {
         listHistory.clear()
     }
 
     private fun readTracksList(): List<Track> {
 
-        val dto = getSavedPref(name = SAVED_TRACKS, key = SAVED_LIST, context = context)
+        val dto = historyRepository.getSavedPref()
 
         if (dto.isNullOrEmpty()) {
             return emptyList()
@@ -67,11 +75,8 @@ class ListTrackDbUseCase(val context: Context) : DbRepository,SharedDbRepository
 
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
-        setSavedPref(
-            name = SAVED_TRACKS,
-            key = SAVED_LIST,
+        historyRepository.setSavedPref(
             objects = tracks as Serializable,
-            context = context
         )
     }
 
