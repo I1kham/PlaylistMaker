@@ -72,7 +72,8 @@ class TracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         getHistory()
         setContentView(R.layout.activity_search)
-internetCheck=InternetCheckCreator.provideInternetCheck(this)
+        internetCheck =
+            InternetCheckCreator.provideInternetCheck(this)
         inputEditTextWorking()
 
         upDateSearchWorking()
@@ -301,11 +302,11 @@ internetCheck=InternetCheckCreator.provideInternetCheck(this)
     }
 
     private fun saveHistory() {
-        history.writeTrackListToDb()
+        history.writeTrackList()
     }
 
     private fun getHistory() {
-        history.readTrackListFromDb()
+        history.readTrackList()
     }
 
     private fun focusLogic() {

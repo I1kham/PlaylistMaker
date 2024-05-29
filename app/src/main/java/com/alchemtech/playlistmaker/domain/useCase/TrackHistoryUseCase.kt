@@ -7,6 +7,6 @@ interface TrackHistoryUseCase {
     fun addTrack(track: Track)
     fun clearTracksList()
     fun getTrackList(): List<Track>
-    fun writeTrackListToDb()
-    fun readTrackListFromDb()
+    fun writeTrackList()
+    fun readTrackList()
 }

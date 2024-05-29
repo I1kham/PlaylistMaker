@@ -32,12 +32,12 @@ class TrackHistoryUseCaseImpl(val context: Context) : TrackHistoryUseCase {
         }
     }
 
-    override fun readTrackListFromDb() {
+    override fun readTrackList() {
         listHistory.clear()
         listHistory.addAll(readTracksList())
     }
 
-    override fun writeTrackListToDb() {
+    override fun writeTrackList() {
         writeTrackList(listHistory)
     }
 
