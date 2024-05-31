@@ -1,8 +1,8 @@
-package com.alchemtech.playlistmaker.domain.useCase
+package com.alchemtech.playlistmaker.domain.api
 
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-interface TrackHistoryUseCase {
+interface TrackHistoryInteractor {
 
     fun addTrack(track: Track)
     fun clearTracksList()

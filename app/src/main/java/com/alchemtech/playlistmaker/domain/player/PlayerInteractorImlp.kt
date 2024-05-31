@@ -1,10 +1,10 @@
 package com.alchemtech.playlistmaker.domain.player
 
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
-import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
+import android.media.MediaPlayer // TODO: to data
+import android.os.Handler // TODO: presentation
+import android.os.Looper//TODO: presentation
+import com.alchemtech.playlistmaker.R//TODO: presentation
+import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding//TODO: presentation
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -16,7 +16,7 @@ class PlayerInteractorImlp(
     PlayerInteractor {
 
 
-    override var playerState: Int = STATE_DEFAULT
+    private var playerState: Int = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
 
     private val currentPositionTask = createUpdateCurrentPositionTask()

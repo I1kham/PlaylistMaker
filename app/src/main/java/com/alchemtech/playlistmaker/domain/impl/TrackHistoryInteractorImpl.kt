@@ -1,12 +1,12 @@
-package com.alchemtech.playlistmaker.domain.useCase
+package com.alchemtech.playlistmaker.domain.impl
 
-import android.content.Context
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
+import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class TrackHistoryUseCaseImpl(/*private val context: Context,*/ private val repository: HistoryRepository) :   // TODO:  
-    TrackHistoryUseCase {
+class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
+    TrackHistoryInteractor {
 
     init {
         repository.setNameKey(name = SAVED_TRACKS, key = SAVED_LIST)

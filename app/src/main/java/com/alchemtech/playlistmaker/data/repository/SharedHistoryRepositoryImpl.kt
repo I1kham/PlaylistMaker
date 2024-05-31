@@ -15,7 +15,7 @@ class SharedHistoryRepositoryImpl(private var context: Context) :
    // private var context: Context? = null
 
 
-   override fun setNameKey(name: String, key: String/*, context: Context*/) { // TODO: context
+   override fun setNameKey(name: String, key: String) {
         this.name = name
         this.key = key
        // this.context = context
