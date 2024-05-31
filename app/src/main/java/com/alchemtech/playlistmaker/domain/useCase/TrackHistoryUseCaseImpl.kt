@@ -5,11 +5,11 @@ import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import java.io.Serializable
 
-class TrackHistoryUseCaseImpl(private val context: Context, private val repository: HistoryRepository) :
+class TrackHistoryUseCaseImpl(/*private val context: Context,*/ private val repository: HistoryRepository) :   // TODO:  
     TrackHistoryUseCase {
 
     init {
-        repository.setValues(SAVED_TRACKS, SAVED_LIST, context)
+        repository.setNameKey(name = SAVED_TRACKS, key = SAVED_LIST)
     }
 
     private val listHistory: MutableList<Track> = mutableListOf()

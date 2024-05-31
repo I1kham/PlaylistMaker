@@ -9,7 +9,6 @@ import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
-import com.alchemtech.playlistmaker.domain.player.PlayerUseCase
 
 @Suppress("DEPRECATION")
 open class PlayerActivity : AppCompatActivity() {

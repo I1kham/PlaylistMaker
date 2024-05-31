@@ -8,10 +8,10 @@ import com.alchemtech.playlistmaker.domain.useCase.TrackHistoryUseCaseImpl
 
 object ListTrackRepositoryCreator {
     fun provideListTrackDb(context: Context): TrackHistoryUseCase {
-        return TrackHistoryUseCaseImpl(context = context, provideHistoryRepository())
+        return TrackHistoryUseCaseImpl(provideHistoryRepository(context))
     }
 
-    private fun provideHistoryRepository():HistoryRepository{
-        return SharedHistoryRepositoryImpl()
+    private fun provideHistoryRepository(context: Context):HistoryRepository{
+        return SharedHistoryRepositoryImpl(context)
     }
 }

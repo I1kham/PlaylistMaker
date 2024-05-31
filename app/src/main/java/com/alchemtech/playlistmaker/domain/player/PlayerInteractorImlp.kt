@@ -9,7 +9,7 @@ import com.alchemtech.playlistmaker.domain.entity.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerUseCase(
+class PlayerInteractorImlp(
     private val binding: ActivityPlayerBinding,
     private val track: Track,
 ) :
