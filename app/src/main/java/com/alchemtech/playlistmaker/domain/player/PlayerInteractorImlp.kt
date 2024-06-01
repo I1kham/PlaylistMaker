@@ -1,111 +1,79 @@
 package com.alchemtech.playlistmaker.domain.player
 
-import android.media.MediaPlayer // TODO: to data
-import android.os.Handler // TODO: presentation
-import android.os.Looper//TODO: presentation
-import com.alchemtech.playlistmaker.R//TODO: presentation
-import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding//TODO: presentation
-import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerInteractorImlp(
-    private val binding: ActivityPlayerBinding,
-    private val track: Track,
+    private val player: PlayerRepository,
 ) :
     PlayerInteractor {
+    private var onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer? = null
+    private var onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer? = null
+    private var pauseConsumer: PlayerInteractor.PauseConsumer? = null
+    private var startConsumer: PlayerInteractor.StartConsumer? = null
 
+    override fun setConsumers(
+        onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer,
+        onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer,
+        pauseConsumer: PlayerInteractor.PauseConsumer,
+        startConsumer: PlayerInteractor.StartConsumer,
+    ) {
+        this.onPreparedListenerConsumer = onPreparedListenerConsumer
+        this.onCompletionListenerConsumer = onCompletionListenerConsumer
+        this.pauseConsumer = pauseConsumer
+        this.startConsumer = startConsumer
+    }
 
-    private var playerState: Int = STATE_DEFAULT
-    private var mediaPlayer = MediaPlayer()
+    override fun currentPosition(): String {
+        return timeFormat(player.currentPosition())
+    }
 
-    private val currentPositionTask = createUpdateCurrentPositionTask()
-    var mainThreadHandler = Handler(Looper.getMainLooper())
+    override fun duration(): String {
+        return timeFormat(player.duration())
+    }
 
-    init {
-        preparePlayer()
+    override fun playerIsPlaying(): Boolean {
+        return player.playerIsPlaying()
     }
 
     override fun pausePlayer() {
-        mediaPlayer.pause()
-        playerState = STATE_PAUSED
-        binding.playBut.setImageResource(R.drawable.play_but)
-        killCurrentPositionTask()
+        player.pause()
+        pauseConsumer!!.consume()
     }
 
     override fun startPlayer() {
-        mediaPlayer.start()
-        playerState = STATE_PLAYING
-        binding.playBut.setImageResource(R.drawable.pause_but)
-        startGetCurrentPositionTask()
+        player.start()
+        startConsumer!!.consume()
     }
 
     override fun release() {
-        mediaPlayer.release()
-        killCurrentPositionTask()
+        player.release()
     }
 
     override fun playbackControl() {
-        when (playerState) {
-            STATE_PLAYING -> {
+        when (player.playerIsPlaying()) {
+            true -> {
                 pausePlayer()
             }
 
-            STATE_PREPARED, STATE_PAUSED -> {
+            false -> {
                 startPlayer()
             }
         }
     }
 
-    fun preparePlayer() {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
-            binding.playBut.isEnabled = true
-        }
-        mediaPlayer.setOnCompletionListener {
-            killCurrentPositionTask()
-            binding.playTime.text = "00:00"
-            binding.playBut.setImageResource(R.drawable.play_but)
-            playerState = STATE_PREPARED
-        }
-    }
-
-    private fun createUpdateCurrentPositionTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-
-                val currentPosition = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
-
-                binding.playTime.text = currentPosition
-
-                mainThreadHandler.postDelayed(this, DEBOUNCE_GET_CURRENT_POSITION)
-
-            }
-        }
-    }
-
-    private fun startGetCurrentPositionTask() {
-        mainThreadHandler.post(
-            currentPositionTask
+    override fun preparePlayer() {
+        player.preparePlayer(
+            onPreparedListenerConsumer!!,
+            onCompletionListenerConsumer!!
         )
     }
 
-    private fun killCurrentPositionTask() {
-        mainThreadHandler.removeCallbacks(
-            currentPositionTask
-        )
-    }
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
+    private fun timeFormat(int: Int): String {
+        return SimpleDateFormat(
+            "mm:ss",
+            Locale.getDefault()
+        ).format(int)
     }
 }

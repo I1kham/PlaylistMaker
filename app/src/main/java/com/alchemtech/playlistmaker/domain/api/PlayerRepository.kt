@@ -1,0 +1,28 @@
+package com.alchemtech.playlistmaker.domain.api
+
+interface PlayerRepository {
+
+    fun pause()
+    fun start()
+    fun preparePlayer(
+        onPreparedListenerConsumer: OnPreparedListenerConsumer,
+        onCompletionListenerConsumer: OnCompletionListenerConsumer,
+    )
+
+    fun release()
+
+    fun duration() : Int
+    fun playerIsPlaying() :Boolean
+
+    fun currentPosition(): Int
+    fun interface OnPreparedListenerConsumer {
+        fun consume()
+    }
+
+    fun interface OnCompletionListenerConsumer {
+        fun consume()
+
+    }
+
+
+}

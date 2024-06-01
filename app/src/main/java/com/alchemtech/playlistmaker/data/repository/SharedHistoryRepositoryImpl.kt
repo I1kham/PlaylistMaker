@@ -21,27 +21,27 @@ class SharedHistoryRepositoryImpl(private var context: Context) :
        // this.context = context
     }
 
-    override fun getSavedPref(): List<Track>? {
+    override fun getSavedPref(): List<Track> {
 
-        val shared = context!!.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
+        val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
         val json =
             shared
                 .getString(/* key = */ key,
                     /* defValue = */ null
                 )
-                ?: return emptyList<Track>()
-        println("empty")
+                ?: return emptyList()
+//        println("empty")
         return Gson().fromJson<Track>(
             json,
             object : TypeToken<List<Track?>?>
                 () {}.type
-        ) as List<Track>?
+        ) as List<Track>
     }
 
     override fun setSavedPref(objects: Serializable) {
         val json = Gson().toJson(objects)
 
-        context!!.getSharedPreferences(name, MODE_PRIVATE).edit()
+        context.getSharedPreferences(name, MODE_PRIVATE).edit()
             .putString(/* key = */ key, /* value = */ json)
             .apply()
     }

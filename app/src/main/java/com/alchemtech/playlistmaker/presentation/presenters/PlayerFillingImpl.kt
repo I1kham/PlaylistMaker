@@ -56,7 +56,7 @@ start()
     }
 
     private fun playTimeFill() {
-        binding.playTime.text = "0:30"
+      //  binding.playTime.text = "0:30"
     }
 
     private fun albumCoverFill() {
