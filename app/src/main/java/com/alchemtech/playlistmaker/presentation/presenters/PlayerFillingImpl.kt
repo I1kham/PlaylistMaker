@@ -6,6 +6,9 @@ import android.widget.ImageView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getArtworkUrl512
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getReleaseDateString
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getTimeString
 import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

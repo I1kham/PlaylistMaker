@@ -1,8 +1,6 @@
 package com.alchemtech.playlistmaker.domain.player
 
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class PlayerInteractorImlp(
     private val player: PlayerRepository,
@@ -25,12 +23,12 @@ class PlayerInteractorImlp(
         this.startConsumer = startConsumer
     }
 
-    override fun currentPosition(): String {
-        return timeFormat(player.currentPosition())
+    override fun currentPosition(): Int {
+        return player.currentPosition()
     }
 
-    override fun duration(): String {
-        return timeFormat(player.duration())
+    override fun duration(): Int {
+        return player.duration()
     }
 
     override fun playerIsPlaying(): Boolean {
@@ -68,12 +66,5 @@ class PlayerInteractorImlp(
             onPreparedListenerConsumer!!,
             onCompletionListenerConsumer!!
         )
-    }
-
-    private fun timeFormat(int: Int): String {
-        return SimpleDateFormat(
-            "mm:ss",
-            Locale.getDefault()
-        ).format(int)
     }
 }

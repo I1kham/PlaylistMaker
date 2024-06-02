@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.domain.impl
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
-import java.io.Serializable
 
 class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
     TrackHistoryInteractor {
@@ -74,7 +73,7 @@ class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
         repository.setSavedPref(
-            objects = tracks as Serializable,
+            objects = tracks
         )
     }
 

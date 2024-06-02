@@ -12,13 +12,10 @@ class SharedHistoryRepositoryImpl(private var context: Context) :
     HistoryRepository {
     private var name: String? = null
     private var key: String? = null
-   // private var context: Context? = null
-
 
    override fun setNameKey(name: String, key: String) {
         this.name = name
         this.key = key
-       // this.context = context
     }
 
     override fun getSavedPref(): List<Track> {
@@ -38,8 +35,8 @@ class SharedHistoryRepositoryImpl(private var context: Context) :
         ) as List<Track>
     }
 
-    override fun setSavedPref(objects: Serializable) {
-        val json = Gson().toJson(objects)
+    override fun setSavedPref(objects: Any) {
+        val json = Gson().toJson(objects as Serializable)
 
         context.getSharedPreferences(name, MODE_PRIVATE).edit()
             .putString(/* key = */ key, /* value = */ json)

@@ -2,9 +2,9 @@ package com.alchemtech.playlistmaker.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.alchemtech.playlistmaker.domain.api.CheckInternetConnection
+import com.alchemtech.playlistmaker.domain.api.CheckInternetConnectionRepository
 
-class CheckInternetConnectionImpl(private val context: Context) : CheckInternetConnection {
+class CheckInternetConnectionRepositoryImpl(private val context: Context) : CheckInternetConnectionRepository {
 
     override fun checkConnection(): Boolean {
 

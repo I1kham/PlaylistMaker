@@ -24,16 +24,17 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.InternetCheckCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
-import com.alchemtech.playlistmaker.domain.api.CheckInternetConnection
+import com.alchemtech.playlistmaker.domain.api.CheckConnectionInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertToString
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 
 
 class TracksActivity : AppCompatActivity() {
 
     private val tracksList = mutableListOf<Track>()
-    private val history = ListTrackRepositoryCreator.provideListTrackDb(this)
+    private val history = ListTrackRepositoryCreator.provideListTrackDb()
 
     private val onItemClickToTrackCard = { track: Track ->
         if (clickDebounce()) {
@@ -43,7 +44,7 @@ class TracksActivity : AppCompatActivity() {
         }
     }
 
-    private var internetCheck: CheckInternetConnection? = null
+    private var internetCheck: CheckConnectionInteractor? = null
 
     private val searchRunnable = Runnable { searchTrack() }
 
@@ -57,11 +58,12 @@ class TracksActivity : AppCompatActivity() {
 
 
     private fun navigateToPlayer(track: Track) {
+
         val trackCardClickIntent =
             Intent(this@TracksActivity, PlayerActivity::class.java).apply {
                 putExtra(
                     "track",
-                    track
+                    track.convertToString()
                 )
             }
         startActivity(trackCardClickIntent)
@@ -73,7 +75,7 @@ class TracksActivity : AppCompatActivity() {
         getHistory()
         setContentView(R.layout.activity_search)
         internetCheck =
-            InternetCheckCreator.provideInternetCheck(this)
+            InternetCheckCreator.provideInternetCheck()
         inputEditTextWorking()
 
         upDateSearchWorking()
@@ -248,15 +250,11 @@ class TracksActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
-
         tracksList.clear()
-
-        if (internetCheck!!.checkConnection()) {
-            val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-            val text = inputEditText.text
-
-            if (!text.isNullOrEmpty()) {
-
+        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
+        val text = inputEditText.text
+        if (!text.isNullOrEmpty()) {
+            if (internetCheck!!.isChecked()) {
                 setProgressBarVisible()
 
                 val tracksInteractor = SearchCreator.provideTracksInteractor()
@@ -276,9 +274,10 @@ class TracksActivity : AppCompatActivity() {
                     expression = text.toString(),
                     consumer = tracksConsumer
                 )
+
+            } else {
+                setNoConnectionErrLayoutVisible()
             }
-        } else {
-            setNoConnectionErrLayoutVisible()
         }
     }
 

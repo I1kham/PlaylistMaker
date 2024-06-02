@@ -19,8 +19,8 @@ interface PlayerInteractor {
 
         )
 
-    fun currentPosition(): String
-    fun duration(): String
+    fun currentPosition(): Int
+    fun duration(): Int
     fun playerIsPlaying(): Boolean
     interface PauseConsumer {
         fun consume()

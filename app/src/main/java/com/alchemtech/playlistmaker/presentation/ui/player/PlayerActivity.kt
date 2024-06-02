@@ -12,6 +12,8 @@ import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
+import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertFromString
 
 @Suppress("DEPRECATION")
 open class PlayerActivity : AppCompatActivity() {
@@ -35,7 +37,7 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun fillViewWithTrackData() {
-        PlayerDataFillingCreator.provide(this, binding!!, track!!)
+        PlayerDataFillingCreator.provide(binding!!, track!!)
     }
 
     private fun prepareBinding() {
@@ -44,17 +46,19 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun getTrackFromIntent() {
-        track = intent.getSerializableExtra("track") as Track
+
+        track = convertFromString(intent.getSerializableExtra("track").toString())
+
     }
 
     private fun preparePlayer() {
-        PlayerCreator.providePlayer( track!!).also { player = it }
+        PlayerCreator.providePlayer(track!!).also { player = it }
 
 
         val onPreparedListenerConsumer =
             PlayerRepository.OnPreparedListenerConsumer {
                 binding!!.playBut.isEnabled = true
-                binding!!.playTime.text = player!!.duration()
+                binding!!.playTime.text = PlayerTimeFormatter.format(player!!.duration())
             }
 
         val onCompletionListenerConsumer =
@@ -121,7 +125,7 @@ open class PlayerActivity : AppCompatActivity() {
         return object : Runnable {
             override fun run() {
 
-                binding!!.playTime.text = player!!.currentPosition()
+                binding!!.playTime.text = PlayerTimeFormatter.format(player!!.currentPosition())
 
                 mainThreadHandler.postDelayed(
                     this,

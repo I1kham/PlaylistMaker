@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.domain.api
 
-interface CheckInternetConnection {
+interface CheckInternetConnectionRepository {
     fun checkConnection( ): Boolean
 
 }
