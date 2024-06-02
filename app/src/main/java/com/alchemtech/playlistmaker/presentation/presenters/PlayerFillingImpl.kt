@@ -13,10 +13,15 @@ import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class PlayerFillingImpl(private val track: Track, private val binding: ActivityPlayerBinding, private val context: Context) : PlayerFilling, UiCalculator {
+class PlayerFillingImpl(
+    private val track: Track,
+    private val binding: ActivityPlayerBinding,
+    private val context: Context,
+) : PlayerFilling, UiCalculator {
     init {
-start()
+        start()
     }
+
     override fun start() {
         trackArtist()
         trackTimeMillis()
@@ -59,7 +64,7 @@ start()
     }
 
     private fun playTimeFill() {
-      //  binding.playTime.text = "0:30"
+        binding.playTime.text = "0:30"
     }
 
     private fun albumCoverFill() {

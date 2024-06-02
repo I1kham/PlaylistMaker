@@ -58,7 +58,7 @@ open class PlayerActivity : AppCompatActivity() {
         val onPreparedListenerConsumer =
             PlayerRepository.OnPreparedListenerConsumer {
                 binding!!.playBut.isEnabled = true
-                binding!!.playTime.text = PlayerTimeFormatter.format(player!!.duration())
+               // binding!!.playTime.text = PlayerTimeFormatter.format(player!!.duration())
             }
 
         val onCompletionListenerConsumer =
