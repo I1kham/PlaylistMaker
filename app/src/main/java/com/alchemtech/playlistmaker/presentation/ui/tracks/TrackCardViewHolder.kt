@@ -1,15 +1,15 @@
-package com.alchemtech.playlistmaker.track
+package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.UiCalculator
+import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getTimeString
+import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), UiCalculator {
@@ -21,7 +21,7 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), U
     fun bind(track: Track) {
         trackTitle.text = track.trackName
         trackArtist.text = track.artistName
-        trackDuration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        trackDuration.text = track.getTimeString()
 
         val context =
 
@@ -31,7 +31,5 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), U
                 .centerCrop()
                 .transform(RoundedCorners(dpToPx(2f, itemView.context)))
                 .into(albumCover)
-
     }
-
 }

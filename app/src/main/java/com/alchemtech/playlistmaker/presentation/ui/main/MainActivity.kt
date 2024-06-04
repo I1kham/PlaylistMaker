@@ -1,10 +1,13 @@
-package com.alchemtech.playlistmaker
+package com.alchemtech.playlistmaker.presentation.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.alchemtech.playlistmaker.search.SearchActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
+import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
+import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val searchBut = findViewById<Button>(R.id.buttonSearch)
 
         searchBut.setOnClickListener {
-            val searchButIntent = Intent(this@MainActivity, SearchActivity::class.java)
+            val searchButIntent = Intent(this@MainActivity, TracksActivity::class.java)
             startActivity(searchButIntent)
         }
 
