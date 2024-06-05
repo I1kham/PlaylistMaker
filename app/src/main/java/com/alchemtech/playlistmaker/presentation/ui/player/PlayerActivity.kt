@@ -17,9 +17,9 @@ import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertFromString
 
 @Suppress("DEPRECATION")
 open class PlayerActivity : AppCompatActivity() {
-    private var track: Track? = null
-    private var binding: ActivityPlayerBinding? = null
-    private var player: PlayerInteractor? = null
+    private lateinit var track: Track
+    private lateinit var binding: ActivityPlayerBinding
+    private lateinit var player: PlayerInteractor
 
     private val currentPositionTask = createUpdateCurrentPositionTask()
 
@@ -37,12 +37,12 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun fillViewWithTrackData() {
-        PlayerDataFillingCreator.provide(binding!!, track!!)
+        PlayerDataFillingCreator.provide(binding, track)
     }
 
     private fun prepareBinding() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
     }
 
     private fun getTrackFromIntent() {
@@ -52,60 +52,60 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        PlayerCreator.providePlayer(track!!).also { player = it }
+        PlayerCreator.providePlayer(track).also { player = it }
 
 
         val onPreparedListenerConsumer =
             PlayerRepository.OnPreparedListenerConsumer {
-                binding!!.playBut.isEnabled = true
-               // binding!!.playTime.text = PlayerTimeFormatter.format(player!!.duration())
+                binding.playBut.isEnabled = true
+               // binding.playTime.text = PlayerTimeFormatter.format(player.duration())
             }
 
         val onCompletionListenerConsumer =
             PlayerRepository.OnCompletionListenerConsumer {
-                binding!!.playTime.text = "00:00"
-                binding!!.playBut.setImageResource(R.drawable.play_but)
+                binding.playTime.text = "00:00"
+                binding.playBut.setImageResource(R.drawable.play_but)
             }
 
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
-                binding!!.playBut.setImageResource(R.drawable.play_but)
+                binding.playBut.setImageResource(R.drawable.play_but)
 
                 killCurrentPositionTask()
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
-                binding!!.playBut.setImageResource(R.drawable.pause_but)
+                binding.playBut.setImageResource(R.drawable.pause_but)
                 startGetCurrentPositionTask()
 
             }
         }
-        player!!.setConsumers(
+        player.setConsumers(
             onPreparedListenerConsumer,
             onCompletionListenerConsumer,
             pauseConsumer,
             startConsumer
         )
-        player!!.preparePlayer()
+        player.preparePlayer()
     }
 
     override fun onPause() {
         super.onPause()
-        player!!.pausePlayer()
+        player.pausePlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player!!.release()
+        player.release()
         killCurrentPositionTask()
     }
 
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        player!!.playbackControl()
+        player.playbackControl()
     }
 
     private fun backButWorking() {
@@ -116,8 +116,8 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun playBut() {
-        binding!!.playBut.setOnClickListener {
-            player!!.playbackControl()
+        binding.playBut.setOnClickListener {
+            player.playbackControl()
         }
     }
 
@@ -125,7 +125,7 @@ open class PlayerActivity : AppCompatActivity() {
         return object : Runnable {
             override fun run() {
 
-                binding!!.playTime.text = PlayerTimeFormatter.format(player!!.currentPosition())
+                binding.playTime.text = PlayerTimeFormatter.format(player.currentPosition())
 
                 mainThreadHandler.postDelayed(
                     this,
