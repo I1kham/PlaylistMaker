@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.creators.InternetCheckCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
+import com.alchemtech.playlistmaker.creators.SearchCreator
 
 const val DARK_THEME = 1
 
@@ -16,6 +17,7 @@ class App : Application() {
         InternetCheckCreator.setApplicationContext(this)
         ListTrackRepositoryCreator.setApplicationContext(this)
         PlayerDataFillingCreator.setApplicationContext(this)
+        SearchCreator.setApplicationContext(this)
     }
 
     private fun switchTheme() {

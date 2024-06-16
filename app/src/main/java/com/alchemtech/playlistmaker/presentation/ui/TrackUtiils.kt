@@ -17,7 +17,9 @@ object TrackUtils {
     }
 
     fun Track.getReleaseDateString(): String {
-        return releaseDate.substring(0 until 4) + " год"
+        if (releaseDate.isNullOrEmpty()) {
+            return ""
+        } else return releaseDate.substring(0 until 4) + " год"
     }
 
     fun Track.convertToString(): String {
