@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks
 
-import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.inputmethod.EditorInfo
@@ -9,15 +8,11 @@ import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
+import moxy.MvpPresenter
 
 
-class TracksSearchPresenter(
-    private val view: TracksView,
-) {
-    init {
-        //getHistory()
-    }
-
+class TracksSearchPresenter: MvpPresenter<TracksView>() {
     private var searchText: String = ""
 
     private val tracksInteractor: TracksInteractor =
@@ -33,22 +28,6 @@ class TracksSearchPresenter(
         println(track)
     }
 
-
-//    private lateinit var clearButton: ImageView
-//    private lateinit var upDateBut: Button
-//    private lateinit var searchHistoryTitle: TextView
-//    private lateinit var clearHistoryBut: TextView
-
-//    private lateinit var inputEditText: EditText
-
-//    private lateinit var trackRecyclerView: RecyclerView
-//
-//    private lateinit var progressBar: ProgressBar
-//    private lateinit var noDataLinearLayout: LinearLayout
-//    private lateinit var noConnectionLinearLayout: LinearLayout
-
-    //   private var isClickAllowed: Boolean = true
-
     internal val tracksList = ArrayList<Track>()
 
     private val handler = Handler(Looper.getMainLooper())
@@ -58,116 +37,31 @@ class TracksSearchPresenter(
         override fun consume(foundedTracks: List<Track>?, errorMessage: String?) {
 
             handler.post {
-                println(foundedTracks) // TODO:
+                println("6516516516516"+foundedTracks) // TODO:
                 if (foundedTracks.isNullOrEmpty()) {
+                    render(TracksActivityState.Content(tracksList))
 
-                    if (errorMessage.equals(" no connection")) {
-                        view.showNoConnection(true)
-
-                    } else {
-                        view.showNoDataErr(true)
-                    }
+                    //view.render(TracksActivityState.Error(errorMessage.toString()))
                 } else {
+                    tracksList.clear()
                     tracksList.addAll(foundedTracks)
-                    view.upDateRecycle()
+                    render(TracksActivityState.Content(tracksList))
                 }
-
-//
-//                if (foundedTracks != null) {
-////                    tracksList.clear()
-//                    tracksList.addAll(foundedTracks)
-//                }
-//                if (errorMessage != null) {
-////                    setNoConnectionErrLayoutVisible()
-//                    view.showNoConnection(true)
-//                } else if (foundedTracks.isNullOrEmpty()) {
-////                    setNoDataErrLayoutVisible()
-//                    view.showNoDataErr(true)
-//                } else {
-////                    setAllErrLayoutsGONE()
-//                    view.showNoDataErr(false)
-//                    view.showNoConnection(false)
-//                }
-                view.showProgressBar(false)
-                println(tracksList)
-                //setProgressBarGone() // TODO: реализацию логики проверки списка в репозиторий
             }
         }
     }
 
+    private fun render(state: TracksActivityState) {
+        viewState.render(state)
+    }
 
     fun onCreate() {
-//        inputEditText = activity.findViewById(R.id.inputTextForSearching)
-//
-//        trackRecyclerView = activity.findViewById(R.id.trackCardsRecyclerView)
-//
-//        progressBar = activity.findViewById<ProgressBar>(R.id.progressBar)
-//
-//        noDataLinearLayout = activity.findViewById<LinearLayout>(R.id.noData)
-//        noConnectionLinearLayout = activity.findViewById<LinearLayout>(R.id.noConnection)
-//
-//        clearButton = activity.findViewById<ImageView>(R.id.clearIcon)
-//        upDateBut = activity.findViewById<Button>(R.id.updateButNoConnection)
-//        searchHistoryTitle = activity.findViewById<TextView>(R.id.searchHistoryTitle)
-//        clearHistoryBut = activity.findViewById<TextView>(R.id.clearHistoryBut)
-
         getHistory()
-
-        // trackSearchAdapter = TrackSearchAdapter(tracksList)
-//        trackSearchAdapter.onItemClick = { track: Track ->
-//            addTrackToHistoryList(track)
-//            navigateToPlayer(track)
-//        }
-
-
-//        trackRecyclerView.layoutManager =
-//            LinearLayoutManager(
-//                /* context = */ activity,
-//                /* orientation = */ LinearLayoutManager.VERTICAL,
-//                /* reverseLayout = */ false
-//            )
-//        trackRecyclerView.adapter = trackSearchAdapter
-
-
-        //   inputEditTextWorking()
-
-//        upDateButSearchWorking()
-
-//        clearButLogic()
-//
-//        clearButSearchHistory()
-
-//        enableHistoryList()
-
+        enableHistoryList()
     }
-//    fun addTextChangeListener(editText: EditText){
-//           editText.addTextChangedListener(a())
-//       }
-//
-//
-//       private fun a():TextWatcher {
-//           return object : TextWatcher {
-//
-//               override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//               }
-//
-//               override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                   clearButVisibility(s)
-//                   textChangeLogic(s)
-//                   focusLogic()
-//                   searchDebounce()
-//               }
-//
-//               override fun afterTextChanged(s: Editable?) {
-//                   focusLogic()
-//                   textChangeLogic(s)
-//               }
-//           }
-//
-//
-//       }
 
-    fun onDestroy() {
+
+    override fun onDestroy() {
         handler.removeCallbacks(searchRunnable)
     }
 
@@ -178,137 +72,52 @@ class TracksSearchPresenter(
     private fun enableHistoryList() {
         val historyList = history.getTrackList()
         if (historyList.isNotEmpty()) {
-            tracksList.clear()
-            tracksList.addAll(historyList)
-//            activity.runOnUiThread {
-//                clearHistoryBut.visibility = View.VISIBLE
-//                searchHistoryTitle.visibility = View.VISIBLE
-//            }
-//                 onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
-//                 recyclerView.adapter = trackAdapter
-            view.showHistoryListButTitle(true)
-        } else {
-//            clearHistoryBut.visibility = View.GONE
-//            searchHistoryTitle.visibility = View.GONE
-            view.showHistoryListButTitle(false)
+            render(TracksActivityState.History(historyList))
         }
     }
 
 
-//    private fun disableHistoryList() {// TODO: changed and moved to Activity by showHistoryList fun
-//        clearHistoryBut.visibility = View.GONE
-//        searchHistoryTitle.visibility = View.GONE
-//    }
-
-//    @SuppressLint("NotifyDataSetChanged")
-//    private fun upDateRecycle() {
-//        activity.runOnUiThread {
-//            trackRecyclerView.adapter?.notifyDataSetChanged()
-//        }
-//    }
-
     internal fun inputEditTextWorking(editText: EditText) {
         editText.setOnClickListener {
-            // setAllErrLayoutsGONE()
-            view.showNoDataErr(false)
-            view.showNoConnection(false)
+            render(TracksActivityState.Content(tracksList))
             editText.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                     searchTrack() // выполнение задач
-
-                    view.hideKeyBoard()
                 }
                 true
             }
         }
     }
 
-//    private fun hideKeyBoard() {
-//        val inputMethodManager =
-//            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//        inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-//    }
-//
-//    private fun setAllErrLayoutsGONE() {
-//        noDataLinearLayout.visibility = View.GONE
-//        noConnectionLinearLayout.visibility = View.GONE
-//    }
-//
-//
-//    private fun setNoDataErrLayoutVisible() {
-//        noDataLinearLayout.visibility = View.VISIBLE
-//        noConnectionLinearLayout.visibility = View.GONE
-//    }
-//
-//    private fun setNoConnectionErrLayoutVisible() {
-//        noDataLinearLayout.visibility = View.GONE
-//        noConnectionLinearLayout.visibility = View.VISIBLE
-//    }
-
-    @SuppressLint("NotifyDataSetChanged")
     private fun searchTrack() {
         if (searchText.isNotEmpty()) {
-            // setProgressBarVisible()
-            view.showNoDataErr(false)
-            view.showNoConnection(false)
-            view.showProgressBar(true)
+            render(TracksActivityState.Loading)
             tracksList.clear()
-            view.hideKeyBoard()
             tracksInteractor.searchTracksInteractor(
                 expression = searchText,
                 consumer = tracksConsumer
             )
-            // trackRecyclerView.adapter?.notifyDataSetChanged()
-            //   view.showTrackRecycle(true)
-            //view.upDateRecycle()
         }
     }
-
-//    private fun setProgressBarGone() {
-//        activity.runOnUiThread {
-//            progressBar.visibility = View.GONE
-//        }
-//    }
-//
-//    private fun setProgressBarVisible() {
-//        setAllErrLayoutsGONE()
-//        progressBar.visibility = View.VISIBLE
-//    }
 
     internal fun upDateButSearchWorking() {
         searchTrack()
     }
 
-//    private fun clearButVisibility(s: CharSequence?) {
-//        clearButton.isVisible = !(s.isNullOrEmpty())
-//    }
-
     internal fun clearButLogic() {
-//            inputEditText.setText("")
-        view.clearInputText()
-//            hideKeyBoard()
-        view.hideKeyBoard()
+        render(TracksActivityState.InputText(""))
         tracksList.clear()
-//            setAllErrLayoutsGONE()
-        view.showNoDataErr(false)
-        view.showNoConnection(false)
-//            trackRecyclerView.adapter?.notifyDataSetChanged()
-        enableHistoryList()
-        view.upDateRecycle()
+        render(TracksActivityState.History(history.getTrackList()))
     }
 
     internal fun clearButSearchHistory() {
-        view.showHistoryListButTitle(true)
-//            searchHistoryTitle.visibility = View.GONE
-//            clearHistoryBut.visibility = View.GONE
         history.clearTracksList()
-        tracksList.clear()
-        view.upDateRecycle()
+        render(TracksActivityState.Content(tracksList))
     }
 
 
-    internal fun searchDebounce() {
+    private fun searchDebounce()
+    {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
@@ -319,58 +128,44 @@ class TracksSearchPresenter(
 
     private fun getHistory() {// TODO: B_L
         history.readTrackList()
-        tracksList.addAll(history.getTrackList())
-        println(history.getTrackList() + "8888888")
+
     }
 
     private fun addTrackToHistoryList(track: Track) { // TODO: B_L
         history.addTrack(track)
-        tracksList.clear()
-        tracksList.addAll(history.getTrackList())
-        view.upDateRecycle()
     }
 
 
     private fun navigateToPlayer(track: Track) { // TODO: to del
-
-        view.navigateTRackToPlayer(track)
+        viewState.navigateTRackToPlayer(track)
     }
 
-    internal fun textChangeLogic(text: CharSequence?) {
-        if (text?.isNotEmpty() == true) {
-            view.upDateRecycle()
-//            disableHistoryList()
-            view.showHistoryListButTitle(false)
-
-        } else {
-//            enableHistoryList()
-//            setAllErrLayoutsGONE()
-            view.showHistoryListButTitle(false)
-            view.showNoDataErr(false)
-            view.showNoConnection(false)
+    internal fun afterTextChangedLogic(text: CharSequence?) {
+        if (text?.isNotEmpty() == false) {
+            render(TracksActivityState.History(history.getTrackList()))
         }
+    }
+
+    internal fun onTextChangedLogic(s: String) {
+        searchText = s
+        render(TracksActivityState.TextClearBut(s.isNotEmpty()))
+        searchDebounce()
     }
 
     internal fun focusLogic(editText: EditText) {
         editText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && editText.text.isEmpty()) {
-//                disableHistoryList()
-                view.showHistoryListButTitle(true)
+                render(TracksActivityState.History(history.getTrackList()))
             }
         }
     }
 
-    internal fun setSearchText(string: String) {
-        searchText = string
+    internal fun backButLogic() {
+        viewState.stopView()
     }
 
-    internal fun backButLogic() {
-        view.stopView()
-    }
 
     private companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L // TODO: to controller
-//        const val CLICK_DEBOUNCE_DELAY = 1000L
-
     }
 }

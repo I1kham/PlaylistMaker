@@ -17,11 +17,10 @@
         android:text="@string/searchActivityHead"
         android:textFontWeight="500"
         android:textSize="22sp"
-        app:icon="?attr/actionModeCloseDrawable"
+        app:icon="@drawable/car_ui_icon_arrow_back"
         app:iconGravity="textStart"
         app:iconSize="24dp"
         app:iconTint="@color/black_White" />
-
 
     <LinearLayout
         android:id="@+id/searchContainer"
