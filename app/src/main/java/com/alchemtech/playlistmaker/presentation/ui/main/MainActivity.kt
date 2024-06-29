@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         searchBut.setOnClickListener {
             val searchButIntent = Intent(
                 this@MainActivity,
-                // TracksActivity::class.java // todo
                 NewTracksActivity::class.java
             )
             startActivity(searchButIntent)

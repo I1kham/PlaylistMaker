@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.presentation.ui.player
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.PlayerCreator
@@ -109,7 +108,7 @@ open class PlayerActivity : AppCompatActivity() {
     }
 
     private fun backButWorking() {
-        val back = findViewById<Button>(R.id.playerPreview)
+        val back = binding.playerPreview
         back.setOnClickListener {
             finish()
         }

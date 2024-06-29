@@ -24,10 +24,6 @@
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />
         <activity
-            android:name=".presentation.ui.tracks.TracksActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-        <activity
             android:name=".presentation.ui.mediaLibrary.MediaLibActivity"
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />

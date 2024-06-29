@@ -48,6 +48,4 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         }
         return false
     }
-
-
 }

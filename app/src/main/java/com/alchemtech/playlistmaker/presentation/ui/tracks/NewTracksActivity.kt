@@ -46,65 +46,98 @@ class NewTracksActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        prepareBinding()
+        prepareViewModel()
+        prepareInputeditText()
+        prepareTrackRecyclerView()
+        prepareBackBut()
+        prepareClearHistBut()
+        prepareProgressBar()
+        prepareNoDataErr()
+        prepareNoConnectionErr()
+        prepareEditTextClearBut()
+        prepareUpdateBut()
+        prepareHisTitle()
+        startLogic()
+    }
 
-        setContentView(binding.root)
+    private fun startLogic() {
+        viewModel.startModelLogic()
+    }
 
-        viewModel = ViewModelProvider(
-            this,
-            TracksActivityViewModel.getViewModelFactory()
-        )[TracksActivityViewModel::class.java]
+    private fun prepareHisTitle() {
+        searchHistoryTitle = binding.searchHistoryTitle
+    }
 
-
-        viewModel.observeState().observe(this) {
-            render(it)
+    private fun prepareUpdateBut() {
+        upDateBut = binding.updateButNoConnection
+        upDateBut.setOnClickListener {
+            viewModel.updateResponse()
         }
+    }
 
-
-        inputEditText = binding.inputTextForSearching
-        inputEditText.addTextChangedListener(viewModel.textWatcher)
-        viewModel.inputEditTextListener(inputEditText)
-
-        trackRecyclerView = binding.trackCardsRecyclerView
-
-        backButton = binding.pageSearchPreview
-        backButton.setOnClickListener {
-            finish()
-        }
-        clearHistoryBut = binding.clearHistoryBut
-        clearHistoryBut.setOnClickListener {
-            viewModel.clearButSearchHistory()
-        }
-
-        progressBar = binding.progressBar
-
-        noDataLinearLayout = binding.noData
-
-        noConnectionLinearLayout = binding.noConnection
-
+    private fun prepareEditTextClearBut() {
         clearButton = binding.clearIcon
         clearButton.setOnClickListener {
             viewModel.clearEditTextButLogic()
         }
+    }
 
-        upDateBut = binding.updateButNoConnection
+    private fun prepareNoConnectionErr() {
+        noConnectionLinearLayout = binding.noConnection
+    }
 
-        searchHistoryTitle = binding.searchHistoryTitle
+    private fun prepareNoDataErr() {
+        noDataLinearLayout = binding.noData
+    }
 
+    private fun prepareProgressBar() {
+        progressBar = binding.progressBar
+    }
+
+    private fun prepareClearHistBut() {
+        clearHistoryBut = binding.clearHistoryBut
+        clearHistoryBut.setOnClickListener {
+            viewModel.clearButSearchHistory()
+        }
+    }
+
+    private fun prepareBackBut() {
+        backButton = binding.pageSearchPreview
+        backButton.setOnClickListener {
+            viewModel.backButLogic()
+        }
+    }
+
+    private fun prepareTrackRecyclerView() {
+        trackRecyclerView = binding.trackCardsRecyclerView
         trackRecyclerView.layoutManager =
             LinearLayoutManager(
                 /* context = */ this,
                 /* orientation = */ LinearLayoutManager.VERTICAL,
                 /* reverseLayout = */ false
             )
+    }
 
+    private fun prepareInputeditText() {
+        inputEditText = binding.inputTextForSearching
+        inputEditText.addTextChangedListener(viewModel.textWatcher)
+        viewModel.inputEditTextListener(inputEditText)
+    }
 
+    private fun prepareViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            TracksActivityViewModel.getViewModelFactory()
+        )[TracksActivityViewModel::class.java]
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
+    }
 
-        viewModel.start()
-
-
-
-
+    private fun prepareBinding() {
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
 
@@ -130,36 +163,29 @@ class NewTracksActivity : ComponentActivity() {
             } //TODO()
             is TracksActivityState.Error -> {
                 hideKeyBoard()
+                showProgressBar(false)
                 showHistoryListButTitle(
                     false
                 )
-                if (state.errorMsg == " no connection") {
+                if (state.errorMsg == -1) {
                     showNoConnection(true)
                 } else {
                     showNoDataErr(true)
                 }
-            }// TODO()
+            }
+
             is TracksActivityState.History -> {
                 hideKeyBoard()
-                if (state.tracks.isNotEmpty()) {
-                    //  state.tracks.upDateAdapter()
-                    state.tracks.upDateAdapter()
-                    showHistoryListButTitle(true)
-                }
-                showProgressBar(false)
-                showNoConnection(false)
-                showNoDataErr(false)
+                showHistoryList(state.tracks)
             }
 
             is TracksActivityState.TextClearBut -> {
                 clearButton.isVisible = state.visibility
             }
 
-            is TracksActivityState.InputText -> {
-                inputEditText.setText(state.text)
-//                if(state.text.isEmpty()){
-//
-//                }
+            is TracksActivityState.InputTextClear -> {
+                inputEditText.setText("")
+                showHistoryList(state.tracks)
             }
 
             is TracksActivityState.NavigateTrackToPlayer -> {
@@ -171,8 +197,22 @@ class NewTracksActivity : ComponentActivity() {
                         )
                     }
                 startActivity(trackCardClickIntent)
-            } //TODO()
+            }
+
+            TracksActivityState.Exit -> {
+                finish()
+            }
         }
+    }
+
+    private fun showHistoryList(tracks: List<Track>) {
+        if (tracks.isNotEmpty()) {
+            tracks.upDateAdapter()
+            showHistoryListButTitle(true)
+        }
+        showProgressBar(false)
+        showNoConnection(false)
+        showNoDataErr(false)
     }
 
     private fun List<Track>.upDateAdapter() {

@@ -20,13 +20,13 @@ import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
 class TracksActivityViewModel(
-    private val application: Application,
+    application: Application,
 ) : AndroidViewModel(application) {
 
     companion object {
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
+        //  private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -45,7 +45,7 @@ class TracksActivityViewModel(
     private val searchRunnable = Runnable { searchTrack(searchText) }
 
     private var searchText: String = ""
-    private var latestSearchText: String? = null
+    //  private var latestSearchText: String? = null
 
     private val tracksList = mutableListOf<Track>()
 
@@ -54,10 +54,13 @@ class TracksActivityViewModel(
     private val stateLiveData = MutableLiveData<TracksActivityState>()
 
     private val tracksConsumer = object : TracksInteractor.TracksConsumer {
-        override fun consume(foundedTracks: List<Track>?, errorMessage: String?) {
-
+        override fun consume(foundedTracks: List<Track>?, errorCode: Int?) {
             if (foundedTracks.isNullOrEmpty()) {
-                renderState(TracksActivityState.Content(tracksList))
+                if (errorCode == -1) {
+                    renderState(TracksActivityState.Error(-1))
+                } else {
+                    renderState(TracksActivityState.Error(-2))
+                }
             } else {
                 tracksList.clear()
                 tracksList.addAll(foundedTracks)
@@ -66,9 +69,11 @@ class TracksActivityViewModel(
         }
     }
 
-
+internal fun backButLogic(){
+    renderState(TracksActivityState.Exit)
+}
     internal fun clearEditTextButLogic() {
-        renderState(TracksActivityState.InputText(""))
+        renderState(TracksActivityState.InputTextClear(historyInteractor.getTrackList()))
         tracksList.clear()
     }
 
@@ -89,19 +94,18 @@ class TracksActivityViewModel(
     internal val textWatcher by lazy {
         object : TextWatcher {
 
-        override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-           // renderState(TracksActivityState.TextClearBut(s.isNullOrEmpty()))
-        }
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-        override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            onTextChangedLogic(s.toString())
-        }
+            }
 
-        override fun afterTextChanged(s: Editable?) {
-            afterTextChangedLogic(s)
-           // renderState(TracksActivityState.TextClearBut(s.isNullOrEmpty()))
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                onTextChangedLogic(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                afterTextChangedLogic(s)
+            }
         }
-    }
     }
 
     internal fun onTextChangedLogic(s: String) {
@@ -110,15 +114,17 @@ class TracksActivityViewModel(
         searchDebounce()
     }
 
-    internal fun start() {
-
+    internal fun startModelLogic() {
         renderState(TracksActivityState.History(historyInteractor.getTrackList()))
     }
 
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
         navigateToPlayer(track)
-        println(track) // TODO:
+    }
+
+    internal fun updateResponse() {
+        searchTrack(searchText)
     }
 
 
@@ -159,11 +165,12 @@ class TracksActivityViewModel(
 
     private fun renderState(state: TracksActivityState) {
         stateLiveData.postValue(state)
+        stateLiveData.value
     }
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+//        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         historyInteractor.writeTrackList()
     }
 }

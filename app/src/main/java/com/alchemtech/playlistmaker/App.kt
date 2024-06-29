@@ -2,7 +2,6 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.creators.InternetCheckCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
@@ -14,7 +13,7 @@ class App : Application() {
         super.onCreate()
         switchTheme()
 
-        InternetCheckCreator.setApplicationContext(this)
+
         ListTrackRepositoryCreator.setApplicationContext(this)
         PlayerDataFillingCreator.setApplicationContext(this)
         SearchCreator.setApplicationContext(this)

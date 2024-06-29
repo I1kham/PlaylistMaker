@@ -7,14 +7,13 @@ import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.util.Resource
 
-// TODO: здесь можно было бы реализовать консумер, сдоступом к переменной resulCode и применить логику реагирования на ошибки 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
     override fun searchTracks(expression: String): Resource<List<Track>> {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
 
         return when (response.resultCode) {
             -1 -> {
-                Resource.Error(" no connection")
+                Resource.Error(response.resultCode)
             }
 
             200 -> {
@@ -34,9 +33,8 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                 }
                 )
             }
-
             else -> {
-                Resource.Error("error")
+                Resource.Error(response.resultCode)
             }
         }
     }
