@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <Button
         android:id="@+id/pageSearchPreview"
         style="@style/settingsActivityButtonsStyle"
@@ -59,9 +58,9 @@
             android:singleLine="true"
             android:textColor="@color/YP_black"
             android:textColorHint="@color/grayBlack"
-            android:textFontWeight="400"
             android:textCursorDrawable="@drawable/cursor"
-            android:textSelectHandle="@color/transparent"/>
+            android:textFontWeight="400"
+            android:textSelectHandle="@color/transparent" />
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -125,91 +124,91 @@
             android:visibility="gone" />
         <!--    gone  -->
     </LinearLayout>
+
     <LinearLayout
-            android:id="@+id/noData"
+        android:id="@+id/noData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/data_not_found" />
+
+        <TextView
+            style="@style/cardTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="102dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_marginTop="16dp"
+            android:text="@string/data_not_found"
+            android:textSize="19sp" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/data_not_found"
-                />
+    </LinearLayout>
 
-            <TextView
-                style="@style/cardTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="@string/data_not_found"
-                android:textSize="19sp" />
+    <LinearLayout
+        android:id="@+id/noConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        </LinearLayout>
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/no_connection"
 
-        <LinearLayout
-            android:id="@+id/noConnection"
+            />
+
+        <TextView
+            style="@style/cardTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="102dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_marginTop="16dp"
+            android:text="@string/no_connection"
+            android:textSize="19sp" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/no_connection"
+        <TextView
+            style="@style/cardTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:lines="2"
+            android:text="@string/no_connection2"
+            android:textAlignment="center"
+            android:textSize="19sp" />
 
-                />
+        <Button
+            android:id="@+id/updateButNoConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/YP_black_White"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/updateButNoConnectionText"
+            android:textFontWeight="500"
+            android:textSize="14sp" />
 
-            <TextView
-                style="@style/cardTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="@string/no_connection"
-                android:textSize="19sp" />
-
-            <TextView
-                style="@style/cardTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="16dp"
-                android:lines="2"
-                android:text="@string/no_connection2"
-                android:textAlignment="center"
-                android:textSize="19sp" />
-
-            <Button
-                android:id="@+id/updateButNoConnection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/YP_black_White"
-                android:fontFamily="@font/ys_display_regular"
-                android:text="@string/updateButNoConnectionText"
-                android:textFontWeight="500"
-                android:textSize="14sp" />
-
-        </LinearLayout>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:layout_marginTop="140dp"
         android:layout_gravity="center"
+        android:layout_marginTop="140dp"
         android:indeterminateTint="@color/YP_light_background"
         android:visibility="gone" />
 

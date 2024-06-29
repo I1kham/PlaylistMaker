@@ -130,10 +130,10 @@ return TracksSearchPresenterCreator.provideTracksSearchPresenter()
 
 
     private fun backButWork() {
-        val back = findViewById<Button>(R.id.pageSearchPreview)
-        back.setOnClickListener {
-            tracksSearchPresenter.backButLogic()
-        }
+//        val back = findViewById<Button>(R.id.pageSearchPreview)
+//        back.setOnClickListener {
+//            tracksSearchPresenter.backButLogic()
+//        }
     }
 
     override fun onPause() {
@@ -205,7 +205,7 @@ return TracksSearchPresenterCreator.provideTracksSearchPresenter()
     }
 
     override fun render(state: TracksActivityState) {
-        println("8484848484848484848484848")
+        println("8484848484848484848484848") // TODO:
         when (state) {
             is TracksActivityState.Loading -> {
                 showProgressBar(true)
@@ -254,6 +254,8 @@ return TracksSearchPresenterCreator.provideTracksSearchPresenter()
             is TracksActivityState.InputText -> {
                 inputEditText.setText(state.text)
             }
+
+            is TracksActivityState.NavigateTrackToPlayer -> TODO()
         }
     }
 

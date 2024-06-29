@@ -6,12 +6,13 @@ import com.alchemtech.playlistmaker.domain.entity.Track
 
 class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
     TrackHistoryInteractor {
+    private val listHistory: MutableList<Track> = mutableListOf()
 
     init {
         repository.setNameKey(name = SAVED_TRACKS, key = SAVED_LIST)
+        readTrackList()
     }
 
-    private val listHistory: MutableList<Track> = mutableListOf()
 
     override fun addTrack(track: Track) {
 
@@ -39,6 +40,7 @@ class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
     }
 
     override fun getTrackList(): List<Track> {
+        println(listHistory)
         return listHistory
     }
 
