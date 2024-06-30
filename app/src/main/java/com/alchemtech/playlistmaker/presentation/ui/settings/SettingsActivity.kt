@@ -1,8 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.settings
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
@@ -11,16 +9,23 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.DARK_THEME
 import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var viewModel: SettingsViewModel
+
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_settings)
-
+        viewModel = ViewModelProvider(
+            this,
+            SettingsViewModel.getViewModelFactory()
+        )[SettingsViewModel::class.java]
         backButWork()
 
         toSupportButWork()
@@ -30,6 +35,7 @@ class SettingsActivity : AppCompatActivity() {
         termsOfUseButWork()
 
         darkThemeSwitchWork()
+
 
     }
 
@@ -46,46 +52,21 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun termsOfUseButWork() {
         findViewById<Button>(R.id.buttonTermsOfUse).setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.linkTermsOfUse))))
+            viewModel.openTermsOfUse()
         }
     }
 
     private fun shareAppButWork() {
 
         findViewById<Button>(R.id.buttonShareApp).setOnClickListener {
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
-                type = "text/plain"
-            }
-
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, getString(R.string.buttonShareApp))
-                type = "text/plain"
-                startActivity(Intent.createChooser(this, getString(R.string.buttonShareAppTitle)))
-            }
+            viewModel.shareApp()
         }
     }
 
     private fun toSupportButWork() {
 
         findViewById<Button>(R.id.buttonToSupport).setOnClickListener {
-            val buttonSupportIntent = Intent(Intent.ACTION_SENDTO)
-            buttonSupportIntent.data = Uri.parse(getString(R.string.toSupportUri))
-            buttonSupportIntent.putExtra(
-                Intent.EXTRA_EMAIL,
-                arrayOf(getString(R.string.supportMail))
-            )
-            buttonSupportIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.toSupportDefaultMail)
-            )
-            buttonSupportIntent.putExtra(
-                Intent.EXTRA_SUBJECT,
-                getString(R.string.toSupportMailSubject)
-            )
-            startActivity(buttonSupportIntent)
+            viewModel.openSupport()
         }
     }
 
@@ -119,9 +100,10 @@ class SettingsActivity : AppCompatActivity() {
             DARK_THEME.toString(),
             1
         )) {
-            2-> {
+            2 -> {
                 findViewById<Switch>(R.id.dayNightSwitch).isChecked = true
             }
+
             else -> findViewById<Switch>(R.id.dayNightSwitch).isChecked = false
         }
     }

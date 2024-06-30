@@ -27,11 +27,6 @@ class PlayerActivity : AppCompatActivity() {
         fillStrData()
     }
 
-    override fun finish() {
-        super.finish()
-        viewModel.onDestroy()
-    }
-
     private fun prepareBackBut() {
         binding.playerPreview.setOnClickListener {
             viewModel.backBut()
@@ -66,10 +61,10 @@ class PlayerActivity : AppCompatActivity() {
 
             is PlayerActivityState.Play -> {
                 binding.playBut.setImageResource(R.drawable.pause_but)
-            }// TODO()
+            }
             is PlayerActivityState.FillViewWithTrackData -> {
 
-            }//TODO()
+            }
             PlayerActivityState.OnPrepared -> {
                 PlayerDataFillingCreator.provide(binding, track)
                 binding.playBut.isEnabled = true

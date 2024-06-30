@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
 import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
-import com.alchemtech.playlistmaker.presentation.ui.tracks.NewTracksActivity
+import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         searchBut.setOnClickListener {
             val searchButIntent = Intent(
                 this@MainActivity,
-                NewTracksActivity::class.java
+                TracksActivity::class.java
             )
             startActivity(searchButIntent)
         }

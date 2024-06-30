@@ -26,7 +26,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityViewModel
 
-class NewTracksActivity : AppCompatActivity() {
+class TracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var viewModel: TracksActivityViewModel
@@ -169,7 +169,7 @@ class NewTracksActivity : AppCompatActivity() {
                 showNoDataErr(false)
                 showProgressBar(false)
                 hideKeyBoard()
-            } //TODO()
+            }
             is TracksActivityState.Error -> {
                 hideKeyBoard()
                 showProgressBar(false)

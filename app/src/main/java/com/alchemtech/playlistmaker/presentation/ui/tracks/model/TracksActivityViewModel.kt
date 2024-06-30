@@ -3,6 +3,7 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -26,7 +27,7 @@ class TracksActivityViewModel(
     companion object {
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        //  private val SEARCH_REQUEST_TOKEN = Any()
+        private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -36,23 +37,14 @@ class TracksActivityViewModel(
             }
         }
     }
-
-
     // TODO: сюда функции
     val historyInteractor = ListTrackRepositoryCreator.provideListTrackDb()
     val searchInteractor = SearchCreator.provideTracksInteractor()
-
     private val searchRunnable = Runnable { searchTrack(searchText) }
-
     private var searchText: String = ""
-    //  private var latestSearchText: String? = null
-
     private val tracksList = mutableListOf<Track>()
-
     private val handler = Handler(Looper.getMainLooper())
-
     private val stateLiveData = MutableLiveData<TracksActivityState>()
-
     private val tracksConsumer = object : TracksInteractor.TracksConsumer {
         override fun consume(foundedTracks: List<Track>?, errorCode: Int?) {
             if (foundedTracks.isNullOrEmpty()) {
@@ -69,9 +61,10 @@ class TracksActivityViewModel(
         }
     }
 
-internal fun backButLogic(){
-    renderState(TracksActivityState.Exit)
-}
+    internal fun backButLogic() {
+        renderState(TracksActivityState.Exit)
+    }
+
     internal fun clearEditTextButLogic() {
         renderState(TracksActivityState.InputTextClear(historyInteractor.getTrackList()))
         tracksList.clear()
@@ -93,9 +86,7 @@ internal fun backButLogic(){
 
     internal val textWatcher by lazy {
         object : TextWatcher {
-
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -147,19 +138,24 @@ internal fun backButLogic(){
     }
 
     private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+        handler.postAtTime(
+            searchRunnable,
+            SEARCH_REQUEST_TOKEN,
+            postTime,
+        )
     }
 
     fun observeState(): LiveData<TracksActivityState> = stateLiveData
 
 
-    private fun addTrackToHistoryList(track: Track) { // TODO: B_L
+    private fun addTrackToHistoryList(track: Track) {
         historyInteractor.addTrack(track)
         renderState(TracksActivityState.History(historyInteractor.getTrackList()))
     }
 
-    private fun navigateToPlayer(track: Track) { // TODO: to del
+    private fun navigateToPlayer(track: Track) {
         renderState(TracksActivityState.NavigateTrackToPlayer(track))
     }
 
@@ -170,7 +166,7 @@ internal fun backButLogic(){
 
     override fun onCleared() {
         super.onCleared()
-//        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+       handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         historyInteractor.writeTrackList()
     }
 }

@@ -37,6 +37,13 @@ class PlayerActivityViewModel(
 
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        player.release()
+        killCurrentPositionTask()
+    }
+
     // TODO: сюда функции
     private val currentPositionTask = createUpdateCurrentPositionTask()
     var mainThreadHandler = Handler(Looper.getMainLooper())
@@ -47,10 +54,6 @@ class PlayerActivityViewModel(
         stateLiveData.value
     }
 
-    internal fun onDestroy(){
-        player.release()
-        killCurrentPositionTask()
-    }
     internal fun fill() {
         renderState(PlayerActivityState.FillViewWithTrackData)
         preparePlayer()
