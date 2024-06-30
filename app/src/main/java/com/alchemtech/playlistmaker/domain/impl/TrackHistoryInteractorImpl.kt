@@ -40,7 +40,6 @@ class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
     }
 
     override fun getTrackList(): List<Track> {
-        println(listHistory)
         return listHistory
     }
 

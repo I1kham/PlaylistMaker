@@ -20,10 +20,6 @@
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />
         <activity
-            android:name=".presentation.ui.player.PlayerrActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-        <activity
             android:name=".presentation.ui.player.PlayerActivity"
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />
