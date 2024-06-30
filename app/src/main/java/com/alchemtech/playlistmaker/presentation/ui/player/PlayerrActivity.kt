@@ -27,8 +27,13 @@ class PlayerrActivity : AppCompatActivity() {
         fillStrData()
     }
 
+    override fun finish() {
+        super.finish()
+        viewModel.onDestroy()
+    }
+
     private fun prepareBackBut() {
-        binding.playerPreview.setOnClickListener{
+        binding.playerPreview.setOnClickListener {
             viewModel.backBut()
         }
     }
@@ -79,6 +84,7 @@ class PlayerrActivity : AppCompatActivity() {
             is PlayerActivityState.SetPlayTime -> {
                 binding.playTime.text = state.position
             }
+
             PlayerActivityState.BackBut -> {
                 finish()
             }
@@ -91,7 +97,7 @@ class PlayerrActivity : AppCompatActivity() {
 
     private fun playBut() {
         binding.playBut.setOnClickListener {
-           viewModel.playBut()
+            viewModel.playBut()
         }
     }
 }
