@@ -34,9 +34,12 @@ class PlayerActivityViewModel(
                 )
             }
         }
+
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
     // TODO: сюда функции
+
+
     private val currentPositionTask = createUpdateCurrentPositionTask()
     var mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerActivityState>()
@@ -45,7 +48,8 @@ class PlayerActivityViewModel(
         stateLiveData.postValue(state)
         stateLiveData.value
     }
-    internal fun fill(){
+
+    internal fun fill() {
         renderState(PlayerActivityState.FillViewWithTrackData)
         preparePlayer()
     }
@@ -65,26 +69,19 @@ class PlayerActivityViewModel(
             PlayerRepository.OnCompletionListenerConsumer {
                 renderState(PlayerActivityState.OnCompletion)
                 killCurrentPositionTask()
-//                binding.playTime.text = "00:00"
-//                binding.playBut.setImageResource(R.drawable.play_but)
             }
 
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
-//                binding.playBut.setImageResource(R.drawable.play_but)
-renderState(PlayerActivityState.Pause)
+                renderState(PlayerActivityState.Pause)
                 killCurrentPositionTask()
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
-
                 renderState(PlayerActivityState.Play)
-
-//                binding.playBut.setImageResource(R.drawable.pause_but)
                 startGetCurrentPositionTask()
-
             }
         }
         player.setConsumers(
@@ -101,12 +98,11 @@ renderState(PlayerActivityState.Pause)
             currentPositionTask
         )
     }
+
     private fun createUpdateCurrentPositionTask(): Runnable {
         return object : Runnable {
             override fun run() {
-renderState(PlayerActivityState.SetPlayTime(PlayerTimeFormatter.format(player.currentPosition())))
-//                binding.playTime.text = PlayerTimeFormatter.format(player.currentPosition())
-
+                renderState(PlayerActivityState.SetPlayTime(PlayerTimeFormatter.format(player.currentPosition())))
                 mainThreadHandler.postDelayed(
                     this,
                     DEBOUNCE_GET_CURRENT_POSITION
@@ -114,6 +110,7 @@ renderState(PlayerActivityState.SetPlayTime(PlayerTimeFormatter.format(player.cu
             }
         }
     }
+
     private fun startGetCurrentPositionTask() {
         mainThreadHandler.post(
             currentPositionTask
@@ -121,9 +118,11 @@ renderState(PlayerActivityState.SetPlayTime(PlayerTimeFormatter.format(player.cu
     }
 
     internal fun playBut() {
+        player.playbackControl()
+    }
 
-            player.playbackControl()
-
+    internal fun backBut() {
+        renderState(PlayerActivityState.BackBut)
     }
 
 }

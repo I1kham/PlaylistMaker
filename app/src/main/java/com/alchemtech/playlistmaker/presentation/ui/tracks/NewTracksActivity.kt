@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerrActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityViewModel
 
-class NewTracksActivity : ComponentActivity() {
+class NewTracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var viewModel: TracksActivityViewModel
@@ -46,6 +47,7 @@ class NewTracksActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         prepareBinding()
         prepareViewModel()
         prepareInputeditText()
@@ -59,6 +61,13 @@ class NewTracksActivity : ComponentActivity() {
         prepareUpdateBut()
         prepareHisTitle()
         startLogic()
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        trackRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun startLogic() {
@@ -202,6 +211,8 @@ class NewTracksActivity : ComponentActivity() {
             TracksActivityState.Exit -> {
                 finish()
             }
+
+            else -> {}
         }
     }
 

@@ -7,4 +7,5 @@ sealed interface PlayerActivityState {
     data object OnPrepared : PlayerActivityState
     data object OnCompletion : PlayerActivityState
     data class SetPlayTime (val position : String) : PlayerActivityState
+    data object BackBut : PlayerActivityState
 }

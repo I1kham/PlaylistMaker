@@ -1,7 +1,7 @@
 package com.alchemtech.playlistmaker.presentation.ui.player
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
@@ -12,7 +12,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerActivityS
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerActivityViewModel
 
 /*Player*/
-class PlayerrActivity : ComponentActivity() {
+class PlayerrActivity : AppCompatActivity() {
 
     private lateinit var track: Track
     private lateinit var viewModel: PlayerActivityViewModel
@@ -23,7 +23,14 @@ class PlayerrActivity : ComponentActivity() {
         prepareBinding()
         getTrackFromIntent()
         prepareViewModel()
+        prepareBackBut()
         fillStrData()
+    }
+
+    private fun prepareBackBut() {
+        binding.playerPreview.setOnClickListener{
+            viewModel.backBut()
+        }
     }
 
     private fun fillStrData() {
@@ -56,9 +63,10 @@ class PlayerrActivity : ComponentActivity() {
                 binding.playBut.setImageResource(R.drawable.pause_but)
             }// TODO()
             is PlayerActivityState.FillViewWithTrackData -> {
-                PlayerDataFillingCreator.provide(binding, track)
+
             }//TODO()
             PlayerActivityState.OnPrepared -> {
+                PlayerDataFillingCreator.provide(binding, track)
                 binding.playBut.isEnabled = true
                 playBut()
             }
@@ -71,13 +79,14 @@ class PlayerrActivity : ComponentActivity() {
             is PlayerActivityState.SetPlayTime -> {
                 binding.playTime.text = state.position
             }
+            PlayerActivityState.BackBut -> {
+                finish()
+            }
         }
     }
 
     private fun getTrackFromIntent() {
-
         track = convertFromString(intent.getSerializableExtra("track").toString())
-
     }
 
     private fun playBut() {
