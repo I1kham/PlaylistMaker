@@ -16,7 +16,15 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
+            android:name=".teeeestMainActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.PlaylistMaker" />
+        <activity
             android:name=".presentation.ui.tracks.NewTracksActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SettingsActivity" />
+        <activity
+            android:name=".presentation.ui.player.PlayerrActivity"
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />
         <activity

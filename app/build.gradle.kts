@@ -36,6 +36,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    kotlinOptions {
+        jvmTarget = 17.toString()
+    }
 }
 
 dependencies {
@@ -59,14 +62,15 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     ksp("androidx.room:room-compiler:2.6.1")
-    kapt("com.github.bumptech.glide:ksp:4.14.2")
+    ksp("com.github.bumptech.glide:ksp:4.14.2")
 
     implementation("com.github.moxy-community:moxy:2.2.2")
     implementation("com.github.moxy-community:moxy-android:2.2.2")
     kapt("com.github.moxy-community:moxy-compiler:2.2.2")
 
     implementation ("androidx.core:core-ktx:1.13.1")
+
 }

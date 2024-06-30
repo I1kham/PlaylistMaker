@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertToString
-import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
+import com.alchemtech.playlistmaker.presentation.ui.player.PlayerrActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityViewModel
 
@@ -190,7 +190,7 @@ class NewTracksActivity : ComponentActivity() {
 
             is TracksActivityState.NavigateTrackToPlayer -> {
                 val trackCardClickIntent =
-                    Intent(this, PlayerActivity::class.java).apply {
+                    Intent(this, PlayerrActivity::class.java).apply { // TODO:
                         putExtra(
                             "track",
                             state.track.convertToString()
@@ -276,5 +276,4 @@ class NewTracksActivity : ComponentActivity() {
     private companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
 }

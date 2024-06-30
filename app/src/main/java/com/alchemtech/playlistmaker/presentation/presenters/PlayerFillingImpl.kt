@@ -19,10 +19,10 @@ class PlayerFillingImpl(
     private val context: Context,
 ) : PlayerFilling, UiCalculator {
     init {
-        start()
+        fill()
     }
 
-    override fun start() {
+    override fun fill() {
         trackArtist()
         trackTimeMillis()
         collectionName()
