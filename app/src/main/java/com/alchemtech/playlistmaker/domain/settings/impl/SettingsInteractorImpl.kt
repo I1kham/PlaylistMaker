@@ -1,14 +1,15 @@
 package com.alchemtech.playlistmaker.domain.settings.impl
 
+import com.alchemtech.playlistmaker.data.settings.SettingsRepository
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 
-class SettingsInteractorImpl : SettingsInteractor{
+class SettingsInteractorImpl(val settingsRepository: SettingsRepository) : SettingsInteractor{
     override fun getThemeSettings(): ThemeSettings {
-        TODO("Not yet implemented")
+        return  settingsRepository.getThemeSettings()
     }
 
-    override fun updateThemeSetting(settings: ThemeSettings) {
-        TODO("Not yet implemented")
+    override fun updateThemeSetting(themeSettings: ThemeSettings) {
+        settingsRepository.updateThemeSetting(themeSettings)
     }
 }

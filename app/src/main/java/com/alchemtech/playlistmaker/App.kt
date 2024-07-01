@@ -6,26 +6,25 @@ import com.alchemtech.playlistmaker.creators.ExternalCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
-
-const val DARK_THEME = 1
+import com.alchemtech.playlistmaker.creators.SettingsInteractorCreator
+import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 
 class App : Application() {
+    lateinit var settingsInteractor : SettingsInteractor
     override fun onCreate() {
         super.onCreate()
-        switchTheme()
-
-
         ListTrackRepositoryCreator.setApplicationContext(this)
         PlayerDataFillingCreator.setApplicationContext(this)
         SearchCreator.setApplicationContext(this)
         ExternalCreator.setApplicationContext(this)
+        SettingsInteractorCreator.setApplicationContext(this)
+        settingsInteractor = SettingsInteractorCreator.provideSettingsInteractor()
+        switchTheme()
     }
 
     private fun switchTheme() {
         setDefaultNightMode(
-            this.getSharedPreferences(/* name = */ DARK_THEME.toString(), /* mode = */ MODE_PRIVATE)
-                .getInt(DARK_THEME.toString(), 1)
+           settingsInteractor.getThemeSettings().themeNumber
         )
-
     }
 }

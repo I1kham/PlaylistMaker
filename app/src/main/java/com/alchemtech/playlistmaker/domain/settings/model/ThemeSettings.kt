@@ -1,4 +1,3 @@
 package com.alchemtech.playlistmaker.domain.settings.model
 
-class ThemeSettings {
-}
+data class ThemeSettings(var themeNumber : Int)
