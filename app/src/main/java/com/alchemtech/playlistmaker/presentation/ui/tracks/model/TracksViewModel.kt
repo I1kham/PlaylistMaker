@@ -19,7 +19,7 @@ import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TracksActivityViewModel(
+class TracksViewModel(
 ) : ViewModel() {
 
     companion object {
@@ -29,7 +29,7 @@ class TracksActivityViewModel(
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                TracksActivityViewModel()
+                TracksViewModel()
             }
         }
     }
@@ -41,35 +41,35 @@ class TracksActivityViewModel(
     private var searchText: String = ""
     private val tracksList = mutableListOf<Track>()
     private val handler = Handler(Looper.getMainLooper())
-    private val stateLiveData = MutableLiveData<TracksActivityState>()
+    private val stateLiveData = MutableLiveData<TracksState>()
     private val tracksConsumer = object : TracksInteractor.TracksConsumer {
         override fun consume(foundedTracks: List<Track>?, errorCode: Int?) {
             if (foundedTracks.isNullOrEmpty()) {
                 if (errorCode == -1) {
-                    renderState(TracksActivityState.Error(-1))
+                    renderState(TracksState.Error(-1))
                 } else {
-                    renderState(TracksActivityState.Error(-2))
+                    renderState(TracksState.Error(-2))
                 }
             } else {
                 tracksList.clear()
                 tracksList.addAll(foundedTracks)
-                renderState(TracksActivityState.Content(tracksList))
+                renderState(TracksState.Content(tracksList))
             }
         }
     }
 
     internal fun backButLogic() {
-        renderState(TracksActivityState.Exit)
+        renderState(TracksState.Exit)
     }
 
     internal fun clearEditTextButLogic() {
-        renderState(TracksActivityState.InputTextClear(historyInteractor.getTrackList()))
+        renderState(TracksState.InputTextClear(historyInteractor.getTrackList()))
         tracksList.clear()
     }
 
     internal fun clearButSearchHistory() {
         historyInteractor.clearTracksList()
-        renderState(TracksActivityState.Content(tracksList))
+        renderState(TracksState.Content(tracksList))
     }
 
     internal fun inputEditTextListener(editText: EditText) {
@@ -98,12 +98,12 @@ class TracksActivityViewModel(
 
     private fun onTextChangedLogic(s: String) {
         searchText = s
-        renderState(TracksActivityState.TextClearBut(s.isNotEmpty()))
+        renderState(TracksState.TextClearBut(s.isNotEmpty()))
         searchDebounce()
     }
 
     internal fun startModelLogic() {
-        renderState(TracksActivityState.History(historyInteractor.getTrackList()))
+        renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
     internal fun clickOnTrack(track: Track) {
@@ -118,14 +118,14 @@ class TracksActivityViewModel(
 
     private fun afterTextChangedLogic(text: CharSequence?) {
         if (text?.isNotEmpty() == false) {
-            renderState(TracksActivityState.History(historyInteractor.getTrackList()))
-            renderState(TracksActivityState.TextClearBut(false))
+            renderState(TracksState.History(historyInteractor.getTrackList()))
+            renderState(TracksState.TextClearBut(false))
         }
     }
 
     private fun searchTrack(s: String) {
         if (s.isNotEmpty()) {
-            renderState(TracksActivityState.Loading)
+            renderState(TracksState.Loading)
             tracksList.clear()
             searchInteractor.searchTracksInteractor(
                 expression = s,
@@ -144,15 +144,15 @@ class TracksActivityViewModel(
         )
     }
 
-    fun observeState(): LiveData<TracksActivityState> = stateLiveData
+    fun observeState(): LiveData<TracksState> = stateLiveData
 
 
     private fun addTrackToHistoryList(track: Track) {
         historyInteractor.addTrack(track)
-        renderState(TracksActivityState.History(historyInteractor.getTrackList()))
+        renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
-    private fun renderState(state: TracksActivityState) {
+    private fun renderState(state: TracksState) {
         stateLiveData.postValue(state)
         stateLiveData.value
     }

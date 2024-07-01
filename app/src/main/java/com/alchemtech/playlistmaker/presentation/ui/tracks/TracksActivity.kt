@@ -20,13 +20,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
-import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityViewModel
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
 
 class TracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: TracksActivityViewModel
+    private lateinit var viewModel: TracksViewModel
     private lateinit var binding: ActivitySearchBinding
 
     private lateinit var inputEditText: EditText
@@ -134,8 +134,8 @@ class TracksActivity : AppCompatActivity() {
     private fun prepareViewModel() {
         viewModel = ViewModelProvider(
             this,
-            TracksActivityViewModel.getViewModelFactory()
-        )[TracksActivityViewModel::class.java]
+            TracksViewModel.getViewModelFactory()
+        )[TracksViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
@@ -147,9 +147,9 @@ class TracksActivity : AppCompatActivity() {
     }
 
 
-    private fun render(state: TracksActivityState) {
+    private fun render(state: TracksState) {
         when (state) {
-            is TracksActivityState.Loading -> {
+            is TracksState.Loading -> {
                 showProgressBar(true)
                 showNoConnection(false)
                 showNoDataErr(false)
@@ -157,7 +157,7 @@ class TracksActivity : AppCompatActivity() {
                 hideKeyBoard()
             }
 
-            is TracksActivityState.Content -> {
+            is TracksState.Content -> {
                 state.tracks.upDateAdapter()
 
                 showHistoryListButTitle(false)
@@ -167,7 +167,7 @@ class TracksActivity : AppCompatActivity() {
                 showProgressBar(false)
                 hideKeyBoard()
             }
-            is TracksActivityState.Error -> {
+            is TracksState.Error -> {
                 hideKeyBoard()
                 showProgressBar(false)
                 showHistoryListButTitle(
@@ -180,20 +180,20 @@ class TracksActivity : AppCompatActivity() {
                 }
             }
 
-            is TracksActivityState.History -> {
+            is TracksState.History -> {
                 hideKeyBoard()
                 showHistoryList(state.tracks)
             }
 
-            is TracksActivityState.TextClearBut -> {
+            is TracksState.TextClearBut -> {
                 clearButton.isVisible = state.visibility
             }
 
-            is TracksActivityState.InputTextClear -> {
+            is TracksState.InputTextClear -> {
                 inputEditText.setText("")
                 showHistoryList(state.tracks)
             }
-            TracksActivityState.Exit -> {
+            TracksState.Exit -> {
                 finish()
             }
 

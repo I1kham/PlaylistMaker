@@ -8,14 +8,14 @@ import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertFromString
-import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerActivityState
-import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerActivityViewModel
+import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
+import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 
 /*Player*/
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var track: Track
-    private lateinit var viewModel: PlayerActivityViewModel
+    private lateinit var viewModel: PlayerViewModel
     private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,41 +46,41 @@ class PlayerActivity : AppCompatActivity() {
     private fun prepareViewModel() {
         viewModel = ViewModelProvider(
             this,
-            PlayerActivityViewModel.getViewModelFactory(track)
-        )[PlayerActivityViewModel::class.java]
+            PlayerViewModel.getViewModelFactory(track)
+        )[PlayerViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
     }
 
-    private fun render(state: PlayerActivityState) {
+    private fun render(state: PlayerState) {
         when (state) {
-            is PlayerActivityState.Pause -> {
+            is PlayerState.Pause -> {
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerActivityState.Play -> {
+            is PlayerState.Play -> {
                 binding.playBut.setImageResource(R.drawable.pause_but)
             }
-            is PlayerActivityState.FillViewWithTrackData -> {
+            is PlayerState.FillViewWithTrackData -> {
 
             }
-            PlayerActivityState.OnPrepared -> {
+            PlayerState.OnPrepared -> {
                 PlayerDataFillingCreator.provide(binding, track)
                 binding.playBut.isEnabled = true
                 playBut()
             }
 
-            PlayerActivityState.OnCompletion -> {
+            PlayerState.OnCompletion -> {
                 binding.playTime.text = "00:00"
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerActivityState.SetPlayTime -> {
+            is PlayerState.SetPlayTime -> {
                 binding.playTime.text = state.position
             }
 
-            PlayerActivityState.BackBut -> {
+            PlayerState.BackBut -> {
                 finish()
             }
         }
