@@ -3,7 +3,7 @@ package com.alchemtech.playlistmaker.data
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import com.alchemtech.playlistmaker.domain.MoveToActivity
+import com.alchemtech.playlistmaker.domain.MoveTo
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertToString
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
@@ -11,7 +11,7 @@ import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
-class MoveToActivityImpl(val context: Context) : MoveToActivity {
+class MoveToImpl(val context: Context) : MoveTo {
     override fun toPlayer(track: Track) {
         val playerIntent = Intent(context, PlayerActivity::class.java).apply {
             putExtra(
