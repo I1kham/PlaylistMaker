@@ -3,7 +3,7 @@ package com.alchemtech.playlistmaker.domain.sharing.impl
 import android.content.Context
 import androidx.core.content.ContextCompat.getString
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.data.dto.EmailData
+import com.alchemtech.playlistmaker.data.dto.emailData.EmailData
 import com.alchemtech.playlistmaker.data.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 

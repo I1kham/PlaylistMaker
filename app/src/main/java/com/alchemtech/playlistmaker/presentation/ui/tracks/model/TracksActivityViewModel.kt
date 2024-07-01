@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -8,21 +7,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
+import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
 class TracksActivityViewModel(
-    application: Application,
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     companion object {
 
@@ -31,15 +29,14 @@ class TracksActivityViewModel(
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                TracksActivityViewModel(
-                    this[APPLICATION_KEY] as Application
-                )
+                TracksActivityViewModel()
             }
         }
     }
     // TODO: сюда функции
-    val historyInteractor = ListTrackRepositoryCreator.provideListTrackDb()
-    val searchInteractor = SearchCreator.provideTracksInteractor()
+    private val historyInteractor = ListTrackRepositoryCreator.provideListTrackDb()
+    private val searchInteractor = SearchCreator.provideTracksInteractor()
+    private val moveToActivity = MoveToActivityCreator.provideMoveToActivity()
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
     private val tracksList = mutableListOf<Track>()
@@ -99,7 +96,7 @@ class TracksActivityViewModel(
         }
     }
 
-    internal fun onTextChangedLogic(s: String) {
+    private fun onTextChangedLogic(s: String) {
         searchText = s
         renderState(TracksActivityState.TextClearBut(s.isNotEmpty()))
         searchDebounce()
@@ -111,7 +108,7 @@ class TracksActivityViewModel(
 
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
-        navigateToPlayer(track)
+        moveToActivity.toPlayer(track)
     }
 
     internal fun updateResponse() {
@@ -153,10 +150,6 @@ class TracksActivityViewModel(
     private fun addTrackToHistoryList(track: Track) {
         historyInteractor.addTrack(track)
         renderState(TracksActivityState.History(historyInteractor.getTrackList()))
-    }
-
-    private fun navigateToPlayer(track: Track) {
-        renderState(TracksActivityState.NavigateTrackToPlayer(track))
     }
 
     private fun renderState(state: TracksActivityState) {

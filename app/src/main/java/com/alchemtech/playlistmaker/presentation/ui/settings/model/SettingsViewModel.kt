@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.ExternalCreator
-import com.alchemtech.playlistmaker.creators.SettingsInteractorCreator
+import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
@@ -22,7 +22,7 @@ class SettingsViewModel(
             initializer {
                 SettingsViewModel(
                     ExternalCreator.provideSharingInteractor(),
-                    SettingsInteractorCreator.provideSettingsInteractor(),
+                    ThemeInteractorCreator.provideThemeInteractor(),
                 )
             }
         }

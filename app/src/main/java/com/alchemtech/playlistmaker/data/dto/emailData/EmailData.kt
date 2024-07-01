@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.data.dto
+package com.alchemtech.playlistmaker.data.dto.emailData
 
 import android.content.Context
 import androidx.core.content.ContextCompat.getString

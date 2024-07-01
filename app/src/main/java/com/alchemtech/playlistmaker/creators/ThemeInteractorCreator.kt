@@ -6,13 +6,13 @@ import com.alchemtech.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 
-object SettingsInteractorCreator {
+object ThemeInteractorCreator {
     private lateinit var applicationContext: Application
     fun setApplicationContext(application: Application) {
         applicationContext = application
     }
 
-    fun provideSettingsInteractor(): SettingsInteractor {
+    fun provideThemeInteractor(): SettingsInteractor {
         return SettingsInteractorImpl(provideSettingsRepository())
     }
 

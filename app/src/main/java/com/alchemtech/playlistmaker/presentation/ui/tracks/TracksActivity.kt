@@ -2,7 +2,6 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertToString
-import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksActivityViewModel
 
@@ -196,18 +193,6 @@ class TracksActivity : AppCompatActivity() {
                 inputEditText.setText("")
                 showHistoryList(state.tracks)
             }
-
-            is TracksActivityState.NavigateTrackToPlayer -> {
-                val trackCardClickIntent =
-                    Intent(this, PlayerActivity::class.java).apply { // TODO:
-                        putExtra(
-                            "track",
-                            state.track.convertToString()
-                        )
-                    }
-                startActivity(trackCardClickIntent)
-            }
-
             TracksActivityState.Exit -> {
                 finish()
             }
