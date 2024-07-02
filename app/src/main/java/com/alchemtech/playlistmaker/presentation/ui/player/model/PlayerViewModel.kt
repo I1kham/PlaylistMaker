@@ -19,7 +19,7 @@ import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 
 /*Player*/
 class PlayerViewModel(
-     application: Application,
+    application: Application,
 ) : AndroidViewModel(application) {
 
     companion object {
@@ -41,8 +41,11 @@ class PlayerViewModel(
         killCurrentPositionTask()
     }
 
+
+
     // TODO: сюда функции
-    private var track: Track? = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()
+    private var track: Track
+    private var player: PlayerInteractor
     private val currentPositionTask = createUpdateCurrentPositionTask()
     var mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -51,51 +54,47 @@ class PlayerViewModel(
         stateLiveData.postValue(state)
         stateLiveData.value
     }
-
-    internal fun fill() {
-        renderState(PlayerState.FillViewWithTrackData)
+    init {
+        track = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()!!
+        player = PlayerCreator.providePlayer(track)
         preparePlayer()
     }
 
-    private lateinit var player: PlayerInteractor
-
     private fun preparePlayer() {
-        if (track != null) {
-            PlayerCreator.providePlayer(track!!).also { player = it }
 
-            val onPreparedListenerConsumer =
-                PlayerRepository.OnPreparedListenerConsumer {
-                    renderState(PlayerState.OnPrepared(track!!))
-                }
-
-            val onCompletionListenerConsumer =
-                PlayerRepository.OnCompletionListenerConsumer {
-                    renderState(PlayerState.OnCompletion)
-                    killCurrentPositionTask()
-                }
-
-
-            val pauseConsumer = object : PlayerInteractor.PauseConsumer {
-                override fun consume() {
-                    renderState(PlayerState.Pause)
-                    killCurrentPositionTask()
-                }
+        val onPreparedListenerConsumer =
+            PlayerRepository.OnPreparedListenerConsumer {
+                renderState(PlayerState.OnPrepared(track))
             }
-            val startConsumer = object : PlayerInteractor.StartConsumer {
-                override fun consume() {
-                    renderState(PlayerState.Play)
-                    startGetCurrentPositionTask()
-                }
+
+        val onCompletionListenerConsumer =
+            PlayerRepository.OnCompletionListenerConsumer {
+                renderState(PlayerState.OnCompletion)
+                killCurrentPositionTask()
             }
-            player.setConsumers(
-                onPreparedListenerConsumer,
-                onCompletionListenerConsumer,
-                pauseConsumer,
-                startConsumer
-            )
-            player.preparePlayer()
+
+
+        val pauseConsumer = object : PlayerInteractor.PauseConsumer {
+            override fun consume() {
+                renderState(PlayerState.Pause)
+                killCurrentPositionTask()
+            }
         }
+        val startConsumer = object : PlayerInteractor.StartConsumer {
+            override fun consume() {
+                renderState(PlayerState.Play)
+                startGetCurrentPositionTask()
+            }
+        }
+        player.setConsumers(
+            onPreparedListenerConsumer,
+            onCompletionListenerConsumer,
+            pauseConsumer,
+            startConsumer
+        )
+        player.preparePlayer()
     }
+
 
     private fun killCurrentPositionTask() {
         mainThreadHandler.removeCallbacks(
@@ -121,7 +120,7 @@ class PlayerViewModel(
         )
     }
 
-    internal fun playBut() {
+    internal fun playBut()   {
         player.playbackControl()
     }
 

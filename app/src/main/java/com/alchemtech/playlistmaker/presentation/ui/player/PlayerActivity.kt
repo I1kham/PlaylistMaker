@@ -20,7 +20,6 @@ class PlayerActivity : AppCompatActivity() {
         prepareBinding()
         prepareViewModel()
         prepareBackBut()
-        fillStrData()
     }
 
     private fun prepareBackBut() {
@@ -28,11 +27,6 @@ class PlayerActivity : AppCompatActivity() {
             viewModel.backBut()
         }
     }
-
-    private fun fillStrData() {
-        viewModel.fill()
-    }
-
 
     private fun prepareBinding() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -43,7 +37,6 @@ class PlayerActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(
             this,
             PlayerViewModel.getViewModelFactory(
-               // track
             )
         )[PlayerViewModel::class.java]
         viewModel.observeState().observe(this) {
@@ -60,13 +53,11 @@ class PlayerActivity : AppCompatActivity() {
             is PlayerState.Play -> {
                 binding.playBut.setImageResource(R.drawable.pause_but)
             }
-            is PlayerState.FillViewWithTrackData -> {
 
-            }
-            is PlayerState.OnPrepared-> {
+            is PlayerState.OnPrepared -> {
                 PlayerDataFillingCreator.provide(binding, state.track)
                 binding.playBut.isEnabled = true
-                playBut()
+               playBut()
             }
 
             PlayerState.OnCompletion -> {

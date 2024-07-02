@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.databinding.ActivityMainBinding
-import com.alchemtech.playlistmaker.presentation.ui.main.model.MainActivityViewModel
+import com.alchemtech.playlistmaker.presentation.ui.main.model.MainViewModel
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            MainActivityViewModel.getViewModelFactory()
-        )[MainActivityViewModel::class.java]
+            MainViewModel.getViewModelFactory()
+        )[MainViewModel::class.java]
 
 
         binding.buttonSearch.setOnClickListener {

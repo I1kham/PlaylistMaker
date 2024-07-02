@@ -6,11 +6,11 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 
-class MainActivityViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                MainActivityViewModel()
+                MainViewModel()
             }
         }
     }

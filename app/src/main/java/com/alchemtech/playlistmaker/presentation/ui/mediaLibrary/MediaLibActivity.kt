@@ -1,16 +1,28 @@
 package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.alchemtech.playlistmaker.R
+import androidx.lifecycle.ViewModelProvider
+import com.alchemtech.playlistmaker.databinding.ActivityMediaLibraryBinding
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.MediaLibViewModel
 
 class MediaLibActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: MediaLibViewModel
+    private lateinit var binding: ActivityMediaLibraryBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media_library)
 
-        val back = findViewById<TextView>(R.id.media_Lib_text_View)
+        viewModel = ViewModelProvider(
+            this,
+            MediaLibViewModel.getViewModelFactory()
+        )[MediaLibViewModel::class.java]
+
+        binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val back = binding.mediaLibTextView
         back.setOnClickListener {
             finish()
         }
