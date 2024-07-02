@@ -6,22 +6,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
-import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertFromString
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 
 /*Player*/
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var track: Track
     private lateinit var viewModel: PlayerViewModel
     private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prepareBinding()
-        getTrackFromIntent()
         prepareViewModel()
         prepareBackBut()
         fillStrData()
@@ -46,7 +42,9 @@ class PlayerActivity : AppCompatActivity() {
     private fun prepareViewModel() {
         viewModel = ViewModelProvider(
             this,
-            PlayerViewModel.getViewModelFactory(track)
+            PlayerViewModel.getViewModelFactory(
+               // track
+            )
         )[PlayerViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
@@ -65,8 +63,8 @@ class PlayerActivity : AppCompatActivity() {
             is PlayerState.FillViewWithTrackData -> {
 
             }
-            PlayerState.OnPrepared -> {
-                PlayerDataFillingCreator.provide(binding, track)
+            is PlayerState.OnPrepared-> {
+                PlayerDataFillingCreator.provide(binding, state.track)
                 binding.playBut.isEnabled = true
                 playBut()
             }
@@ -84,10 +82,6 @@ class PlayerActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-
-    private fun getTrackFromIntent() {
-        track = convertFromString(intent.getSerializableExtra("track").toString())
     }
 
     private fun playBut() {

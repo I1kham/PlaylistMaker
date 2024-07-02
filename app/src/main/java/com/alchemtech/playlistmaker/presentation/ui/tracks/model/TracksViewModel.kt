@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
+import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
@@ -36,6 +37,7 @@ class TracksViewModel(
     // TODO: сюда функции
     private val historyInteractor = ListTrackRepositoryCreator.provideListTrackDb()
     private val searchInteractor = SearchCreator.provideTracksInteractor()
+    private val singleTrackInteractor = SingleTrackRepositoryCreator.provideSingleTrackDb()
     private val moveToActivity = MoveToActivityCreator.provideMoveToActivity()
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
@@ -108,7 +110,8 @@ class TracksViewModel(
 
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
-        moveToActivity.toPlayer(track)
+        singleTrackInteractor.writeTrack(track)
+        moveToActivity.toPlayer()
     }
 
     internal fun updateResponse() {

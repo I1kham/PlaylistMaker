@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.PlayerCreator
+import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
@@ -18,14 +19,15 @@ import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 
 /*Player*/
 class PlayerViewModel(
-    application: Application, private val track: Track,
+     application: Application,
 ) : AndroidViewModel(application) {
 
     companion object {
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
+        fun getViewModelFactory(
+        ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 PlayerViewModel(
-                    this[APPLICATION_KEY] as Application, track
+                    this[APPLICATION_KEY] as Application
                 )
             }
         }
@@ -40,6 +42,7 @@ class PlayerViewModel(
     }
 
     // TODO: сюда функции
+    private var track: Track? = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()
     private val currentPositionTask = createUpdateCurrentPositionTask()
     var mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -57,40 +60,41 @@ class PlayerViewModel(
     private lateinit var player: PlayerInteractor
 
     private fun preparePlayer() {
-        PlayerCreator.providePlayer(track).also { player = it }
+        if (track != null) {
+            PlayerCreator.providePlayer(track!!).also { player = it }
+
+            val onPreparedListenerConsumer =
+                PlayerRepository.OnPreparedListenerConsumer {
+                    renderState(PlayerState.OnPrepared(track!!))
+                }
+
+            val onCompletionListenerConsumer =
+                PlayerRepository.OnCompletionListenerConsumer {
+                    renderState(PlayerState.OnCompletion)
+                    killCurrentPositionTask()
+                }
 
 
-        val onPreparedListenerConsumer =
-            PlayerRepository.OnPreparedListenerConsumer {
-                renderState(PlayerState.OnPrepared)
+            val pauseConsumer = object : PlayerInteractor.PauseConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Pause)
+                    killCurrentPositionTask()
+                }
             }
-
-        val onCompletionListenerConsumer =
-            PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion)
-                killCurrentPositionTask()
+            val startConsumer = object : PlayerInteractor.StartConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Play)
+                    startGetCurrentPositionTask()
+                }
             }
-
-
-        val pauseConsumer = object : PlayerInteractor.PauseConsumer {
-            override fun consume() {
-                renderState(PlayerState.Pause)
-                killCurrentPositionTask()
-            }
+            player.setConsumers(
+                onPreparedListenerConsumer,
+                onCompletionListenerConsumer,
+                pauseConsumer,
+                startConsumer
+            )
+            player.preparePlayer()
         }
-        val startConsumer = object : PlayerInteractor.StartConsumer {
-            override fun consume() {
-                renderState(PlayerState.Play)
-                startGetCurrentPositionTask()
-            }
-        }
-        player.setConsumers(
-            onPreparedListenerConsumer,
-            onCompletionListenerConsumer,
-            pauseConsumer,
-            startConsumer
-        )
-        player.preparePlayer()
     }
 
     private fun killCurrentPositionTask() {
@@ -124,5 +128,4 @@ class PlayerViewModel(
     internal fun backBut() {
         renderState(PlayerState.BackBut)
     }
-
 }

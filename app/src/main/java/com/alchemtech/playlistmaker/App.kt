@@ -7,6 +7,7 @@ import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
+import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 
@@ -20,6 +21,7 @@ class App : Application() {
         ExternalCreator.setApplicationContext(this)
         ThemeInteractorCreator.setApplicationContext(this)
         MoveToActivityCreator.setApplicationContext(this)
+        SingleTrackRepositoryCreator.setApplicationContext(this)
         settingsInteractor = ThemeInteractorCreator.provideThemeInteractor()
         switchTheme()
     }

@@ -12,12 +12,12 @@ import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
 class MoveToImpl(val context: Context) : MoveTo {
-    override fun toPlayer(track: Track) {
+    override fun toPlayer() {
         val playerIntent = Intent(context, PlayerActivity::class.java).apply {
-            putExtra(
-                "track",
-                track.convertToString()
-            )
+//            putExtra(
+//                "track",
+//                track.convertToString()
+//            )
         }
         playerIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(playerIntent)
