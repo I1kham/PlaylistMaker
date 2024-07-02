@@ -6,25 +6,30 @@ import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
+import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.presenters.PlayerFilling
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 
-/*Player*/
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var viewModel: PlayerViewModel
     private lateinit var binding: ActivityPlayerBinding
 
+    private lateinit var filler : PlayerFilling
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prepareBinding()
         prepareViewModel()
+        observeRenderState()
         prepareBackBut()
+        filler = PlayerDataFillingCreator.provide(binding)
     }
 
     private fun prepareBackBut() {
         binding.playerPreview.setOnClickListener {
-            viewModel.backBut()
+            finish()
         }
     }
 
@@ -39,13 +44,21 @@ class PlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(
             )
         )[PlayerViewModel::class.java]
-        viewModel.observeState().observe(this) {
+
+
+    }
+
+    private fun observeRenderState() {
+        val a = viewModel.observeRenderState()
+        a.observe(this) {
             render(it)
         }
     }
 
+
     private fun render(state: PlayerState) {
         when (state) {
+
             is PlayerState.Pause -> {
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
@@ -55,9 +68,9 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             is PlayerState.OnPrepared -> {
-                PlayerDataFillingCreator.provide(binding, state.track)
+                fill( state.track)
                 binding.playBut.isEnabled = true
-               playBut()
+                playBut()
             }
 
             PlayerState.OnCompletion -> {
@@ -69,15 +82,20 @@ class PlayerActivity : AppCompatActivity() {
                 binding.playTime.text = state.position
             }
 
-            PlayerState.BackBut -> {
-                finish()
+            is PlayerState.Fill -> {
+               fill( state.track)
             }
         }
+    }
+
+    private fun fill(track: Track){
+        filler.fill(track)
     }
 
     private fun playBut() {
         binding.playBut.setOnClickListener {
             viewModel.playBut()
         }
+        binding.playBut.isEnabled = true
     }
 }

@@ -73,10 +73,6 @@ class TracksViewModel(
         startModelLogic()
     }
 
-    internal fun backButLogic() {
-        renderState(TracksState.Exit)
-    }
-
     internal fun clearEditTextButLogic() {
         renderState(TracksState.InputTextClear(historyInteractor.getTrackList()))
         tracksList.clear()

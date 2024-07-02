@@ -8,8 +8,7 @@ sealed interface TracksState {
     data class TextClearBut(val visibility: Boolean) : TracksState
     data class Content(val tracks: List<Track>) : TracksState
     data class History(val tracks: List<Track>) : TracksState
-    data class Error(val errorMsg: Int) : TracksState
+    data class Error(val errorCode: Int) : TracksState
     data class InputTextClear(val tracks: List<Track>) : TracksState
-    data object Exit : TracksState
 
 }

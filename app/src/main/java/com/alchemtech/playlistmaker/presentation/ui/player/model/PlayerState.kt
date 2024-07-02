@@ -7,7 +7,7 @@ sealed interface PlayerState {
     data object Pause : PlayerState
     data class OnPrepared(val track: Track) : PlayerState
     data object OnCompletion : PlayerState
-    data class SetPlayTime (val position : String) : PlayerState
-    data object BackBut : PlayerState
+    data class Fill(val track: Track):PlayerState
+    data class SetPlayTime(val position: String): PlayerState
 
 }

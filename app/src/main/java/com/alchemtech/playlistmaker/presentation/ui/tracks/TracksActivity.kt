@@ -105,7 +105,7 @@ class TracksActivity : AppCompatActivity() {
     private fun prepareBackBut() {
         backButton = binding.pageSearchPreview
         backButton.setOnClickListener {
-            viewModel.backButLogic()
+            finish()
         }
     }
 
@@ -167,7 +167,7 @@ class TracksActivity : AppCompatActivity() {
                 showHistoryListButTitle(
                     false
                 )
-                if (state.errorMsg == -1) {
+                if (state.errorCode == -1) {
                     showNoConnection(true)
                 } else {
                     showNoDataErr(true)
@@ -186,9 +186,6 @@ class TracksActivity : AppCompatActivity() {
             is TracksState.InputTextClear -> {
                 inputEditText.setText("")
                 showHistoryList(state.tracks)
-            }
-            TracksState.Exit -> {
-                finish()
             }
         }
     }

@@ -14,15 +14,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class PlayerFillingImpl(
-    private val track: Track,
     private val binding: ActivityPlayerBinding,
     private val context: Context,
 ) : PlayerFilling, UiCalculator {
-    init {
-        fill()
-    }
+private lateinit var track: Track
 
-    override fun fill() {
+    override fun fill(track: Track) {
+        this.track = track
         trackArtist()
         trackTimeMillis()
         collectionName()

@@ -17,12 +17,12 @@ import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 
-/*Player*/
 class PlayerViewModel(
     application: Application,
-    val track: Track,
-    val player: PlayerInteractor,
-) : AndroidViewModel(application) {
+    private val track: Track,
+    private val player: PlayerInteractor,
+
+    ) : AndroidViewModel(application) {
 
     companion object {
         fun getViewModelFactory(
@@ -37,7 +37,7 @@ class PlayerViewModel(
             }
         }
 
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
+        private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
     }
 
     override fun onCleared() {
@@ -46,17 +46,21 @@ class PlayerViewModel(
         killCurrentPositionTask()
     }
 
-    // TODO: сюда функции
     private val currentPositionTask = createUpdateCurrentPositionTask()
     private var mainThreadHandler = Handler(Looper.getMainLooper())
-    private val stateLiveData = MutableLiveData<PlayerState>()
-    fun observeState(): LiveData<PlayerState> = stateLiveData
+
+   private val stateLiveData = MutableLiveData<PlayerState>()
+
+
+    fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
         stateLiveData.value
+
     }
 
     init {
+        renderState(PlayerState.Fill(track))
         preparePlayer()
     }
 
@@ -95,7 +99,6 @@ class PlayerViewModel(
         player.preparePlayer()
     }
 
-
     private fun killCurrentPositionTask() {
         mainThreadHandler.removeCallbacks(
             currentPositionTask
@@ -124,7 +127,4 @@ class PlayerViewModel(
         player.playbackControl()
     }
 
-    internal fun backBut() {
-        renderState(PlayerState.BackBut)
-    }
 }
