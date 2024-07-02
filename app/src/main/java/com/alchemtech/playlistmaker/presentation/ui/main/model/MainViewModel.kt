@@ -5,25 +5,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
+import com.alchemtech.playlistmaker.domain.MoveTo
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val moveToActivity: MoveTo ) : ViewModel() {
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                MainViewModel()
+                MainViewModel(
+                    MoveToActivityCreator.provideMoveToActivity()
+                )
             }
         }
     }
-    private val moveToActivity = MoveToActivityCreator.provideMoveToActivity()
 
-    internal fun toSearch(){
+    internal fun toSearch() {
         moveToActivity.toSearch()
     }
 
-    internal fun toMediaLib(){
+    internal fun toMediaLib() {
         moveToActivity.toMediaLib()
     }
-    internal fun toSettings(){
+
+    internal fun toSettings() {
         moveToActivity.toSettings()
     }
 

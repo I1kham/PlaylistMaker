@@ -20,14 +20,19 @@ import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 /*Player*/
 class PlayerViewModel(
     application: Application,
+    val track: Track,
+    val player: PlayerInteractor,
 ) : AndroidViewModel(application) {
 
     companion object {
         fun getViewModelFactory(
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
+                val track = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()!!
                 PlayerViewModel(
-                    this[APPLICATION_KEY] as Application
+                    this[APPLICATION_KEY] as Application,
+                    track,
+                    PlayerCreator.providePlayer(track),
                 )
             }
         }
@@ -41,22 +46,17 @@ class PlayerViewModel(
         killCurrentPositionTask()
     }
 
-
-
     // TODO: сюда функции
-    private var track: Track
-    private var player: PlayerInteractor
     private val currentPositionTask = createUpdateCurrentPositionTask()
-    var mainThreadHandler = Handler(Looper.getMainLooper())
+    private var mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
         stateLiveData.value
     }
+
     init {
-        track = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()!!
-        player = PlayerCreator.providePlayer(track)
         preparePlayer()
     }
 
@@ -120,7 +120,7 @@ class PlayerViewModel(
         )
     }
 
-    internal fun playBut()   {
+    internal fun playBut() {
         player.playbackControl()
     }
 

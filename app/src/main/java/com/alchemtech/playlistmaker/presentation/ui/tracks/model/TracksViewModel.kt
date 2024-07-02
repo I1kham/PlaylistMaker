@@ -17,10 +17,16 @@ import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
+import com.alchemtech.playlistmaker.domain.MoveTo
+import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
+import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TracksViewModel(
+class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
+                       private val searchInteractor :TracksInteractor,
+                       private val singleTrackInteractor : SingleTrackInteractor,
+                       private val moveToActivity : MoveTo
 ) : ViewModel() {
 
     companion object {
@@ -30,15 +36,15 @@ class TracksViewModel(
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                TracksViewModel()
+                TracksViewModel(ListTrackRepositoryCreator.provideListTrackDb(),
+                    SearchCreator.provideTracksInteractor(),
+                    SingleTrackRepositoryCreator.provideSingleTrackDb(),
+                    MoveToActivityCreator.provideMoveToActivity()
+                    )
             }
         }
     }
     // TODO: сюда функции
-    private val historyInteractor = ListTrackRepositoryCreator.provideListTrackDb()
-    private val searchInteractor = SearchCreator.provideTracksInteractor()
-    private val singleTrackInteractor = SingleTrackRepositoryCreator.provideSingleTrackDb()
-    private val moveToActivity = MoveToActivityCreator.provideMoveToActivity()
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
     private val tracksList = mutableListOf<Track>()
