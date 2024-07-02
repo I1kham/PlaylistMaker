@@ -57,18 +57,12 @@ class TracksActivity : AppCompatActivity() {
         prepareEditTextClearBut()
         prepareUpdateBut()
         prepareHisTitle()
-        startLogic()
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onStart() {
         super.onStart()
         trackRecyclerView.adapter?.notifyDataSetChanged()
-    }
-
-    private fun startLogic() {
-        viewModel.startModelLogic()
     }
 
     private fun prepareHisTitle() {
@@ -196,8 +190,6 @@ class TracksActivity : AppCompatActivity() {
             TracksState.Exit -> {
                 finish()
             }
-
-            else -> {}
         }
     }
 

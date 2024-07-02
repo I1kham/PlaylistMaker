@@ -23,10 +23,11 @@ import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
-                       private val searchInteractor :TracksInteractor,
-                       private val singleTrackInteractor : SingleTrackInteractor,
-                       private val moveToActivity : MoveTo
+class TracksViewModel(
+    private val historyInteractor: TrackHistoryInteractor,
+    private val searchInteractor: TracksInteractor,
+    private val singleTrackInteractor: SingleTrackInteractor,
+    private val moveToActivity: MoveTo,
 ) : ViewModel() {
 
     companion object {
@@ -36,14 +37,16 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                TracksViewModel(ListTrackRepositoryCreator.provideListTrackDb(),
+                TracksViewModel(
+                    ListTrackRepositoryCreator.provideListTrackDb(),
                     SearchCreator.provideTracksInteractor(),
                     SingleTrackRepositoryCreator.provideSingleTrackDb(),
                     MoveToActivityCreator.provideMoveToActivity()
-                    )
+                )
             }
         }
     }
+
     // TODO: сюда функции
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
@@ -64,6 +67,10 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
                 renderState(TracksState.Content(tracksList))
             }
         }
+    }
+
+    init {
+        startModelLogic()
     }
 
     internal fun backButLogic() {
@@ -110,7 +117,7 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
         searchDebounce()
     }
 
-    internal fun startModelLogic() {
+    private fun startModelLogic() {
         renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
@@ -123,7 +130,6 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
     internal fun updateResponse() {
         searchTrack(searchText)
     }
-
 
     private fun afterTextChangedLogic(text: CharSequence?) {
         if (text?.isNotEmpty() == false) {
@@ -155,10 +161,8 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
 
     fun observeState(): LiveData<TracksState> = stateLiveData
 
-
     private fun addTrackToHistoryList(track: Track) {
         historyInteractor.addTrack(track)
-        renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
     private fun renderState(state: TracksState) {
@@ -168,7 +172,7 @@ class TracksViewModel( private val historyInteractor : TrackHistoryInteractor,
 
     override fun onCleared() {
         super.onCleared()
-       handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         historyInteractor.writeTrackList()
     }
 }
