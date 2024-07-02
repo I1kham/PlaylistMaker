@@ -2,9 +2,9 @@
 <resources>
 
     <color name="mainActivityBackground">#3772E7</color>
-    <!--    <color name="allWhite">#FFFFFF</color>-->
+
     <color name="allWhite">#FFFFFF</color>
-    <!--    <color name="allBlack">#1A1B22</color>-->
+
     <color name="all_YP_Black">#1A1B22</color>
     <color name="transparent">#00000000</color>
     <color name="YP_gray_White">#AEAFB4</color>
@@ -15,10 +15,8 @@
     <color name="grayBlack">#AEAFB4</color>
     <color name="lightStatusBar">#FEF7FF</color>
     <color name="YP_AAL_gray">#AEAFB4</color>
-    <!--    <color name="grayWhite">#AEAFB4</color>-->
 
-
-
+    <color name="icon_lightGray_darkGray">#535459</color>
     <color name="YP_black">#1A1B22</color>
 
     <color name="YP_light_background">#3772E7</color>
@@ -26,7 +24,5 @@
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
-    <color name="black_overlay">#66000000</color> <!-- цвет фона для светлой темы -->
-    <!-- цвет текста белый-->
-    <!-- цвет фона для темной темы темы -->
+    <color name="black_overlay">#66000000</color>
 </resources>

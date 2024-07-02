@@ -13,21 +13,17 @@ class SharedHistoryRepositoryImpl(private var context: Context) :
     private var name: String? = null
     private var key: String? = null
 
-   override fun setNameKey(name: String, key: String) {
+    override fun setNameKey(name: String, key: String) {
         this.name = name
         this.key = key
     }
 
     override fun getSavedPref(): List<Track> {
-
         val shared = context.getSharedPreferences(/* name = */ name, /* mode = */ MODE_PRIVATE)
-        val json =
-            shared
-                .getString(/* key = */ key,
-                    /* defValue = */ null
-                )
-                ?: return emptyList()
-//        println("empty")
+        val json = shared.getString(/* key = */ key,
+            /* defValue = */ null
+        )
+            ?: return emptyList()
         return Gson().fromJson<Track>(
             json,
             object : TypeToken<List<Track?>?>

@@ -2,27 +2,33 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.creators.InternetCheckCreator
+import com.alchemtech.playlistmaker.creators.ExternalCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
+import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
-
-const val DARK_THEME = 1
+import com.alchemtech.playlistmaker.creators.SearchCreator
+import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
+import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
+import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 
 class App : Application() {
+    lateinit var settingsInteractor: SettingsInteractor
     override fun onCreate() {
         super.onCreate()
-        switchTheme()
-
-        InternetCheckCreator.setApplicationContext(this)
         ListTrackRepositoryCreator.setApplicationContext(this)
         PlayerDataFillingCreator.setApplicationContext(this)
+        SearchCreator.setApplicationContext(this)
+        ExternalCreator.setApplicationContext(this)
+        ThemeInteractorCreator.setApplicationContext(this)
+        MoveToActivityCreator.setApplicationContext(this)
+        SingleTrackRepositoryCreator.setApplicationContext(this)
+        settingsInteractor = ThemeInteractorCreator.provideThemeInteractor()
+        switchTheme()
     }
 
     private fun switchTheme() {
         setDefaultNightMode(
-            this.getSharedPreferences(/* name = */ DARK_THEME.toString(), /* mode = */ MODE_PRIVATE)
-                .getInt(DARK_THEME.toString(), 1)
+            settingsInteractor.getThemeSettings().themeNumber
         )
-
     }
 }

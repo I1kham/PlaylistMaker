@@ -1,153 +1,92 @@
 package com.alchemtech.playlistmaker.presentation.ui.player
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.creators.PlayerCreator
 import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
-import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
-import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertFromString
+import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
+import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 
-@Suppress("DEPRECATION")
-open class PlayerActivity : AppCompatActivity() {
-    private var track: Track? = null
-    private var binding: ActivityPlayerBinding? = null
-    private var player: PlayerInteractor? = null
+/*Player*/
+class PlayerActivity : AppCompatActivity() {
 
-    private val currentPositionTask = createUpdateCurrentPositionTask()
-
-
-    var mainThreadHandler = Handler(Looper.getMainLooper())
+    private lateinit var viewModel: PlayerViewModel
+    private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getTrackFromIntent()
         prepareBinding()
-        preparePlayer()
-        fillViewWithTrackData()
-        backButWorking()
-        playBut()
+        prepareViewModel()
+        prepareBackBut()
+        fillStrData()
     }
 
-    private fun fillViewWithTrackData() {
-        PlayerDataFillingCreator.provide(binding!!, track!!)
+    private fun prepareBackBut() {
+        binding.playerPreview.setOnClickListener {
+            viewModel.backBut()
+        }
     }
+
+    private fun fillStrData() {
+        viewModel.fill()
+    }
+
 
     private fun prepareBinding() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding.root)
     }
 
-    private fun getTrackFromIntent() {
-
-        track = convertFromString(intent.getSerializableExtra("track").toString())
-
-    }
-
-    private fun preparePlayer() {
-        PlayerCreator.providePlayer(track!!).also { player = it }
-
-
-        val onPreparedListenerConsumer =
-            PlayerRepository.OnPreparedListenerConsumer {
-                binding!!.playBut.isEnabled = true
-               // binding!!.playTime.text = PlayerTimeFormatter.format(player!!.duration())
-            }
-
-        val onCompletionListenerConsumer =
-            PlayerRepository.OnCompletionListenerConsumer {
-                binding!!.playTime.text = "00:00"
-                binding!!.playBut.setImageResource(R.drawable.play_but)
-            }
-
-
-        val pauseConsumer = object : PlayerInteractor.PauseConsumer {
-            override fun consume() {
-                binding!!.playBut.setImageResource(R.drawable.play_but)
-
-                killCurrentPositionTask()
-            }
+    private fun prepareViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            PlayerViewModel.getViewModelFactory(
+               // track
+            )
+        )[PlayerViewModel::class.java]
+        viewModel.observeState().observe(this) {
+            render(it)
         }
-        val startConsumer = object : PlayerInteractor.StartConsumer {
-            override fun consume() {
-                binding!!.playBut.setImageResource(R.drawable.pause_but)
-                startGetCurrentPositionTask()
+    }
+
+    private fun render(state: PlayerState) {
+        when (state) {
+            is PlayerState.Pause -> {
+                binding.playBut.setImageResource(R.drawable.play_but)
+            }
+
+            is PlayerState.Play -> {
+                binding.playBut.setImageResource(R.drawable.pause_but)
+            }
+            is PlayerState.FillViewWithTrackData -> {
 
             }
-        }
-        player!!.setConsumers(
-            onPreparedListenerConsumer,
-            onCompletionListenerConsumer,
-            pauseConsumer,
-            startConsumer
-        )
-        player!!.preparePlayer()
-    }
+            is PlayerState.OnPrepared-> {
+                PlayerDataFillingCreator.provide(binding, state.track)
+                binding.playBut.isEnabled = true
+                playBut()
+            }
 
-    override fun onPause() {
-        super.onPause()
-        player!!.pausePlayer()
-    }
+            PlayerState.OnCompletion -> {
+                binding.playTime.text = "00:00"
+                binding.playBut.setImageResource(R.drawable.play_but)
+            }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        player!!.release()
-        killCurrentPositionTask()
-    }
+            is PlayerState.SetPlayTime -> {
+                binding.playTime.text = state.position
+            }
 
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        player!!.playbackControl()
-    }
-
-    private fun backButWorking() {
-        val back = findViewById<Button>(R.id.playerPreview)
-        back.setOnClickListener {
-            finish()
+            PlayerState.BackBut -> {
+                finish()
+            }
         }
     }
 
     private fun playBut() {
-        binding!!.playBut.setOnClickListener {
-            player!!.playbackControl()
+        binding.playBut.setOnClickListener {
+            viewModel.playBut()
         }
-    }
-
-    private fun createUpdateCurrentPositionTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-
-                binding!!.playTime.text = PlayerTimeFormatter.format(player!!.currentPosition())
-
-                mainThreadHandler.postDelayed(
-                    this,
-                    DEBOUNCE_GET_CURRENT_POSITION
-                )
-            }
-        }
-    }
-
-    private fun startGetCurrentPositionTask() {
-        mainThreadHandler.post(
-            currentPositionTask
-        )
-    }
-
-    private fun killCurrentPositionTask() {
-        mainThreadHandler.removeCallbacks(
-            currentPositionTask
-        )
-    }
-
-    companion object {
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 }

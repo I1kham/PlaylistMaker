@@ -9,7 +9,11 @@ import java.util.Locale
 object TrackUtils {
 
     fun Track.getArtworkUrl512(): Any {
-        return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+        if (artworkUrl100!!.isNotEmpty()) {
+            return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+        } else {
+            return ""
+        }
     }
 
     fun Track.getTimeString(): String {
@@ -17,7 +21,9 @@ object TrackUtils {
     }
 
     fun Track.getReleaseDateString(): String {
-        return releaseDate.substring(0 until 4) + " год"
+        if (releaseDate.isNullOrEmpty()) {
+            return ""
+        } else return releaseDate.substring(0 until 4) + " год"
     }
 
     fun Track.convertToString(): String {

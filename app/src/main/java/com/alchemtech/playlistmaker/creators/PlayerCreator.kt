@@ -9,7 +9,7 @@ import com.alchemtech.playlistmaker.domain.player.PlayerInteractorImlp
 object PlayerCreator {
 
     fun providePlayer(track: Track): PlayerInteractor {
-        return PlayerInteractorImlp( providePlayerRepository(track.previewUrl))
+        return PlayerInteractorImlp( providePlayerRepository(track.previewUrl!!))
     }
 
     private fun providePlayerRepository(previewUrl :String):PlayerRepository{
