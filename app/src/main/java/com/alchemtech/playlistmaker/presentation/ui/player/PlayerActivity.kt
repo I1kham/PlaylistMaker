@@ -44,8 +44,6 @@ class PlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(
             )
         )[PlayerViewModel::class.java]
-
-
     }
 
     private fun observeRenderState() {
@@ -80,6 +78,7 @@ class PlayerActivity : AppCompatActivity() {
 
             is PlayerState.SetPlayTime -> {
                 binding.playTime.text = state.position
+                println("  888888888")
             }
 
             is PlayerState.Fill -> {

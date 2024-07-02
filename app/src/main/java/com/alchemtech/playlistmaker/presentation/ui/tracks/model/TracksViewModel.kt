@@ -47,7 +47,6 @@ class TracksViewModel(
         }
     }
 
-    // TODO: сюда функции
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
     private val tracksList = mutableListOf<Track>()
@@ -98,19 +97,14 @@ class TracksViewModel(
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                onTextChangedLogic(s.toString())
+               searchDebounce()
+                searchText = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
                 afterTextChangedLogic(s)
             }
         }
-    }
-
-    private fun onTextChangedLogic(s: String) {
-        searchText = s
-        renderState(TracksState.TextClearBut(s.isNotEmpty()))
-        searchDebounce()
     }
 
     private fun startModelLogic() {
@@ -130,7 +124,7 @@ class TracksViewModel(
     private fun afterTextChangedLogic(text: CharSequence?) {
         if (text?.isNotEmpty() == false) {
             renderState(TracksState.History(historyInteractor.getTrackList()))
-            renderState(TracksState.TextClearBut(false))
+            searchDebounce()
         }
     }
 

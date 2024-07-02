@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +48,7 @@ class TracksActivity : AppCompatActivity() {
 
         prepareBinding()
         prepareViewModel()
-        prepareInputeditText()
+        prepareInputedText()
         prepareTrackRecyclerView()
         prepareBackBut()
         prepareClearHistBut()
@@ -119,9 +120,12 @@ class TracksActivity : AppCompatActivity() {
             )
     }
 
-    private fun prepareInputeditText() {
+    private fun prepareInputedText() {
         inputEditText = binding.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
+        inputEditText.doOnTextChanged { text, _, _, _ ->
+            clearButton.isVisible = !text.isNullOrEmpty()
+        }
         viewModel.inputEditTextListener(inputEditText)
     }
 

@@ -36,7 +36,6 @@ class PlayerViewModel(
                 )
             }
         }
-
         private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
     }
 
@@ -51,12 +50,10 @@ class PlayerViewModel(
 
    private val stateLiveData = MutableLiveData<PlayerState>()
 
-
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
         stateLiveData.value
-
     }
 
     init {
@@ -126,5 +123,4 @@ class PlayerViewModel(
     internal fun playBut() {
         player.playbackControl()
     }
-
 }
