@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.domain.sharing.impl
 
-import android.content.Context
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.api.StringResources
 import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
@@ -33,7 +32,6 @@ class SharingInteractorImpl(
     }
 
     private fun getTermsLink(): String {
-        println(R.string.linkTermsOfUse)
         return stringResources.getStringResources(R.string.linkTermsOfUse)
     }
 }
