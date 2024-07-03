@@ -16,7 +16,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var viewModel: PlayerViewModel
     private lateinit var binding: ActivityPlayerBinding
 
-    private lateinit var filler : PlayerFilling
+    private lateinit var filler: PlayerFilling
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +24,9 @@ class PlayerActivity : AppCompatActivity() {
         prepareViewModel()
         observeRenderState()
         prepareBackBut()
+        viewModel.observeCurrentPosition().observe(this) {
+            binding.playTime.text = it
+        }
         filler = PlayerDataFillingCreator.provide(binding)
     }
 
@@ -58,37 +61,39 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
 
             is PlayerState.Pause -> {
+                fill(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
             is PlayerState.Play -> {
                 binding.playBut.setImageResource(R.drawable.pause_but)
+                fill(state.track)
             }
 
             is PlayerState.OnPrepared -> {
-                fill( state.track)
-                binding.playBut.isEnabled = true
-                playBut()
+                fill(state.track)
             }
 
-            PlayerState.OnCompletion -> {
+            is PlayerState.OnCompletion -> {
                 binding.playTime.text = "00:00"
+                fill(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerState.SetPlayTime -> {
-                binding.playTime.text = state.position
-                println("  888888888")
-            }
+//            is PlayerState.SetPlayTime -> {
+//                binding.playTime.text = state.position
+//            }
 
-            is PlayerState.Fill -> {
-               fill( state.track)
-            }
+//            is PlayerState.Fill -> {
+//                fill(state.track)
+//            }
         }
     }
 
-    private fun fill(track: Track){
+    private fun fill(track: Track) {
         filler.fill(track)
+        binding.playBut.isEnabled = true
+        playBut()
     }
 
     private fun playBut() {

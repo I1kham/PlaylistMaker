@@ -55,9 +55,16 @@ class PlayerViewModel(
         stateLiveData.postValue(state)
         stateLiveData.value
     }
+    private val statePosition = MutableLiveData<String>()
+
+    fun observeCurrentPosition(): LiveData<String> = statePosition
+    private fun renderPosition(state: String) {
+        statePosition.postValue(state)
+        statePosition.value
+    }
 
     init {
-        renderState(PlayerState.Fill(track))
+       // renderState(PlayerState.Fill(track))
         preparePlayer()
     }
 
@@ -70,20 +77,20 @@ class PlayerViewModel(
 
         val onCompletionListenerConsumer =
             PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion)
+                renderState(PlayerState.OnCompletion(track))
                 killCurrentPositionTask()
             }
 
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
-                renderState(PlayerState.Pause)
+                renderState(PlayerState.Pause(track))
                 killCurrentPositionTask()
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
-                renderState(PlayerState.Play)
+                renderState(PlayerState.Play(track))
                 startGetCurrentPositionTask()
             }
         }
@@ -105,7 +112,8 @@ class PlayerViewModel(
     private fun createUpdateCurrentPositionTask(): Runnable {
         return object : Runnable {
             override fun run() {
-                renderState(PlayerState.SetPlayTime(PlayerTimeFormatter.format(player.currentPosition())))
+                renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
+             //   renderState(PlayerState.SetPlayTime(PlayerTimeFormatter.format(player.currentPosition())))
                 mainThreadHandler.postDelayed(
                     this,
                     DEBOUNCE_GET_CURRENT_POSITION
