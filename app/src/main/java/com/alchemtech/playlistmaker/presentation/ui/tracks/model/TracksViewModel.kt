@@ -17,7 +17,7 @@ import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
 import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
-import com.alchemtech.playlistmaker.domain.MoveTo
+import com.alchemtech.playlistmaker.domain.Navigator
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
@@ -27,7 +27,7 @@ class TracksViewModel(
     private val historyInteractor: TrackHistoryInteractor,
     private val searchInteractor: TracksInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
-    private val moveToActivity: MoveTo,
+    private val navigatorActivity: Navigator,
 ) : ViewModel() {
 
     companion object {
@@ -114,7 +114,7 @@ class TracksViewModel(
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
         singleTrackInteractor.writeTrack(track)
-        moveToActivity.toPlayer()
+        navigatorActivity.toPlayer()
     }
 
     internal fun updateResponse() {

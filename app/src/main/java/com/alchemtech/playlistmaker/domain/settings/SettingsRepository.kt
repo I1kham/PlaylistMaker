@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.data.settings
+package com.alchemtech.playlistmaker.domain.settings
 
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 

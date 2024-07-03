@@ -1,6 +1,6 @@
-package com.alchemtech.playlistmaker.data.sharing
+package com.alchemtech.playlistmaker.domain.sharing
 
-import com.alchemtech.playlistmaker.data.dto.emailData.EmailData
+import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
 
 interface ExternalNavigator {
     fun shareLink(str: String)

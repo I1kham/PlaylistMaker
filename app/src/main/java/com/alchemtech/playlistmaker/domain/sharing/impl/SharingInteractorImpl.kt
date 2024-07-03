@@ -1,15 +1,14 @@
 package com.alchemtech.playlistmaker.domain.sharing.impl
 
-import android.content.Context
-import androidx.core.content.ContextCompat.getString
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.data.dto.emailData.EmailData
-import com.alchemtech.playlistmaker.data.sharing.ExternalNavigator
+import com.alchemtech.playlistmaker.domain.api.StringResources
+import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
+import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
 class SharingInteractorImpl(
-    private val context: Context,
     private val externalNavigator: ExternalNavigator,
+    private val stringResources: StringResources
 ) : SharingInteractor {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
@@ -24,14 +23,15 @@ class SharingInteractorImpl(
     }
 
     private fun getShareAppLink(): String {
-        return getString(context, R.string.buttonShareApp)
+        return stringResources.getStringResources(R.string.buttonShareApp)
     }
 
     private fun getSupportEmailData(): EmailData {
-        return EmailData(context)
+        return EmailData()
     }
 
     private fun getTermsLink(): String {
-        return context.getString(R.string.linkTermsOfUse)
+
+        return stringResources.getStringResources(R.string.linkTermsOfUse)
     }
 }

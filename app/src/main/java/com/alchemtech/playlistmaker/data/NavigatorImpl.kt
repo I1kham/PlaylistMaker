@@ -3,13 +3,13 @@ package com.alchemtech.playlistmaker.data
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import com.alchemtech.playlistmaker.domain.MoveTo
+import com.alchemtech.playlistmaker.domain.Navigator
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
 import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
 import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
 import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
 
-class MoveToImpl(val context: Context) : MoveTo {
+class NavigatorImpl(val context: Context) : Navigator {
     override fun toPlayer() {
         val playerIntent = Intent(context, PlayerActivity::class.java).apply {}
         playerIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)

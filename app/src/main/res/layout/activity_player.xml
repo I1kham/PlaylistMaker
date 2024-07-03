@@ -278,6 +278,5 @@
         app:layout_constraintEnd_toEndOf="@id/secondRightBorder"
         app:layout_constraintStart_toEndOf="@id/secondLeftBorder"
         app:layout_constraintTop_toBottomOf="@id/playBut" />
-
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

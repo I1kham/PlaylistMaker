@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.domain.settings.impl
 
-import com.alchemtech.playlistmaker.data.settings.SettingsRepository
+import com.alchemtech.playlistmaker.domain.settings.SettingsRepository
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 

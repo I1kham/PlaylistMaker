@@ -1,3 +1,3 @@
 package com.alchemtech.playlistmaker.domain.settings.model
 
-data class ThemeSettings(var themeNumber : Int)
+data class ThemeSettings(val themeNumber : Int)

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
-import com.alchemtech.playlistmaker.data.dto.emailData.EmailData
-import com.alchemtech.playlistmaker.data.sharing.ExternalNavigator
+import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
+import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 
 class ExternalNavigatorImpl(val context: Context) : ExternalNavigator {
     override fun shareLink(str: String) {
