@@ -64,7 +64,6 @@ class PlayerViewModel(
     }
 
     init {
-       // renderState(PlayerState.Fill(track))
         preparePlayer()
     }
 
@@ -129,5 +128,11 @@ class PlayerViewModel(
 
     internal fun playBut() {
         player.playbackControl()
+    }
+
+    internal fun onWindowFocusChanged(hasFocus: Boolean){
+        if (!hasFocus){
+            player.pausePlayer()
+        }
     }
 }

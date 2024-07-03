@@ -94,4 +94,9 @@ class PlayerActivity : AppCompatActivity() {
         }
         binding.playBut.isEnabled = true
     }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        viewModel.onWindowFocusChanged(hasFocus)
+    }
 }
