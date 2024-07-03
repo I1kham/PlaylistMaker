@@ -1,6 +1,8 @@
 package com.alchemtech.playlistmaker
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.creators.ExternalCreator
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
@@ -10,9 +12,10 @@ import com.alchemtech.playlistmaker.creators.SearchCreator
 import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
 import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
+import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 
 class App : Application() {
-    lateinit var settingsInteractor: SettingsInteractor
+    private lateinit var settingsInteractor: SettingsInteractor
     override fun onCreate() {
         super.onCreate()
         ListTrackRepositoryCreator.setApplicationContext(this)

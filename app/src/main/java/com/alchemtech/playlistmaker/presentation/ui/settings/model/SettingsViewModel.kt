@@ -30,7 +30,7 @@ class SettingsViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        setDarkThemeState()
+       setDarkThemeState()
     }
 
     internal fun shareApp() {
