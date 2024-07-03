@@ -113,7 +113,6 @@ class PlayerViewModel(
         return object : Runnable {
             override fun run() {
                 renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
-             //   renderState(PlayerState.SetPlayTime(PlayerTimeFormatter.format(player.currentPosition())))
                 mainThreadHandler.postDelayed(
                     this,
                     DEBOUNCE_GET_CURRENT_POSITION

@@ -79,14 +79,6 @@ class PlayerActivity : AppCompatActivity() {
                 fill(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
-
-//            is PlayerState.SetPlayTime -> {
-//                binding.playTime.text = state.position
-//            }
-
-//            is PlayerState.Fill -> {
-//                fill(state.track)
-//            }
         }
     }
 

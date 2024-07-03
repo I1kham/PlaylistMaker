@@ -157,7 +157,6 @@ class TracksActivity : AppCompatActivity() {
 
             is TracksState.Content -> {
                 state.tracks.upDateAdapter()
-
                 showHistoryListButTitle(false)
                 trackRecyclerView.visibility = View.VISIBLE
                 showNoConnection(false)
