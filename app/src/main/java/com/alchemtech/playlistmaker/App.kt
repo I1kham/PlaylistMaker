@@ -11,13 +11,13 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         StringResourcesCreator.setApplicationContext(this)
-        settingsInteractor = ThemeInteractorCreator.provideThemeInteractor(this)
-        switchTheme()
     }
 
     private fun switchTheme() {
         setDefaultNightMode(
-            settingsInteractor.getThemeSettings().themeNumber
+            ThemeInteractorCreator
+                .provideThemeInteractor(this)
+                .getThemeSettings().themeNumber
         )
     }
 }
