@@ -1,31 +1,17 @@
 package com.alchemtech.playlistmaker
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.creators.ExternalCreator
-import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
-import com.alchemtech.playlistmaker.creators.MoveToActivityCreator
-import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
-import com.alchemtech.playlistmaker.creators.SearchCreator
-import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
+import com.alchemtech.playlistmaker.creators.StringResourcesCreator
 import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
-import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 
 class App : Application() {
     private lateinit var settingsInteractor: SettingsInteractor
     override fun onCreate() {
         super.onCreate()
-        ListTrackRepositoryCreator.setApplicationContext(this)
-        PlayerDataFillingCreator.setApplicationContext(this)
-        SearchCreator.setApplicationContext(this)
-        ExternalCreator.setApplicationContext(this)
-        ThemeInteractorCreator.setApplicationContext(this)
-        MoveToActivityCreator.setApplicationContext(this)
-        SingleTrackRepositoryCreator.setApplicationContext(this)
-        settingsInteractor = ThemeInteractorCreator.provideThemeInteractor()
+        StringResourcesCreator.setApplicationContext(this)
+        settingsInteractor = ThemeInteractorCreator.provideThemeInteractor(this)
         switchTheme()
     }
 

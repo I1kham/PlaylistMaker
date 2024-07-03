@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.creators
 
-import android.app.Application
+import android.content.Context
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient
 import com.alchemtech.playlistmaker.data.repository.TracksRepositoryImpl
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
@@ -9,16 +9,11 @@ import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl
 
 object SearchCreator {
 
-    private lateinit var applicationContext: Application
-
-    fun setApplicationContext(application: Application) {
-        applicationContext = application
-    }
-    private fun getTracksRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient(applicationContext))
+    private fun getTracksRepository(context: Context): TracksRepository {
+        return TracksRepositoryImpl(RetrofitNetworkClient(context))
     }
 
-    fun provideTracksInteractor(): TracksInteractor {
-        return TracksInteractorImpl(getTracksRepository())
+    fun provideTracksInteractor(context: Context): TracksInteractor {
+        return TracksInteractorImpl(getTracksRepository(context))
     }
 }

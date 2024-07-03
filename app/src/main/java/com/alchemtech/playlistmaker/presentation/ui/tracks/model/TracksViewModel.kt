@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 
+import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -7,10 +8,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
@@ -24,11 +26,12 @@ import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
 class TracksViewModel(
+    application: Application,
     private val historyInteractor: TrackHistoryInteractor,
     private val searchInteractor: TracksInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
     private val navigatorActivity: Navigator,
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     companion object {
 
@@ -37,11 +40,13 @@ class TracksViewModel(
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
+                val context = this[APPLICATION_KEY] as Application
                 TracksViewModel(
-                    ListTrackRepositoryCreator.provideListTrackDb(),
-                    SearchCreator.provideTracksInteractor(),
-                    SingleTrackRepositoryCreator.provideSingleTrackDb(),
-                    MoveToActivityCreator.provideMoveToActivity()
+                    context,
+                    ListTrackRepositoryCreator.provideListTrackDb(context),
+                    SearchCreator.provideTracksInteractor(context),
+                    SingleTrackRepositoryCreator.provideSingleTrackDb(context),
+                    MoveToActivityCreator.provideMoveToActivity(context)
                 )
             }
         }

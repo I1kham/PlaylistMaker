@@ -1,11 +1,12 @@
 package com.alchemtech.playlistmaker.data.resources
 
-import android.content.res.Resources
+import android.content.Context
+import androidx.core.content.ContextCompat.getString
 import com.alchemtech.playlistmaker.domain.api.StringResources
 
-class StringResourcesImpl : StringResources {
+class StringResourcesImpl(val context: Context) : StringResources {
     override fun getStringResources(id : Int) : String {
-        return Resources.getSystem().getString(id)
+        return getString(context, id)
     }
 
 }

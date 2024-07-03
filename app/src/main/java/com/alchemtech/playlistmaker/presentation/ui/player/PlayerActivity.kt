@@ -27,7 +27,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.observeCurrentPosition().observe(this) {
             binding.playTime.text = it
         }
-        filler = PlayerDataFillingCreator.provide(binding)
+        filler = PlayerDataFillingCreator.provide(binding, applicationContext)
     }
 
     private fun prepareBackBut() {
@@ -61,29 +61,31 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
 
             is PlayerState.Pause -> {
-                fill(state.track)
+                fillWithBut(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
             is PlayerState.Play -> {
                 binding.playBut.setImageResource(R.drawable.pause_but)
-                fill(state.track)
+                fillWithBut(state.track)
             }
 
             is PlayerState.OnPrepared -> {
-                fill(state.track)
+                fillWithBut(state.track)
             }
 
             is PlayerState.OnCompletion -> {
                 binding.playTime.text = "00:00"
-                fill(state.track)
+                fillWithBut(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
+
+            is PlayerState.fill -> fill(state.track)
         }
     }
 
-    private fun fill(track: Track) {
-        filler.fill(track)
+    private fun fillWithBut(track: Track) {
+        fill(track)
         binding.playBut.isEnabled = true
         playBut()
     }
@@ -98,5 +100,9 @@ class PlayerActivity : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         viewModel.onWindowFocusChanged(hasFocus)
+    }
+
+    private fun fill(track: Track) {
+        filler.fill(track)
     }
 }

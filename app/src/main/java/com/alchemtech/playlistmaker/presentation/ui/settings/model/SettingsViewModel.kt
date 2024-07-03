@@ -1,8 +1,10 @@
 package com.alchemtech.playlistmaker.presentation.ui.settings.model
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alchemtech.playlistmaker.creators.ExternalCreator
@@ -12,17 +14,20 @@ import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
 class SettingsViewModel(
+    application: Application,
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
 
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
+                val context = this[APPLICATION_KEY] as Application
                 SettingsViewModel(
-                    ExternalCreator.provideSharingInteractor(),
-                    ThemeInteractorCreator.provideThemeInteractor(),
+                    context,
+                    ExternalCreator.provideSharingInteractor(context),
+                    ThemeInteractorCreator.provideThemeInteractor(context),
                 )
             }
         }

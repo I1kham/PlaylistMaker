@@ -28,9 +28,10 @@ class PlayerViewModel(
         fun getViewModelFactory(
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val track = SingleTrackRepositoryCreator.provideSingleTrackDb().readTrack()!!
+                val context = this[APPLICATION_KEY] as Application
+                val track = SingleTrackRepositoryCreator.provideSingleTrackDb(context).readTrack()!!
                 PlayerViewModel(
-                    this[APPLICATION_KEY] as Application,
+                    context,
                     track,
                     PlayerCreator.providePlayer(track),
                 )
@@ -65,6 +66,7 @@ class PlayerViewModel(
 
     init {
         preparePlayer()
+        renderState(PlayerState.fill(track))
     }
 
     private fun preparePlayer() {

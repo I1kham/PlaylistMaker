@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.domain.sharing.impl
 
+import android.content.Context
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.api.StringResources
 import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
@@ -7,8 +8,9 @@ import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
 class SharingInteractorImpl(
+
     private val externalNavigator: ExternalNavigator,
-    private val stringResources: StringResources
+    private val stringResources: StringResources,
 ) : SharingInteractor {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
@@ -31,7 +33,7 @@ class SharingInteractorImpl(
     }
 
     private fun getTermsLink(): String {
-
+        println(R.string.linkTermsOfUse)
         return stringResources.getStringResources(R.string.linkTermsOfUse)
     }
 }
