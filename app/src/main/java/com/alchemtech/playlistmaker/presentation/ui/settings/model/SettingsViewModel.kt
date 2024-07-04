@@ -51,14 +51,13 @@ class SettingsViewModel(
         sharingInteractor.openTerms(stringResources.getStringResources(R.string.linkTermsOfUse))
     }
 
-    // TODO:
     internal fun openSupport() {
         sharingInteractor.openSupport(
             EmailData(
-                stringResources.getStringResources(R.string.supportMail),
-                stringResources.getStringResources(R.string.toSupportDefaultMail),
-                stringResources.getStringResources(R.string.toSupportMailSubject),
-                stringResources.getStringResources(R.string.toSupportUri)
+                emailAddresses = listOf( stringResources.getStringResources(R.string.supportMail)),
+                defMessage = stringResources.getStringResources(R.string.toSupportDefaultMail),
+                defaultMessage = stringResources.getStringResources(R.string.toSupportMailSubject),
+                toSupport = stringResources.getStringResources(R.string.toSupportUri)
             )
         )
     }
