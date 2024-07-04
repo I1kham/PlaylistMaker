@@ -11,15 +11,10 @@ object ExternalCreator {
     private fun provideExternalNavigator(context: Context): ExternalNavigator {
         return ExternalNavigatorImpl(context)
     }
-// TODO:  
-//    private fun provideStringResources(context: Context): StringResources {
-//        return StringResources.provide(context)
-//    }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {
         return SharingInteractorImpl(
-            provideExternalNavigator(context),
-            //provideStringResources(context)
+            provideExternalNavigator(context)
         )
     }
 }
