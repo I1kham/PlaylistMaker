@@ -2,17 +2,18 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.creators.StringResourcesCreator
 import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
-import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 
 class App : Application() {
+  // private lateinit var stringResources : StringResources
     override fun onCreate() {
         super.onCreate()
-        StringResourcesCreator.setApplicationContext(this)
+       // stringResources =  StringResourcesCreator.consume(applicationContext)
+        //StringResourcesCreator.setApplicationContext(this)
         switchTheme()
     }
 
+    // TODO:
     private fun switchTheme() {
         setDefaultNightMode(
             ThemeInteractorCreator
@@ -20,4 +21,7 @@ class App : Application() {
                 .getThemeSettings().themeNumber
         )
     }
+//   public fun getStringResources(stringResourceId :Int): String{
+//        return stringResources.getStringResources(stringResourceId)
+//    }
 }

@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.creators.ExternalCreator
+import com.alchemtech.playlistmaker.creators.StringResourcesCreator
 import com.alchemtech.playlistmaker.creators.ThemeInteractorCreator
+import com.alchemtech.playlistmaker.domain.api.StringResources
+import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
@@ -17,7 +21,7 @@ class SettingsViewModel(
     application: Application,
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
-
+    private val stringResources: StringResources,
 ) : AndroidViewModel(application) {
 
     companion object {
@@ -28,6 +32,7 @@ class SettingsViewModel(
                     context,
                     ExternalCreator.provideSharingInteractor(context),
                     ThemeInteractorCreator.provideThemeInteractor(context),
+                    StringResourcesCreator.consume(context)
                 )
             }
         }
@@ -35,19 +40,27 @@ class SettingsViewModel(
 
     override fun onCleared() {
         super.onCleared()
-       setDarkThemeState()
+        setDarkThemeState()
     }
 
     internal fun shareApp() {
-        sharingInteractor.shareApp()
+        sharingInteractor.shareApp(stringResources.getStringResources(R.string.buttonShareApp))
     }
 
     internal fun openTermsOfUse() {
-        sharingInteractor.openTerms()
+        sharingInteractor.openTerms(stringResources.getStringResources(R.string.linkTermsOfUse))
     }
 
+    // TODO:
     internal fun openSupport() {
-        sharingInteractor.openSupport()
+        sharingInteractor.openSupport(
+            EmailData(
+                stringResources.getStringResources(R.string.supportMail),
+                stringResources.getStringResources(R.string.toSupportDefaultMail),
+                stringResources.getStringResources(R.string.toSupportMailSubject),
+                stringResources.getStringResources(R.string.toSupportUri)
+            )
+        )
     }
 
     private fun setDarkThemeState() {
