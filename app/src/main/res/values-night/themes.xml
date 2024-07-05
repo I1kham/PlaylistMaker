@@ -19,7 +19,6 @@
         <item name="android:background">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 
     <style name="ThemeOverlay.PlaylistMaker.FullscreenContainer" parent="">

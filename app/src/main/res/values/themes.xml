@@ -1,11 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/mainActivityBackground</item>
-        <item name="android:statusBarColor">@color/mainActivityBackground</item>
-    </style>
 
-    <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.SettingsActivity" parent="Base.Theme.PlaylistMaker">
         <item name="android:background">@color/lightStatusBar</item>
         <item name="android:statusBarColor">@color/lightStatusBar</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -19,7 +14,6 @@
         <item name="android:background">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Base.Theme.PlaylistMaker.Fullscreen" parent="Base.Theme.PlaylistMaker">
@@ -34,4 +28,6 @@
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
+
+    <style name="Base.Theme.PlaylistMaker" parent="Base.Base.Theme.PlaylistMaker" />
 </resources>

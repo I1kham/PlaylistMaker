@@ -2,14 +2,10 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -19,77 +15,203 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.creators.InternetCheckCreator
-import com.alchemtech.playlistmaker.creators.ListTrackRepositoryCreator
-import com.alchemtech.playlistmaker.creators.SearchCreator
-import com.alchemtech.playlistmaker.domain.api.CheckConnectionInteractor
-import com.alchemtech.playlistmaker.domain.api.TracksInteractor
+import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.convertToString
-import com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity
-
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
 
 class TracksActivity : AppCompatActivity() {
-
-    private val tracksList = mutableListOf<Track>()
-    private val history = ListTrackRepositoryCreator.provideListTrackDb()
-
-    private val onItemClickToTrackCard = { track: Track ->
-        if (clickDebounce()) {
-            addTrackToHistoryList(track)
-            navigateToPlayer(track)
-            enableHistoryList()
-        }
-    }
-
-    private var internetCheck: CheckConnectionInteractor? = null
-
-    private val searchRunnable = Runnable { searchTrack() }
-
     private var isClickAllowed: Boolean = true
-
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var viewModel: TracksViewModel
+    private lateinit var binding: ActivitySearchBinding
 
-    private fun addTrackToHistoryList(track: Track) {
-        history.addTrack(track)
-    }
-
-
-    private fun navigateToPlayer(track: Track) {
-
-        val trackCardClickIntent =
-            Intent(this@TracksActivity, PlayerActivity::class.java).apply {
-                putExtra(
-                    "track",
-                    track.convertToString()
-                )
-            }
-        startActivity(trackCardClickIntent)
-    }
+    private lateinit var inputEditText: EditText
+    private lateinit var trackRecyclerView: RecyclerView
+    private lateinit var backButton: Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var noDataLinearLayout: LinearLayout
+    private lateinit var noConnectionLinearLayout: LinearLayout
+    private lateinit var clearButton: ImageView
+    private lateinit var upDateBut: Button
+    private lateinit var searchHistoryTitle: TextView
+    private lateinit var clearHistoryBut: TextView
+    private lateinit var trackAdapter: TrackSearchAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getHistory()
-        setContentView(R.layout.activity_search)
-        internetCheck =
-            InternetCheckCreator.provideInternetCheck()
-        inputEditTextWorking()
 
-        upDateSearchWorking()
+        prepareBinding()
+        prepareViewModel()
+        prepareInputedText()
+        prepareTrackRecyclerView()
+        prepareBackBut()
+        prepareClearHistBut()
+        prepareProgressBar()
+        prepareNoDataErr()
+        prepareNoConnectionErr()
+        prepareEditTextClearBut()
+        prepareUpdateBut()
+        prepareHisTitle()
+    }
 
-        backButWork()
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        trackRecyclerView.adapter?.notifyDataSetChanged()
+    }
 
-        clearButWorking()
+    private fun prepareHisTitle() {
+        searchHistoryTitle = binding.searchHistoryTitle
+    }
 
-        textWatcher()
+    private fun prepareUpdateBut() {
+        upDateBut = binding.updateButNoConnection
+        upDateBut.setOnClickListener {
+            viewModel.updateResponse()
+        }
+    }
 
-        clearButSearchHistory()
+    private fun prepareEditTextClearBut() {
+        clearButton = binding.clearIcon
+        clearButton.setOnClickListener {
+            viewModel.clearEditTextButLogic()
+        }
+    }
 
-        enableHistoryList()
+    private fun prepareNoConnectionErr() {
+        noConnectionLinearLayout = binding.noConnection
+    }
 
+    private fun prepareNoDataErr() {
+        noDataLinearLayout = binding.noData
+    }
+
+    private fun prepareProgressBar() {
+        progressBar = binding.progressBar
+    }
+
+    private fun prepareClearHistBut() {
+        clearHistoryBut = binding.clearHistoryBut
+        clearHistoryBut.setOnClickListener {
+            viewModel.clearButSearchHistory()
+        }
+    }
+
+    private fun prepareBackBut() {
+        backButton = binding.pageSearchPreview
+        backButton.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun prepareTrackRecyclerView() {
+        trackRecyclerView = binding.trackCardsRecyclerView
+        trackRecyclerView.layoutManager =
+            LinearLayoutManager(
+                /* context = */ this,
+                /* orientation = */ LinearLayoutManager.VERTICAL,
+                /* reverseLayout = */ false
+            )
+    }
+
+    private fun prepareInputedText() {
+        inputEditText = binding.inputTextForSearching
+        inputEditText.addTextChangedListener(viewModel.textWatcher)
+        inputEditText.doOnTextChanged { text, _, _, _ ->
+            clearButton.isVisible = !text.isNullOrEmpty()
+        }
+        viewModel.inputEditTextListener(inputEditText)
+    }
+
+    private fun prepareViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            TracksViewModel.getViewModelFactory()
+        )[TracksViewModel::class.java]
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
+    }
+
+    private fun prepareBinding() {
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+
+
+    private fun render(state: TracksState) {
+        when (state) {
+            is TracksState.Loading -> {
+                showProgressBar(true)
+                showNoConnection(false)
+                showNoDataErr(false)
+                showHistoryListButTitle(false)
+                hideKeyBoard()
+            }
+
+            is TracksState.Content -> {
+                state.tracks.upDateAdapter()
+                showHistoryListButTitle(false)
+                trackRecyclerView.visibility = View.VISIBLE
+                showNoConnection(false)
+                showNoDataErr(false)
+                showProgressBar(false)
+                hideKeyBoard()
+            }
+            is TracksState.Error -> {
+                hideKeyBoard()
+                showProgressBar(false)
+                showHistoryListButTitle(
+                    false
+                )
+                if (state.errorCode == -1) {
+                    showNoConnection(true)
+                } else {
+                    showNoDataErr(true)
+                }
+            }
+
+            is TracksState.History -> {
+                hideKeyBoard()
+                showHistoryList(state.tracks)
+            }
+
+            is TracksState.TextClearBut -> {
+                clearButton.isVisible = state.visibility
+            }
+
+            is TracksState.InputTextClear -> {
+                inputEditText.setText("")
+                showHistoryList(state.tracks)
+            }
+        }
+    }
+
+    private fun showHistoryList(tracks: List<Track>) {
+        if (tracks.isNotEmpty()) {
+            tracks.upDateAdapter()
+            showHistoryListButTitle(true)
+        }
+        showProgressBar(false)
+        showNoConnection(false)
+        showNoDataErr(false)
+    }
+
+    private fun List<Track>.upDateAdapter() {
+        val onItemClickToTrackCard = { track: Track ->
+            if (clickDebounce()) {
+                viewModel.clickOnTrack(track)
+            }
+        }
+        trackAdapter = TrackSearchAdapter(this)
+        onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
+        trackRecyclerView.adapter = trackAdapter
     }
 
     private fun clickDebounce(): Boolean {
@@ -101,255 +223,45 @@ class TracksActivity : AppCompatActivity() {
         return current
     }
 
-    private fun enableHistoryList() {
-        runOnUiThread {
-            if (tracksList.isEmpty()) {
-                val a = history.getTrackList()
-                if (a.isNotEmpty()) {
-                    findViewById<TextView>(R.id.clearHistoryBut).visibility = View.VISIBLE
-                    findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.VISIBLE
-
-                    val trackAdapter = TrackSearchAdapter(a)
-                    val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-
-                    onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
-                    recyclerView.adapter = trackAdapter
-                } else disableHistoryList()
-            }
-        }
-    }
-
-    private fun disableHistoryList() {
-        findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
-        findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun enableTrackList() {
-        runOnUiThread {
-            val trackAdapter = TrackSearchAdapter(tracksList)
-            val recyclerView = findViewById<RecyclerView>(R.id.trackCardsRecyclerView)
-            onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
-            recyclerView.adapter = trackAdapter
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun clearButSearchHistory() {
-
-        findViewById<TextView>(R.id.clearHistoryBut).setOnClickListener {
-            findViewById<TextView>(R.id.searchHistoryTitle).visibility = View.GONE
-            findViewById<TextView>(R.id.clearHistoryBut).visibility = View.GONE
-            history.clearTracksList()
-            enableTrackList()
-        }
-
-    }
-
-    private fun textWatcher() {
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButVisibility(s)
-                textChangeLogic(s)
-                focusLogic()
-                searchDebounce()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                focusLogic()
-                textChangeLogic(s)
-            }
-        }
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        inputEditText.addTextChangedListener(simpleTextWatcher)
-    }
-
-    private fun clearButVisibility(s: CharSequence?) {
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
-        clearButton.isVisible = !(s.isNullOrEmpty())
-    }
-
-    private fun inputEditTextWorking() {
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        inputEditText.setOnClickListener {
-            setAllErrLayoutsGONE()
-            inputEditText.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                    searchTrack() // выполнение задач
-
-                    val inputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-                }
-                true
-            }
-        }
-    }
-
-    private fun upDateSearchWorking() {
-        val upDateBut = findViewById<Button>(R.id.updateButNoConnection)
-        upDateBut.setOnClickListener {
-            searchTrack()
-        }
-    }
-
-    private fun backButWork() {
-        val back = findViewById<Button>(R.id.pageSearchPreview)
-        back.setOnClickListener {
-            finish()
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun clearButWorking() {
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
-        clearButton.setOnClickListener {
-            val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-            inputEditText.setText("")
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-            tracksList.clear()
-            setAllErrLayoutsGONE()
-            findViewById<RecyclerView>(R.id.trackCardsRecyclerView).adapter?.notifyDataSetChanged()
-            enableHistoryList()
-        }
-    }
-
-    private fun setNoDataErrLayoutVisible() {
-        runOnUiThread {
-            val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
-            noDataLinearLayout.visibility = View.VISIBLE
-            val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
-            noConnectionLinearLayout.visibility = View.GONE
-        }
-    }
-
-    private fun setNoConnectionErrLayoutVisible() {
-        runOnUiThread {
-            val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
-            noDataLinearLayout.visibility = View.GONE
-            val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
-            noConnectionLinearLayout.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setAllErrLayoutsGONE() {
-        runOnUiThread {
-            val noDataLinearLayout = findViewById<LinearLayout>(R.id.noData)
-            noDataLinearLayout.visibility = View.GONE
-            val noConnectionLinearLayout = findViewById<LinearLayout>(R.id.noConnection)
-            noConnectionLinearLayout.visibility = View.GONE
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun searchTrack() {
-        tracksList.clear()
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        val text = inputEditText.text
-        if (!text.isNullOrEmpty()) {
-            if (internetCheck!!.isChecked()) {
-                setProgressBarVisible()
-
-                val tracksInteractor = SearchCreator.provideTracksInteractor()
-                val tracksConsumer = object : TracksInteractor.TracksConsumer {
-                    override fun consume(foundedTracks: List<Track>) {
-                        if (foundedTracks.isEmpty()) {
-                            setNoDataErrLayoutVisible()
-                        } else {
-                            tracksList.addAll(foundedTracks)
-                            enableTrackList()
-                        }
-                        setProgressBarGone()
-                    }
-                }
-
-                tracksInteractor.searchTracksInteractor(
-                    expression = text.toString(),
-                    consumer = tracksConsumer
-                )
-
-            } else {
-                setNoConnectionErrLayoutVisible()
-            }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val inputText = findViewById<TextView>(R.id.inputTextForSearching).text
-        outState.putString(/* key = */ TEXT_TO_SAVE, /* value = */ inputText.toString())
-    }
-
-    override fun onPause() {
-        super.onPause()
-        saveHistory()
-    }
-
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val inputEditText = findViewById<EditText>(R.id.inputTextForSearching)
-        inputEditText.setText(savedInstanceState.getString(TEXT_TO_SAVE))
-        getHistory()
-    }
-
-    private fun saveHistory() {
-        history.writeTrackList()
-    }
-
-    private fun getHistory() {
-        history.readTrackList()
-    }
-
-    private fun focusLogic() {
-        findViewById<TextView>(R.id.inputTextForSearching).setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && findViewById<TextView>(R.id.inputTextForSearching).text.isEmpty()) {
-                disableHistoryList()
-            }
-        }
-    }
-
-    private fun textChangeLogic(text: CharSequence?) {
-        if (text?.isNotEmpty() == true) {
-            enableTrackList()
-            disableHistoryList()
+    private fun showHistoryListButTitle(visibility: Boolean) {
+        if (visibility) {
+            clearHistoryBut.visibility = View.VISIBLE
+            trackRecyclerView.visibility = View.VISIBLE
+            searchHistoryTitle.visibility = View.VISIBLE
         } else {
-            enableHistoryList()
-            setAllErrLayoutsGONE()
+            clearHistoryBut.visibility = View.GONE
+            trackRecyclerView.visibility = View.GONE
+            searchHistoryTitle.visibility = View.GONE
         }
     }
 
-    private fun searchDebounce() {
-        val handler = Handler(Looper.getMainLooper())
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    private fun showNoConnection(visibility: Boolean) {
+        if (visibility) {
+            noConnectionLinearLayout.visibility = View.VISIBLE
+        } else {
+            noConnectionLinearLayout.visibility = View.GONE
+        }
     }
 
-    private fun setProgressBarVisible() {
-        setAllErrLayoutsGONE()
-        runOnUiThread {
-            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+    private fun showNoDataErr(visibility: Boolean) {
+        noDataLinearLayout.isVisible = visibility
+    }
+
+    private fun showProgressBar(visibility: Boolean) {
+        if (visibility) {
             progressBar.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setProgressBarGone() {
-        runOnUiThread {
-            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        } else {
             progressBar.visibility = View.GONE
         }
     }
 
+    private fun hideKeyBoard() {
+        val inputMethodManager =
+            this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+    }
+
     private companion object {
-        const val TEXT_TO_SAVE = ""
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

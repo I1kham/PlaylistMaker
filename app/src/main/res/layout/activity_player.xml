@@ -192,7 +192,7 @@
         android:textColor="@color/YP_AAL_gray"
         app:layout_constraintBottom_toTopOf="@id/trackCountry"
         app:layout_constraintLeft_toLeftOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/trackYear" />
+        app:layout_constraintTop_toBottomOf="@id/release_date" />
 
     <TextView
         android:id="@+id/primaryGenreNameText"
@@ -209,7 +209,7 @@
         app:layout_constraintTop_toBottomOf="@id/releaseDateText" />
 
     <TextView
-        android:id="@+id/trackYear"
+        android:id="@+id/release_date"
         style="@style/playerTrackInformationTitle"
         android:text="@string/TrackYear"
         app:layout_constraintLeft_toLeftOf="@id/leftBorder"
@@ -223,7 +223,7 @@
         android:text="@string/TrackYear"
         app:layout_constraintRight_toRightOf="@id/rightBorder"
         app:layout_constraintBottom_toTopOf="@id/primaryGenreNameText"
-        app:layout_constraintLeft_toRightOf="@id/trackYear"
+        app:layout_constraintLeft_toRightOf="@id/release_date"
         app:layout_constraintTop_toBottomOf="@id/collectionNameText"
 
         />
@@ -234,7 +234,7 @@
         style="@style/playerTrackInformationTitle"
         android:text="@string/album"
         app:layout_constraintLeft_toLeftOf="@id/leftBorder"
-        app:layout_constraintBottom_toTopOf="@id/trackYear"
+        app:layout_constraintBottom_toTopOf="@id/release_date"
         app:layout_constraintTop_toBottomOf="@id/trackDuration"         />
 
     <TextView
@@ -278,6 +278,5 @@
         app:layout_constraintEnd_toEndOf="@id/secondRightBorder"
         app:layout_constraintStart_toEndOf="@id/secondLeftBorder"
         app:layout_constraintTop_toBottomOf="@id/playBut" />
-
-
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

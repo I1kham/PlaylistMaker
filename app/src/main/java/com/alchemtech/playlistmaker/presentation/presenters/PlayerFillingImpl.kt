@@ -14,15 +14,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class PlayerFillingImpl(
-    private val track: Track,
     private val binding: ActivityPlayerBinding,
     private val context: Context,
 ) : PlayerFilling, UiCalculator {
-    init {
-        start()
-    }
+private lateinit var track: Track
 
-    override fun start() {
+    override fun fill(track: Track) {
+        this.track = track
         trackArtist()
         trackTimeMillis()
         collectionName()
@@ -52,7 +50,13 @@ class PlayerFillingImpl(
     }
 
     private fun releaseDateFill() {
-        binding.releaseDateText.text = track.getReleaseDateString()
+        if (track.getReleaseDateString().isNotEmpty()) {
+            binding.releaseDateText.text = track.getReleaseDateString()
+        } else {
+
+            binding.releaseDateText.visibility = View.GONE
+            binding.releaseDate.visibility = View.GONE
+        }
     }
 
     private fun primaryGenreNameFill() {

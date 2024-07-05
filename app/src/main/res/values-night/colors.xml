@@ -3,8 +3,7 @@
 
     <color name="mainActivityBackground">#1A1B22</color>
     <color name="allWhite">#FFFFFF</color>
-<!--    <color name="allWhite">#FFFFFF</color>-->
-<!--    <color name="allBlack">#1A1B22</color>-->
+
     <color name="all_YP_Black">#1A1B22</color>
     <color name="transparent">#00000000</color>
     <color name="YP_gray_White">#FFFFFF</color>
@@ -14,7 +13,7 @@
     <color name="gray_white">#FFFFFF</color>
     <color name="grayBlack">#1A1B22</color>
     <color name="YP_AAL_gray">#AEAFB4</color>
-<!--    <color name="grayWhite">#FFFFFF</color>-->
+
     <color name="icon_lightGray_darkGray">#535459</color>
 
     <color name="YP_black">#1A1B22</color>

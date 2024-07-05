@@ -1,5 +1,7 @@
 package com.alchemtech.playlistmaker.presentation.presenters
 
+import com.alchemtech.playlistmaker.domain.entity.Track
+
 interface PlayerFilling {
-    fun start ()
+    fun fill ( track: Track)
 }

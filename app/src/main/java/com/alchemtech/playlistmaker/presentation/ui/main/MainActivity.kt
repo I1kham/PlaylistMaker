@@ -1,40 +1,37 @@
 package com.alchemtech.playlistmaker.presentation.ui.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibActivity
-import com.alchemtech.playlistmaker.presentation.ui.settings.SettingsActivity
-import com.alchemtech.playlistmaker.presentation.ui.tracks.TracksActivity
+import androidx.lifecycle.ViewModelProvider
+import com.alchemtech.playlistmaker.databinding.ActivityMainBinding
+import com.alchemtech.playlistmaker.presentation.ui.main.model.MainViewModel
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModel.getViewModelFactory()
+        )[MainViewModel::class.java]
 
 
-        val searchBut = findViewById<Button>(R.id.buttonSearch)
-
-        searchBut.setOnClickListener {
-            val searchButIntent = Intent(this@MainActivity, TracksActivity::class.java)
-            startActivity(searchButIntent)
+        binding.buttonSearch.setOnClickListener {
+            viewModel.toSearch()
         }
 
 
-        val mediaLibBut = findViewById<Button>(R.id.buttonMediaLibrary)
-        mediaLibBut.setOnClickListener {
-            val mediaLibButIntent = Intent(this@MainActivity, MediaLibActivity::class.java)
-            startActivity(mediaLibButIntent)
+        binding.buttonMediaLibrary.setOnClickListener {
+            viewModel.toMediaLib()
         }
 
-        val settingsBut = findViewById<Button>(R.id.buttonSettings)
-        settingsBut.setOnClickListener {
-            val settingsButIntent = Intent(this@MainActivity, SettingsActivity::class.java)
-            startActivity(settingsButIntent)
+        binding.buttonSettings.setOnClickListener {
+            viewModel.toSettings()
         }
     }
-
-
 }
