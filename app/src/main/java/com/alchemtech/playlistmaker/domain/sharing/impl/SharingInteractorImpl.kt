@@ -5,7 +5,6 @@ import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
 class SharingInteractorImpl(
-
     private val externalNavigator: ExternalNavigator,
 ) : SharingInteractor {
     override fun shareApp(shareAppLink: String) {

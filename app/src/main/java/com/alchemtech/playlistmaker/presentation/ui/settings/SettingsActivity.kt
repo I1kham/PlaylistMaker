@@ -1,31 +1,29 @@
 package com.alchemtech.playlistmaker.presentation.ui.settings
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.databinding.ActivitySettingsBinding
 import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
+import org.koin.android.ext.android.inject
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var viewModel: SettingsViewModel
+    private  val viewModel: SettingsViewModel by inject()
     private lateinit var binding: ActivitySettingsBinding
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            SettingsViewModel.getViewModelFactory()
+//        )[SettingsViewModel::class.java]
 
         backButWork()
 

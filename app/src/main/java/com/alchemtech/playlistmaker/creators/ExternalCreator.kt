@@ -1,7 +1,7 @@
 package com.alchemtech.playlistmaker.creators
 
 import android.content.Context
-import com.alchemtech.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
+import com.alchemtech.playlistmaker.data.sharing.ExternalNavigatorImpl
 import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 import com.alchemtech.playlistmaker.domain.sharing.impl.SharingInteractorImpl
