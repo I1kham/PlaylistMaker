@@ -6,7 +6,6 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.api.StringResources
 import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
-import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
 class SettingsViewModel(
@@ -35,10 +34,8 @@ class SettingsViewModel(
     }
 
     internal fun setDarkThemeState() {
-        settingsInteractor.updateThemeSetting(
-            ThemeSettings(
+        settingsInteractor.updateSavedThemeNumber(
                 AppCompatDelegate.getDefaultNightMode()
-            )
         )
     }
 }
