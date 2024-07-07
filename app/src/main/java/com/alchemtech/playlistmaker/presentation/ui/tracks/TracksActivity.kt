@@ -16,18 +16,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
+import org.koin.android.ext.android.inject
 
 class TracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: TracksViewModel
+    private val viewModel: TracksViewModel by inject()
     private lateinit var binding: ActivitySearchBinding
 
     private lateinit var inputEditText: EditText
@@ -130,10 +130,6 @@ class TracksActivity : AppCompatActivity() {
     }
 
     private fun prepareViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            TracksViewModel.getViewModelFactory()
-        )[TracksViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
@@ -143,7 +139,6 @@ class TracksActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-
 
     private fun render(state: TracksState) {
         when (state) {
@@ -187,7 +182,7 @@ class TracksActivity : AppCompatActivity() {
             }
 
             is TracksState.InputTextClear -> {
-                inputEditText.setText("")
+                inputEditText.text = null
                 showHistoryList(state.tracks)
             }
         }

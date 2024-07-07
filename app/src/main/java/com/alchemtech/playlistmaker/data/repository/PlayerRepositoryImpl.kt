@@ -3,9 +3,7 @@ package com.alchemtech.playlistmaker.data.repository
 import android.media.MediaPlayer
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 
-class PlayerRepositoryImpl(
-    private val source: String,
-) : PlayerRepository {
+class PlayerRepositoryImpl : PlayerRepository {
     private var mediaPlayer = MediaPlayer()
 
     override fun currentPosition(): Int {
@@ -35,6 +33,7 @@ class PlayerRepositoryImpl(
     override fun preparePlayer(
         onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer,
         onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer,
+        source: String
     ) {
         mediaPlayer.setDataSource(source)
         mediaPlayer.prepareAsync()

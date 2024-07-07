@@ -1,42 +1,23 @@
 package com.alchemtech.playlistmaker.presentation.ui.player.model
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.alchemtech.playlistmaker.creators.PlayerCreator
-import com.alchemtech.playlistmaker.creators.SingleTrackRepositoryCreator
+import androidx.lifecycle.ViewModel
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 
 class PlayerViewModel(
-    application: Application,
-    private val track: Track,
+    private val singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
 
-    ) : AndroidViewModel(application) {
+    ) : ViewModel() {
+   private val track = singleTrackRepository.readTrack()
 
     companion object {
-        fun getViewModelFactory(
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val context = this[APPLICATION_KEY] as Application
-                val track = SingleTrackRepositoryCreator.provideSingleTrackDb(context).readTrack()!!
-                PlayerViewModel(
-                    context,
-                    track,
-                    PlayerCreator.providePlayer(track),
-                )
-            }
-        }
         private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
     }
 
@@ -49,13 +30,14 @@ class PlayerViewModel(
     private val currentPositionTask = createUpdateCurrentPositionTask()
     private var mainThreadHandler = Handler(Looper.getMainLooper())
 
-   private val stateLiveData = MutableLiveData<PlayerState>()
+    private val stateLiveData = MutableLiveData<PlayerState>()
 
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
         stateLiveData.value
     }
+
     private val statePosition = MutableLiveData<String>()
 
     fun observeCurrentPosition(): LiveData<String> = statePosition
@@ -66,32 +48,32 @@ class PlayerViewModel(
 
     init {
         preparePlayer()
-        renderState(PlayerState.fill(track))
+        renderState(PlayerState.fill(track!!))
     }
 
     private fun preparePlayer() {
 
         val onPreparedListenerConsumer =
             PlayerRepository.OnPreparedListenerConsumer {
-                renderState(PlayerState.OnPrepared(track))
+                renderState(PlayerState.OnPrepared(track!!))
             }
 
         val onCompletionListenerConsumer =
             PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion(track))
+                renderState(PlayerState.OnCompletion(track!!))
                 killCurrentPositionTask()
             }
 
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
-                renderState(PlayerState.Pause(track))
+                renderState(PlayerState.Pause(track!!))
                 killCurrentPositionTask()
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
-                renderState(PlayerState.Play(track))
+                renderState(PlayerState.Play(track!!))
                 startGetCurrentPositionTask()
             }
         }
@@ -101,7 +83,7 @@ class PlayerViewModel(
             pauseConsumer,
             startConsumer
         )
-        player.preparePlayer()
+        track!!.previewUrl?.let { player.preparePlayer(it) }
     }
 
     private fun killCurrentPositionTask() {
@@ -132,8 +114,8 @@ class PlayerViewModel(
         player.playbackControl()
     }
 
-    internal fun onWindowFocusChanged(hasFocus: Boolean){
-        if (!hasFocus){
+    internal fun onWindowFocusChanged(hasFocus: Boolean) {
+        if (!hasFocus) {
             player.pausePlayer()
         }
     }

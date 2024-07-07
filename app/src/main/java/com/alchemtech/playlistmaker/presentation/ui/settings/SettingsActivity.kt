@@ -20,11 +20,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        viewModel = ViewModelProvider(
-//            this,
-//            SettingsViewModel.getViewModelFactory()
-//        )[SettingsViewModel::class.java]
-
         backButWork()
 
         toSupportButWork()
@@ -35,6 +30,11 @@ class SettingsActivity : AppCompatActivity() {
 
         darkThemeSwitchWork()
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setDarkThemeState()
     }
 
     private fun darkThemeSwitchWork() {

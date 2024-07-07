@@ -15,25 +15,6 @@ class SettingsViewModel(
     private val stringResources: StringResources,
 ) : ViewModel() {
 
-//    companion object {
-//        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                val context = this[APPLICATION_KEY] as Application
-//                SettingsViewModel(
-//                    context,
-//                    ExternalCreator.provideSharingInteractor(context),
-//                    ThemeInteractorCreator.provideThemeInteractor(context),
-//                    StringResourcesCreator.consume(context)
-//                )
-//            }
-//        }
-//    }
-
-    override fun onCleared() {
-        super.onCleared()
-        setDarkThemeState()
-    }
-
     internal fun shareApp() {
         sharingInteractor.shareApp(stringResources.getStringResources(R.string.buttonShareApp))
     }
@@ -53,7 +34,7 @@ class SettingsViewModel(
         )
     }
 
-    private fun setDarkThemeState() {
+    internal fun setDarkThemeState() {
         settingsInteractor.updateThemeSetting(
             ThemeSettings(
                 AppCompatDelegate.getDefaultNightMode()
