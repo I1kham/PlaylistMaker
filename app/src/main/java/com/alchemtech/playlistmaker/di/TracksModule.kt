@@ -18,8 +18,8 @@ import com.alchemtech.playlistmaker.domain.impl.SingleTrackInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
-import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,7 +29,7 @@ const val SAVED_TRACKS = "SAVED_TRACKS"
 const val SAVED_LIST = "SAVED_LIST"
 
 val tracksActivityViewModel = module {
-    factory<TracksViewModel> {
+    viewModel<TracksViewModel> {
         TracksViewModel(
             historyInteractor = get(),
             searchInteractor = get(),
@@ -59,9 +59,6 @@ val tracksActivityViewModel = module {
         androidContext().getSharedPreferences(
             SAVED_TRACKS, Context.MODE_PRIVATE
         )
-    }
-    single<Gson> {
-        Gson()
     }
 
     single<TracksInteractor> {

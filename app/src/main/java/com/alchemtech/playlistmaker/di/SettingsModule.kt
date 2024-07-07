@@ -14,11 +14,12 @@ import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 import com.alchemtech.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 const val THEME = "THEME"
 val settingsActivityModule = module {
-    factory<SettingsViewModel> {
+    viewModel<SettingsViewModel> {
         SettingsViewModel(
             sharingInteractor = this.get(),
             settingsInteractor = this.get(),
@@ -36,7 +37,6 @@ val settingsActivityModule = module {
     }
     single<SettingsRepository> {
         SettingsRepositoryImpl(
-            key = THEME,
             sharedPreferences = this.get()
         )
     }
