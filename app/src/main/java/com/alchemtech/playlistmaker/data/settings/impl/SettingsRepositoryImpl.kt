@@ -1,7 +1,7 @@
 package com.alchemtech.playlistmaker.data.settings.impl
 
 import android.content.SharedPreferences
-import com.alchemtech.playlistmaker.di.THEME
+import com.alchemtech.playlistmaker.Constants.THEME
 import com.alchemtech.playlistmaker.domain.settings.SettingsRepository
 import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
 

@@ -2,6 +2,9 @@ package com.alchemtech.playlistmaker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.alchemtech.playlistmaker.Constants.SAVED_LIST
+import com.alchemtech.playlistmaker.Constants.SAVED_TRACKS
+import com.alchemtech.playlistmaker.Constants.SEARCH_BASE_URL
 import com.alchemtech.playlistmaker.data.NavigatorImpl
 import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient
@@ -24,9 +27,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val searchingBaseUrl = "https://itunes.apple.com"
-const val SAVED_TRACKS = "SAVED_TRACKS"
-const val SAVED_LIST = "SAVED_LIST"
 
 val tracksActivityViewModel = module {
     viewModel<TracksViewModel> {
@@ -74,7 +74,7 @@ val tracksActivityViewModel = module {
     }
     single<TrackApiService> {
         Retrofit.Builder()
-            .baseUrl(searchingBaseUrl)
+            .baseUrl(SEARCH_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TrackApiService::class.java)

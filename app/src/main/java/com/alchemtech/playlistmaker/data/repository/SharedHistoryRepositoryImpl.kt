@@ -1,7 +1,7 @@
 package com.alchemtech.playlistmaker.data.repository
 
 import android.content.SharedPreferences
-import com.alchemtech.playlistmaker.di.SAVED_LIST
+import com.alchemtech.playlistmaker.Constants.SAVED_LIST
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.google.gson.Gson

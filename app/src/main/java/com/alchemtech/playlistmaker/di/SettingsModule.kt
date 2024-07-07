@@ -2,6 +2,7 @@ package com.alchemtech.playlistmaker.di
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import com.alchemtech.playlistmaker.Constants.THEME
 import com.alchemtech.playlistmaker.data.resources.StringResourcesImpl
 import com.alchemtech.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.alchemtech.playlistmaker.data.sharing.ExternalNavigatorImpl
@@ -17,7 +18,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-const val THEME = "THEME"
 val settingsActivityModule = module {
     viewModel<SettingsViewModel> {
         SettingsViewModel(
