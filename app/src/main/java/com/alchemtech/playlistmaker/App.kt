@@ -2,12 +2,12 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import com.alchemtech.playlistmaker.di.mainActivityModule
+import com.alchemtech.playlistmaker.di.mediaLibViewModel
+import com.alchemtech.playlistmaker.di.playerViewModel
+import com.alchemtech.playlistmaker.di.settingsActivityModule
+import com.alchemtech.playlistmaker.di.tracksActivityViewModel
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
-import com.alchemtech.playlistmaker.presentation.mainActivityModule
-import com.alchemtech.playlistmaker.presentation.mediaLibViewModel
-import com.alchemtech.playlistmaker.presentation.playerViewModel
-import com.alchemtech.playlistmaker.presentation.settingsActivityModule
-import com.alchemtech.playlistmaker.presentation.tracksActivityViewModel
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

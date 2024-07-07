@@ -19,17 +19,11 @@ class SettingsActivity : AppCompatActivity() {
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         backButWork()
-
         toSupportButWork()
-
         shareAppButWork()
-
         termsOfUseButWork()
-
         darkThemeSwitchWork()
-
     }
 
     override fun onPause() {

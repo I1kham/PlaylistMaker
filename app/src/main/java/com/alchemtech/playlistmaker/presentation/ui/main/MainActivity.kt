@@ -15,16 +15,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        viewModel = ViewModelProvider(
-//            this,
-//            MainViewModel.getViewModelFactory()
-//        )[MainViewModel::class.java]
-
-
         binding.buttonSearch.setOnClickListener {
             viewModel.toSearch()
         }
-
 
         binding.buttonMediaLibrary.setOnClickListener {
             viewModel.toMediaLib()

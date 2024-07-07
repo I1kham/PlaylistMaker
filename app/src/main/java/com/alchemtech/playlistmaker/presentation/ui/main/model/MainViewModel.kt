@@ -16,5 +16,4 @@ class MainViewModel(private val navigatorActivity: Navigator ) : ViewModel() {
     internal fun toSettings() {
         navigatorActivity.toSettings()
     }
-
 }

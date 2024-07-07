@@ -30,6 +30,7 @@ class TracksViewModel(
 
     private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
+    private var oldSearchText: String = ""
     private val tracksList = mutableListOf<Track>()
     private val handler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<TracksState>()
@@ -45,6 +46,7 @@ class TracksViewModel(
                 tracksList.clear()
                 tracksList.addAll(foundedTracks)
                 renderState(TracksState.Content(tracksList))
+                oldSearchText = searchText
             }
         }
     }
@@ -78,8 +80,8 @@ class TracksViewModel(
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-               searchDebounce()
                 searchText = s.toString()
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -110,7 +112,7 @@ class TracksViewModel(
     }
 
     private fun searchTrack(s: String) {
-        if (s.isNotEmpty()) {
+        if (s.isNotEmpty() && oldSearchText != searchText) {
             renderState(TracksState.Loading)
             tracksList.clear()
             searchInteractor.searchTracksInteractor(
@@ -141,8 +143,7 @@ class TracksViewModel(
         stateLiveData.value
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    internal fun save() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         historyInteractor.writeTrackList()
     }

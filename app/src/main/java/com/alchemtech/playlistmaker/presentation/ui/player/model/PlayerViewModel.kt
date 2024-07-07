@@ -11,7 +11,7 @@ import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 
 class PlayerViewModel(
-    private val singleTrackRepository: SingleTrackInteractor,
+    singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
 
     ) : ViewModel() {
@@ -21,7 +21,7 @@ class PlayerViewModel(
         private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
     }
 
-    override fun onCleared() {
+    internal fun onStop() {
         super.onCleared()
         player.release()
         killCurrentPositionTask()
@@ -48,7 +48,7 @@ class PlayerViewModel(
 
     init {
         preparePlayer()
-        renderState(PlayerState.fill(track!!))
+        renderState(PlayerState.Fill(track!!))
     }
 
     private fun preparePlayer() {
@@ -63,7 +63,6 @@ class PlayerViewModel(
                 renderState(PlayerState.OnCompletion(track!!))
                 killCurrentPositionTask()
             }
-
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
@@ -112,11 +111,5 @@ class PlayerViewModel(
 
     internal fun playBut() {
         player.playbackControl()
-    }
-
-    internal fun onWindowFocusChanged(hasFocus: Boolean) {
-        if (!hasFocus) {
-            player.pausePlayer()
-        }
     }
 }

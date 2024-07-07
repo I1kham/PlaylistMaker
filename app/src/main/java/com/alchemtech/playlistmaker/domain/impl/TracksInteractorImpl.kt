@@ -5,7 +5,7 @@ import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.util.Resource
 import java.util.concurrent.Executors
 
-class TracksInteractorImpl(private val repository: TracksRepository) : TracksInteractor {
+class TracksInteractorImpl(private val tracksRepository: TracksRepository) : TracksInteractor {
 
     private val executor = Executors.newCachedThreadPool()
 
@@ -14,7 +14,7 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
         consumer: TracksInteractor.TracksConsumer,
     ) {
         executor.execute {
-            when (val resource = repository.searchTracks(expression)) {
+            when (val resource = tracksRepository.searchTracks(expression)) {
                 is Resource.Success -> {
                     consumer.consume(resource.data, null)
                 }

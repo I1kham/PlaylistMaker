@@ -29,7 +29,6 @@ class TracksActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel: TracksViewModel by inject()
     private lateinit var binding: ActivitySearchBinding
-
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var backButton: Button
@@ -42,10 +41,8 @@ class TracksActivity : AppCompatActivity() {
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         prepareBinding()
         prepareViewModel()
         prepareInputedText()
@@ -66,6 +63,10 @@ class TracksActivity : AppCompatActivity() {
         trackRecyclerView.adapter?.notifyDataSetChanged()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.save()
+    }
     private fun prepareHisTitle() {
         searchHistoryTitle = binding.searchHistoryTitle
     }
@@ -204,7 +205,7 @@ class TracksActivity : AppCompatActivity() {
                 viewModel.clickOnTrack(track)
             }
         }
-        trackAdapter = TrackSearchAdapter(this)
+        trackAdapter = TrackSearchAdapter(this )
         onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }

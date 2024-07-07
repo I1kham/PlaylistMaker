@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.presenters
+package com.alchemtech.playlistmaker.presentation.ui.player
 
 import android.content.Context
 import android.view.View
@@ -13,34 +13,29 @@ import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class PlayerFillingImpl(
-    private val binding: ActivityPlayerBinding,
-    private val context: Context,
-) : PlayerFilling, UiCalculator {
-private lateinit var track: Track
+interface PlayerActivityFilling : UiCalculator {
 
-    override fun fill(track: Track) {
-        this.track = track
-        trackArtist()
-        trackTimeMillis()
-        collectionName()
-        releaseDateFill()
-        primaryGenreNameFill()
-        countryFill()
-        playTimeFill()
-        albumCoverFill()
-        trackTitleFill()
+    fun fillPlayerActivity(track: Track, binding: ActivityPlayerBinding, context: Context) {
+        trackArtist(track, binding)
+        trackTimeMillis(track, binding)
+        collectionName(track, binding)
+        releaseDateFill(track, binding)
+        primaryGenreNameFill(track, binding)
+        countryFill(track, binding)
+        playTimeFill(track, binding)
+        albumCoverFill(track, binding, context)
+        trackTitleFill(track, binding)
     }
 
-    private fun trackArtist() {
+    private fun trackArtist(track: Track, binding: ActivityPlayerBinding) {
         binding.playerArtistName.text = track.artistName
     }
 
-    private fun trackTimeMillis() {
+    private fun trackTimeMillis(track: Track, binding: ActivityPlayerBinding) {
         binding.trackTimeMillisText.text = track.getTimeString()
     }
 
-    private fun collectionName() {
+    private fun collectionName(track: Track, binding: ActivityPlayerBinding) {
         if (!track.collectionName.isNullOrEmpty()) {
             binding.collectionNameText.text = track.collectionName
         } else {
@@ -49,31 +44,29 @@ private lateinit var track: Track
         }
     }
 
-    private fun releaseDateFill() {
+    private fun releaseDateFill(track: Track, binding: ActivityPlayerBinding) {
         if (track.getReleaseDateString().isNotEmpty()) {
             binding.releaseDateText.text = track.getReleaseDateString()
         } else {
-
             binding.releaseDateText.visibility = View.GONE
             binding.releaseDate.visibility = View.GONE
         }
     }
 
-    private fun primaryGenreNameFill() {
+    private fun primaryGenreNameFill(track: Track, binding: ActivityPlayerBinding) {
         binding.primaryGenreNameText.text = track.primaryGenreName
     }
 
-    private fun countryFill() {
+    private fun countryFill(track: Track, binding: ActivityPlayerBinding) {
         binding.trackCountryText.text = track.country
     }
 
-    private fun playTimeFill() {
+    private fun playTimeFill(track: Track, binding: ActivityPlayerBinding) {
         binding.playTime.text = "0:30"
     }
 
-    private fun albumCoverFill() {
+    private fun albumCoverFill(track: Track, binding: ActivityPlayerBinding, context: Context) {
         val albumCover: ImageView = binding.playerAlbumCover
-
         Glide.with(context)
             .load(track.getArtworkUrl512())
             .placeholder(R.drawable.track_album_default_big)
@@ -86,8 +79,7 @@ private lateinit var track: Track
             .into(albumCover)
     }
 
-    private fun trackTitleFill() {
+    private fun trackTitleFill(track: Track, binding: ActivityPlayerBinding) {
         binding.playerTrackName.text = track.trackName
-
     }
 }

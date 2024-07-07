@@ -4,7 +4,7 @@ import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 
 class PlayerInteractorImlp(
     private val playerRepository: PlayerRepository,
-) :    PlayerInteractor {
+) : PlayerInteractor {
     private var onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer? = null
     private var onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer? = null
     private var pauseConsumer: PlayerInteractor.PauseConsumer? = null

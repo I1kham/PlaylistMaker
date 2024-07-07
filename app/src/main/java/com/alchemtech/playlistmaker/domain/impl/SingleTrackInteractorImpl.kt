@@ -4,12 +4,8 @@ import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class SingleTrackInteractorImpl(private val repository: HistoryRepository) :
+class SingleTrackInteractorImpl(private val historyRepository: HistoryRepository) :
     SingleTrackInteractor {
-
-    init {
-        repository.setNameKey(name = SAVED_TRACK, key = TRACK)
-    }
 
     override fun writeTrack(track: Track) {
         writeTrackList(mutableListOf(track))
@@ -20,7 +16,7 @@ class SingleTrackInteractorImpl(private val repository: HistoryRepository) :
     }
 
     private fun readTracksList(): List<Track> {
-        val dto = repository.getSavedPref()
+        val dto = historyRepository.getSavedTracks()
         if (dto.isNullOrEmpty()) {
             return emptyList()
         } else {
@@ -43,12 +39,9 @@ class SingleTrackInteractorImpl(private val repository: HistoryRepository) :
 
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
-        repository.setSavedPref(
+        historyRepository.setTracksToSave(
             objects = tracks
         )
     }
-    companion object {
-        const val SAVED_TRACK = "SAVED_TRACK"
-        const val TRACK = "TRACK"
-    }
+
 }
