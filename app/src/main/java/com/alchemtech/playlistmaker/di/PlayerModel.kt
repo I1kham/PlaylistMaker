@@ -38,7 +38,6 @@ val playerViewModel = module {
     factory<MediaPlayer> {
         MediaPlayer()
     }
-
     factory<HistoryRepository> {
         SharedHistoryRepositoryImpl(
             SAVED_TRACK,
