@@ -5,13 +5,11 @@ import android.content.SharedPreferences
 import com.alchemtech.playlistmaker.Constants.SAVED_LIST
 import com.alchemtech.playlistmaker.Constants.SAVED_TRACKS
 import com.alchemtech.playlistmaker.Constants.SEARCH_BASE_URL
-import com.alchemtech.playlistmaker.data.NavigatorImpl
 import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient
 import com.alchemtech.playlistmaker.data.network.TrackApiService
 import com.alchemtech.playlistmaker.data.repository.SharedHistoryRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.TracksRepositoryImpl
-import com.alchemtech.playlistmaker.domain.Navigator
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
@@ -36,9 +34,6 @@ val tracksActivityViewModel = module {
             singleTrackInteractor = this.get(),
             navigatorActivity = get()
         )
-    }
-    single<Navigator> {
-        NavigatorImpl(context = androidContext())
     }
     single<SingleTrackInteractor> {
         SingleTrackInteractorImpl(historyRepository = this.get())
