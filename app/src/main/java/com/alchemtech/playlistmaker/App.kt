@@ -18,8 +18,6 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
-                /*domain*/
-
                 /*ViewModel*/
                 mainActivityModule,
                 settingsActivityModule,
