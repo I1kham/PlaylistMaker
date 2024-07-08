@@ -1,8 +1,6 @@
 package com.alchemtech.playlistmaker.domain.settings
 
-import com.alchemtech.playlistmaker.domain.settings.model.ThemeSettings
-
 interface SettingsInteractor {
-    fun getThemeSettings(): ThemeSettings
-    fun updateThemeSetting(settings: ThemeSettings)
+    fun getSavedThemeNumber(): Int
+    fun updateSavedThemeNumber(themeNumber: Int)
 }

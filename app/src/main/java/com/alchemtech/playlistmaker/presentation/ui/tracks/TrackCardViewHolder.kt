@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 
-class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), UiCalculator {
+class TrackCardViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView), UiCalculator {
     private var trackTitle: TextView = itemView.findViewById(R.id.trackTitle)
     private var trackArtist: TextView = itemView.findViewById(R.id.trackArtist)
     private var trackDuration: TextView = itemView.findViewById(R.id.trackDuration)
@@ -24,7 +24,6 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), U
         trackDuration.text = track.getTimeString()
 
         val context =
-
             Glide.with(itemView)
                 .load(track.artworkUrl100)
                 .placeholder(R.drawable.track_album_default)

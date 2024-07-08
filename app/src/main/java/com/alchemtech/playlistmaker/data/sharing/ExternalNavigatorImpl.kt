@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.data.sharing.impl
+package com.alchemtech.playlistmaker.data.sharing
 
 import android.content.Context
 import android.content.Intent

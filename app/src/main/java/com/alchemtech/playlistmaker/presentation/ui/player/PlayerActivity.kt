@@ -1,33 +1,40 @@
 package com.alchemtech.playlistmaker.presentation.ui.player
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.creators.PlayerDataFillingCreator
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.presenters.PlayerFilling
+import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: PlayerViewModel
+class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling {
+
+    private val viewModel: PlayerViewModel by viewModel()
     private lateinit var binding: ActivityPlayerBinding
 
-    private lateinit var filler: PlayerFilling
-
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prepareBinding()
-        prepareViewModel()
         observeRenderState()
         prepareBackBut()
+        prepareViewModel()
+    }
+
+    private fun prepareViewModel() {
         viewModel.observeCurrentPosition().observe(this) {
             binding.playTime.text = it
         }
-        filler = PlayerDataFillingCreator.provide(binding, applicationContext)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.onStop()
     }
 
     private fun prepareBackBut() {
@@ -41,14 +48,6 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun prepareViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(
-            )
-        )[PlayerViewModel::class.java]
-    }
-
     private fun observeRenderState() {
         val a = viewModel.observeRenderState()
         a.observe(this) {
@@ -56,12 +55,10 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-
     private fun render(state: PlayerState) {
         when (state) {
 
             is PlayerState.Pause -> {
-                fillWithBut(state.track)
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
@@ -80,7 +77,7 @@ class PlayerActivity : AppCompatActivity() {
                 binding.playBut.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerState.fill -> fill(state.track)
+            is PlayerState.Fill -> fill(state.track)
         }
     }
 
@@ -97,12 +94,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.playBut.isEnabled = true
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        viewModel.onWindowFocusChanged(hasFocus)
-    }
-
     private fun fill(track: Track) {
-        filler.fill(track)
+        fillPlayerActivity(track, binding, this)
     }
 }

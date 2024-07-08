@@ -7,6 +7,7 @@ interface PlayerRepository {
     fun preparePlayer(
         onPreparedListenerConsumer: OnPreparedListenerConsumer,
         onCompletionListenerConsumer: OnCompletionListenerConsumer,
+        source: String
     )
 
     fun release()

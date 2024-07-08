@@ -9,7 +9,7 @@ interface PlayerInteractor {
     fun playbackControl()
     fun release()
 
-    fun preparePlayer()
+    fun preparePlayer(source: String)
 
     fun setConsumers(
         onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer,

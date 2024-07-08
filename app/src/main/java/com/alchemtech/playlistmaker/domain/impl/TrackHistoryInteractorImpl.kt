@@ -4,12 +4,11 @@ import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
+class TrackHistoryInteractorImpl(private val historyRepository: HistoryRepository) :
     TrackHistoryInteractor {
     private val listHistory: MutableList<Track> = mutableListOf()
 
     init {
-        repository.setNameKey(name = SAVED_TRACKS, key = SAVED_LIST)
         readTrackList()
     }
 
@@ -49,7 +48,7 @@ class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
 
     private fun readTracksList(): List<Track> {
 
-        val dto = repository.getSavedPref()
+        val dto = historyRepository.getSavedTracks()
 
         if (dto.isNullOrEmpty()) {
             return emptyList()
@@ -73,15 +72,12 @@ class TrackHistoryInteractorImpl(private val repository: HistoryRepository) :
 
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
-        repository.setSavedPref(
+        historyRepository.setTracksToSave(
             objects = tracks
         )
     }
 
     companion object {
-        const val SAVED_TRACKS = "SAVED_TRACKS"
-        const val SAVED_LIST = "SAVED_LIST"
         const val MAX_HISTORY_LIST_SIZE = 10
     }
-
 }

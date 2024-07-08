@@ -16,20 +16,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: TracksViewModel
+    private val viewModel: TracksViewModel by viewModel()
     private lateinit var binding: ActivitySearchBinding
-
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var backButton: Button
@@ -42,10 +41,8 @@ class TracksActivity : AppCompatActivity() {
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         prepareBinding()
         prepareViewModel()
         prepareInputedText()
@@ -66,6 +63,10 @@ class TracksActivity : AppCompatActivity() {
         trackRecyclerView.adapter?.notifyDataSetChanged()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.save()
+    }
     private fun prepareHisTitle() {
         searchHistoryTitle = binding.searchHistoryTitle
     }
@@ -130,10 +131,6 @@ class TracksActivity : AppCompatActivity() {
     }
 
     private fun prepareViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            TracksViewModel.getViewModelFactory()
-        )[TracksViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
@@ -143,7 +140,6 @@ class TracksActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-
 
     private fun render(state: TracksState) {
         when (state) {
@@ -187,7 +183,7 @@ class TracksActivity : AppCompatActivity() {
             }
 
             is TracksState.InputTextClear -> {
-                inputEditText.setText("")
+                inputEditText.text = null
                 showHistoryList(state.tracks)
             }
         }
@@ -209,7 +205,7 @@ class TracksActivity : AppCompatActivity() {
                 viewModel.clickOnTrack(track)
             }
         }
-        trackAdapter = TrackSearchAdapter(this)
+        trackAdapter = TrackSearchAdapter(this )
         onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }

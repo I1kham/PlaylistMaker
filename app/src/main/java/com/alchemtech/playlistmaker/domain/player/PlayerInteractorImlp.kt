@@ -3,9 +3,8 @@ package com.alchemtech.playlistmaker.domain.player
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 
 class PlayerInteractorImlp(
-    private val player: PlayerRepository,
-) :
-    PlayerInteractor {
+    private val playerRepository: PlayerRepository,
+) : PlayerInteractor {
     private var onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer? = null
     private var onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer? = null
     private var pauseConsumer: PlayerInteractor.PauseConsumer? = null
@@ -24,33 +23,33 @@ class PlayerInteractorImlp(
     }
 
     override fun currentPosition(): Int {
-        return player.currentPosition()
+        return playerRepository.currentPosition()
     }
 
     override fun duration(): Int {
-        return player.duration()
+        return playerRepository.duration()
     }
 
     override fun playerIsPlaying(): Boolean {
-        return player.playerIsPlaying()
+        return playerRepository.playerIsPlaying()
     }
 
     override fun pausePlayer() {
-        player.pause()
+        playerRepository.pause()
         pauseConsumer!!.consume()
     }
 
     override fun startPlayer() {
-        player.start()
+        playerRepository.start()
         startConsumer!!.consume()
     }
 
     override fun release() {
-        player.release()
+        playerRepository.release()
     }
 
     override fun playbackControl() {
-        when (player.playerIsPlaying()) {
+        when (playerRepository.playerIsPlaying()) {
             true -> {
                 pausePlayer()
             }
@@ -61,10 +60,11 @@ class PlayerInteractorImlp(
         }
     }
 
-    override fun preparePlayer() {
-        player.preparePlayer(
+    override fun preparePlayer(source: String) {
+        playerRepository.preparePlayer(
             onPreparedListenerConsumer!!,
-            onCompletionListenerConsumer!!
+            onCompletionListenerConsumer!!,
+            source
         )
     }
 }

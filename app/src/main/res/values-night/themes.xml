@@ -3,6 +3,7 @@
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:background">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
+        <item name="bottomAppBarStyle">@style/Theme.SettingsActivity</item>
     </style>
 
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
