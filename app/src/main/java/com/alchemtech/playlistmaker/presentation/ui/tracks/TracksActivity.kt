@@ -22,12 +22,12 @@ import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksActivity : AppCompatActivity() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
-    private val viewModel: TracksViewModel by inject()
+    private val viewModel: TracksViewModel by viewModel()
     private lateinit var binding: ActivitySearchBinding
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView

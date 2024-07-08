@@ -9,12 +9,12 @@ import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling {
 
-    private val viewModel: PlayerViewModel by inject()
+    private val viewModel: PlayerViewModel by viewModel()
     private lateinit var binding: ActivityPlayerBinding
 
     @SuppressLint("RestrictedApi")

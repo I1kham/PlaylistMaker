@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.databinding.ActivitySettingsBinding
 import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
-    private  val viewModel: SettingsViewModel by inject()
+    private  val viewModel: SettingsViewModel by viewModel()
     private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
