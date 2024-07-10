@@ -17,7 +17,7 @@ class MediaLibActivity : AppCompatActivity() {
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val back = binding.mediaLibTextView
+        val back = binding.pageMediaLibPreview
         back.setOnClickListener {
             finish()
         }
