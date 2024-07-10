@@ -83,7 +83,6 @@ class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling 
 
     private fun fillWithBut(track: Track) {
         fill(track)
-        binding.playBut.isEnabled = true
         playBut()
     }
 
