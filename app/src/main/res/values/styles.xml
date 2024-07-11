@@ -99,12 +99,13 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
-
+//todo mage length correct
     <style name="TabLayout">
         <item name="tabTextColor">@color/black_White</item>
         <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabPaddingStart">16dp</item>
-        <item name="tabPaddingEnd">16dp</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="android:indicatorLeft">16dp</item>
+        <item name="android:indicatorRight">16dp</item>
         <item name="tabIndicatorColor">@color/YP_black_White</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>

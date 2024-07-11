@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homePage"
     style="@style/Base.Theme.PlaylistMaker"
+    android:background="@color/mainActivityBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/mainActivityBackground">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/homePage_head_text"

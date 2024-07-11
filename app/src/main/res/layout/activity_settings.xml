@@ -36,15 +36,13 @@
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/Share_app"
         android:drawableTint="@color/all_YP_Black"
-        app:icon="@drawable/share_app"
-         />
+        app:icon="@drawable/share_app"/>
 
     <Button
         android:id="@+id/buttonToSupport"
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/to_support"
-        app:icon="@drawable/support"
-        />
+        app:icon="@drawable/support"/>
 
 
     <Button
