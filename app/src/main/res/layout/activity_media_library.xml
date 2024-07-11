@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/YP_white_black"
     android:theme="@style/Theme.SettingsActivity"
     tools:context=".presentation.ui.mediaLibrary.MediaLibActivity">
 
@@ -31,6 +32,7 @@
         style="@style/TabLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toTopOf="@id/fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
