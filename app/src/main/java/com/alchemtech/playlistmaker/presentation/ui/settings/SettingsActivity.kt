@@ -49,7 +49,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun shareAppButWork() {
-
         binding.buttonShareApp.setOnClickListener {
             viewModel.shareApp()
         }

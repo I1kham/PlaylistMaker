@@ -55,7 +55,7 @@
             android:inputType="text"
             android:lines="1"
             android:singleLine="true"
-            android:textColor="@color/YP_black"
+            android:textColor="@color/all_YP_Black"
             android:textColorHint="@color/grayBlack"
             android:textCursorDrawable="@drawable/cursor"
             android:textFontWeight="400"

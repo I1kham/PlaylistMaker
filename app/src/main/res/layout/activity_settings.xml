@@ -5,7 +5,8 @@
     android:id="@+id/settingsPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/Theme.SettingsActivity">
 
     <Button
         android:id="@+id/pageSettingsPreview"
@@ -34,7 +35,7 @@
         android:id="@+id/buttonShareApp"
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/Share_app"
-        android:drawableTint="@color/YP_black"
+        android:drawableTint="@color/all_YP_Black"
         app:icon="@drawable/share_app"
          />
 
