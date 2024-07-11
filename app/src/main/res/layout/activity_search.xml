@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.SettingsActivity"
     android:id="@+id/searchActivityPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,7 @@
 
     <LinearLayout
         android:id="@+id/searchContainer"
-        style="@style/ThemeOverlay.AppCompat.DayNight.SearchContainer.Search"
+        style="@style/Search"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
@@ -99,7 +100,7 @@
             android:layout_marginBottom="12dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:listitem="@layout/search_track_card" />
         <!--        todo mus be visible-->
         <TextView
@@ -110,7 +111,7 @@
             android:layout_marginVertical="12dp"
             android:background="@drawable/search_history_clear_but"
             android:backgroundTint="@color/YP_black_White"
-            android:backgroundTintMode="add"
+            android:backgroundTintMode="multiply"
             android:gravity="center"
             android:text="@string/SearchHistoryClearBut"
             android:textColor="@color/white_YP_Black"
@@ -191,7 +192,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/search_history_clear_but"
             android:backgroundTint="@color/YP_black_White"
-            android:backgroundTintMode="add"
+            android:backgroundTintMode="multiply"
             android:fontFamily="@font/ys_display_regular"
             android:text="@string/updateButNoConnectionText"
             android:gravity="center"

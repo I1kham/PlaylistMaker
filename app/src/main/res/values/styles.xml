@@ -44,11 +44,9 @@
         <item name="iconGravity">end</item>
         <item name="iconSize">18dp</item>
         <item name="iconTint">@color/YP_gray_White</item>
-
     </style>
 
-    <style name="ThemeOverlay.AppCompat.DayNight.SearchContainer.Search">
-        <item name="theme">@style/ThemeOverlay.AppCompat.DayNight.SearchContainer</item>
+    <style name="Search">
         <item name="android:background">@drawable/search_rounded_ui</item>
         <item name="backgroundTintMode">screen</item>
     </style>
@@ -90,16 +88,7 @@
         <item name="android:textColor">@color/black_White</item>
     </style>
 
-
-    <style name="Widget.Base.Theme.PlaylistMaker.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
-
-    <style name="Widget.Base.Theme.PlaylistMaker.ButtonBar.Fullscreen" parent="">
-        <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
-    </style>
-//todo mage length correct
+<!--//todo make length correct-->
     <style name="TabLayout">
         <item name="tabTextColor">@color/black_White</item>
         <item name="tabIndicatorHeight">2dp</item>
