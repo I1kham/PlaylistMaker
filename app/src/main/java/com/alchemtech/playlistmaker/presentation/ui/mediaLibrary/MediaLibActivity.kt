@@ -25,8 +25,7 @@ class MediaLibActivity : AppCompatActivity() {
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewPager = binding.fragmentContainer
-        val back = binding.pageMediaLibPreview
-        back.setOnClickListener {
+        binding.pageMediaLibPreview.setOnClickListener {
             finish()
         }
         startTableLayout()
@@ -39,9 +38,10 @@ class MediaLibActivity : AppCompatActivity() {
 
     private fun startTableLayout() = binding.run {
          viewPager!!.adapter = MediaLibPagerAdapter(supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(tabLayout, viewPager!!) { fragment_title, position ->
-            fragment_title.text = getString(tabsTitleResIds[position])
+        tabMediator = TabLayoutMediator(tabLayout, viewPager!!) { tab, position ->
+            tab.text = getString(tabsTitleResIds[position])
         }
         tabMediator?.attach()
+
     }
 }

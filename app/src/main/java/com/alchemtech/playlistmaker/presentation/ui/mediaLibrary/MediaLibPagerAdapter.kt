@@ -12,12 +12,16 @@ class MediaLibPagerAdapter(
     lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
-       return MAX_ITEMS
+        return MAX_ITEMS
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) FavoriteTracksFragment() else PlayListsFragment()
+        return when (position) {
+            0 -> FavoriteTracksFragment()
+            else -> PlayListsFragment()
+        }
     }
+
     companion object {
         private const val MAX_ITEMS = 2
     }
