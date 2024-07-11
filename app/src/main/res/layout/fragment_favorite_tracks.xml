@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_YP_Black"
     android:orientation="vertical"
-    tools:context=".FragmentFavoriteTracks">
+    tools:context=".presentation.ui.mediaLibrary.fragment.FavoriteTracksFragment">
 
     <TextView
         android:id="@+id/title"
@@ -15,7 +15,7 @@
         android:background="@color/transparent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="FragmentFavoriteTracks" />
+        tools:text="@string/favorite_tracks_fragment_title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/noDataLay"
@@ -35,6 +35,7 @@
             android:layout_height="120dp"
             android:layout_gravity="center|start"
             android:scaleType="centerCrop"
+            android:background="@color/transparent"
             android:src="@drawable/data_not_found"
             app:layout_constraintBottom_toTopOf="@+id/noDataText"
             app:layout_constraintEnd_toEndOf="@+id/noDataLay"
