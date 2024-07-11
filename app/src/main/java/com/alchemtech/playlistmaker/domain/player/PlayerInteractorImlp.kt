@@ -34,6 +34,10 @@ class PlayerInteractorImlp(
         return playerRepository.playerIsPlaying()
     }
 
+    override fun isPrepared(): Boolean {
+       return playerRepository.isPrepared()
+    }
+
     override fun pausePlayer() {
         playerRepository.pause()
         pauseConsumer!!.consume()

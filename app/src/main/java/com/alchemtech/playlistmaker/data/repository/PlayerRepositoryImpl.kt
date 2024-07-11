@@ -4,9 +4,13 @@ import android.media.MediaPlayer
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 
 class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerRepository {
-
+    private var prepared = false
     override fun currentPosition(): Int {
         return mediaPlayer.currentPosition
+    }
+
+    override fun isPrepared(): Boolean {
+        return prepared
     }
 
     override fun duration(): Int {
@@ -15,6 +19,7 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
 
     override fun release() {
         mediaPlayer.release()
+        prepared = false
     }
 
     override fun playerIsPlaying(): Boolean {
@@ -32,12 +37,13 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
     override fun preparePlayer(
         onPreparedListenerConsumer: PlayerRepository.OnPreparedListenerConsumer,
         onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer,
-        source: String
+        source: String,
     ) {
         mediaPlayer.setDataSource(source)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             onPreparedListenerConsumer.consume()
+//            PlayerRepository.OnPreparedListenerConsumer { isPrepared = true }.consume()
         }
         mediaPlayer.setOnCompletionListener {
             onCompletionListenerConsumer.consume()

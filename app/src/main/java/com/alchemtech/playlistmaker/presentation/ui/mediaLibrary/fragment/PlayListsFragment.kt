@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListsFragment : Fragment() {
 
-    private var binding: FragmentPlayListsBinding? = null
+    private var _binding: FragmentPlayListsBinding? = null
     private val favoriteTracksViewModel: PlayListsViewModel by viewModel()
 
     override fun onCreateView(
@@ -19,7 +19,7 @@ class PlayListsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentPlayListsBinding.inflate(layoutInflater)
-        return binding?.root
+        _binding = FragmentPlayListsBinding.inflate(layoutInflater)
+        return _binding?.root
     }
 }

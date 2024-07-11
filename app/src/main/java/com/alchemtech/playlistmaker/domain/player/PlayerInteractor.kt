@@ -18,6 +18,7 @@ interface PlayerInteractor {
         startConsumer: StartConsumer,
 
         )
+    fun isPrepared():Boolean
 
     fun currentPosition(): Int
     fun duration(): Int
@@ -29,5 +30,4 @@ interface PlayerInteractor {
     interface StartConsumer {
         fun consume()
     }
-
 }
