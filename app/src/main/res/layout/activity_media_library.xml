@@ -11,17 +11,9 @@
 
     <Button
         android:id="@+id/pageMediaLibPreview"
-        style="@style/settingsActivityButtonsStyle"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:fontFamily="@font/ys_display_regular"
+        style="@style/titleActivityButtonStyle"
         android:text="@string/media_library_button"
-        android:textFontWeight="500"
-        android:textSize="22sp"
         app:icon="@drawable/arrow_back"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/black_White"
         app:layout_constraintBottom_toTopOf="@id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,13 +25,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
-        app:layout_constraintBottom_toTopOf="@id/fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/viewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pageMediaLibPreview" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/fragment_container"
+        android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

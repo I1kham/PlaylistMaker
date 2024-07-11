@@ -57,14 +57,9 @@
 
     <Button
         android:id="@+id/playerPreview"
-        style="@style/settingsActivityButtonsStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/titleActivityButtonStyle"
         android:layout_marginBottom="2dp"
         app:icon="?attr/actionModeCloseDrawable"
-        app:iconGravity="start"
-        app:iconSize="24dp"
-        app:iconTint="@color/black_White"
         app:layout_constraintBottom_toTopOf="@+id/leftBorder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

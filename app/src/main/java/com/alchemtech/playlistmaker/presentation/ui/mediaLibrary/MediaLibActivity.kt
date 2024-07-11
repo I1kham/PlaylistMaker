@@ -23,7 +23,7 @@ class MediaLibActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewPager = binding.fragmentContainer
+        viewPager = binding.viewPager
         binding.pageMediaLibPreview.setOnClickListener {
             finish()
         }
@@ -31,15 +31,15 @@ class MediaLibActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         tabMediator?.detach()
+        super.onDestroy()
     }
 
     private fun startTableLayout() = binding.run {
-         viewPager!!.adapter = MediaLibPagerAdapter(supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(tabLayout, viewPager!!) { tab, position ->
+        viewPager.adapter = MediaLibPagerAdapter(supportFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = getString(tabsTitleResIds[position])
         }
-      tabMediator?.attach()
+        tabMediator?.attach()
     }
 }

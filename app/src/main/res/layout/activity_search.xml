@@ -12,16 +12,9 @@
     <Button
         android:id="@+id/pageSearchPreview"
         style="@style/settingsActivityButtonsStyle"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:fontFamily="@font/ys_display_regular"
         android:text="@string/searchActivityHead"
-        android:textFontWeight="500"
-        android:textSize="22sp"
         app:icon="@drawable/arrow_back"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/black_White" />
+        app:iconGravity="textStart" />
 
     <LinearLayout
         android:id="@+id/searchContainer"
@@ -106,16 +99,10 @@
         <!--        todo mus be visible-->
         <Button
             android:id="@+id/clearHistoryBut"
-            android:layout_width="wrap_content"
+            style="@style/roundedBlackWhiteBut"
             android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
             android:layout_marginVertical="12dp"
-            android:backgroundTint="@color/YP_black_White"
-            android:backgroundTintMode="add"
-            android:gravity="center"
             android:text="@string/SearchHistoryClearBut"
-            android:textColor="@color/white_YP_Black"
-            android:textFontWeight="500"
             android:theme="@style/cardTextView"
             android:visibility="gone" />
         <!--        todo mus be gone-->
@@ -186,17 +173,11 @@
 
         <Button
             android:id="@+id/updateButNoConnection"
-            android:layout_width="wrap_content"
+            style="@style/roundedBlackWhiteBut"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:backgroundTint="@color/YP_black_White"
-            android:backgroundTintMode="add"
-            android:fontFamily="@font/ys_display_regular"
             android:text="@string/updateButNoConnectionText"
-            android:gravity="center"
             android:textColor="@color/white_YP_Black"
-            android:textFontWeight="500"
             android:theme="@style/cardTextView" />
     </LinearLayout>
 
