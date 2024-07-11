@@ -34,6 +34,8 @@
         app:layout_constraintBottom_toTopOf="@id/fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="@color/black_White"
+        app:tabBackground="@color/transparent"
         app:layout_constraintTop_toBottomOf="@id/pageMediaLibPreview" />
 
     <androidx.viewpager2.widget.ViewPager2

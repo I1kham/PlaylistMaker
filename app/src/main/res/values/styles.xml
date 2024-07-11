@@ -102,9 +102,11 @@
 
     <style name="TabLayout">
         <item name="tabTextColor">@color/black_White</item>
-        <item name="tabIndicatorColor">@color/white_YP_Black</item>
+        <item name="tabIndicatorColor">@color/black_White</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">16dp</item>
+        <item name="tabPaddingEnd">16dp</item>
         <item name="android:background">@color/transparent</item>
-        <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textFontWeight">500</item>
