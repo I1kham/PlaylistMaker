@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.SettingsActivity" parent="Base.Theme.PlaylistMaker">
-        <item name="android:background">@color/lightStatusBar</item>
+        <item name="background">@color/lightStatusBar</item>
         <item name="android:statusBarColor">@color/lightStatusBar</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
@@ -11,7 +11,7 @@
     </style>
     <!-- Base application theme. -->
     <style name="Base.Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/mainActivityBackground</item>
+<!--        <item name="android:background">@color/mainActivityBackground</item>-->
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
         <!-- Customize your light theme here. -->
     </style>

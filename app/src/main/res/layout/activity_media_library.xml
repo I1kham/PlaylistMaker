@@ -29,13 +29,12 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         style="@style/TabLayout"
-        android:layout_width="match_parent"
+        android:backgroundTint="@color/white_YP_Black"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tabIndicatorColor="@color/black_White"
-        app:tabBackground="@color/transparent"
         app:layout_constraintTop_toBottomOf="@id/pageMediaLibPreview" />
 
     <androidx.viewpager2.widget.ViewPager2

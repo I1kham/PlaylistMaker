@@ -21,7 +21,6 @@ class MediaLibActivity : AppCompatActivity() {
     private var viewPager: ViewPager2? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewPager = binding.fragmentContainer
@@ -41,7 +40,6 @@ class MediaLibActivity : AppCompatActivity() {
         tabMediator = TabLayoutMediator(tabLayout, viewPager!!) { tab, position ->
             tab.text = getString(tabsTitleResIds[position])
         }
-        tabMediator?.attach()
-
+      tabMediator?.attach()
     }
 }

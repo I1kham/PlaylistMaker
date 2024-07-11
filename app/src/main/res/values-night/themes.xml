@@ -7,7 +7,7 @@
     </style>
 
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/mainActivityBackground</item>
+        <item name="background">@color/mainActivityBackground</item>
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
         <item name="android:enforceStatusBarContrast">true</item>
     </style>
@@ -17,7 +17,7 @@
     </style>
     <!-- Base application theme. -->
     <style name="Base.Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:background">@color/mainActivityBackground</item>
+<!--        <item name="android:background">@color/mainActivityBackground</item>-->
         <item name="android:statusBarColor">@color/mainActivityBackground</item>
         <!-- Customize your dark theme here. -->
     </style>
