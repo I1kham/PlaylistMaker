@@ -36,7 +36,7 @@ class TracksActivity : AppCompatActivity() {
     private lateinit var noDataLinearLayout: LinearLayout
     private lateinit var noConnectionLinearLayout: LinearLayout
     private lateinit var clearButton: ImageView
-    private lateinit var upDateBut: Button
+    private lateinit var upDateBut: TextView
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter

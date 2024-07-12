@@ -16,7 +16,7 @@ import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
- const val THEME = "THEME"
+const val THEME = "THEME"
 val settingsActivityModule = module {
     viewModel<SettingsViewModel> {
         SettingsViewModel(

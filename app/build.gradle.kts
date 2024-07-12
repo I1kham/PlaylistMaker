@@ -26,6 +26,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -36,13 +37,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
-//    kotlinOptions {
-//        var jvmTarget = 17
-//    }
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
@@ -51,18 +48,14 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.bumptech.glide:glide:4.14.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
 
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
-    implementation("com.google.android.material:material:1.12.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     ksp("androidx.room:room-compiler:2.6.1")
     ksp("com.github.bumptech.glide:ksp:4.14.2")
@@ -71,7 +64,8 @@ dependencies {
     implementation("com.github.moxy-community:moxy-android:2.2.2")
     kapt("com.github.moxy-community:moxy-compiler:2.2.2")
 
-    implementation ("androidx.core:core-ktx:1.13.1")
+    implementation("io.insert-koin:koin-android:3.3.0")
 
-    implementation ("io.insert-koin:koin-android:3.3.0")
+    implementation ("androidx.fragment:fragment-ktx:1.8.1")
+    implementation ("androidx.viewpager2:viewpager2:1.1.0")
 }

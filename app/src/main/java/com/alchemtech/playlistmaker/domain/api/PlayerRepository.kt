@@ -14,7 +14,6 @@ interface PlayerRepository {
 
     fun duration() : Int
     fun playerIsPlaying() :Boolean
-
     fun currentPosition(): Int
     fun interface OnPreparedListenerConsumer {
         fun consume()
@@ -24,6 +23,4 @@ interface PlayerRepository {
         fun consume()
 
     }
-
-
 }

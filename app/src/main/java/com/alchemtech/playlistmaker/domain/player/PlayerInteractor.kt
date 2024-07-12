@@ -18,7 +18,6 @@ interface PlayerInteractor {
         startConsumer: StartConsumer,
 
         )
-
     fun currentPosition(): Int
     fun duration(): Int
     fun playerIsPlaying(): Boolean
@@ -29,5 +28,4 @@ interface PlayerInteractor {
     interface StartConsumer {
         fun consume()
     }
-
 }

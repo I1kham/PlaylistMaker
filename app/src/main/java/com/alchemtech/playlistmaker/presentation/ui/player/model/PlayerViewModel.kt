@@ -13,7 +13,6 @@ import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 class PlayerViewModel(
     singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
-
     ) : ViewModel() {
    private val track = singleTrackRepository.readTrack()
 
@@ -25,6 +24,10 @@ class PlayerViewModel(
         super.onCleared()
         player.release()
         killCurrentPositionTask()
+    }
+
+    internal fun onPause(){
+        player.pausePlayer()
     }
 
     private val currentPositionTask = createUpdateCurrentPositionTask()

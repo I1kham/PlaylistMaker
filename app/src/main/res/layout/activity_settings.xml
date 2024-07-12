@@ -3,22 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsPage"
+    android:background="@color/YP_white_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/pageSettingsPreview"
-        style="@style/settingsActivityButtonsStyle"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginHorizontal="0dp"
+        style="@style/titleActivityButtonStyle"
         android:text="@string/Settings_button"
-        android:textSize="22sp"
-        android:textColor="@color/YP_black_White"
         app:icon="@drawable/car_ui_icon_arrow_back"
-        app:iconGravity="start"
-        app:iconPadding="12dp"
         app:iconTint="@color/black_White"        />
 
     <Switch
@@ -34,16 +28,14 @@
         android:id="@+id/buttonShareApp"
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/Share_app"
-        android:drawableTint="@color/YP_black"
-        app:icon="@drawable/share_app"
-         />
+        android:drawableTint="@color/all_YP_Black"
+        app:icon="@drawable/share_app"/>
 
     <Button
         android:id="@+id/buttonToSupport"
         style="@style/settingsActivityButtonsStyle"
         android:text="@string/to_support"
-        app:icon="@drawable/support"
-        />
+        app:icon="@drawable/support"/>
 
 
     <Button

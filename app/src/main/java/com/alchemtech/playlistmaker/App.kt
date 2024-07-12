@@ -2,8 +2,10 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mainActivityModule
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
+import com.alchemtech.playlistmaker.di.playListsViewModel
 import com.alchemtech.playlistmaker.di.playerViewModel
 import com.alchemtech.playlistmaker.di.settingsActivityModule
 import com.alchemtech.playlistmaker.di.tracksActivityViewModel
@@ -23,7 +25,10 @@ class App : Application() {
                 settingsActivityModule,
                 tracksActivityViewModel,
                 playerViewModel,
-                mediaLibViewModel
+                mediaLibViewModel,
+                /*Fragments*/
+                favoriteTracksViewModel,
+                playListsViewModel
             )
         }
         switchTheme()
