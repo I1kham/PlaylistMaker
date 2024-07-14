@@ -4,7 +4,6 @@
     <style name="playerBackBut">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">56dp</item>
-        <item name="android:background">"@color/transparent"</item>
     </style>
 
     <style name="settingsActivityButtonsStyle">
@@ -127,7 +126,7 @@
     </style>
 
     <style name="Theme.BottomNavigator" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="colorPrimary">@color/mainActivityBackground</item>
+        <item name="colorPrimary">@color/YP_light_background</item>
         <item name="colorOnSurface">@color/YP_black_White</item>
         <item name="backgroundTint">@color/YP_white_black</item>
         <item name="iconSize">24dp</item>

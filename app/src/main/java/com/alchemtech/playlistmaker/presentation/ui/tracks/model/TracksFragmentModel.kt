@@ -20,7 +20,6 @@ class TracksFragmentModel(
     private val searchInteractor: TracksInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
 ) : ViewModel() {
-
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()

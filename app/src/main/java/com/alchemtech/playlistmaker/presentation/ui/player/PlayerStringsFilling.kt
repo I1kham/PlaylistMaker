@@ -13,7 +13,7 @@ import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-interface PlayerActivityFilling : UiCalculator {
+interface PlayerStringsFilling : UiCalculator {
 
     fun fillPlayerActivity(track: Track, binding: ActivityPlayerBinding, context: Context) {
         trackArtist(track, binding)

@@ -14,15 +14,15 @@ import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsFragm
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
-    private  val viewModel: SettingsFragmentModel by viewModel()
-    private lateinit var binding: FragmentSettingsBinding
+    private val viewModel: SettingsFragmentModel by viewModel()
+    private var _binding: FragmentSettingsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        return binding.root
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,8 +39,14 @@ class SettingsFragment : Fragment() {
         viewModel.setDarkThemeState()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
+
+
     private fun darkThemeSwitchWork() {
-        binding.dayNightSwitch.setOnCheckedChangeListener { _, isChecked ->
+        _binding?.dayNightSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setDefaultNightMode(MODE_NIGHT_YES)
             } else {
@@ -51,30 +57,30 @@ class SettingsFragment : Fragment() {
     }
 
     private fun termsOfUseButWork() {
-        binding.buttonTermsOfUse.setOnClickListener {
+        _binding?.buttonTermsOfUse?.setOnClickListener {
             viewModel.openTermsOfUse()
         }
     }
 
     private fun shareAppButWork() {
-        binding.buttonShareApp.setOnClickListener {
+        _binding?.buttonShareApp?.setOnClickListener {
             viewModel.shareApp()
         }
     }
 
     private fun toSupportButWork() {
-        binding.buttonToSupport.setOnClickListener {
+        _binding?.buttonToSupport?.setOnClickListener {
             viewModel.openSupport()
         }
     }
 
     private fun backButWork() {
-        binding.pageSettingsPreview.setOnClickListener {
+        _binding?.pageSettingsPreview?.setOnClickListener {
         }
     }
 
     private fun setThemeSwitcherChecked() {
-        binding.dayNightSwitch.isChecked =
+        _binding?.dayNightSwitch?.isChecked =
             getDefaultNightMode() == MODE_NIGHT_YES
     }
 }

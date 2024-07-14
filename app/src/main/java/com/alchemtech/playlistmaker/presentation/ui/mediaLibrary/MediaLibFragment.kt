@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MediaLibFragment : Fragment() {
 
     private val viewModel: MediaLibViewModel by viewModel()
-    private lateinit var binding: FragmentMediaLibraryBinding
+    private var _binding: FragmentMediaLibraryBinding? = null
     private var tabMediator: TabLayoutMediator? = null
     private val tabsTitleResIds = listOf(
         R.string.favorite_tracks_fragment_title,
@@ -24,8 +24,12 @@ class MediaLibFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMediaLibraryBinding.inflate(inflater, container, false)
-        return binding.root
+        _binding = FragmentMediaLibraryBinding.inflate(inflater, container, false)
+        return _binding!!.root
+    }
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,9 +42,9 @@ class MediaLibFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun startTableLayout() = binding.run {
-        binding.viewPager.adapter = MediaLibPagerAdapter(childFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+    private fun startTableLayout() = _binding.run {
+        _binding?.viewPager?.adapter = MediaLibPagerAdapter(childFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(_binding!!.tabLayout, _binding!!.viewPager) { tab, position ->
             tab.text = getString(tabsTitleResIds[position])
         }
         tabMediator?.attach()

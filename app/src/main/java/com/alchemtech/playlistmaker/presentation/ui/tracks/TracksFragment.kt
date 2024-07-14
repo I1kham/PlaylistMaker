@@ -31,7 +31,7 @@ class TracksFragment : Fragment() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel: TracksFragmentModel by viewModel()
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -46,10 +46,10 @@ class TracksFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +65,7 @@ class TracksFragment : Fragment() {
         prepareUpdateBut()
         prepareHisTitle()
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onStart() {
         super.onStart()
@@ -75,38 +76,44 @@ class TracksFragment : Fragment() {
         super.onPause()
         viewModel.save()
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
+
     private fun prepareHisTitle() {
-        searchHistoryTitle = binding.searchHistoryTitle
+        searchHistoryTitle = _binding!!.searchHistoryTitle
     }
 
     private fun prepareUpdateBut() {
-        upDateBut = binding.updateButNoConnection
+        upDateBut = _binding!!.updateButNoConnection
         upDateBut.setOnClickListener {
             viewModel.updateResponse()
         }
     }
 
     private fun prepareEditTextClearBut() {
-        clearButton = binding.clearIcon
+        clearButton = _binding!!.clearIcon
         clearButton.setOnClickListener {
             viewModel.clearEditTextButLogic()
         }
     }
 
     private fun prepareNoConnectionErr() {
-        noConnectionLinearLayout = binding.noConnection
+        noConnectionLinearLayout = _binding!!.noConnection
     }
 
     private fun prepareNoDataErr() {
-        noDataLinearLayout = binding.noData
+        noDataLinearLayout = _binding!!.noData
     }
 
     private fun prepareProgressBar() {
-        progressBar = binding.progressBar
+        progressBar = _binding!!.progressBar
     }
 
     private fun prepareClearHistBut() {
-        clearHistoryBut = binding.clearHistoryBut
+        clearHistoryBut = _binding!!.clearHistoryBut
         clearHistoryBut.setOnClickListener {
             viewModel.clearButSearchHistory()
         }
@@ -114,7 +121,7 @@ class TracksFragment : Fragment() {
 
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = binding.trackCardsRecyclerView
+        trackRecyclerView = _binding!!.trackCardsRecyclerView
         trackRecyclerView.layoutManager =
             LinearLayoutManager(
                 /* context = */ requireContext(),
@@ -124,7 +131,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun prepareInputedText() {
-        inputEditText = binding.inputTextForSearching
+        inputEditText = _binding!!.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()
@@ -157,6 +164,7 @@ class TracksFragment : Fragment() {
                 showProgressBar(false)
                 hideKeyBoard()
             }
+
             is TracksState.Error -> {
                 hideKeyBoard()
                 showProgressBar(false)
@@ -203,7 +211,7 @@ class TracksFragment : Fragment() {
                 findNavController().navigate(R.id.action_tracksFragment_to_playerActivity)
             }
         }
-        trackAdapter = TrackSearchAdapter(this )
+        trackAdapter = TrackSearchAdapter(this)
         onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }

@@ -35,9 +35,9 @@
             android:id="@+id/action_settingsFragment_to_tracksFragment2"
             app:destination="@id/tracksFragment" />
     </fragment>
-    <activity
+    <fragment
         android:id="@+id/playerActivity"
-        android:name="com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.player.PlayerFragment"
         android:label="activity_player"
         tools:layout="@layout/activity_player" />
 </navigation>

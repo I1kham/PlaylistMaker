@@ -21,4 +21,9 @@ class PlayListsFragment : Fragment() {
         _binding = FragmentPlayListsBinding.inflate(layoutInflater)
         return _binding?.root
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
 }
