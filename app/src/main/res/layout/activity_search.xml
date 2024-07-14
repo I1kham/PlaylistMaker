@@ -11,7 +11,7 @@
 
     <Button
         android:id="@+id/pageSearchPreview"
-        style="@style/settingsActivityButtonsStyle"
+        style="@style/titleActivityButtonStyle"
         android:text="@string/searchActivityHead"
         app:icon="@drawable/arrow_back"
         app:iconGravity="textStart" />

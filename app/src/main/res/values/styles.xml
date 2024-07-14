@@ -89,12 +89,12 @@
 
     <style name="TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
-       <item name="tabMinWidth">148dp</item>
         <item name="tabMaxWidth">148dp</item>
+        <item name="tabMinWidth">148dp</item>
+        <item name="tabGravity">fill</item>
         <item name="tabIndicatorFullWidth">true</item>
         <item name="tabTextColor">@color/black_White</item>
         <item name="tabIndicatorColor">@color/YP_black_White</item>
-        <item name="tabIndicator">@drawable/tab_indicator</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textFontWeight">500</item>
