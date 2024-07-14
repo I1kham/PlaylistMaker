@@ -22,7 +22,7 @@
         android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/gray_white"
+        android:backgroundTint="@color/YP_gray_white"
         android:orientation="horizontal">
 
         <ImageView

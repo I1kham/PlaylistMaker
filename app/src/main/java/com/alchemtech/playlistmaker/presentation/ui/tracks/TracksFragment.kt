@@ -48,8 +48,6 @@ class TracksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       // prepareBinding()
-
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }

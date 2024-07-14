@@ -95,7 +95,6 @@ class TracksFragmentModel(
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
         singleTrackInteractor.writeTrack(track)
-     //   navigatorActivity.toPlayer()
     }
 
     internal fun updateResponse() {
