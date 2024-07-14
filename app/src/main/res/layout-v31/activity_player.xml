@@ -93,7 +93,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="@string/trackname"
+        android:text="@string/trackName"
         android:textSize="22sp"
         android:lines="1"
         android:ellipsize="end"

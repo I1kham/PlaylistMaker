@@ -92,7 +92,7 @@
         android:fontFamily="@font/ys_display_medium"
         android:gravity="start"
         android:lines="1"
-        android:text="@string/trackname"
+        android:text="@string/trackName"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@id/playerArtistName"
         app:layout_constraintLeft_toLeftOf="@id/secondLeftBorder"
