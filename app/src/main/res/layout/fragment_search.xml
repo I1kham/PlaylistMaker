@@ -7,14 +7,13 @@
     android:id="@+id/searchActivityPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".presentation.ui.tracks.TracksFragment">
 
-    <Button
+    <TextView
         android:id="@+id/pageSearchPreview"
         style="@style/titleActivityButtonStyle"
-        android:text="@string/searchActivityHead"
-        app:icon="@drawable/arrow_back"
-        app:iconGravity="textStart" />
+        android:text="@string/searchActivityHead" />
 
     <LinearLayout
         android:id="@+id/searchContainer"

@@ -1,24 +1,32 @@
 package com.alchemtech.playlistmaker.presentation.ui.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.databinding.ActivitySettingsBinding
-import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
+import androidx.fragment.app.Fragment
+import com.alchemtech.playlistmaker.databinding.FragmentSettingsBinding
+import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsFragmentModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-    private  val viewModel: SettingsViewModel by viewModel()
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment : Fragment() {
+    private  val viewModel: SettingsFragmentModel by viewModel()
+    private lateinit var binding: FragmentSettingsBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         backButWork()
         toSupportButWork()
         shareAppButWork()
@@ -62,7 +70,6 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun backButWork() {
         binding.pageSettingsPreview.setOnClickListener {
-            finish()
         }
     }
 

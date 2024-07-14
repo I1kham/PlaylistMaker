@@ -15,7 +15,7 @@ import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.impl.SingleTrackInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl
-import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,12 +25,11 @@ private const val SEARCH_BASE_URL = "https://itunes.apple.com"
 private const val SAVED_TRACKS = "SAVED_TRACKS"
 private const val SAVED_LIST = "SAVED_LIST"
 val tracksActivityViewModel = module {
-    viewModel<TracksViewModel> {
-        TracksViewModel(
+    viewModel<TracksFragmentModel> {
+        TracksFragmentModel(
             historyInteractor = get(),
             searchInteractor = get(),
             singleTrackInteractor = this.get(),
-            navigatorActivity = get()
         )
     }
     single<SingleTrackInteractor> {

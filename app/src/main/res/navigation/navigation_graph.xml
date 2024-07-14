@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/tracksFragment">
+
+    <fragment
+        android:id="@+id/mediaLibFragment"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.MediaLibFragment"
+        android:label="fragment_media_library"
+        tools:layout="@layout/fragment_media_library" >
+        <action
+            android:id="@+id/action_mediaLibFragment_to_settingsFragment2"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tracksFragment"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.tracks.TracksFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_tracksFragment_to_mediaLibFragment3"
+            app:destination="@id/mediaLibFragment" />
+        <action
+            android:id="@+id/action_tracksFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_tracksFragment2"
+            app:destination="@id/tracksFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/playerActivity"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.player.PlayerActivity"
+        android:label="activity_player"
+        tools:layout="@layout/activity_player" />
+</navigation>

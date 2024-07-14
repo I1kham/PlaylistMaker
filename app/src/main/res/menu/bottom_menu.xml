@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:background="@color/YP_white_black"
+        android:id="@+id/tracksFragment"
+        android:icon="@drawable/search_icon"
+        android:title="@string/searchActivityHead" />
+    <item
+        android:background="@color/YP_white_black"
+        android:id="@+id/mediaLibFragment"
+        android:icon="@drawable/media_library"
+        android:title="@string/media_library_button" />
+    <item
+        android:background="@color/YP_white_black"
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/settings_icon"
+        android:title="@string/Settings_button" />
+</menu>

@@ -1,32 +1,35 @@
 package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.databinding.ActivityMediaLibraryBinding
+import com.alchemtech.playlistmaker.databinding.FragmentMediaLibraryBinding
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.MediaLibViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaLibActivity : AppCompatActivity() {
+class MediaLibFragment : Fragment() {
 
     private val viewModel: MediaLibViewModel by viewModel()
-    private lateinit var binding: ActivityMediaLibraryBinding
+    private lateinit var binding: FragmentMediaLibraryBinding
     private var tabMediator: TabLayoutMediator? = null
     private val tabsTitleResIds = listOf(
         R.string.favorite_tracks_fragment_title,
         R.string.playLists_fragment_title
     )
-    private var viewPager: ViewPager2? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        viewPager = binding.viewPager
-        binding.pageMediaLibPreview.setOnClickListener {
-            finish()
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = FragmentMediaLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         startTableLayout()
     }
 
@@ -36,8 +39,8 @@ class MediaLibActivity : AppCompatActivity() {
     }
 
     private fun startTableLayout() = binding.run {
-        viewPager.adapter = MediaLibPagerAdapter(supportFragmentManager, lifecycle)
-        tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        binding.viewPager.adapter = MediaLibPagerAdapter(childFragmentManager, lifecycle)
+        tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = getString(tabsTitleResIds[position])
         }
         tabMediator?.attach()

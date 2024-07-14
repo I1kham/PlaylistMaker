@@ -12,14 +12,14 @@ import com.alchemtech.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.alchemtech.playlistmaker.domain.sharing.ExternalNavigator
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 import com.alchemtech.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
+import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsFragmentModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 const val THEME = "THEME"
 val settingsActivityModule = module {
-    viewModel<SettingsViewModel> {
-        SettingsViewModel(
+    viewModel<SettingsFragmentModel> {
+        SettingsFragmentModel(
             sharingInteractor = this.get(),
             settingsInteractor = this.get(),
             stringResources = this.get()

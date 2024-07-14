@@ -3,11 +3,11 @@ package com.alchemtech.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
-import com.alchemtech.playlistmaker.di.mainActivityModule
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
 import com.alchemtech.playlistmaker.di.playListsViewModel
 import com.alchemtech.playlistmaker.di.playerViewModel
 import com.alchemtech.playlistmaker.di.settingsActivityModule
+import com.alchemtech.playlistmaker.di.startViewModel
 import com.alchemtech.playlistmaker.di.tracksActivityViewModel
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import org.koin.android.ext.android.inject
@@ -21,11 +21,11 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 /*ViewModel*/
-                mainActivityModule,
                 settingsActivityModule,
                 tracksActivityViewModel,
                 playerViewModel,
                 mediaLibViewModel,
+                startViewModel,
                 /*Fragments*/
                 favoriteTracksViewModel,
                 playListsViewModel

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:backgroundTint="@color/transparent"
     android:outlineAmbientShadowColor="@color/transparent"
     android:outlineSpotShadowColor="@color/transparent">
@@ -28,16 +28,16 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/trackTitle"
                 style="@style/cardTextView"
                 android:textSize="16sp"
-                tools:text="Track Name"/>
+                tools:text="Track Name" />
 
             <LinearLayout
 
@@ -49,8 +49,8 @@
                 <TextView
                     android:id="@+id/trackArtist"
                     style="@style/cardTextView"
-                    tools:text="Track Artist"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="Track Artist" />
 
                 <LinearLayout
                     style="@style/albumCoverStyle"
@@ -63,8 +63,8 @@
                 <TextView
                     android:id="@+id/trackDuration"
                     style="@style/cardTextView"
-                    tools:text="Track Duration"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    tools:text="Track Duration" />
 
             </LinearLayout>
 
@@ -74,9 +74,9 @@
             android:id="@+id/forwardButTrackCard"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:scaleType="fitEnd"
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
+            android:scaleType="fitEnd"
             android:src="@drawable/terms_of_use"
             app:tint="@color/YP_gray_White" />
 

@@ -13,31 +13,21 @@
         android:icon="@drawable/music_library_2_svgrepo_com"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.PlaylistMaker"
+        android:theme="@style/Theme.SettingsActivity"
         tools:targetApi="31">
-        <activity
-            android:name=".presentation.ui.tracks.TracksActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
+
         <activity
             android:name=".presentation.ui.player.PlayerActivity"
             android:exported="false"
             android:theme="@style/Theme.SettingsActivity" />
+
         <activity
-            android:name=".presentation.ui.mediaLibrary.MediaLibActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-        <activity
-            android:name=".presentation.ui.settings.SettingsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SettingsActivity" />
-        <activity
-            android:name=".presentation.ui.main.MainActivity"
+            android:name=".presentation.ui.main.StartActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.PlaylistMaker">
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
