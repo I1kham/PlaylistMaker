@@ -49,13 +49,14 @@
                 <TextView
                     android:id="@+id/trackArtist"
                     style="@style/cardTextView"
+                    android:maxWidth="250dp"
                     android:textSize="13sp"
                     tools:text="Track Artist" />
 
                 <LinearLayout
-                    style="@style/albumCoverStyle"
                     android:layout_width="4dp"
                     android:layout_height="4dp"
+                    android:background="@drawable/search_rounded_ui"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:backgroundTint="@color/YP_gray_White" />
