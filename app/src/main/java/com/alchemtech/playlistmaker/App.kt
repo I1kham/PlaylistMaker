@@ -36,8 +36,10 @@ class App : Application() {
 
     private fun switchTheme() {
         val settingsInteractor: SettingsInteractor by inject()
+        val theme = settingsInteractor.getSavedThemeNumber()
+        if (theme!=-1)
         setDefaultNightMode(
-            settingsInteractor.getSavedThemeNumber()
+            theme
         )
     }
 }
