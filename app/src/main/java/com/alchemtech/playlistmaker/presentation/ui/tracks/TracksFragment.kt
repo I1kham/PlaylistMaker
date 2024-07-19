@@ -1,37 +1,39 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alchemtech.playlistmaker.databinding.ActivitySearchBinding
+import com.alchemtech.playlistmaker.R
+import com.alchemtech.playlistmaker.databinding.FragmentSearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
-import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TracksActivity : AppCompatActivity() {
+class TracksFragment : Fragment() {
     private var isClickAllowed: Boolean = true
     private val handler = Handler(Looper.getMainLooper())
-    private val viewModel: TracksViewModel by viewModel()
-    private lateinit var binding: ActivitySearchBinding
+    private val viewModel: TracksFragmentModel by viewModel()
+    private var _binding: FragmentSearchBinding? = null
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
-    private lateinit var backButton: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var noDataLinearLayout: LinearLayout
     private lateinit var noConnectionLinearLayout: LinearLayout
@@ -41,13 +43,20 @@ class TracksActivity : AppCompatActivity() {
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        prepareBinding()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return _binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         prepareViewModel()
         prepareInputedText()
         prepareTrackRecyclerView()
-        prepareBackBut()
         prepareClearHistBut()
         prepareProgressBar()
         prepareNoDataErr()
@@ -67,62 +76,62 @@ class TracksActivity : AppCompatActivity() {
         super.onPause()
         viewModel.save()
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
+
     private fun prepareHisTitle() {
-        searchHistoryTitle = binding.searchHistoryTitle
+        searchHistoryTitle = _binding!!.searchHistoryTitle
     }
 
     private fun prepareUpdateBut() {
-        upDateBut = binding.updateButNoConnection
+        upDateBut = _binding!!.updateButNoConnection
         upDateBut.setOnClickListener {
             viewModel.updateResponse()
         }
     }
 
     private fun prepareEditTextClearBut() {
-        clearButton = binding.clearIcon
+        clearButton = _binding!!.clearIcon
         clearButton.setOnClickListener {
             viewModel.clearEditTextButLogic()
         }
     }
 
     private fun prepareNoConnectionErr() {
-        noConnectionLinearLayout = binding.noConnection
+        noConnectionLinearLayout = _binding!!.noConnection
     }
 
     private fun prepareNoDataErr() {
-        noDataLinearLayout = binding.noData
+        noDataLinearLayout = _binding!!.noData
     }
 
     private fun prepareProgressBar() {
-        progressBar = binding.progressBar
+        progressBar = _binding!!.progressBar
     }
 
     private fun prepareClearHistBut() {
-        clearHistoryBut = binding.clearHistoryBut
+        clearHistoryBut = _binding!!.clearHistoryBut
         clearHistoryBut.setOnClickListener {
             viewModel.clearButSearchHistory()
         }
     }
 
-    private fun prepareBackBut() {
-        backButton = binding.pageSearchPreview
-        backButton.setOnClickListener {
-            finish()
-        }
-    }
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = binding.trackCardsRecyclerView
+        trackRecyclerView = _binding!!.trackCardsRecyclerView
         trackRecyclerView.layoutManager =
             LinearLayoutManager(
-                /* context = */ this,
+                /* context = */ requireContext(),
                 /* orientation = */ LinearLayoutManager.VERTICAL,
                 /* reverseLayout = */ false
             )
     }
 
     private fun prepareInputedText() {
-        inputEditText = binding.inputTextForSearching
+        inputEditText = _binding!!.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()
@@ -131,14 +140,9 @@ class TracksActivity : AppCompatActivity() {
     }
 
     private fun prepareViewModel() {
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(getViewLifecycleOwner()) {
             render(it)
         }
-    }
-
-    private fun prepareBinding() {
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
     }
 
     private fun render(state: TracksState) {
@@ -160,6 +164,7 @@ class TracksActivity : AppCompatActivity() {
                 showProgressBar(false)
                 hideKeyBoard()
             }
+
             is TracksState.Error -> {
                 hideKeyBoard()
                 showProgressBar(false)
@@ -203,9 +208,10 @@ class TracksActivity : AppCompatActivity() {
         val onItemClickToTrackCard = { track: Track ->
             if (clickDebounce()) {
                 viewModel.clickOnTrack(track)
+                findNavController().navigate(R.id.action_tracksFragment_to_playerActivity)
             }
         }
-        trackAdapter = TrackSearchAdapter(this )
+        trackAdapter = TrackSearchAdapter(this)
         onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }
@@ -253,7 +259,7 @@ class TracksActivity : AppCompatActivity() {
 
     private fun hideKeyBoard() {
         val inputMethodManager =
-            this.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
     }
 

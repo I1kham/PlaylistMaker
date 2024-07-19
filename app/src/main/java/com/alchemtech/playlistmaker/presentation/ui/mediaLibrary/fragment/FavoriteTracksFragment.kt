@@ -22,4 +22,9 @@ class FavoriteTracksFragment:Fragment() {
         _binding = FragmentFavoriteTracksBinding.inflate(layoutInflater)
         return _binding?.root
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
 }

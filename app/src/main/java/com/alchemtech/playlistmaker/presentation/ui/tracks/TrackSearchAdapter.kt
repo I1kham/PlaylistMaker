@@ -15,7 +15,6 @@ class TrackSearchAdapter(private val trackListOf: List<Track>) :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.search_track_card, viewGroup, false)
         return TrackCardViewHolder(view)
-
     }
 
     override fun getItemCount() = trackListOf.size

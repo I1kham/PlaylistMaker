@@ -8,7 +8,7 @@ import com.alchemtech.playlistmaker.domain.entity.emailData.EmailData
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.alchemtech.playlistmaker.domain.sharing.SharingInteractor
 
-class SettingsViewModel(
+class SettingsFragmentModel(
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
     private val stringResources: StringResources,

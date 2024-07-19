@@ -10,19 +10,16 @@ import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.alchemtech.playlistmaker.domain.Navigator
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TracksViewModel(
+class TracksFragmentModel(
     private val historyInteractor: TrackHistoryInteractor,
     private val searchInteractor: TracksInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
-    private val navigatorActivity: Navigator,
 ) : ViewModel() {
-
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
@@ -97,7 +94,6 @@ class TracksViewModel(
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
         singleTrackInteractor.writeTrack(track)
-        navigatorActivity.toPlayer()
     }
 
     internal fun updateResponse() {

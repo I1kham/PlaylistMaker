@@ -15,11 +15,15 @@ class PlayListsFragment : Fragment() {
     private val favoriteTracksViewModel: PlayListsViewModel by viewModel()
 
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentPlayListsBinding.inflate(layoutInflater)
         return _binding?.root
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
     }
 }

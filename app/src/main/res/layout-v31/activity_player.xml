@@ -7,7 +7,7 @@
     android:background="@color/YP_white_black"
     android:theme="@style/Theme.SettingsActivity"
     android:orientation="vertical"
-    tools:context=".presentation.ui.player.PlayerActivity">
+    tools:context=".presentation.ui.player.PlayerFragment">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -57,14 +57,16 @@
 
     <Button
         android:id="@+id/playerPreview"
-        style="@style/titleActivityButtonStyle"
+        style="@style/playerBackBut"
         android:layout_marginBottom="2dp"
-        app:icon="?attr/actionModeCloseDrawable"
-        app:layout_constraintBottom_toTopOf="@+id/leftBorder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:icon="@drawable/arrow_back"
+        app:iconSize="24dp"
+        app:iconTint="@color/YP_black_White"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/playerAlbumCover"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"  />
 
     <ImageView
         android:id="@+id/playerAlbumCover"
@@ -91,7 +93,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="@string/trackname"
+        android:text="@string/trackName"
         android:textSize="22sp"
         android:lines="1"
         android:ellipsize="end"

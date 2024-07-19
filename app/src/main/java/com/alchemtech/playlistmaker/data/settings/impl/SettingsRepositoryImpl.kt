@@ -8,7 +8,7 @@ class SettingsRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
 ) : SettingsRepository {
     override fun getThemeSettings(): Int {
-        return sharedPreferences.getInt(THEME, 1)
+        return sharedPreferences.getInt(THEME, -1)
     }
 
     override fun updateThemeSetting(themeNumber: Int) {
