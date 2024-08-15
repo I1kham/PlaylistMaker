@@ -21,7 +21,7 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
     }
 
     override fun pause() {
-        mediaPlayer.pause()
+            mediaPlayer.pause()
     }
 
     override fun start() {
@@ -37,7 +37,6 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             onPreparedListenerConsumer.consume()
-//            PlayerRepository.OnPreparedListenerConsumer { isPrepared = true }.consume()
         }
         mediaPlayer.setOnCompletionListener {
             onCompletionListenerConsumer.consume()

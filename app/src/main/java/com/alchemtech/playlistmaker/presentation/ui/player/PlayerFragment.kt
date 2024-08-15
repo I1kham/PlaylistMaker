@@ -1,8 +1,10 @@
 package com.alchemtech.playlistmaker.presentation.ui.player
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
@@ -12,23 +14,34 @@ import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling {
+class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
     private val viewModel: PlayerViewModel by viewModel()
-    private lateinit var binding: ActivityPlayerBinding
+    private var _binding: ActivityPlayerBinding? = null
 
-    @SuppressLint("RestrictedApi")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        prepareBinding()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = ActivityPlayerBinding.inflate(inflater, container, false)
+        return _binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         observeRenderState()
         prepareBackBut()
         prepareViewModel()
     }
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
 
     private fun prepareViewModel() {
-        viewModel.observeCurrentPosition().observe(this) {
-            binding.playTime.text = it
+        viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
+            _binding?.playTime?.text = it
         }
     }
 
@@ -37,25 +50,20 @@ class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling 
         viewModel.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         viewModel.onStop()
     }
 
     private fun prepareBackBut() {
-        binding.playerPreview.setOnClickListener {
-            finish()
+        _binding!!.playerPreview.setOnClickListener {
+            requireActivity().onBackPressed()
         }
-    }
-
-    private fun prepareBinding() {
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
     }
 
     private fun observeRenderState() {
         val a = viewModel.observeRenderState()
-        a.observe(this) {
+        a.observe(getViewLifecycleOwner()) {
             render(it)
         }
     }
@@ -64,11 +72,11 @@ class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling 
         when (state) {
 
             is PlayerState.Pause -> {
-                binding.playBut.setImageResource(R.drawable.play_but)
+                _binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
             is PlayerState.Play -> {
-                binding.playBut.setImageResource(R.drawable.pause_but)
+                _binding?.playBut?.setImageResource(R.drawable.pause_but)
                 fillWithBut(state.track)
             }
 
@@ -77,9 +85,9 @@ class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling 
             }
 
             is PlayerState.OnCompletion -> {
-                binding.playTime.text = "00:00"
+                _binding?.playTime?.text = "00:00"
                 fillWithBut(state.track)
-                binding.playBut.setImageResource(R.drawable.play_but)
+                _binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
             is PlayerState.Fill -> fill(state.track)
@@ -92,13 +100,13 @@ class PlayerActivity : AppCompatActivity(), UiCalculator, PlayerActivityFilling 
     }
 
     private fun playBut() {
-        binding.playBut.setOnClickListener {
+        _binding?.playBut?.setOnClickListener {
             viewModel.playBut()
         }
-        binding.playBut.isEnabled = true
+        _binding?.playBut?.isEnabled = true
     }
 
     private fun fill(track: Track) {
-        fillPlayerActivity(track, binding, this)
+        fillPlayerActivity(track, _binding!!, requireContext())
     }
 }

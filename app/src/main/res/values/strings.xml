@@ -37,7 +37,7 @@
     <string name="TrackYear">Год</string>
     <string name="album">Альбом</string>
     <string name="TrackDuration">Длительность</string>
-    <string name="trackname">TrackName</string>
+    <string name="trackName">TrackName</string>
     <string name="mediaLibPreview">Медиатека</string>
     <string name="emptyMediaLib">Ваша медиатека пуста</string>
     <string name="emptyPlayLists">Вы не создали\nни одного плейлиста</string>

@@ -1,14 +1,8 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base application theme. -->
     <style name="Theme.SettingsActivity" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/YP_white_black</item>
         <item name="android:enforceStatusBarContrast">true</item>
         <item name="statusBarScrim">@color/YP_black_White</item>
-    </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="background">@color/mainActivityBackground</item>
-        <item name="android:statusBarColor">@color/mainActivityBackground</item>
-        <!-- Customize your light theme here. -->
     </style>
 </resources>

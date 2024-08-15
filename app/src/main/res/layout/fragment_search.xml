@@ -7,14 +7,13 @@
     android:id="@+id/searchActivityPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".presentation.ui.tracks.TracksFragment">
 
-    <Button
+    <TextView
         android:id="@+id/pageSearchPreview"
-        style="@style/settingsActivityButtonsStyle"
-        android:text="@string/searchActivityHead"
-        app:icon="@drawable/arrow_back"
-        app:iconGravity="textStart" />
+        style="@style/titleActivityButtonStyle"
+        android:text="@string/searchActivityHead" />
 
     <LinearLayout
         android:id="@+id/searchContainer"
@@ -23,7 +22,7 @@
         android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/gray_white"
+        android:backgroundTint="@color/YP_gray_white"
         android:orientation="horizontal">
 
         <ImageView

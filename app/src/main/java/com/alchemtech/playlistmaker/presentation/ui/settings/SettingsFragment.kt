@@ -1,24 +1,32 @@
 package com.alchemtech.playlistmaker.presentation.ui.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.databinding.ActivitySettingsBinding
-import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsViewModel
+import androidx.fragment.app.Fragment
+import com.alchemtech.playlistmaker.databinding.FragmentSettingsBinding
+import com.alchemtech.playlistmaker.presentation.ui.settings.model.SettingsFragmentModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
-    private  val viewModel: SettingsViewModel by viewModel()
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment : Fragment() {
+    private val viewModel: SettingsFragmentModel by viewModel()
+    private var _binding: FragmentSettingsBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return _binding!!.root
+    }
 
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         backButWork()
         toSupportButWork()
         shareAppButWork()
@@ -31,8 +39,14 @@ class SettingsActivity : AppCompatActivity() {
         viewModel.setDarkThemeState()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
+
+
     private fun darkThemeSwitchWork() {
-        binding.dayNightSwitch.setOnCheckedChangeListener { _, isChecked ->
+        _binding?.dayNightSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setDefaultNightMode(MODE_NIGHT_YES)
             } else {
@@ -43,31 +57,30 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun termsOfUseButWork() {
-        binding.buttonTermsOfUse.setOnClickListener {
+        _binding?.buttonTermsOfUse?.setOnClickListener {
             viewModel.openTermsOfUse()
         }
     }
 
     private fun shareAppButWork() {
-        binding.buttonShareApp.setOnClickListener {
+        _binding?.buttonShareApp?.setOnClickListener {
             viewModel.shareApp()
         }
     }
 
     private fun toSupportButWork() {
-        binding.buttonToSupport.setOnClickListener {
+        _binding?.buttonToSupport?.setOnClickListener {
             viewModel.openSupport()
         }
     }
 
     private fun backButWork() {
-        binding.pageSettingsPreview.setOnClickListener {
-            finish()
+        _binding?.pageSettingsPreview?.setOnClickListener {
         }
     }
 
     private fun setThemeSwitcherChecked() {
-        binding.dayNightSwitch.isChecked =
+        _binding?.dayNightSwitch?.isChecked =
             getDefaultNightMode() == MODE_NIGHT_YES
     }
 }

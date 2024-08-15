@@ -7,13 +7,12 @@
     android:orientation="vertical"
     android:background="@color/YP_white_black"
     android:theme="@style/Theme.SettingsActivity"
-    tools:context=".presentation.ui.mediaLibrary.MediaLibActivity">
+    tools:context=".presentation.ui.mediaLibrary.MediaLibFragment">
 
-    <Button
+    <TextView
         android:id="@+id/pageMediaLibPreview"
         style="@style/titleActivityButtonStyle"
         android:text="@string/media_library_button"
-        app:icon="@drawable/arrow_back"
         app:layout_constraintBottom_toTopOf="@id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
