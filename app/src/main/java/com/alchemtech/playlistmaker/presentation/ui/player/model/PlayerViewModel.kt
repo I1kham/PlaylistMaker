@@ -1,20 +1,20 @@
 package com.alchemtech.playlistmaker.presentation.ui.player.model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
+import com.alchemtech.playlistmaker.util.debounce
 
 class PlayerViewModel(
     singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
-    ) : ViewModel() {
-   private val track = singleTrackRepository.readTrack()
+) : ViewModel() {
+    private val track = singleTrackRepository.readTrack()
 
     companion object {
         private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
@@ -23,15 +23,11 @@ class PlayerViewModel(
     internal fun onStop() {
         super.onCleared()
         player.release()
-        killCurrentPositionTask()
     }
 
-    internal fun onPause(){
+    internal fun onPause() {
         player.pausePlayer()
     }
-
-    private val currentPositionTask = createUpdateCurrentPositionTask()
-    private var mainThreadHandler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<PlayerState>()
 
@@ -64,19 +60,18 @@ class PlayerViewModel(
         val onCompletionListenerConsumer =
             PlayerRepository.OnCompletionListenerConsumer {
                 renderState(PlayerState.OnCompletion(track!!))
-                killCurrentPositionTask()
             }
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
                 renderState(PlayerState.Pause(track!!))
-                killCurrentPositionTask()
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
                 renderState(PlayerState.Play(track!!))
-                startGetCurrentPositionTask()
+                //  startGetCurrentPositionTask() todo
+                currentPositionTask()
             }
         }
         player.setConsumers(
@@ -88,28 +83,13 @@ class PlayerViewModel(
         track!!.previewUrl?.let { player.preparePlayer(it) }
     }
 
-    private fun killCurrentPositionTask() {
-        mainThreadHandler.removeCallbacks(
-            currentPositionTask
-        )
-    }
-
-    private fun createUpdateCurrentPositionTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
+    private fun currentPositionTask() {
+        run(debounce<Any>(DEBOUNCE_GET_CURRENT_POSITION, viewModelScope, false) {
+            if (player.playerIsPlaying()) {
+                currentPositionTask()
                 renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
-                mainThreadHandler.postDelayed(
-                    this,
-                    DEBOUNCE_GET_CURRENT_POSITION
-                )
             }
-        }
-    }
-
-    private fun startGetCurrentPositionTask() {
-        mainThreadHandler.post(
-            currentPositionTask
-        )
+        })
     }
 
     internal fun playBut() {
