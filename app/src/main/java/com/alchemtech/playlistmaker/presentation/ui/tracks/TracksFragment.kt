@@ -40,7 +40,7 @@ class TracksFragment : Fragment() {
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter
-    private lateinit var onItemClickToTrackCardDebounce : (Track) -> Unit
+    private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -212,9 +212,9 @@ class TracksFragment : Fragment() {
         showNoDataErr(false)
     }
 
-            private fun List<Track>.upDateAdapter() {
+    private fun List<Track>.upDateAdapter() {
         trackAdapter = TrackSearchAdapter(this)
-    onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
+        onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }
 
