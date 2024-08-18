@@ -2,7 +2,6 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -10,10 +9,12 @@ import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.util.debounce
 
 class TracksFragmentModel(
     private val historyInteractor: TrackHistoryInteractor,
@@ -119,13 +120,13 @@ class TracksFragmentModel(
     }
 
     private fun searchDebounce() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+        run(debounce<Any>(
+            delayMillis = SEARCH_DEBOUNCE_DELAY,
+            coroutineScope = viewModelScope,
+            useLastParam = true
+        ) {
+            searchTrack(searchText)
+        })
     }
 
     fun observeState(): LiveData<TracksState> = stateLiveData

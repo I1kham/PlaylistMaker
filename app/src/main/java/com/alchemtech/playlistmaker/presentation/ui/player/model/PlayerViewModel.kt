@@ -83,7 +83,11 @@ class PlayerViewModel(
     }
 
     private fun currentPositionTask() {
-        run(debounce<Any>(DEBOUNCE_GET_CURRENT_POSITION, viewModelScope, false) {
+        run(debounce<Any>(
+            delayMillis = DEBOUNCE_GET_CURRENT_POSITION,
+            coroutineScope = viewModelScope,
+            useLastParam = false
+        ) {
             if (player.playerIsPlaying()) {
                 currentPositionTask()
                 renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
