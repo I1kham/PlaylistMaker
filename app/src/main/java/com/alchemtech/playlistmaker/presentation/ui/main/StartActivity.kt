@@ -1,9 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.main
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +36,6 @@ companion object{
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
-                        println("6666666666666666666666666666666")
                         bottomNavigationView.visibility = View.VISIBLE
                         isEnabled = false
                         onBackPressed()

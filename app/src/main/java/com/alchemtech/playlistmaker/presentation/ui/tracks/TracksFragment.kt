@@ -3,8 +3,6 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks
 import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +15,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,11 +24,10 @@ import com.alchemtech.playlistmaker.databinding.FragmentSearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
+import com.alchemtech.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksFragment : Fragment() {
-    private var isClickAllowed: Boolean = true
-    private val handler = Handler(Looper.getMainLooper())
     private val viewModel: TracksFragmentModel by viewModel()
     private var _binding: FragmentSearchBinding? = null
     private lateinit var inputEditText: EditText
@@ -42,6 +40,7 @@ class TracksFragment : Fragment() {
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryBut: TextView
     private lateinit var trackAdapter: TrackSearchAdapter
+    private lateinit var onItemClickToTrackCardDebounce : (Track) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +62,16 @@ class TracksFragment : Fragment() {
         prepareNoConnectionErr()
         prepareEditTextClearBut()
         prepareUpdateBut()
-        prepareHisTitle()
+        prepareHistoryTitle()
+
+        onItemClickToTrackCardDebounce = debounce<Track>(
+            delayMillis = CLICK_DEBOUNCE_DELAY,
+            coroutineScope = viewLifecycleOwner.lifecycleScope,
+            useLastParam = true
+        ) { track ->
+            findNavController().navigate(R.id.action_tracksFragment_to_playerActivity)
+            viewModel.clickOnTrack(track)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -82,7 +90,7 @@ class TracksFragment : Fragment() {
         _binding = null
     }
 
-    private fun prepareHisTitle() {
+    private fun prepareHistoryTitle() {
         searchHistoryTitle = _binding!!.searchHistoryTitle
     }
 
@@ -204,25 +212,10 @@ class TracksFragment : Fragment() {
         showNoDataErr(false)
     }
 
-    private fun List<Track>.upDateAdapter() {
-        val onItemClickToTrackCard = { track: Track ->
-            if (clickDebounce()) {
-                viewModel.clickOnTrack(track)
-                findNavController().navigate(R.id.action_tracksFragment_to_playerActivity)
-            }
-        }
+            private fun List<Track>.upDateAdapter() {
         trackAdapter = TrackSearchAdapter(this)
-        onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
+    onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
-    }
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
     }
 
     private fun showHistoryListButTitle(visibility: Boolean) {
@@ -264,6 +257,6 @@ class TracksFragment : Fragment() {
     }
 
     private companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }
