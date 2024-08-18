@@ -1,7 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
@@ -23,14 +21,11 @@ class TracksFragmentModel(
 ) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
     }
 
-    private val searchRunnable = Runnable { searchTrack(searchText) }
     private var searchText: String = ""
     private var oldSearchText: String = ""
     private val tracksList = mutableListOf<Track>()
-    private val handler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<TracksState>()
     private val tracksConsumer = object : TracksInteractor.TracksConsumer {
         override fun consume(foundedTracks: List<Track>?, errorCode: Int?) {
@@ -141,7 +136,6 @@ class TracksFragmentModel(
     }
 
     internal fun save() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         historyInteractor.writeTrackList()
     }
 }
