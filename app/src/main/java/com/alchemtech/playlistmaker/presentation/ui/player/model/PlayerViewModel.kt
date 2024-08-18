@@ -70,7 +70,6 @@ class PlayerViewModel(
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
                 renderState(PlayerState.Play(track!!))
-                //  startGetCurrentPositionTask() todo
                 currentPositionTask()
             }
         }
