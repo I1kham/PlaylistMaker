@@ -6,18 +6,20 @@ import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
 
-        return when (response.resultCode) {
+        when (response.resultCode) {
             -1 -> {
-                Resource.Error(response.resultCode)
+                emit(Resource.Error(response.resultCode))
             }
 
             200 -> {
-                Resource.Success((response as TracksSearchResponse).results.map {
+                emit(Resource.Success((response as TracksSearchResponse).results.map {
                     Track(
                         it.trackName,
                         it.artistName,
@@ -31,10 +33,11 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
                         it.previewUrl,
                     )
                 }
-                )
+                ))
             }
+
             else -> {
-                Resource.Error(response.resultCode)
+                emit(Resource.Error(response.resultCode))
             }
         }
     }

@@ -1,11 +1,8 @@
 package com.alchemtech.playlistmaker.domain.api
 
 import com.alchemtech.playlistmaker.domain.entity.Track
+import kotlinx.coroutines.flow.Flow
 
 interface TracksInteractor {
-    fun searchTracksInteractor(expression: String, consumer: TracksConsumer)
-
-    interface TracksConsumer {
-        fun consume(foundedTracks: List<Track>?, errorCode: Int?)
-    }
+    fun searchTracks(expression: String/*, consumer: TracksConsumer*/): Flow<Pair<List<Track>?, Int?>>
 }

@@ -13,6 +13,7 @@ import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.util.debounce
+import kotlinx.coroutines.launch
 
 class TracksFragmentModel(
     private val historyInteractor: TrackHistoryInteractor,
@@ -27,22 +28,6 @@ class TracksFragmentModel(
     private var oldSearchText: String = ""
     private val tracksList = mutableListOf<Track>()
     private val stateLiveData = MutableLiveData<TracksState>()
-    private val tracksConsumer = object : TracksInteractor.TracksConsumer {
-        override fun consume(foundedTracks: List<Track>?, errorCode: Int?) {
-            if (foundedTracks.isNullOrEmpty()) {
-                if (errorCode == -1) {
-                    renderState(TracksState.Error(-1))
-                } else {
-                    renderState(TracksState.Error(-2))
-                }
-            } else {
-                tracksList.clear()
-                tracksList.addAll(foundedTracks)
-                renderState(TracksState.Content(tracksList))
-                oldSearchText = searchText
-            }
-        }
-    }
 
     init {
         startModelLogic()
@@ -107,10 +92,28 @@ class TracksFragmentModel(
         if (s.isNotEmpty() && oldSearchText != searchText) {
             renderState(TracksState.Loading)
             tracksList.clear()
-            searchInteractor.searchTracksInteractor(
-                expression = s,
-                consumer = tracksConsumer
-            )
+            viewModelScope.launch {
+                searchInteractor
+                    .searchTracks(s)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
+                    }
+
+            }
+        }
+    }
+    private fun processResult(foundNames: List<Track>?, errorCode: Int?) {
+        if (foundNames.isNullOrEmpty()) {
+            if (errorCode == -1) {
+                renderState(TracksState.Error(-1))
+            } else {
+                renderState(TracksState.Error(-2))
+            }
+        } else {
+            tracksList.clear()
+            tracksList.addAll(foundNames)
+            renderState(TracksState.Content(tracksList))
+            oldSearchText = searchText
         }
     }
 

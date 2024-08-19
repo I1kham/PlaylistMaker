@@ -5,11 +5,15 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.alchemtech.playlistmaker.data.dto.request.TracksSearchRequest
 import com.alchemtech.playlistmaker.data.dto.response.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class RetrofitNetworkClient(private val connectService : TrackApiService,
-                            private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(
+    private val connectService: TrackApiService,
+    private val context: Context,
+) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
@@ -17,10 +21,14 @@ class RetrofitNetworkClient(private val connectService : TrackApiService,
             return Response().apply { resultCode = 400 }
         }
 
-        val response = connectService.searchTracks(dto.expression).execute()
-        val body = response.body()
-        return body?.apply { resultCode = response.code() } ?: Response().apply {
-            resultCode = response.code()
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = connectService.searchTracks(dto.expression)
+                response.apply { resultCode = 200 }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = 500 }
+            }
+
         }
     }
 

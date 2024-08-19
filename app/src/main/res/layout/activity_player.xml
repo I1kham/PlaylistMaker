@@ -262,13 +262,12 @@
         android:id="@+id/playTime"
         style="@style/playerTrackInformationTitle"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="30dp"
         android:text="@string/TrackDuration"
         android:textAlignment="center"
         android:textColor="@color/black_White"
-        app:layout_constraintBottom_toTopOf="@id/trackDuration"
-        app:layout_constraintEnd_toEndOf="@id/secondRightBorder"
-        app:layout_constraintStart_toEndOf="@id/secondLeftBorder"
-        app:layout_constraintTop_toBottomOf="@id/playBut" />
+        app:layout_constraintEnd_toEndOf="@id/playBut"
+        app:layout_constraintStart_toStartOf="@id/playBut"
+        app:layout_constraintTop_toBottomOf="@id/playBut"
+        app:layout_constraintBottom_toTopOf="@id/trackTimeMillisText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
