@@ -257,6 +257,6 @@ class TracksFragment : Fragment() {
     }
 
     private companion object {
-        const val CLICK_DEBOUNCE_DELAY = 300L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
