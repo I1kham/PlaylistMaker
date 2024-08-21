@@ -54,22 +54,22 @@ class PlayerViewModel(
 
         val onPreparedListenerConsumer =
             PlayerRepository.OnPreparedListenerConsumer {
-                renderState(PlayerState.OnPrepared(track!!))
+                renderState(PlayerState.OnPrepared)
             }
 
         val onCompletionListenerConsumer =
             PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion(track!!))
+                renderState(PlayerState.OnCompletion)
             }
 
         val pauseConsumer = object : PlayerInteractor.PauseConsumer {
             override fun consume() {
-                renderState(PlayerState.Pause(track!!))
+                renderState(PlayerState.Pause)
             }
         }
         val startConsumer = object : PlayerInteractor.StartConsumer {
             override fun consume() {
-                renderState(PlayerState.Play(track!!))
+                renderState(PlayerState.Play)
                 currentPositionTask()
             }
         }
