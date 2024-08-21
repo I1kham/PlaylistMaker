@@ -63,8 +63,11 @@ class TracksFragment : Fragment() {
         prepareEditTextClearBut()
         prepareUpdateBut()
         prepareHistoryTitle()
+        prepareOnItemClickToTrackCardDebounce()
+    }
 
-        onItemClickToTrackCardDebounce = debounce<Track>(
+    private fun prepareOnItemClickToTrackCardDebounce() {
+       onItemClickToTrackCardDebounce = debounce<Track>(
             delayMillis = CLICK_DEBOUNCE_DELAY,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
@@ -144,7 +147,6 @@ class TracksFragment : Fragment() {
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()
         }
-        viewModel.inputEditTextListener(inputEditText)
     }
 
     private fun prepareViewModel() {

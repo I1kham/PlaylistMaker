@@ -85,7 +85,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
             }
 
             is PlayerState.OnCompletion -> {
-                _binding?.playTime?.text = "00:00"
+                _binding?.playTime?.text = "00:30"
                 fillWithBut(state.track)
                 _binding?.playBut?.setImageResource(R.drawable.play_but)
             }

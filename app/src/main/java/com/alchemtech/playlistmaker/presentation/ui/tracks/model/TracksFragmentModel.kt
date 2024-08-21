@@ -2,8 +2,6 @@ package com.alchemtech.playlistmaker.presentation.ui.tracks.model
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,10 +22,18 @@ class TracksFragmentModel(
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
-    private var searchText: String = ""
-    private var oldSearchText: String = ""
+    private var searchText: String? = null
+    private var oldSearchText: String? = null
     private val tracksList = mutableListOf<Track>()
     private val stateLiveData = MutableLiveData<TracksState>()
+    private val tracksSearchDebounce = debounce<String>(
+        delayMillis = SEARCH_DEBOUNCE_DELAY,
+        coroutineScope = viewModelScope,
+        useLastParam = true
+    ) { searchText ->
+        searchTracks(searchText)
+    }
+
 
     init {
         startModelLogic()
@@ -43,19 +49,13 @@ class TracksFragmentModel(
         renderState(TracksState.Content(tracksList))
     }
 
-    internal fun inputEditTextListener(editText: EditText) {
-        editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchDebounce()
-            }
-            true
-        }
-    }
 
     internal val textWatcher by lazy {
         object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchText = s.toString()
+            }
 
             override fun afterTextChanged(s: Editable?) {
                 afterTextChangedLogic(s)
@@ -73,31 +73,26 @@ class TracksFragmentModel(
     }
 
     internal fun updateResponse() {
-        searchTrack()
+        searchTracks(searchText!!)
     }
 
-    private fun afterTextChangedLogic(text: CharSequence?) {
-        if (text?.isNotEmpty() == true) {
-            searchText = text.toString()
-            searchDebounce()
-        } else {
-            renderState(TracksState.History(historyInteractor.getTrackList()))
-        }
+    private fun afterTextChangedLogic(searchText: CharSequence?) {
+        searchDebounce(searchText.toString())
     }
 
-    private fun searchTrack() {
-        if (oldSearchText != searchText) {
+    private fun searchTracks(searchText: String?) {
+        if (!searchText.isNullOrEmpty()) {
             renderState(TracksState.Loading)
             tracksList.clear()
             viewModelScope.launch {
-                if (searchText.isNotEmpty()) {
-                    searchInteractor
-                        .searchTracks(searchText)
-                        .collect { pair ->
-                            processResult(pair.first, pair.second)
-                        }
-                }
+                searchInteractor
+                    .searchTracks(searchText)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
+                    }
             }
+        } else {
+            renderState(TracksState.History(historyInteractor.getTrackList()))
         }
     }
 
@@ -116,14 +111,10 @@ class TracksFragmentModel(
         }
     }
 
-    private fun searchDebounce() {
-        run(debounce<TracksFragmentModel>(
-            delayMillis = SEARCH_DEBOUNCE_DELAY,
-            coroutineScope = viewModelScope,
-            useLastParam = true
-        ) {
-            searchTrack()
-        })
+    private fun searchDebounce(searchText: String?) {
+        if (oldSearchText != searchText) {
+            tracksSearchDebounce(searchText!!)
+        }
     }
 
     fun observeState(): LiveData<TracksState> = stateLiveData

@@ -17,7 +17,7 @@ class PlayerViewModel(
     private val track = singleTrackRepository.readTrack()
 
     companion object {
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 250L
+        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
     internal fun onStop() {
