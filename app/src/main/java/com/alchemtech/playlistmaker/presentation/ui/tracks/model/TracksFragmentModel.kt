@@ -46,7 +46,7 @@ class TracksFragmentModel(
     internal fun inputEditTextListener(editText: EditText) {
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTrack(searchText) // выполнение задач
+                searchDebounce()
             }
             true
         }
@@ -54,13 +54,8 @@ class TracksFragmentModel(
 
     internal val textWatcher by lazy {
         object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchText = s.toString()
-                searchDebounce()
-            }
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 afterTextChangedLogic(s)
@@ -78,32 +73,36 @@ class TracksFragmentModel(
     }
 
     internal fun updateResponse() {
-        searchTrack(searchText)
+        searchTrack()
     }
 
     private fun afterTextChangedLogic(text: CharSequence?) {
-        if (text?.isNotEmpty() == false) {
-            renderState(TracksState.History(historyInteractor.getTrackList()))
+        if (text?.isNotEmpty() == true) {
+            searchText = text.toString()
             searchDebounce()
+        } else {
+            renderState(TracksState.History(historyInteractor.getTrackList()))
         }
     }
 
-    private fun searchTrack(s: String) {
-        if (s.isNotEmpty() && oldSearchText != searchText) {
+    private fun searchTrack() {
+        if (oldSearchText != searchText) {
             renderState(TracksState.Loading)
             tracksList.clear()
             viewModelScope.launch {
-                searchInteractor
-                    .searchTracks(s)
-                    .collect { pair ->
-                        processResult(pair.first, pair.second)
-                    }
-
+                if (searchText.isNotEmpty()) {
+                    searchInteractor
+                        .searchTracks(searchText)
+                        .collect { pair ->
+                            processResult(pair.first, pair.second)
+                        }
+                }
             }
         }
     }
-    private fun processResult(foundNames: List<Track>?, errorCode: Int?) {
-        if (foundNames.isNullOrEmpty()) {
+
+    private fun processResult(foundTracks: List<Track>?, errorCode: Int?) {
+        if (foundTracks.isNullOrEmpty()) {
             if (errorCode == -1) {
                 renderState(TracksState.Error(-1))
             } else {
@@ -111,19 +110,19 @@ class TracksFragmentModel(
             }
         } else {
             tracksList.clear()
-            tracksList.addAll(foundNames)
+            tracksList.addAll(foundTracks)
             renderState(TracksState.Content(tracksList))
             oldSearchText = searchText
         }
     }
 
     private fun searchDebounce() {
-        run(debounce<Any>(
+        run(debounce<TracksFragmentModel>(
             delayMillis = SEARCH_DEBOUNCE_DELAY,
             coroutineScope = viewModelScope,
             useLastParam = true
         ) {
-            searchTrack(searchText)
+            searchTrack()
         })
     }
 

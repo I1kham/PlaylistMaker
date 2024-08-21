@@ -160,7 +160,7 @@ class TracksFragment : Fragment() {
                 showNoConnection(false)
                 showNoDataErr(false)
                 showHistoryListButTitle(false)
-                hideKeyBoard()
+                keyBoardVisibility(false)
             }
 
             is TracksState.Content -> {
@@ -170,24 +170,25 @@ class TracksFragment : Fragment() {
                 showNoConnection(false)
                 showNoDataErr(false)
                 showProgressBar(false)
-                hideKeyBoard()
+                keyBoardVisibility(false)
             }
 
             is TracksState.Error -> {
-                hideKeyBoard()
                 showProgressBar(false)
                 showHistoryListButTitle(
                     false
                 )
                 if (state.errorCode == -1) {
                     showNoConnection(true)
+                    keyBoardVisibility(false)
                 } else {
                     showNoDataErr(true)
+                    keyBoardVisibility(true)
                 }
             }
 
             is TracksState.History -> {
-                hideKeyBoard()
+                keyBoardVisibility(false)
                 showHistoryList(state.tracks)
             }
 
@@ -250,10 +251,13 @@ class TracksFragment : Fragment() {
         }
     }
 
-    private fun hideKeyBoard() {
+    private fun keyBoardVisibility(visibility: Boolean) {
         val inputMethodManager =
             requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+        when (visibility) {
+            true -> inputMethodManager?.showSoftInput(inputEditText, 0)
+            else -> inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+        }
     }
 
     private companion object {
