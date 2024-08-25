@@ -37,7 +37,7 @@
         <item name="backgroundTintMode">screen</item>
     </style>
 
-    <style name="cardTextView">
+    <style name="cardTextViewBlackWhite">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:lines">1</item>
@@ -48,8 +48,19 @@
         <item name="android:textColor">@color/YP_black_White</item>
         <item name="android:textAllCaps">false</item>
     </style>
+    <style name="cardTextViewGrayWhite">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="background">@color/transparent</item>
+        <item name="android:textColor">@color/YP_gray_White</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
-    <style name="playerTrackInformationTitle" parent="cardTextView">
+    <style name="playerTrackInformationTitle" parent="cardTextViewBlackWhite">
         <item name="android:layout_marginTop">9dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textSize">13sp</item>

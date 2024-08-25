@@ -22,7 +22,7 @@
         android:layout_height="36dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/YP_gray_white"
+        android:backgroundTint="@color/YP_gray_White"
         android:orientation="horizontal">
 
         <ImageView
@@ -82,7 +82,7 @@
             android:text="@string/SearchHistoryTitle"
             android:textFontWeight="500"
             android:textSize="19sp"
-            android:theme="@style/cardTextView"
+            android:theme="@style/cardTextViewBlackWhite"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -102,7 +102,7 @@
             android:layout_height="50dp"
             android:layout_marginVertical="12dp"
             android:text="@string/SearchHistoryClearBut"
-            android:theme="@style/cardTextView"
+            android:theme="@style/cardTextViewBlackWhite"
             android:visibility="gone" />
         <!--        todo mus be gone-->
     </LinearLayout>
@@ -124,7 +124,7 @@
             />
 
         <TextView
-            style="@style/cardTextView"
+            style="@style/cardTextViewBlackWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -150,7 +150,7 @@
             android:src="@drawable/no_connection" />
 
         <TextView
-            style="@style/cardTextView"
+            style="@style/cardTextViewBlackWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -159,7 +159,7 @@
             android:textSize="19sp" />
 
         <TextView
-            style="@style/cardTextView"
+            style="@style/cardTextViewBlackWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -177,7 +177,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/updateButNoConnectionText"
             android:textColor="@color/white_YP_Black"
-            android:theme="@style/cardTextView" />
+            android:theme="@style/cardTextViewBlackWhite" />
     </LinearLayout>
 
     <ProgressBar

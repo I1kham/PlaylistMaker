@@ -77,16 +77,16 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
             is PlayerState.Play -> {
                 _binding?.playBut?.setImageResource(R.drawable.pause_but)
-                fillWithBut(state.track)
+                onPreparedWithBut()
             }
 
             is PlayerState.OnPrepared -> {
-                fillWithBut(state.track)
+                onPreparedWithBut()
             }
 
             is PlayerState.OnCompletion -> {
                 _binding?.playTime?.text = "00:00"
-                fillWithBut(state.track)
+                onPreparedWithBut()
                 _binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
@@ -94,8 +94,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         }
     }
 
-    private fun fillWithBut(track: Track) {
-        fill(track)
+    private fun onPreparedWithBut() {
         playBut()
     }
 
