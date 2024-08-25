@@ -2,6 +2,8 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import com.alchemtech.playlistmaker.di.dbConvertorModule
+import com.alchemtech.playlistmaker.di.dbModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
 import com.alchemtech.playlistmaker.di.playListsViewModel
@@ -26,6 +28,8 @@ class App : Application() {
                 playerViewModel,
                 mediaLibViewModel,
                 startViewModel,
+                dbModule,
+                dbConvertorModule,
                 /*Fragments*/
                 favoriteTracksViewModel,
                 playListsViewModel
@@ -37,9 +41,10 @@ class App : Application() {
     private fun switchTheme() {
         val settingsInteractor: SettingsInteractor by inject()
         val theme = settingsInteractor.getSavedThemeNumber()
-        if (theme!=-1)
-        setDefaultNightMode(
-            theme
-        )
+        if (theme != -1) {
+            setDefaultNightMode(
+                theme
+            )
+        }
     }
 }
