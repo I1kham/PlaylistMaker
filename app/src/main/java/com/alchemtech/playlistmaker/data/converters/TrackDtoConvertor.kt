@@ -1,11 +1,11 @@
 package com.alchemtech.playlistmaker.data.converters
 
-import com.alchemtech.playlistmaker.data.db.entity.TrackEntity
+import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TrackDbConvertor {
-    fun map(track: Track): TrackEntity {
-        return TrackEntity(
+class TrackDtoConvertor { // TODO:
+    fun map(track: Track): TrackDto {
+        return TrackDto(
             trackId = track.trackId,
             trackName = track.trackName,
             artistName = track.artistName,
@@ -19,7 +19,7 @@ class TrackDbConvertor {
         )
     }
 
-    fun map(track: TrackEntity): Track {
+    fun map(track: TrackDto): Track {
         return Track(
             trackName = track.trackName,
             artistName = track.artistName,

@@ -58,7 +58,7 @@ val tracksActivityViewModel = module {
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(networkClient = get())
+        TracksRepositoryImpl(networkClient = get(), trackDao = get())
     }
 
     single<NetworkClient> {

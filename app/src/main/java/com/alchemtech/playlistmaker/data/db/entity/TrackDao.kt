@@ -4,19 +4,20 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 // TODO:
 @Dao
 interface TrackDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTracks(tracks: List<TrackEntity>)
+    suspend fun addTrack(tracks: TrackEntity)
 
     @Delete
-    suspend fun delTrack(track: TrackEntity)
+    suspend fun removeTrack(track: TrackEntity)
 
     @Query("SELECT * FROM tracks_table")
-    suspend fun getAllTracks(): List<TrackEntity>
+     fun getAllTracks(): Flow<List<TrackEntity>> // TODO: del suspend
 
-    @Query("SELECT * FROM tracks_table")
+    @Query("SELECT trackId FROM tracks_table")
     suspend fun getIdFavoriteTracks(): List<String>
 }

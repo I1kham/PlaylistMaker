@@ -20,20 +20,7 @@ class SingleTrackInteractorImpl(private val historyRepository: HistoryRepository
         if (dto.isNullOrEmpty()) {
             return emptyList()
         } else {
-            return dto.map {
-                Track(
-                    it.trackName,
-                    it.artistName,
-                    it.trackTimeMillis,
-                    it.artworkUrl100,
-                    it.trackId,
-                    it.collectionName,
-                    it.releaseDate,
-                    it.primaryGenreName,
-                    it.country,
-                    it.previewUrl,
-                )
-            }
+            return dto
         }
     }
 
