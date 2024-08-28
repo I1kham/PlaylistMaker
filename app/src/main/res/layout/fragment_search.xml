@@ -94,7 +94,7 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:visibility="visible"
-            tools:listitem="@layout/search_track_card" />
+            tools:listitem="@layout/track_card" />
         <!--        todo mus be visible-->
         <Button
             android:id="@+id/clearHistoryBut"

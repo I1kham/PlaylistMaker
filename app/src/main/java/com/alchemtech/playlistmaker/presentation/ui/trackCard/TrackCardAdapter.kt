@@ -13,7 +13,7 @@ class TrackCardAdapter(private val trackListOf: List<Track>) :
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TrackCardViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.search_track_card, viewGroup, false)
+            .inflate(R.layout.track_card, viewGroup, false)
         return TrackCardViewHolder(view)
     }
 
