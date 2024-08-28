@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
+import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor,
 ) : ViewModel() {
     private val track = singleTrackRepository.readTrack()
 
@@ -27,6 +30,21 @@ class PlayerViewModel(
 
     internal fun onPause() {
         player.pausePlayer()
+    }
+
+    internal fun onFavoriteClicked() {
+        if (track!!.isFavorite) {
+            track.isFavorite = false
+            viewModelScope.launch {
+                favoriteTracksInteractor.removeFromFavoriteList(track)
+            }
+        } else {
+            track.isFavorite = true
+            viewModelScope.launch {
+                favoriteTracksInteractor.addToFavoriteList(track)
+            }
+        }
+        renderState(PlayerState.likeBut(track.isFavorite))
     }
 
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -45,7 +63,7 @@ class PlayerViewModel(
         statePosition.value
     }
 
-    init {
+    init { // TODO: переместить
         preparePlayer()
         renderState(PlayerState.Fill(track!!))
     }

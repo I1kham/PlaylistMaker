@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentSearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.trackCard.TrackCardAdapter
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.util.debounce
@@ -39,7 +40,7 @@ class TracksFragment : Fragment() {
     private lateinit var upDateBut: TextView
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryBut: TextView
-    private lateinit var trackAdapter: TrackSearchAdapter
+    private lateinit var trackAdapter: TrackCardAdapter
     private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
 
     override fun onCreateView(
@@ -216,7 +217,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun List<Track>.upDateAdapter() {
-        trackAdapter = TrackSearchAdapter(this)
+        trackAdapter = TrackCardAdapter(this)
         onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }
@@ -261,7 +262,6 @@ class TracksFragment : Fragment() {
             else -> inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
     }
-
     private companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }

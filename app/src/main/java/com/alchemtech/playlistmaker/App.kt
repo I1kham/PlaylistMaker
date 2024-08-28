@@ -2,10 +2,6 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import com.alchemtech.playlistmaker.di.dbConvertorModule
-import com.alchemtech.playlistmaker.di.dbModule
-import com.alchemtech.playlistmaker.di.favoriteTracksInteractorModule
-import com.alchemtech.playlistmaker.di.favoriteTracksREpoModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
 import com.alchemtech.playlistmaker.di.playListsViewModel
@@ -30,11 +26,6 @@ class App : Application() {
                 playerViewModel,
                 mediaLibViewModel,
                 startViewModel,
-                /*modules*/
-                dbModule,
-                dbConvertorModule,
-                favoriteTracksREpoModule,
-                favoriteTracksInteractorModule,
                 /*Fragments*/
                 favoriteTracksViewModel,
                 playListsViewModel

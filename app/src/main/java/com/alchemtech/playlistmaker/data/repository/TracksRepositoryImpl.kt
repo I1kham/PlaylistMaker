@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
-    val trackDao: TrackDao,
+    private val trackDao: TrackDao,
+    private val trackDtoConvertor: TrackDtoConvertor
 ) : TracksRepository {
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
@@ -26,8 +27,10 @@ class TracksRepositoryImpl(
 
             200 -> {
                 emit(Resource.Success((response as TracksSearchResponse).results.map { trackDto ->
-                    TrackDtoConvertor().map(checkForFavorite(trackDto))
-                }))}
+                    trackDtoConvertor.map(checkForFavorite(trackDto))
+                }))
+            }
+
             else -> {
                 emit(Resource.Error(response.resultCode))
             }

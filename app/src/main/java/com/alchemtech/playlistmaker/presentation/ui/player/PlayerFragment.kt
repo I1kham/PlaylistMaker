@@ -33,7 +33,9 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         observeRenderState()
         prepareBackBut()
         prepareViewModel()
+        likeButPrepare()
     }
+
     override fun onDetach() {
         super.onDetach()
         _binding = null
@@ -91,6 +93,15 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
             }
 
             is PlayerState.Fill -> fill(state.track)
+            is PlayerState.likeBut ->
+                renderLikeBut(state.isFavorite)
+        }
+    }
+
+    private fun renderLikeBut(isLiked: Boolean) {
+        when (isLiked) {
+            true -> _binding?.playerTrackLike!!.setImageResource(R.drawable.isliked)
+            else -> _binding?.playerTrackLike!!.setImageResource(R.drawable.like)
         }
     }
 
@@ -105,7 +116,15 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         _binding?.playBut?.isEnabled = true
     }
 
+    private fun likeButPrepare() {
+        _binding?.playerTrackLike?.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
+        _binding?.playBut?.isEnabled = true
+    }
+
     private fun fill(track: Track) {
         fillPlayerActivity(track, _binding!!, requireContext())
+        renderLikeBut(track.isFavorite)
     }
 }

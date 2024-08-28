@@ -2,6 +2,7 @@ package com.alchemtech.playlistmaker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.alchemtech.playlistmaker.data.converters.TrackDtoConvertor
 import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.data.network.RetrofitNetworkClient
 import com.alchemtech.playlistmaker.data.network.TrackApiService
@@ -58,7 +59,11 @@ val tracksActivityViewModel = module {
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(networkClient = get(), trackDao = get())
+        TracksRepositoryImpl(
+            networkClient = get(),
+            trackDao = get(),
+            trackDtoConvertor = get()
+        )
     }
 
     single<NetworkClient> {
@@ -70,5 +75,9 @@ val tracksActivityViewModel = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TrackApiService::class.java)
+    }
+
+    single<TrackDtoConvertor> {
+        TrackDtoConvertor()
     }
 }
