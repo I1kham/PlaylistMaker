@@ -24,6 +24,7 @@ class FavoriteTracksViewModel(
     fun observeState(): LiveData<FavoriteTracksViewState> = stateLiveData
 
     internal fun clickOnTrack(track: Track) {
+        println("clickLikedOnTrack "+track.isFavorite)
         singleTrackInteractor.writeTrack(track)
     }
 
@@ -43,9 +44,9 @@ class FavoriteTracksViewModel(
     }
 
     private fun getFavoriteTRacksList() {
+        renderState(FavoriteTracksViewState.Loading)
         viewModelScope.launch {
             favoriteTracksInteractor.getFavoriteTrackList().collect {
-                println(it)
                 tracksList.postValue(it)
             }
         }

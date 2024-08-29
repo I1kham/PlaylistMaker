@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
-// TODO:
+
 @Dao
 interface TrackDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -16,7 +16,7 @@ interface TrackDao {
     suspend fun removeTrack(track: TrackEntity)
 
     @Query("SELECT * FROM tracks_table")
-     fun getAllTracks(): Flow<List<TrackEntity>> // TODO: del suspend
+     fun getAllTracks(): Flow<List<TrackEntity>>
 
     @Query("SELECT trackId FROM tracks_table")
     suspend fun getIdFavoriteTracks(): List<String>

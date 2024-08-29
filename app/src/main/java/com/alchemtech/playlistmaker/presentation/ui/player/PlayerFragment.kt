@@ -79,20 +79,21 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
             is PlayerState.Play -> {
                 _binding?.playBut?.setImageResource(R.drawable.pause_but)
-                onPreparedWithBut()
+                playBut()
             }
 
             is PlayerState.OnPrepared -> {
-                onPreparedWithBut()
+                playBut()
             }
 
             is PlayerState.OnCompletion -> {
                 _binding?.playTime?.text = "00:00"
-                onPreparedWithBut()
+                playBut()
                 _binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerState.Fill -> fill(state.track)
+            is PlayerState.Fill ->  fill(state.track)
+
             is PlayerState.likeBut ->
                 renderLikeBut(state.isFavorite)
         }
@@ -103,10 +104,6 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
             true -> _binding?.playerTrackLike!!.setImageResource(R.drawable.isliked)
             else -> _binding?.playerTrackLike!!.setImageResource(R.drawable.like)
         }
-    }
-
-    private fun onPreparedWithBut() {
-        playBut()
     }
 
     private fun playBut() {

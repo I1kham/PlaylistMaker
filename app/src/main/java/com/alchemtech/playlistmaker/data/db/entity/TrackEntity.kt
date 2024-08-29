@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// TODO:
 @Entity(tableName = "tracks_table")
 data class TrackEntity(
     @PrimaryKey
@@ -17,5 +16,5 @@ data class TrackEntity(
     val primaryGenreName: String, //жанр трека
     val country: String, // страна исполнителя
     val previewUrl: String?, //случайные 30 сек трека
-    var isFavorite: Boolean = false, //метка любимых
+    var isFavorite: Boolean, //метка любимых
 )

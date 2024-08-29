@@ -23,6 +23,11 @@ class PlayerViewModel(
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
+    init {
+        preparePlayer()
+        renderState(PlayerState.Fill(track!!))
+    }
+
     internal fun onStop() {
         super.onCleared()
         player.release()
@@ -61,11 +66,6 @@ class PlayerViewModel(
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
         statePosition.value
-    }
-
-    init { // TODO: переместить
-        preparePlayer()
-        renderState(PlayerState.Fill(track!!))
     }
 
     private fun preparePlayer() {

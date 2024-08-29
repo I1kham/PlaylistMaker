@@ -18,7 +18,7 @@ class FavoriteTracksRepositoryImpl(private val favoriteTRacksDao: TrackDao,
         favoriteTRacksDao.removeTrack(trackDbConvertor.map(track))
     }
 
-    override fun getFavoriteTrackList(): Flow<List<Track>> {// TODO: del suspend
+    override fun getFavoriteTrackList(): Flow<List<Track>> {
         return favoriteTRacksDao.getAllTracks().map {
             it.map { trackEntity ->
                 trackDbConvertor.map(trackEntity)

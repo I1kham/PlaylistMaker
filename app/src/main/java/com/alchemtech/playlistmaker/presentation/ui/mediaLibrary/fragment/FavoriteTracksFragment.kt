@@ -64,13 +64,17 @@ class FavoriteTracksFragment : Fragment() {
             is FavoriteTracksViewState.Empty -> {
                 _binding!!.noDataLay.visibility = View.VISIBLE
                 _binding!!.trackCardsRecyclerView.visibility = View.GONE
+                _binding!!.progressBar.visibility = View.GONE
             }
 
             is FavoriteTracksViewState.TracksList -> {
                 _binding!!.noDataLay.visibility = View.GONE
                 _binding!!.trackCardsRecyclerView.visibility = View.VISIBLE
+                _binding!!.progressBar.visibility = View.GONE
                 state.tracks.upDateAdapter()
             }
+
+            FavoriteTracksViewState.Loading ->  _binding!!.progressBar.visibility = View.VISIBLE
         }
     }
 

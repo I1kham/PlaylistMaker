@@ -34,7 +34,6 @@ class TracksFragmentModel(
         searchTracks(searchText)
     }
 
-
     init {
         startModelLogic()
     }
@@ -48,7 +47,6 @@ class TracksFragmentModel(
         historyInteractor.clearTracksList()
         renderState(TracksState.Content(tracksList))
     }
-
 
     internal val textWatcher by lazy {
         object : TextWatcher {
