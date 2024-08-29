@@ -24,7 +24,6 @@ class FavoriteTracksViewModel(
     fun observeState(): LiveData<FavoriteTracksViewState> = stateLiveData
 
     internal fun clickOnTrack(track: Track) {
-        println("clickLikedOnTrack "+track.isFavorite)
         singleTrackInteractor.writeTrack(track)
     }
 
