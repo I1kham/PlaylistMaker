@@ -18,14 +18,13 @@ class PlayerViewModel(
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
 ) : ViewModel() {
     private val track = singleTrackRepository.readTrack()
-
-    companion object {
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
-    }
-
+    private val stateLiveData = MutableLiveData<PlayerState>()
     init {
         preparePlayer()
         renderState(PlayerState.Fill(track!!))
+    }
+    companion object {
+        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
     internal fun onStop() {
@@ -51,8 +50,6 @@ class PlayerViewModel(
         }
         renderState(PlayerState.likeBut(track.isFavorite))
     }
-
-    private val stateLiveData = MutableLiveData<PlayerState>()
 
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {

@@ -33,7 +33,7 @@ val playerViewModel = module {
         PlayerViewModel(
             singleTrackRepository = this.get(),
             player = get(),
-            favoriteTracksInteractor = this.get(),
+            favoriteTracksInteractor = this.get<FavoriteTracksInteractor>(),
         )
     }
     single<SingleTrackInteractor> {
