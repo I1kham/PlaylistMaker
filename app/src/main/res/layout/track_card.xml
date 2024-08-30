@@ -65,7 +65,8 @@
                     android:id="@+id/trackDuration"
                     style="@style/cardTextViewGrayWhite"
                     android:textSize="13sp"
-                    tools:text="Track Duration" />
+                    android:minWidth="35dp"
+                    tools:text="Track" />
 
             </LinearLayout>
 

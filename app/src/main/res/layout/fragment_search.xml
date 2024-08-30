@@ -33,7 +33,7 @@
             android:layout_marginStart="12dp"
             android:backgroundTint="@color/transparent"
             android:src="@drawable/search_icon"
-            app:tint="@color/YP_grayBlack" />
+            app:tint="@color/grayBlack" />
 
         <EditText
             android:id="@+id/inputTextForSearching"
@@ -50,7 +50,7 @@
             android:lines="1"
             android:singleLine="true"
             android:textColor="@color/all_YP_Black"
-            android:textColorHint="@color/YP_grayBlack"
+            android:textColorHint="@color/grayBlack"
             android:textCursorDrawable="@drawable/cursor"
             android:textFontWeight="400"
             android:textSelectHandle="@color/transparent" />
