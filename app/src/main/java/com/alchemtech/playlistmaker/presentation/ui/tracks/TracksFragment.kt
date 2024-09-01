@@ -47,9 +47,9 @@ class TracksFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
+    ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding!!.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun prepareOnItemClickToTrackCardDebounce() {
-       onItemClickToTrackCardDebounce = debounce<Track>(
+        onItemClickToTrackCardDebounce = debounce<Track>(
             delayMillis = CLICK_DEBOUNCE_DELAY,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
@@ -95,59 +95,76 @@ class TracksFragment : Fragment() {
     }
 
     private fun prepareHistoryTitle() {
-        searchHistoryTitle = binding!!.searchHistoryTitle
+        binding?.let {
+            searchHistoryTitle = it.searchHistoryTitle
+        }
     }
 
     private fun prepareUpdateBut() {
-        upDateBut = binding!!.updateButNoConnection
-        upDateBut.setOnClickListener {
-            viewModel.updateResponse()
+        binding?.let {
+            upDateBut = it.updateButNoConnection
+            upDateBut.setOnClickListener {
+                viewModel.updateResponse()
+            }
         }
     }
 
     private fun prepareEditTextClearBut() {
-        clearButton = binding!!.clearIcon
-        clearButton.setOnClickListener {
-            viewModel.clearEditTextButLogic()
+        binding?.let {
+            clearButton = it.clearIcon
+            clearButton.setOnClickListener {
+                viewModel.clearEditTextButLogic()
+            }
         }
     }
 
     private fun prepareNoConnectionErr() {
-        noConnectionLinearLayout = binding!!.noConnection
-    }
-
-    private fun prepareNoDataErr() {
-        noDataLinearLayout = binding!!.noData
-    }
-
-    private fun prepareProgressBar() {
-        progressBar = binding!!.progressBar
-    }
-
-    private fun prepareClearHistBut() {
-        clearHistoryBut = binding!!.clearHistoryBut
-        clearHistoryBut.setOnClickListener {
-            viewModel.clearButSearchHistory()
+        binding?.let {
+            noConnectionLinearLayout = it.noConnection
         }
     }
 
+    private fun prepareNoDataErr() {
+        binding?.let {
+            noDataLinearLayout = it.noData
+        }
+    }
+
+    private fun prepareProgressBar() {
+        binding?.let {
+            progressBar = it.progressBar
+        }
+    }
+        private fun prepareClearHistBut() {
+            binding?.let {
+                clearHistoryBut = it.clearHistoryBut
+                clearHistoryBut.setOnClickListener {
+                    viewModel.clearButSearchHistory()
+                }
+            }
+
+        }
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = binding!!.trackCardsRecyclerView
-        trackRecyclerView.layoutManager =
-            LinearLayoutManager(
-                /* context = */ requireContext(),
-                /* orientation = */ LinearLayoutManager.VERTICAL,
-                /* reverseLayout = */ false
-            )
+        binding?.let {
+            trackRecyclerView = it.trackCardsRecyclerView
+            trackRecyclerView.layoutManager =
+                LinearLayoutManager(
+                    /* context = */ requireContext(),
+                    /* orientation = */ LinearLayoutManager.VERTICAL,
+                    /* reverseLayout = */ false
+                )
+        }
     }
 
     private fun prepareInputedText() {
-        inputEditText = binding!!.inputTextForSearching
+        binding?.let {
+        inputEditText = it.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()
         }
+    }
     }
 
     private fun prepareViewModel() {
@@ -262,6 +279,7 @@ class TracksFragment : Fragment() {
             else -> inputMethodManager?.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
     }
+
     private companion object {
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }
