@@ -7,7 +7,7 @@ import androidx.room.Room
 import com.alchemtech.playlistmaker.data.converters.TrackDbConvertor
 import com.alchemtech.playlistmaker.data.db.entity.AppDatabase
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
-import com.alchemtech.playlistmaker.data.db.favoriteListRepo.FavoriteTracksRepositoryImpl
+import com.alchemtech.playlistmaker.data.db.favorite_list_repo.FavoriteTracksRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.PlayerRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.SharedHistoryRepositoryImpl
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
@@ -70,7 +70,7 @@ val playerViewModel = module {
     }
     single<FavoriteTracksRepository> {
         FavoriteTracksRepositoryImpl(
-            favoriteTRacksDao = get(),
+            TracksDao = get(),
             trackDbConvertor = get()
         )
     }

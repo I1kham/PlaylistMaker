@@ -12,9 +12,7 @@ import kotlinx.coroutines.launch
 class FavoriteTracksViewModel(
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
-) :
-    ViewModel() {
-    private var tracksList = MutableLiveData<List<Track>>(listOf())
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<FavoriteTracksViewState>()
 
     init {
@@ -23,30 +21,23 @@ class FavoriteTracksViewModel(
 
     fun observeState(): LiveData<FavoriteTracksViewState> = stateLiveData
 
-    internal fun clickOnTrack(track: Track) {
+    fun clickOnTrack(track: Track) {
         singleTrackInteractor.writeTrack(track)
     }
 
     private fun startModelLogic() {
-        onTrackslistChange()
-        getFavoriteTRacksList()
+        getFavoriteTracksList()
     }
 
-    private fun onTrackslistChange() {
-        tracksList.observeForever {
-            if (!it.isNullOrEmpty()) {
-                renderState(FavoriteTracksViewState.TracksList(it.asReversed()))
-            } else {
-                renderState(FavoriteTracksViewState.Empty)
-            }
-        }
-    }
-
-    private fun getFavoriteTRacksList() {
+    private fun getFavoriteTracksList() {
         renderState(FavoriteTracksViewState.Loading)
         viewModelScope.launch {
-            favoriteTracksInteractor.getFavoriteTrackList().collect {
-                tracksList.postValue(it)
+            favoriteTracksInteractor.getFavoriteTrackList().collect { list ->
+                if (list.isNotEmpty()) {
+                    renderState(FavoriteTracksViewState.TracksList(list.asReversed()))
+                } else {
+                    renderState(FavoriteTracksViewState.Empty)
+                }
             }
         }
     }

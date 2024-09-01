@@ -15,29 +15,29 @@ import com.alchemtech.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewModel
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewState
-import com.alchemtech.playlistmaker.presentation.ui.trackCard.TrackCardAdapter
+import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteTracksFragment : Fragment() {
 
-    private var _binding: FragmentFavoriteTracksBinding? = null
+    private var binding: FragmentFavoriteTracksBinding? = null
     private val viewModel: FavoriteTracksViewModel by viewModel()
     private lateinit var trackAdapter: TrackCardAdapter
     private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
-    private lateinit var trackRecyclerView: RecyclerView
+    private var trackRecyclerView: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentFavoriteTracksBinding.inflate(layoutInflater)
-        return _binding?.root
+        binding = FragmentFavoriteTracksBinding.inflate(layoutInflater)
+        return binding?.root
     }
 
     override fun onDetach() {
         super.onDetach()
-        _binding = null
+        binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +50,7 @@ class FavoriteTracksFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onStart() {
         super.onStart()
-        trackRecyclerView.adapter?.notifyDataSetChanged()
+        trackRecyclerView?.adapter?.notifyDataSetChanged()
     }
 
     private fun prepareViewModel() {
@@ -62,19 +62,19 @@ class FavoriteTracksFragment : Fragment() {
     private fun render(state: FavoriteTracksViewState) {
         when (state) {
             is FavoriteTracksViewState.Empty -> {
-                _binding!!.noDataLay.visibility = View.VISIBLE
-                _binding!!.trackCardsRecyclerView.visibility = View.GONE
-                _binding!!.progressBar.visibility = View.GONE
+                binding?.noDataLay?.visibility = View.VISIBLE
+                binding?.trackCardsRecyclerView?.visibility = View.GONE
+                binding?.progressBar?.visibility = View.GONE
             }
 
             is FavoriteTracksViewState.TracksList -> {
-                _binding!!.noDataLay.visibility = View.GONE
-                _binding!!.trackCardsRecyclerView.visibility = View.VISIBLE
-                _binding!!.progressBar.visibility = View.GONE
+                binding?.noDataLay?.visibility = View.GONE
+                binding?.trackCardsRecyclerView?.visibility = View.VISIBLE
+                binding?.progressBar?.visibility = View.GONE
                 state.tracks.upDateAdapter()
             }
 
-            FavoriteTracksViewState.Loading ->  _binding!!.progressBar.visibility = View.VISIBLE
+            FavoriteTracksViewState.Loading ->  binding?.progressBar?.visibility = View.VISIBLE
         }
     }
 
@@ -82,7 +82,7 @@ class FavoriteTracksFragment : Fragment() {
     private fun List<Track>.upDateAdapter() {
         trackAdapter = TrackCardAdapter(this)
         onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
-        trackRecyclerView.adapter = trackAdapter
+        trackRecyclerView?.adapter = trackAdapter
     }
 
     private fun prepareOnItemClickToTrackCardDebounce() {
@@ -97,8 +97,8 @@ class FavoriteTracksFragment : Fragment() {
     }
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = _binding!!.trackCardsRecyclerView
-        trackRecyclerView.layoutManager =
+        trackRecyclerView = binding?.trackCardsRecyclerView
+        trackRecyclerView?.layoutManager =
             LinearLayoutManager(
                 /* context = */ requireContext(),
                 /* orientation = */ LinearLayoutManager.VERTICAL,

@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.ui.trackCard
+package com.alchemtech.playlistmaker.presentation.ui.track_card
 
 import android.view.View
 import android.widget.ImageView

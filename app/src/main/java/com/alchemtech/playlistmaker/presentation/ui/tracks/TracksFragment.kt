@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentSearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.trackCard.TrackCardAdapter
+import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.util.debounce
@@ -30,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksFragment : Fragment() {
     private val viewModel: TracksFragmentModel by viewModel()
-    private var _binding: FragmentSearchBinding? = null
+    private var binding: FragmentSearchBinding? = null
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -48,8 +48,8 @@ class TracksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,41 +91,41 @@ class TracksFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        _binding = null
+        binding = null
     }
 
     private fun prepareHistoryTitle() {
-        searchHistoryTitle = _binding!!.searchHistoryTitle
+        searchHistoryTitle = binding!!.searchHistoryTitle
     }
 
     private fun prepareUpdateBut() {
-        upDateBut = _binding!!.updateButNoConnection
+        upDateBut = binding!!.updateButNoConnection
         upDateBut.setOnClickListener {
             viewModel.updateResponse()
         }
     }
 
     private fun prepareEditTextClearBut() {
-        clearButton = _binding!!.clearIcon
+        clearButton = binding!!.clearIcon
         clearButton.setOnClickListener {
             viewModel.clearEditTextButLogic()
         }
     }
 
     private fun prepareNoConnectionErr() {
-        noConnectionLinearLayout = _binding!!.noConnection
+        noConnectionLinearLayout = binding!!.noConnection
     }
 
     private fun prepareNoDataErr() {
-        noDataLinearLayout = _binding!!.noData
+        noDataLinearLayout = binding!!.noData
     }
 
     private fun prepareProgressBar() {
-        progressBar = _binding!!.progressBar
+        progressBar = binding!!.progressBar
     }
 
     private fun prepareClearHistBut() {
-        clearHistoryBut = _binding!!.clearHistoryBut
+        clearHistoryBut = binding!!.clearHistoryBut
         clearHistoryBut.setOnClickListener {
             viewModel.clearButSearchHistory()
         }
@@ -133,7 +133,7 @@ class TracksFragment : Fragment() {
 
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = _binding!!.trackCardsRecyclerView
+        trackRecyclerView = binding!!.trackCardsRecyclerView
         trackRecyclerView.layoutManager =
             LinearLayoutManager(
                 /* context = */ requireContext(),
@@ -143,7 +143,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun prepareInputedText() {
-        inputEditText = _binding!!.inputTextForSearching
+        inputEditText = binding!!.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
@@ -17,12 +18,16 @@ class PlayerViewModel(
     private val player: PlayerInteractor,
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
 ) : ViewModel() {
-    private val track = singleTrackRepository.readTrack()
+    private var track: Track? = singleTrackRepository.readTrack()
     private val stateLiveData = MutableLiveData<PlayerState>()
+
     init {
-        preparePlayer()
-        renderState(PlayerState.Fill(track!!))
+        track?.let {
+            preparePlayer()
+            renderState(PlayerState.Fill(it))
+        }
     }
+
     companion object {
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
@@ -37,18 +42,20 @@ class PlayerViewModel(
     }
 
     internal fun onFavoriteClicked() {
-        if (track!!.isFavorite) {
-            track.isFavorite = false
-            viewModelScope.launch {
-                favoriteTracksInteractor.removeFromFavoriteList(track)
+        track?.let {
+            if (it.isFavorite) {
+                it.isFavorite = false
+                viewModelScope.launch {
+                    favoriteTracksInteractor.removeFromFavoriteList(it)
+                }
+            } else {
+                it.isFavorite = true
+                viewModelScope.launch {
+                    favoriteTracksInteractor.addToFavoriteList(it)
+                }
             }
-        } else {
-            track.isFavorite = true
-            viewModelScope.launch {
-                favoriteTracksInteractor.addToFavoriteList(track)
-            }
+            renderState(PlayerState.likeBut(it.isFavorite))
         }
-        renderState(PlayerState.likeBut(track.isFavorite))
     }
 
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
@@ -94,7 +101,7 @@ class PlayerViewModel(
             pauseConsumer,
             startConsumer
         )
-        track!!.previewUrl?.let { player.preparePlayer(it) }
+        track?.previewUrl?.let { player.preparePlayer(it) }
     }
 
     private fun currentPositionTask() {
