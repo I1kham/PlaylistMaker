@@ -4,6 +4,7 @@ import com.alchemtech.playlistmaker.data.converters.TrackDtoConvertor
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
 import com.alchemtech.playlistmaker.data.dto.request.TracksSearchRequest
 import com.alchemtech.playlistmaker.data.dto.response.TracksSearchResponse
+import com.alchemtech.playlistmaker.data.dto.trackDto.TrackDto
 import com.alchemtech.playlistmaker.data.network.NetworkClient
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
@@ -27,10 +28,12 @@ class TracksRepositoryImpl(
 
             200 -> {
                 val tracks =
-                    (response as TracksSearchResponse).results.map { trackDtoConvertor.map(it) }
+                    (response as TracksSearchResponse).results.map { trackDto: TrackDto ->
+                        trackDtoConvertor.map(trackDto) }
                 emit(
                     Resource.Success(
-                        tracks.map { it.copy(isFavorite = it.trackId in favoriteIdList) }
+                        tracks.map { track: Track ->
+                            track.copy(isFavorite = track.trackId in favoriteIdList) }
                     ))
             }
 
