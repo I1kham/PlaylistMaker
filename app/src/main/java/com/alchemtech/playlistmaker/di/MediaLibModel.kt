@@ -13,7 +13,10 @@ var mediaLibViewModel = module {
 }
 var favoriteTracksViewModel = module {
     viewModel<FavoriteTracksViewModel> {
-        FavoriteTracksViewModel()
+        FavoriteTracksViewModel(
+            favoriteTracksInteractor = get(),
+            singleTrackInteractor = get()
+        )
     }
 }
 

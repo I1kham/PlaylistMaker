@@ -58,7 +58,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     implementation("com.github.bumptech.glide:glide:4.14.2")
-    ksp("androidx.room:room-compiler:2.6.1")
     ksp("com.github.bumptech.glide:ksp:4.14.2")
 
     implementation("com.github.moxy-community:moxy:2.2.2")
@@ -75,4 +74,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.9.0")
+
+    implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 }

@@ -17,15 +17,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
     private val viewModel: PlayerViewModel by viewModel()
-    private var _binding: ActivityPlayerBinding? = null
+    private var binding: ActivityPlayerBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        _binding = ActivityPlayerBinding.inflate(inflater, container, false)
-        return _binding!!.root
+    ): View? {
+        binding = ActivityPlayerBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,15 +33,17 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         observeRenderState()
         prepareBackBut()
         prepareViewModel()
+        likeButPrepare()
     }
+
     override fun onDetach() {
         super.onDetach()
-        _binding = null
+        binding = null
     }
 
     private fun prepareViewModel() {
         viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
-            _binding?.playTime?.text = it
+            binding?.playTime?.text = it
         }
     }
 
@@ -56,7 +58,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
     }
 
     private fun prepareBackBut() {
-        _binding!!.playerPreview.setOnClickListener {
+        binding?.playerPreview?.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }
@@ -72,40 +74,54 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         when (state) {
 
             is PlayerState.Pause -> {
-                _binding?.playBut?.setImageResource(R.drawable.play_but)
+                binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
             is PlayerState.Play -> {
-                _binding?.playBut?.setImageResource(R.drawable.pause_but)
-                onPreparedWithBut()
+                binding?.playBut?.setImageResource(R.drawable.pause_but)
+                playBut()
             }
 
             is PlayerState.OnPrepared -> {
-                onPreparedWithBut()
+                playBut()
             }
 
             is PlayerState.OnCompletion -> {
-                _binding?.playTime?.text = "00:00"
-                onPreparedWithBut()
-                _binding?.playBut?.setImageResource(R.drawable.play_but)
+                binding?.playTime?.text = "00:00"
+                playBut()
+                binding?.playBut?.setImageResource(R.drawable.play_but)
             }
 
-            is PlayerState.Fill -> fill(state.track)
+            is PlayerState.Fill ->  fill(state.track)
+
+            is PlayerState.likeBut ->
+                renderLikeBut(state.isFavorite)
         }
     }
 
-    private fun onPreparedWithBut() {
-        playBut()
+    private fun renderLikeBut(isLiked: Boolean?) {
+        when (isLiked) {
+            true -> binding?.playerTrackLike!!.setImageResource(R.drawable.isliked)
+            else -> binding?.playerTrackLike!!.setImageResource(R.drawable.like)
+        }
     }
 
     private fun playBut() {
-        _binding?.playBut?.setOnClickListener {
+        binding?.playBut?.setOnClickListener {
             viewModel.playBut()
         }
-        _binding?.playBut?.isEnabled = true
+        binding?.playBut?.isEnabled = true
+    }
+
+    private fun likeButPrepare() {
+        binding?.playerTrackLike?.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
+        binding?.playBut?.isEnabled = true
     }
 
     private fun fill(track: Track) {
-        fillPlayerActivity(track, _binding!!, requireContext())
+        fillPlayerActivity(track, binding, requireContext())
+        renderLikeBut(track.isFavorite)
     }
 }

@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.ui.tracks
+package com.alchemtech.playlistmaker.presentation.ui.track_card
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.Track
 
-class TrackSearchAdapter(private val trackListOf: List<Track>) :
+class TrackCardAdapter(private val trackListOf: List<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
 
     var onItemClick = { _: Track -> }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TrackCardViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.search_track_card, viewGroup, false)
+            .inflate(R.layout.track_card, viewGroup, false)
         return TrackCardViewHolder(view)
     }
 

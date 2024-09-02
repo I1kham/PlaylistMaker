@@ -6,15 +6,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
+import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor,
 ) : ViewModel() {
-    private val track = singleTrackRepository.readTrack()
+    private var track: Track? = singleTrackRepository.readTrack()
+    private val stateLiveData = MutableLiveData<PlayerState>()
+
+    init {
+        track?.let {
+            preparePlayer()
+            renderState(PlayerState.Fill(it))
+        }
+    }
 
     companion object {
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
@@ -29,7 +41,22 @@ class PlayerViewModel(
         player.pausePlayer()
     }
 
-    private val stateLiveData = MutableLiveData<PlayerState>()
+    internal fun onFavoriteClicked() {
+        track?.let {
+            if (it.isFavorite) {
+                it.isFavorite = false
+                viewModelScope.launch {
+                    favoriteTracksInteractor.removeFromFavoriteList(it)
+                }
+            } else {
+                it.isFavorite = true
+                viewModelScope.launch {
+                    favoriteTracksInteractor.addToFavoriteList(it)
+                }
+            }
+            renderState(PlayerState.likeBut(it.isFavorite))
+        }
+    }
 
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
@@ -43,11 +70,6 @@ class PlayerViewModel(
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
         statePosition.value
-    }
-
-    init {
-        preparePlayer()
-        renderState(PlayerState.Fill(track!!))
     }
 
     private fun preparePlayer() {
@@ -79,7 +101,7 @@ class PlayerViewModel(
             pauseConsumer,
             startConsumer
         )
-        track!!.previewUrl?.let { player.preparePlayer(it) }
+        track?.previewUrl?.let { player.preparePlayer(it) }
     }
 
     private fun currentPositionTask() {

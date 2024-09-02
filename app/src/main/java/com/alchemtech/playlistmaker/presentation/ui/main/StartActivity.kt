@@ -13,10 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStartBinding
-companion object{
-    private val TOKEN= Any()
-    private const val SEARCH_DEBOUNCE_DELAY = 50
-}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewModel by viewModel<StartViewModel>()

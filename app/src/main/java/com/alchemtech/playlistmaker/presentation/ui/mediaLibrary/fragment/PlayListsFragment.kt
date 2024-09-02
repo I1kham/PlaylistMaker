@@ -11,19 +11,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListsFragment : Fragment() {
 
-    private var _binding: FragmentPlayListsBinding? = null
+    private var binding: FragmentPlayListsBinding? = null
     private val favoriteTracksViewModel: PlayListsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentPlayListsBinding.inflate(layoutInflater)
-        return _binding?.root
+        binding = FragmentPlayListsBinding.inflate(layoutInflater)
+        return binding?.root
     }
 
     override fun onDetach() {
         super.onDetach()
-        _binding = null
+        binding = null
     }
 }

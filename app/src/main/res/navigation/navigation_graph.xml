@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mediaLibFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mediaLibFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
     </fragment>
     <fragment
         android:id="@+id/tracksFragment"

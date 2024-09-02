@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentSearchBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksState
 import com.alchemtech.playlistmaker.util.debounce
@@ -29,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksFragment : Fragment() {
     private val viewModel: TracksFragmentModel by viewModel()
-    private var _binding: FragmentSearchBinding? = null
+    private var binding: FragmentSearchBinding? = null
     private lateinit var inputEditText: EditText
     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -39,16 +40,16 @@ class TracksFragment : Fragment() {
     private lateinit var upDateBut: TextView
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryBut: TextView
-    private lateinit var trackAdapter: TrackSearchAdapter
+    private lateinit var trackAdapter: TrackCardAdapter
     private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return _binding!!.root
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +68,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun prepareOnItemClickToTrackCardDebounce() {
-       onItemClickToTrackCardDebounce = debounce<Track>(
+        onItemClickToTrackCardDebounce = debounce<Track>(
             delayMillis = CLICK_DEBOUNCE_DELAY,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
@@ -90,63 +91,80 @@ class TracksFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        _binding = null
+        binding = null
     }
 
     private fun prepareHistoryTitle() {
-        searchHistoryTitle = _binding!!.searchHistoryTitle
+        binding?.let {
+            searchHistoryTitle = it.searchHistoryTitle
+        }
     }
 
     private fun prepareUpdateBut() {
-        upDateBut = _binding!!.updateButNoConnection
-        upDateBut.setOnClickListener {
-            viewModel.updateResponse()
+        binding?.let {
+            upDateBut = it.updateButNoConnection
+            upDateBut.setOnClickListener {
+                viewModel.updateResponse()
+            }
         }
     }
 
     private fun prepareEditTextClearBut() {
-        clearButton = _binding!!.clearIcon
-        clearButton.setOnClickListener {
-            viewModel.clearEditTextButLogic()
+        binding?.let {
+            clearButton = it.clearIcon
+            clearButton.setOnClickListener {
+                viewModel.clearEditTextButLogic()
+            }
         }
     }
 
     private fun prepareNoConnectionErr() {
-        noConnectionLinearLayout = _binding!!.noConnection
-    }
-
-    private fun prepareNoDataErr() {
-        noDataLinearLayout = _binding!!.noData
-    }
-
-    private fun prepareProgressBar() {
-        progressBar = _binding!!.progressBar
-    }
-
-    private fun prepareClearHistBut() {
-        clearHistoryBut = _binding!!.clearHistoryBut
-        clearHistoryBut.setOnClickListener {
-            viewModel.clearButSearchHistory()
+        binding?.let {
+            noConnectionLinearLayout = it.noConnection
         }
     }
 
+    private fun prepareNoDataErr() {
+        binding?.let {
+            noDataLinearLayout = it.noData
+        }
+    }
+
+    private fun prepareProgressBar() {
+        binding?.let {
+            progressBar = it.progressBar
+        }
+    }
+        private fun prepareClearHistBut() {
+            binding?.let {
+                clearHistoryBut = it.clearHistoryBut
+                clearHistoryBut.setOnClickListener {
+                    viewModel.clearButSearchHistory()
+                }
+            }
+
+        }
 
     private fun prepareTrackRecyclerView() {
-        trackRecyclerView = _binding!!.trackCardsRecyclerView
-        trackRecyclerView.layoutManager =
-            LinearLayoutManager(
-                /* context = */ requireContext(),
-                /* orientation = */ LinearLayoutManager.VERTICAL,
-                /* reverseLayout = */ false
-            )
+        binding?.let {
+            trackRecyclerView = it.trackCardsRecyclerView
+            trackRecyclerView.layoutManager =
+                LinearLayoutManager(
+                    /* context = */ requireContext(),
+                    /* orientation = */ LinearLayoutManager.VERTICAL,
+                    /* reverseLayout = */ false
+                )
+        }
     }
 
     private fun prepareInputedText() {
-        inputEditText = _binding!!.inputTextForSearching
+        binding?.let {
+        inputEditText = it.inputTextForSearching
         inputEditText.addTextChangedListener(viewModel.textWatcher)
         inputEditText.doOnTextChanged { text, _, _, _ ->
             clearButton.isVisible = !text.isNullOrEmpty()
         }
+    }
     }
 
     private fun prepareViewModel() {
@@ -216,7 +234,7 @@ class TracksFragment : Fragment() {
     }
 
     private fun List<Track>.upDateAdapter() {
-        trackAdapter = TrackSearchAdapter(this)
+        trackAdapter = TrackCardAdapter(this)
         onItemClickToTrackCardDebounce.also { trackAdapter.onItemClick = it }
         trackRecyclerView.adapter = trackAdapter
     }
