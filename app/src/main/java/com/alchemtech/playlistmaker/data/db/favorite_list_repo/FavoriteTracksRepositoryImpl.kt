@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FavoriteTracksRepositoryImpl(
-    private val TracksDao: TrackDao,
+    private val tracksDao: TrackDao,
     private val trackDbConvertor: TrackDbConvertor,
 ) : FavoriteTracksRepository {
     override suspend fun addToFavoriteList(track: Track) {
-        TracksDao.addTrack(trackDbConvertor.map(track))
+        tracksDao.addTrack(trackDbConvertor.map(track))
     }
 
     override suspend fun removeFromFavoriteList(track: Track) {
-        TracksDao.removeTrack(trackDbConvertor.map(track))
+        tracksDao.removeTrack(trackDbConvertor.map(track))
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
-        return TracksDao.getAllTracks().map { trackEntityList: List<TrackEntity> ->
+        return tracksDao.getAllTracks().map { trackEntityList: List<TrackEntity> ->
             trackEntityList.map { trackEntity ->
                 trackDbConvertor.map(trackEntity)
             }

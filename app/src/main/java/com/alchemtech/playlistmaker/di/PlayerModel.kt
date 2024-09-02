@@ -70,7 +70,7 @@ val playerViewModel = module {
     }
     single<FavoriteTracksRepository> {
         FavoriteTracksRepositoryImpl(
-            TracksDao = get(),
+            tracksDao = get(),
             trackDbConvertor = get()
         )
     }

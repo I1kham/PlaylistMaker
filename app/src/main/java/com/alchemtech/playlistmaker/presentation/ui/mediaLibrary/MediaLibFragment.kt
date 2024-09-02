@@ -44,14 +44,13 @@ class MediaLibFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun startTableLayout() = binding?.let{
+    private fun startTableLayout() = binding?.let {
         it.viewPager.adapter = MediaLibPagerAdapter(childFragmentManager, lifecycle)
 
-            tabMediator =
-                TabLayoutMediator(it.tabLayout, it.viewPager,
-                    ) { tab, position ->
-                    tab.text = getString(tabsTitleResIds[position])
-        }
+        tabMediator =
+            TabLayoutMediator(it.tabLayout, it.viewPager) { tab, position ->
+                tab.text = getString(tabsTitleResIds[position])
+            }
         tabMediator?.attach()
     }
 }
