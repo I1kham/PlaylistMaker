@@ -2,6 +2,7 @@ package com.alchemtech.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import com.alchemtech.playlistmaker.di.addPlayListViewModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
 import com.alchemtech.playlistmaker.di.playListsViewModel
@@ -26,6 +27,7 @@ class App : Application() {
                 playerViewModel,
                 mediaLibViewModel,
                 startViewModel,
+                addPlayListViewModule,
                 /*Fragments*/
                 favoriteTracksViewModel,
                 playListsViewModel

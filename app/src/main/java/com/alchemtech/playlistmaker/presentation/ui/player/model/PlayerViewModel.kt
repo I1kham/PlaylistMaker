@@ -61,7 +61,6 @@ class PlayerViewModel(
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
-        stateLiveData.value
     }
 
     private val statePosition = MutableLiveData<String>()

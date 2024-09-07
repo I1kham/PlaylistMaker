@@ -44,4 +44,8 @@
     <string name="addNewPlayListBut">Новый плейлист</string>
     <string name="favorite_tracks_fragment_title">Избранные треки</string>
     <string name="playLists_fragment_title">Плейлисты</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="play_list_name_hint">Название*</string>
+    <string name="playList_description">Описание</string>
+    <string name="createButton">Создать</string>
 </resources>

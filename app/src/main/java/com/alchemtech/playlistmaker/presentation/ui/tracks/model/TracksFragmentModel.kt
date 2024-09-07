@@ -123,7 +123,6 @@ class TracksFragmentModel(
 
     private fun renderState(state: TracksState) {
         stateLiveData.postValue(state)
-        stateLiveData.value
     }
 
     internal fun save() {
