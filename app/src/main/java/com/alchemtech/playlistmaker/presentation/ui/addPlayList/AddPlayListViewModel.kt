@@ -3,8 +3,9 @@ package com.alchemtech.playlistmaker.presentation.ui.addPlayList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 
-class AddPlayListViewModel(
+class AddPlayListViewModel(private val playListInteractor: PlayListInteractor
 
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<AddPlayListState>()
@@ -13,5 +14,10 @@ class AddPlayListViewModel(
     private fun renderState(state: AddPlayListState) {
         stateLiveData.postValue(state)
     }
+
+
+
+
+
 
 }
