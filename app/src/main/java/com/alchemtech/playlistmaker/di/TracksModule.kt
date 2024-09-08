@@ -45,7 +45,7 @@ val tracksActivityViewModel = module {
         SharedHistoryRepositoryImpl(
             SAVED_LIST,
             sharedPreferences = this.get (),
-            gson = get()
+            tracksStringConvertor = get()
         )
     }
     factory<SharedPreferences> {

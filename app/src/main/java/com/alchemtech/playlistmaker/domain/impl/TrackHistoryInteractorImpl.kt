@@ -73,7 +73,7 @@ class TrackHistoryInteractorImpl(private val historyRepository: HistoryRepositor
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
         historyRepository.setTracksToSave(
-            objects = tracks
+            tracksList = tracks
         )
     }
 

@@ -67,10 +67,10 @@ class AddPlayListFragment : Fragment() {
 
     private fun getPictureUri() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             reguestPermissinApiUpper33()
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             requestPermissonApiUnder33()
         } else {
             choosePicture()
@@ -85,10 +85,11 @@ class AddPlayListFragment : Fragment() {
                     when (result) {
                         is PermissionResult.Granted -> {
                             choosePicture()
+                            println("------------------")
                         }
 
                         is PermissionResult.Denied.DeniedPermanently -> {
-
+                            getPermissionOpenWindow()
                         }
 
                         is PermissionResult.Denied.NeedsRationale -> {

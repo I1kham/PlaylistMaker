@@ -1,9 +1,10 @@
 package com.alchemtech.playlistmaker.di
 
 import com.alchemtech.playlistmaker.data.converters.PlayListDbConvertor
+import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
 import com.alchemtech.playlistmaker.data.db.entity.AppDatabase
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
-import com.alchemtech.playlistmaker.data.db.favorite_list_repo.PlayListsRepositoryImpl
+import com.alchemtech.playlistmaker.data.db.play_lists_repo.PlayListsRepositoryImpl
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.impl.PlayLIstInteractorImpl
@@ -21,7 +22,11 @@ var addPlayListViewModule = module {
     }
 
     single<PlayListsRepository> {
-        PlayListsRepositoryImpl(playListDao = get(), playListDbConvertor = get())
+        PlayListsRepositoryImpl(
+            playListDao = get(),
+            tracksStringConvertor = get(),
+            playListDbConvertor = get()
+        )
     }
 
     single<PlayListDao> {
@@ -29,6 +34,10 @@ var addPlayListViewModule = module {
     }
 
     single<PlayListDbConvertor> {
-        PlayListDbConvertor(gson = get())
+        PlayListDbConvertor(tracksStringConvertor = get())
+    }
+
+    single<TracksStringConvertor> {
+        TracksStringConvertor(gson = get())
     }
 }

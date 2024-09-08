@@ -1,6 +1,7 @@
-package com.alchemtech.playlistmaker.data.db.favorite_list_repo
+package com.alchemtech.playlistmaker.data.db.play_lists_repo
 
 import com.alchemtech.playlistmaker.data.converters.PlayListDbConvertor
+import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
 import com.alchemtech.playlistmaker.data.db.entity.PlayListEntity
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 class PlayListsRepositoryImpl(
     private val playListDao: PlayListDao,
     private val playListDbConvertor: PlayListDbConvertor,
+    private val tracksStringConvertor: TracksStringConvertor,
 
     ) : PlayListsRepository {
     override suspend fun addPlayList(playList: PlayList) {
@@ -29,15 +31,15 @@ class PlayListsRepositoryImpl(
         }
     }
 
-    override  fun getTracks(name: String): Flow<List<Track>> = flow {
-        playListDbConvertor.map(playListDao.getTracks(name))
+    override fun getTracks(name: String): Flow<List<Track>> = flow {
+        tracksStringConvertor.map(playListDao.getTracks(name))
 
     }
 
     override suspend fun updatePlaylist(name: String, trackList: List<Track>) {
         playListDao.updatePlaylist(
             name,
-            playListDbConvertor.map(trackList)
+            tracksStringConvertor.map(trackList)
         )
     }
 

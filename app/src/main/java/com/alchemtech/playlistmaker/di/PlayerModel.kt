@@ -52,7 +52,7 @@ val playerViewModel = module {
         SharedHistoryRepositoryImpl(
             SAVED_TRACK,
             sharedPreferences = this.get(),
-            gson = get()
+            tracksStringConvertor = get()
         )
     }
     factory<SharedPreferences> {
