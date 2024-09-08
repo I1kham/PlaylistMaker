@@ -159,7 +159,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="NewPlayListText">
+    <style name="NewPlayListEditText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -174,6 +174,7 @@
         <item name="android:textColor">@color/black_White</item>
         <item name="android:textColorHint">@color/black_White</item>
         <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="cursorColor">@color/YP_light_background</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSelectHandle">@color/transparent</item>
@@ -192,6 +193,23 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="createPlayListEditTextTitle" >
+        <!--        layout-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">14dp</item>
+        <item name="android:background">@color/white_YP_Black</item>
+        <item name="android:paddingHorizontal">2dp</item>
+        <item name="android:elevation">0.001dp</item>
+        <!--        text-->
+        <item name="android:textColor">@color/YP_light_background</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textAlignment">center</item>
     </style>
 

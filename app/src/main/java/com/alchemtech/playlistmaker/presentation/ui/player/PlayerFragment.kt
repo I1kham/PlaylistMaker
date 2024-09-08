@@ -9,6 +9,7 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
+import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +35,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         prepareBackBut()
         prepareViewModel()
         likeButPrepare()
+        (activity as StartActivity).bottomNavigationVisibility(false)
     }
 
     override fun onDetach() {
@@ -55,6 +57,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
     override fun onStop() {
         super.onStop()
         viewModel.onStop()
+        (activity as StartActivity).bottomNavigationVisibility(true)
     }
 
     private fun prepareBackBut() {

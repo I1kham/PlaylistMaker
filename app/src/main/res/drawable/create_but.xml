@@ -10,7 +10,7 @@
     <item android:state_enabled="true">
         <shape>
             <corners android:radius="8dp" />
-            <solid android:color="@color/mainActivityBackground" />
+            <solid android:color="@color/YP_light_background" />
         </shape>
     </item>
 </selector>

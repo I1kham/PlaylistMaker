@@ -1,6 +1,7 @@
 package com.alchemtech.playlistmaker
 
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.di.addPlayListViewModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
@@ -11,11 +12,13 @@ import com.alchemtech.playlistmaker.di.settingsActivityModule
 import com.alchemtech.playlistmaker.di.startViewModel
 import com.alchemtech.playlistmaker.di.tracksActivityViewModel
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
+import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
+    val appContext: Context?=null
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -34,6 +37,7 @@ class App : Application() {
             )
         }
         switchTheme()
+        PermissionRequester.initialize(applicationContext)
     }
 
     private fun switchTheme() {

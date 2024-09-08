@@ -2,7 +2,6 @@ package com.alchemtech.playlistmaker.presentation.ui.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -28,23 +27,12 @@ class StartActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
         navController.navInflater
 
-        fun backPress() = onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (isEnabled) {
-                        bottomNavigationView.visibility = View.VISIBLE
-                        isEnabled = false
-                        onBackPressed()
-                    }
-                }
-            }
-        )
-        navHostFragment.childFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
-            if (fragment.toString().contains("Player")) {
-                bottomNavigationView.visibility = View.GONE
-                backPress()
-            }
-        }
+    }
+    fun bottomNavigationVisibility(isVisibile:Boolean){
+     if (isVisibile){
+         binding.bottomNavigation.visibility = View.VISIBLE
+     }   else{
+         binding.bottomNavigation.visibility= View.GONE
+     }
     }
 }
