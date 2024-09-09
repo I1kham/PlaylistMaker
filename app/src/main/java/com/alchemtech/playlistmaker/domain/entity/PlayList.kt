@@ -1,6 +1,6 @@
 package com.alchemtech.playlistmaker.domain.entity
 
-class PlayList(
+data class PlayList(
     val name: String,
     val description: String?,
     val coverUri: String?,

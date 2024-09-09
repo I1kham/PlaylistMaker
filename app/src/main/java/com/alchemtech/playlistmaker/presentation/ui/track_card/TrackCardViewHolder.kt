@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 
 class TrackCardViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView), UiCalculator {
-    private var trackTitle: TextView = itemView.findViewById(R.id.trackTitle)
-    private var trackArtist: TextView = itemView.findViewById(R.id.trackArtist)
+    private var trackTitle: TextView = itemView.findViewById(R.id.plName)
+    private var trackArtist: TextView = itemView.findViewById(R.id.plDescription)
     private var trackDuration: TextView = itemView.findViewById(R.id.trackDuration)
     private var albumCover: ImageView = itemView.findViewById(R.id.albumCover)
 

@@ -22,6 +22,6 @@ var favoriteTracksViewModel = module {
 
 var playListsViewModel = module {
     viewModel<PlayListsViewModel>{
-        PlayListsViewModel()
+        PlayListsViewModel(playListInteractor = get())
     }
 }

@@ -2,14 +2,17 @@ package com.alchemtech.playlistmaker.presentation.ui.addPlayList
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -26,6 +29,7 @@ import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class AddPlayListFragment : Fragment() {
 
@@ -85,15 +89,20 @@ class AddPlayListFragment : Fragment() {
                     when (result) {
                         is PermissionResult.Granted -> {
                             choosePicture()
-                            println("------------------")
+                            println("PermissionResult.Granted") // TODO:
                         }
 
                         is PermissionResult.Denied.DeniedPermanently -> {
-                            getPermissionOpenWindow()
+                            println("PermissionResult.DeniedPermanently")
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.askForRestartFragment), Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         is PermissionResult.Denied.NeedsRationale -> {
-                            getPermissionOpenWindow()
+                            println("PermissionResult.NeedsRationale")
+                            getPermissionOpenWindowUpper33()
                         }
 
                         is PermissionResult.Cancelled -> {
@@ -102,6 +111,27 @@ class AddPlayListFragment : Fragment() {
                     }
                 }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun getPermissionOpenWindowUpper33() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setBackground(resources.getDrawable((R.drawable.background)))
+            .setTitle(getString(R.string.getPermissionTitle)) // Заголовок диалога
+            .setMessage(
+                getString(R.string.getPermissionMassage)
+            ) // Описание диалога
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which -> // Добавляет кнопку «Отмена»
+                // Действия, выполняемые при нажатии на кнопку «Отмена»
+            }
+            .setNegativeButton(getString(R.string.no)) { dialog, which -> // Добавляет кнопку «Нет»
+                // Действия, выполняемые при нажатии на кнопку «Нет»
+            }
+            .setPositiveButton(getString(R.string.yes)) { dialog, which -> // Добавляет кнопку «Да»
+                reguestPermissinApiUpper33()
+            }
+            .show()
     }
 
     private fun requestPermissonApiUnder33() {
@@ -137,7 +167,9 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setPicture(uri: Uri?) {
+        Log.d("PhotoPicker", "Выбранный URI: $uri")
         if (uri != null) {
+            viewModel.uri = uri
             val albumCover: ImageView? = binding?.picAdding
             if (albumCover != null) {
                 Glide.with(requireContext())
@@ -162,23 +194,34 @@ class AddPlayListFragment : Fragment() {
     private fun getPermissionOpenWindow() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle("Заголовок") // Заголовок диалога
-            .setMessage("Описание") // Описание диалога
-            .setNeutralButton("Отмена") { dialog, which -> // Добавляет кнопку «Отмена»
+            .setTitle(getString(R.string.getPermissionTitle)) // Заголовок диалога
+            .setMessage(
+                getString(R.string.getPermissionMassage)
+            ) // Описание диалога
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which -> // Добавляет кнопку «Отмена»
                 // Действия, выполняемые при нажатии на кнопку «Отмена»
             }
-            .setNegativeButton("Нет") { dialog, which -> // Добавляет кнопку «Нет»
+            .setNegativeButton(getString(R.string.no)) { dialog, which -> // Добавляет кнопку «Нет»
                 // Действия, выполняемые при нажатии на кнопку «Нет»
             }
-            .setPositiveButton("Да") { dialog, which -> // Добавляет кнопку «Да»
-                // Действия, выполняемые при нажатии на кнопку «Да»
+            .setPositiveButton(getString(R.string.yes)) { dialog, which -> // Добавляет кнопку «Да»
+                openAppPermission()
             }
             .show()
     }
 
+    private fun openAppPermission() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.data = Uri.fromParts("package", requireContext().packageName, null)
+        requireContext().startActivity(intent)
+    }
+
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
-            requireActivity().onBackPressed()
+          //  requireActivity().onBackPressed() // TODO: uncommit
+
+            viewModel.onCeared()
         }
     }
 

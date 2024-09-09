@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/transparent"
+    android:outlineAmbientShadowColor="@color/transparent"
+    android:outlineSpotShadowColor="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="196dp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/PlCover"
+            android:layout_width="160dp"
+            android:layout_height="161dp"
+            android:src="@drawable/track_album_default" />
+
+        <TextView
+            android:id="@+id/plName"
+            style="@style/cardTextViewBlackWhite"
+            android:textSize="16sp"
+            tools:text="Track Name" />
+
+        <TextView
+            android:id="@+id/plDescription"
+            style="@style/cardTextViewGrayWhite"
+            android:maxWidth="250dp"
+            android:textSize="13sp"
+            tools:text="Track Artist" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

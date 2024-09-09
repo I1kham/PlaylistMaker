@@ -10,6 +10,7 @@ class PlayLIstInteractorImpl(
     private val playListsRepository: PlayListsRepository,
 ) : PlayListInteractor {
     override suspend fun addPlayList(playList: PlayList) {
+        println("PlayLIstInteractorImpl.addPlayList")
         playListsRepository.addPlayList(playList)
     }
 

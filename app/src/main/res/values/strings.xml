@@ -48,4 +48,11 @@
     <string name="play_list_name_hint">Название*</string>
     <string name="playList_description">Описание</string>
     <string name="createButton">Создать</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="cancel">Отмена</string>
+    <string name="getPermissionTitle">Доступ к файлам изображений</string>
+    <string name="getPermissionMassage">Приложению необходим доступ к чтеню файлов изображений на вашем устройстве\n
+        \nВы готовы предоставить доступ?"</string>
+    <string name="askForRestartFragment">Ранее вы отказали в доступе к файлам устройства</string>
 </resources>
