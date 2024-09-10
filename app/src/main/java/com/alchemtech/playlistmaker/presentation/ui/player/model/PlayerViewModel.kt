@@ -54,7 +54,7 @@ class PlayerViewModel(
                     favoriteTracksInteractor.addToFavoriteList(it)
                 }
             }
-            renderState(PlayerState.likeBut(it.isFavorite))
+            renderState(PlayerState.LikeBut(it.isFavorite))
         }
     }
 

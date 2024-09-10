@@ -10,6 +10,3 @@ data class PlayListEntity(
     val description: String?,
     val coverUri: String?,
     val tracks: String?) // TODO: maybe should make TracksEntity class)
-// {
-//    fun tracksCount() = tracks.size
-//}

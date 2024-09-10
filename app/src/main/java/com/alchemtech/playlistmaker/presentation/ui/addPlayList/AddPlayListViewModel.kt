@@ -7,46 +7,48 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.entity.PlayList
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AddPlayListViewModel(
     private val playListInteractor: PlayListInteractor,
-
     ) : ViewModel() {
     private val stateLiveData = MutableLiveData<AddPlayListState>()
-    var uri: Uri? = null
-    val playListName: String = "Name of the playlist"
-    val playListDescription: String = "null"
-
-
-    init {
-        viewModelScope.launch {
-          playListInteractor.getAllPlayLists().map { it.map { println("___"+it.name.toString()) } }
-        }
-    }
+    private var playListName: String = ""
+    private var playListDescription: String? = null
+    private var uri: Uri? = null
 
     fun observeRenderState(): LiveData<AddPlayListState> = stateLiveData
+
     private fun renderState(state: AddPlayListState) {
         stateLiveData.postValue(state)
     }
 
-    fun onCeared() {
-
-        viewModelScope.launch {
-            playListInteractor.addPlayList(
-                PlayList(
-                    name = playListName,
-                    description = "_____",
-                    uri.toString(),
-                )
-            )
-        }
-        println("playListInteractor.addPlayList")
+    internal fun setUri(uri: Uri?) {
+        this.uri = uri
+        renderState(AddPlayListState.SetPic(uri))
     }
 
+    internal fun setName(name: String) {
+        this.playListName = name
+    }
 
-    
+    internal fun setDescription(description: String) {
+        this.playListDescription = description
+    }
 
-
+    fun savePlayList() {
+        if (playListName.isNotEmpty()) {
+            renderState(AddPlayListState.Loading)
+            viewModelScope.launch {
+                playListInteractor.addPlayList(
+                    PlayList(
+                        name = playListName,
+                        description = playListDescription,
+                        uri.toString(),
+                    )
+                )
+                renderState(AddPlayListState.Exit)
+            }
+        }
+    }
 }

@@ -8,5 +8,5 @@ sealed interface PlayerState {
     data object OnPrepared : PlayerState
     data object OnCompletion : PlayerState
     data class Fill(val track: Track) : PlayerState
-    data class likeBut(val isFavorite: Boolean): PlayerState
+    data class LikeBut(val isFavorite: Boolean): PlayerState
 }

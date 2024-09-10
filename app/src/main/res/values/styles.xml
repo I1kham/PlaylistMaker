@@ -212,5 +212,11 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textAlignment">center</item>
     </style>
-
+    <style name="progressBar" >
+        <!--        layout-->
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:indeterminateTint">@color/YP_light_background</item>
+        <!--        text-->
+    </style>
 </resources>

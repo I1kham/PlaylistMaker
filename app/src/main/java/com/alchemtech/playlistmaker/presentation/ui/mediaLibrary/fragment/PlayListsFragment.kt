@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlayListsBinding
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.PlayListsViewModel
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.PlayListsState
 import com.alchemtech.playlistmaker.presentation.ui.playLikstCard.PlayListCardAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListsFragment : Fragment() {
 
     private var binding: FragmentPlayListsBinding? = null
-    private val favoriteTracksViewModel: PlayListsViewModel by viewModel()
+    private val viewModel: PlayListsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,44 +30,79 @@ class PlayListsFragment : Fragment() {
         binding = FragmentPlayListsBinding.inflate(layoutInflater)
         return binding?.root
     }
-
-    override fun onResume() {
-        super.onResume()
-
-
-
-    }
-
+    private var progressBar: ProgressBar? = null
+    private var recyclerView: RecyclerView? = null
+    private var noDataLayout:ConstraintLayout? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        prepareProgressBar()
+        prepareAddPlayListButton()
+        prepareRecyclerView()
+        observeRenderState()
+        prepareNodataLAyout()
+    }
+
+    private fun prepareNodataLAyout() {
+        noDataLayout = binding?.noDataLay
+    }
+
+    private fun prepareProgressBar() {
+        progressBar = binding?.progressBar
+    }
+
+    private fun prepareAddPlayListButton() {
         binding?.addPlayListBut?.setOnClickListener {
             findNavController().navigate(R.id.action_mediaLibFragment_to_addPlayListFragment)
         }
-                    val recyclerView = binding?.trackCardsRecyclerView
+    }
 
-                    recyclerView?.layoutManager = GridLayoutManager(
-                        view.context, /*Количество столбцов*/
-                        2
-                    ) //ориентация по умолчанию — вертикальная
-                    recyclerView?.adapter = PlayListCardAdapter(
-                        listOf(
-                            PlayList(
-                                "Play1",
-                                "Description",
-                                "content://media/picker/0/com.android.providers.media.photopicker/media/1000000034",
-                            ),
-                            PlayList(
-                                "Play2",
-                                "xfgnxvnxvbn",
-                                "content://media/picker/0/com.android.providers.media.photopicker/media/1000000034",
-                            )
-                        )
-                    )
-                }
+    private fun observeRenderState() {
+        viewModel.observeState().observe(getViewLifecycleOwner()) {
+            render(it)
+        }
+    }
+
+    private fun prepareRecyclerView() {
+        recyclerView = binding?.playListRecyclerView
+        recyclerView?.layoutManager = GridLayoutManager(
+            view?.context,
+            2
+        )
+    }
 
     override fun onDetach() {
         super.onDetach()
         binding = null
+    }
+
+    private fun render(state: PlayListsState) {
+        when (state) {
+            is PlayListsState.ShowList ->
+                renderList(state.playLists)
+
+            is PlayListsState.EmptyList ->
+                renderEmptyState()
+
+            is PlayListsState.Loading ->
+                renderLoading()
+        }
+    }
+
+    private fun renderEmptyState() {
+        progressBar?.visibility = View.GONE
+        noDataLayout?.visibility = View.VISIBLE
+    }
+
+    private fun renderList(playLists: List<PlayList>) {
+        progressBar?.visibility = View.GONE
+        noDataLayout?.visibility = View.GONE
+        recyclerView?.adapter = PlayListCardAdapter(playLists)
+
+    }
+
+    private fun renderLoading() {
+        progressBar?.visibility = View.VISIBLE
+        noDataLayout?.visibility = View.GONE
     }
 }

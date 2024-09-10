@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewModel
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewState
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewModel
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel

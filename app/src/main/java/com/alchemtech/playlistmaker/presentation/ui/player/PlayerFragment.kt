@@ -97,7 +97,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
             is PlayerState.Fill ->  fill(state.track)
 
-            is PlayerState.likeBut ->
+            is PlayerState.LikeBut ->
                 renderLikeBut(state.isFavorite)
         }
     }

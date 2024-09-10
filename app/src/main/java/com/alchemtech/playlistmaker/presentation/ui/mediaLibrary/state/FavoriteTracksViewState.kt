@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model
+package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state
 
 import com.alchemtech.playlistmaker.domain.entity.Track
 

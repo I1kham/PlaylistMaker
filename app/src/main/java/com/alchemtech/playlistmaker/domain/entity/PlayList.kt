@@ -6,6 +6,3 @@ data class PlayList(
     val coverUri: String?,
     val tracks: List<Track> = listOf(),
 )
-//{todo
-//    fun tracksCount() = tracks.size
-//}

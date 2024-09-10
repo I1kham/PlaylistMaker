@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false"
+    <item android:state_activated="false"
         android:drawable="@drawable/gray_text_view_frame"/>
-    <item android:state_enabled="true"
+    <item android:state_activated="true"
        android:drawable="@drawable/blue_text_view_frame"/>
 </selector>
