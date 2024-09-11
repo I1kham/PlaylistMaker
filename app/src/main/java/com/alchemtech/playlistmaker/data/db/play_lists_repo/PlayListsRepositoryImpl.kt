@@ -18,7 +18,6 @@ class PlayListsRepositoryImpl(
 
     ) : PlayListsRepository {
     override suspend fun addPlayList(playList: PlayList) {
-        println("88888"+playList) // TODO:
         playListDao.addPlayList(playListDbConvertor.map(playList))
     }
 

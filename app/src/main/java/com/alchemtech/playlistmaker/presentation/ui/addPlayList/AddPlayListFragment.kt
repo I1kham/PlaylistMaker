@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -24,6 +25,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
@@ -46,6 +48,7 @@ class AddPlayListFragment : Fragment() {
     private var descriptionTitle: TextView? = null
     private var createBut: Button? = null
     private var progressBar: ProgressBar? = null
+    private var uri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,31 +62,61 @@ class AddPlayListFragment : Fragment() {
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             setUriToModel(uri)
+            this.uri = uri
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeRenderState()
         prepareBackBut()
-        (activity as StartActivity).bottomNavigationVisibility(false)
-
+        false.bottomNavigatorVisibility()
         prepareProgressBar()
-        prepareCreateBut()
-        preparePicLay()
+        prepareCreateButton()
+        preparePictureLayOut()
         prepareNameText()
         prepareDescriptionText()
-
-
+        prepareBackPress()
     }
+
+    private fun Boolean.bottomNavigatorVisibility() {
+        (activity as StartActivity).bottomNavigationVisibility(this)
+    }
+
+    private fun prepareBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isEnabled) {
+                        if (nameEditText?.text!!.isNotEmpty()
+                            || descriptionEditText?.text!!.isNotEmpty()
+                            || uri != null
+                        ) {
+                            getCheckForCloseOpenWindow()
+                        } else {
+                            isEnabled = false
+                            findNavController().popBackStack()
+                        }
+                    } else {
+                        isEnabled = false
+                        findNavController().popBackStack()
+                    }
+                }
+
+            }
+        )
+    }
+
 
     private fun prepareProgressBar() {
         progressBar = binding?.progressBar
         progressBar?.isVisible = false
     }
 
-    private fun prepareCreateBut() {
+    private fun prepareCreateButton() {
         createBut = binding?.createBut
         createBut?.setOnClickListener {
+            val name = nameEditText?.text.toString()
+            Toast.makeText(requireContext(), "Плейлист $name создан", Toast.LENGTH_LONG).show()
             actionCreateBut()
         }
     }
@@ -92,7 +125,7 @@ class AddPlayListFragment : Fragment() {
         viewModel.savePlayList()
     }
 
-    private fun preparePicLay() {
+    private fun preparePictureLayOut() {
         binding?.picAdding?.setOnClickListener {
             getPictureUri()
         }
@@ -101,17 +134,17 @@ class AddPlayListFragment : Fragment() {
     private fun getPictureUri() {
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            reguestPermissinApiUpper33()
+            requestPermissionApiUpper33()
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            requestPermissonApiUnder33()
+            requestPermissionApiUnder33()
         } else {
             choosePicture()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    private fun reguestPermissinApiUpper33() {
+    private fun requestPermissionApiUpper33() {
         lifecycleScope.launch {
             requester.request(Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
                 .collect { result ->
@@ -120,12 +153,7 @@ class AddPlayListFragment : Fragment() {
                             choosePicture()
                         }
 
-                        is PermissionResult.Denied.DeniedPermanently -> {
-//                            Toast.makeText(
-//                                requireContext(),
-//                                getString(R.string.askForRestartFragment), Toast.LENGTH_SHORT
-//                            ).show()
-                        }
+                        is PermissionResult.Denied.DeniedPermanently -> {}
 
                         is PermissionResult.Denied.NeedsRationale -> {
                             getPermissionOpenWindowUpper33()
@@ -144,23 +172,19 @@ class AddPlayListFragment : Fragment() {
     private fun getPermissionOpenWindowUpper33() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getString(R.string.getPermissionTitle)) // Заголовок диалога
+            .setTitle(getString(R.string.getPermissionTitle))
             .setMessage(
                 getString(R.string.getPermissionMassage)
-            ) // Описание диалога
-            .setNeutralButton(getString(R.string.cancel)) { _, _ -> // Добавляет кнопку «Отмена»
-                // Действия, выполняемые при нажатии на кнопку «Отмена»
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> // Добавляет кнопку «Нет»
-                // Действия, выполняемые при нажатии на кнопку «Нет»
-            }
-            .setPositiveButton(getString(R.string.yes)) { _, _ -> // Добавляет кнопку «Да»
-                reguestPermissinApiUpper33()
+            )
+            .setNeutralButton(getString(R.string.cancel)) { _, _ -> }
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                requestPermissionApiUpper33()
             }
             .show()
     }
 
-    private fun requestPermissonApiUnder33() {
+    private fun requestPermissionApiUnder33() {
         lifecycleScope.launch {
             requester.request(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .collect { result ->
@@ -169,8 +193,7 @@ class AddPlayListFragment : Fragment() {
                             choosePicture()
                         }
 
-                        is PermissionResult.Denied.DeniedPermanently -> {
-                        }
+                        is PermissionResult.Denied.DeniedPermanently -> {}
 
                         is PermissionResult.Denied.NeedsRationale -> {
                             getPermissionOpenWindow()
@@ -186,8 +209,13 @@ class AddPlayListFragment : Fragment() {
 
 
     private fun choosePicture() {
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-
+        pickMedia.launch(
+            PickVisualMediaRequest(
+                ActivityResultContracts
+                    .PickVisualMedia
+                    .ImageOnly
+            )
+        )
     }
 
     private fun setUriToModel(uri: Uri?) {
@@ -195,7 +223,6 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setPicture(uri: Uri?) {
-        Log.d("PhotoPicker", "Выбранный URI: $uri") // TODO:  
         if (uri != null) {
             val albumCover: ImageView? = binding?.picAdding
             if (albumCover != null) {
@@ -216,21 +243,33 @@ class AddPlayListFragment : Fragment() {
     private fun getPermissionOpenWindow() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getString(R.string.getPermissionTitle)) // Заголовок диалога
+            .setTitle(getString(R.string.getPermissionTitle))
             .setMessage(
                 getString(R.string.getPermissionMassage)
-            ) // Описание диалога
-            .setNeutralButton(getString(R.string.cancel)) { _, _ -> // Добавляет кнопку «Отмена»
-                // Действия, выполняемые при нажатии на кнопку «Отмена»
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> // Добавляет кнопку «Нет»
-                // Действия, выполняемые при нажатии на кнопку «Нет»
-            }
-            .setPositiveButton(getString(R.string.yes)) { _, _ -> // Добавляет кнопку «Да»
+            )
+            .setNeutralButton(getString(R.string.cancel)) { _, _ -> }
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 openAppPermission()
             }
             .show()
     }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun getCheckForCloseOpenWindow() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setBackground(resources.getDrawable((R.drawable.background)))
+            .setTitle(getString(R.string.cancelAddPlayListTitle))
+            .setMessage(
+                getString(R.string.cancelAddPlayListMassage)
+            )
+            .setNeutralButton(getString(R.string.cancelAddPlayListCancelButton)) { _, _ -> }
+            .setPositiveButton(getString(R.string.cancelAddPlayYesButton)) { _, _ ->
+                findNavController().popBackStack()
+            }
+            .show()
+    }
+
 
     private fun openAppPermission() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -242,6 +281,7 @@ class AddPlayListFragment : Fragment() {
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
+
         }
     }
 
@@ -252,9 +292,9 @@ class AddPlayListFragment : Fragment() {
             nameTitle = it.playListplayListNameTitle
             nameTitle?.isVisible = false
             nameEditText?.doOnTextChanged { text, _, _, _ ->
+                viewModel.setName(text.toString())
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
-                viewModel.setName(text.toString())
                 createBut?.isEnabled = !text.isNullOrEmpty()
             }
         }
@@ -267,9 +307,9 @@ class AddPlayListFragment : Fragment() {
             descriptionTitle = it.playListDescriptionTitle
             descriptionTitle?.isVisible = false
             descriptionEditText?.doOnTextChanged { text, _, _, _ ->
+                viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
-                viewModel.setDescription(text.toString())
             }
         }
     }
@@ -281,14 +321,13 @@ class AddPlayListFragment : Fragment() {
 
 
     override fun onStop() {
+        true.bottomNavigatorVisibility()
         super.onStop()
-        (activity as StartActivity).bottomNavigationVisibility(true)
     }
 
 
     private fun observeRenderState() {
-        val a = viewModel.observeRenderState()
-        a.observe(getViewLifecycleOwner()) {
+        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
         }
     }
@@ -296,7 +335,7 @@ class AddPlayListFragment : Fragment() {
     private fun render(state: AddPlayListState) {
         when (state) {
             is AddPlayListState.Exit ->
-                requireActivity().onBackPressed()
+                findNavController().popBackStack()
 
             is AddPlayListState.Loading ->
                 progressBar?.isVisible = true

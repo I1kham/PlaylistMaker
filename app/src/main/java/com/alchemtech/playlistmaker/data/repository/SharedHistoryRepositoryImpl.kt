@@ -13,10 +13,11 @@ class SharedHistoryRepositoryImpl(
     HistoryRepository {
 
     override fun getSavedTracks(): List<Track> {
-        val json = sharedPreferences.getString(/* key = */ key,
-            /* defValue = */ null
+        return tracksStringConvertor.map(
+            sharedPreferences.getString(/* key = */ key,
+                /* defValue = */ null
+            )
         )
-             return tracksStringConvertor.map(json)
     }
 
     override fun setTracksToSave(tracksList: List<Track>) {

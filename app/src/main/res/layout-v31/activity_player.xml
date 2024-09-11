@@ -159,7 +159,7 @@
         style="@style/playerTrackInformationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:gravity="start"
         android:text="@string/countryStr"
         android:textColor="@color/YP_AAL_gray"
         app:layout_constraintBottom_toTopOf="@id/bottomBorder"

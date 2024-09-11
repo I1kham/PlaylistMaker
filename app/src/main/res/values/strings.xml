@@ -55,4 +55,8 @@
     <string name="getPermissionMassage">Приложению необходим доступ к чтеню файлов изображений на вашем устройстве\n
         \nВы готовы предоставить доступ?"</string>
     <string name="askForRestartFragment">Ранее вы отказали в доступе к файлам устройства</string>
+    <string name="cancelAddPlayListTitle">Завершить создание плейлиста?</string>
+    <string name="cancelAddPlayListMassage">Все несохраненные данные будут потеряны</string>
+    <string name="cancelAddPlayListCancelButton">Отмена</string>
+    <string name="cancelAddPlayYesButton">Завершить</string>
 </resources>

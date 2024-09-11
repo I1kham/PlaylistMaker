@@ -17,10 +17,10 @@ class SingleTrackInteractorImpl(private val historyRepository: HistoryRepository
 
     private fun readTracksList(): List<Track> {
         val dto = historyRepository.getSavedTracks()
-        if (dto.isNullOrEmpty()) {
-            return emptyList()
+        return if (dto.isNullOrEmpty()) {
+            emptyList()
         } else {
-            return dto
+            dto
         }
     }
 

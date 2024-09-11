@@ -25,15 +25,16 @@ android:layout_marginVertical="8dp"
         <TextView
             android:id="@+id/plName"
             style="@style/cardTextViewBlackWhite"
+            android:fontFamily="@font/ys_display_regular"
             android:textSize="16sp"
-            tools:text="Track Name" />
+            tools:text="PlayList Name" />
 
         <TextView
             android:id="@+id/plDescription"
-            style="@style/cardTextViewGrayWhite"
-            android:maxWidth="250dp"
-            android:textSize="13sp"
-            tools:text="Track Artist" />
+            style="@style/cardTextViewBlackWhite"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="12sp"
+            tools:text="TracksCount" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
