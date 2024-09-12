@@ -58,21 +58,21 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         prepareBottomSheet()
         bottomSheetVisible(false)
         prepareAddPlayListButton()
-        prepareOveerlay()
+        prepareOverlay()
         (activity as StartActivity).bottomNavigationVisibility(false)
         prepareRecyclerView()
         prepareNoDataLayout()
-        prepareOnitemClick()
+        prepareOnItemClick()
 
     }
 
-    private fun prepareOnitemClick() {
+    private fun prepareOnItemClick() {
         onItemClick = { playList: PlayList ->
             viewModel.addTrackTo(playList)
         }
     }
 
-    private fun prepareOveerlay() {
+    private fun prepareOverlay() {
         overlay = binding?.overlay
     }
 
