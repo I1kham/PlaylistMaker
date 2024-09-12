@@ -44,7 +44,7 @@ class AddPlayListViewModel(
                     PlayList(
                         name = playListName,
                         description = playListDescription,
-                        uri.toString(),
+                        uri,
                     )
                 )
                 renderState(AddPlayListState.Exit)

@@ -9,4 +9,4 @@ data class PlayListEntity(
     val name: String,
     val description: String?,
     val coverUri: String?,
-    val tracks: String?) // TODO: maybe should make TracksEntity class)
+    val tracks: String?)

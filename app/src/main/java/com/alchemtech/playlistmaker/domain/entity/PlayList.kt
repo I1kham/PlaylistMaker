@@ -1,8 +1,10 @@
 package com.alchemtech.playlistmaker.domain.entity
 
+import android.net.Uri
+
 data class PlayList(
     val name: String,
     val description: String?,
-    val coverUri: String?,
-    val tracks: List<Track> = listOf(),
+    var coverUri: Uri?,
+    var tracks: List<Track> = listOf(),
 )

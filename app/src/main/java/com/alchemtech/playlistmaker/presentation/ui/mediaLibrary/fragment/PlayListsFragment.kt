@@ -40,10 +40,10 @@ class PlayListsFragment : Fragment() {
         prepareAddPlayListButton()
         prepareRecyclerView()
         observeRenderState()
-        prepareNodataLAyout()
+        prepareNoDataLayout()
     }
 
-    private fun prepareNodataLAyout() {
+    private fun prepareNoDataLayout() {
         noDataLayout = binding?.noDataLay
     }
 

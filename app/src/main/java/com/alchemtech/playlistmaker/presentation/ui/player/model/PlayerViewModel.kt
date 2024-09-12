@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
+import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
@@ -14,15 +16,16 @@ import com.alchemtech.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    singleTrackRepository: SingleTrackInteractor,
+    private val singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
-    private var track: Track? = singleTrackRepository.readTrack()
+    private var playTrack: Track? = singleTrackRepository.readTrack()
     private val stateLiveData = MutableLiveData<PlayerState>()
 
     init {
-        track?.let {
+        playTrack?.let {
             preparePlayer()
             renderState(PlayerState.Fill(it))
         }
@@ -41,8 +44,28 @@ class PlayerViewModel(
         player.pausePlayer()
     }
 
+    internal fun addTrackTo(playList: PlayList) {
+        var isAddeed = false
+        viewModelScope.launch {
+            playTrack?.let {
+
+                playList.tracks.map { track ->
+                    if (track.trackId == playTrack?.trackId) {
+                        isAddeed = true
+                    }
+                }
+                if (!isAddeed) {
+                    var newList = mutableListOf(it)
+                    newList.addAll(playList.tracks)
+                    playListInteractor.updatePlaylist(playList.name,newList)
+                }
+            }
+            renderState(PlayerState.TrackAdded(isAddeed))
+        }
+    }
+
     internal fun onFavoriteClicked() {
-        track?.let {
+        playTrack?.let {
             if (it.isFavorite) {
                 it.isFavorite = false
                 viewModelScope.launch {
@@ -55,6 +78,18 @@ class PlayerViewModel(
                 }
             }
             renderState(PlayerState.LikeBut(it))
+        }
+    }
+
+    internal fun addToPlaylist() {
+        viewModelScope.launch {
+            playListInteractor.getAllPlayLists().collect { playList ->
+                if (playList.isNotEmpty()) {
+                    renderState(PlayerState.ShowList(playList))
+                } else {
+                    renderState(PlayerState.EmptyList)
+                }
+            }
         }
     }
 
@@ -71,7 +106,7 @@ class PlayerViewModel(
     }
 
     private fun preparePlayer() {
-        track?.let {
+        playTrack?.let {
             val onPreparedListenerConsumer =
                 PlayerRepository.OnPreparedListenerConsumer {
                     renderState(PlayerState.OnPrepared(it))
