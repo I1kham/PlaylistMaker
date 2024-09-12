@@ -19,4 +19,21 @@ class TracksStringConvertor(private val gson: Gson) {
                 () {}.type
         ) as List<Track>
     }
+
+
+    fun mapListToIDs(tracks: List<Track>): String {
+        val idsList = mutableListOf<String>()
+        tracks.map { track: Track -> idsList.add(track.trackId) }
+        return gson.toJson(idsList.toList() as Serializable)
+    }
+
+    fun mapIDsListToList(idsList: String?): List<String> {
+        val json = idsList
+            ?: return emptyList()
+        return gson.fromJson<String>(
+            json,
+            object : TypeToken<List<String?>?>
+                () {}.type
+        ) as List<String>
+    }
 }

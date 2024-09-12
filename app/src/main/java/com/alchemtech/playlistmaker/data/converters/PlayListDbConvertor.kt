@@ -10,7 +10,7 @@ class PlayListDbConvertor(private val tracksStringConvertor: TracksStringConvert
             name = playlist.name,
             description = playlist.description,
             coverUri = playlist.coverUri.toString(),
-            tracks = tracksStringConvertor.map(playlist.tracks)
+            ""
         )
     }
 
