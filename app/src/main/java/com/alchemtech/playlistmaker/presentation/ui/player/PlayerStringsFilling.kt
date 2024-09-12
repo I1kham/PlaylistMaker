@@ -15,14 +15,18 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 interface PlayerStringsFilling : UiCalculator {
 
-    fun fillPlayerActivity(track: Track, binding: ActivityPlayerBinding?, context: Context) {
+    fun fillAll(track: Track, binding: ActivityPlayerBinding?, context: Context) {
+        playTimeFill(track, binding)
+        fill(track, binding, context)
+    }
+
+    fun fill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         trackArtist(track, binding)
         trackTimeMillis(track, binding)
         collectionName(track, binding)
         releaseDateFill(track, binding)
         primaryGenreNameFill(track, binding)
         countryFill(track, binding)
-        playTimeFill(track, binding)
         albumCoverFill(track, binding, context)
         trackTitleFill(track, binding)
     }

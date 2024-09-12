@@ -32,7 +32,7 @@ class PlayerViewModel(
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
-    internal fun onStop() {
+    override fun onCleared() {
         super.onCleared()
         player.release()
     }
@@ -54,7 +54,7 @@ class PlayerViewModel(
                     favoriteTracksInteractor.addToFavoriteList(it)
                 }
             }
-            renderState(PlayerState.LikeBut(it.isFavorite))
+            renderState(PlayerState.LikeBut(it))
         }
     }
 
@@ -68,39 +68,39 @@ class PlayerViewModel(
     fun observeCurrentPosition(): LiveData<String> = statePosition
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
-        statePosition.value
     }
 
     private fun preparePlayer() {
+        track?.let {
+            val onPreparedListenerConsumer =
+                PlayerRepository.OnPreparedListenerConsumer {
+                    renderState(PlayerState.OnPrepared(it))
+                }
 
-        val onPreparedListenerConsumer =
-            PlayerRepository.OnPreparedListenerConsumer {
-                renderState(PlayerState.OnPrepared)
-            }
+            val onCompletionListenerConsumer =
+                PlayerRepository.OnCompletionListenerConsumer {
+                    renderState(PlayerState.OnCompletion(it))
+                }
 
-        val onCompletionListenerConsumer =
-            PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion)
+            val pauseConsumer = object : PlayerInteractor.PauseConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Pause(it))
+                }
             }
-
-        val pauseConsumer = object : PlayerInteractor.PauseConsumer {
-            override fun consume() {
-                renderState(PlayerState.Pause)
+            val startConsumer = object : PlayerInteractor.StartConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Play(it))
+                    currentPositionTask()
+                }
             }
+            player.setConsumers(
+                onPreparedListenerConsumer,
+                onCompletionListenerConsumer,
+                pauseConsumer,
+                startConsumer
+            )
+            it.previewUrl?.let { player.preparePlayer(it) }
         }
-        val startConsumer = object : PlayerInteractor.StartConsumer {
-            override fun consume() {
-                renderState(PlayerState.Play)
-                currentPositionTask()
-            }
-        }
-        player.setConsumers(
-            onPreparedListenerConsumer,
-            onCompletionListenerConsumer,
-            pauseConsumer,
-            startConsumer
-        )
-        track?.previewUrl?.let { player.preparePlayer(it) }
     }
 
     private fun currentPositionTask() {
