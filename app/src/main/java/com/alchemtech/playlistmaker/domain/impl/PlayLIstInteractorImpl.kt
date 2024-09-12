@@ -9,14 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 class PlayLIstInteractorImpl(
     private val playListsRepository: PlayListsRepository,
-    private val coversRepository: CoversRepository
+    private val coversRepository: CoversRepository,
 ) : PlayListInteractor {
     override suspend fun addPlayList(playList: PlayList) {
-        println(playList.coverUri)
         playList.coverUri?.let {
             playList.coverUri = coversRepository.saveCover(it)
-            println(playList.coverUri)
-
         }
         playListsRepository.addPlayList(playList)
     }
@@ -26,11 +23,11 @@ class PlayLIstInteractorImpl(
     }
 
     override fun getAllPlayLists(): Flow<List<PlayList>> {
-     return   playListsRepository.getAllPlayLists()
+        return playListsRepository.getAllPlayLists()
     }
 
     override fun getTracks(name: String): Flow<List<Track>> {
-      return  playListsRepository.getTracks(name)
+        return playListsRepository.getTracks(name)
     }
 
     override suspend fun updatePlaylist(name: String, trackList: List<Track>) {

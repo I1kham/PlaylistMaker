@@ -68,7 +68,6 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
     private fun prepareOnitemClick() {
         onItemClick = { playList: PlayList ->
-            println("656161651616161")
             viewModel.addTrackTo(playList)
         }
     }
