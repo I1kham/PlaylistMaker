@@ -67,13 +67,13 @@
 
     <ImageView
         android:id="@+id/picAdding"
-        android:layout_width="312dp"
-        android:layout_height="312dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="center|start"
         android:layout_marginTop="26dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/add_play_list_place_holder"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/playListName"
         app:layout_constraintLeft_toLeftOf="@+id/secondLeftBorder"
         app:layout_constraintRight_toRightOf="@+id/secondRightBorder"

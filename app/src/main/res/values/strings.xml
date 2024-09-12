@@ -59,4 +59,5 @@
     <string name="cancelAddPlayListMassage">Все несохраненные данные будут потеряны</string>
     <string name="cancelAddPlayListCancelButton">Отмена</string>
     <string name="cancelAddPlayYesButton">Завершить</string>
+    <string name="Add_play_list_bottom_sheet_title">Добавить в плейлист</string>
 </resources>
