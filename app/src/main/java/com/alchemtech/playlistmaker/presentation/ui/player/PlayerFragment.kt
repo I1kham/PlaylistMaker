@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
@@ -35,6 +37,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         prepareBackBut()
         prepareViewModel()
         likeButPrepare()
+        binding?.standardBottomSheet?.isVisible = false
         (activity as StartActivity).bottomNavigationVisibility(false)
     }
 
@@ -56,20 +59,19 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
     override fun onStop() {
         super.onStop()
-        viewModel.onStop()
         (activity as StartActivity).bottomNavigationVisibility(true)
     }
 
     private fun prepareBackBut() {
         binding?.playerPreview?.setOnClickListener {
-            requireActivity().onBackPressed()
+            findNavController().popBackStack()
         }
     }
 
     private fun observeRenderState() {
-        val a = viewModel.observeRenderState()
-        a.observe(getViewLifecycleOwner()) {
+        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
+
         }
     }
 
@@ -78,27 +80,40 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
             is PlayerState.Pause -> {
                 binding?.playBut?.setImageResource(R.drawable.play_but)
+                fillFragment(state.track)
             }
 
             is PlayerState.Play -> {
                 binding?.playBut?.setImageResource(R.drawable.pause_but)
-                playBut()
+                fillFragment(state.track)
             }
 
             is PlayerState.OnPrepared -> {
-                playBut()
+                fillFragment(state.track)
             }
 
             is PlayerState.OnCompletion -> {
                 binding?.playTime?.text = "00:00"
-                playBut()
                 binding?.playBut?.setImageResource(R.drawable.play_but)
+                fillFragment(state.track)
             }
 
-            is PlayerState.Fill ->  fill(state.track)
+            is PlayerState.Fill -> {
+                fillAll(state.track)
+                playBut()
+            }
 
             is PlayerState.LikeBut ->
-                renderLikeBut(state.isFavorite)
+                renderLikeBut(state.track.isFavorite)
+        }
+    }
+
+    private fun fillFragment(track: Track) {
+        binding?.let {
+            if (it.releaseDateText.text == "Год") {
+                fill(track)
+                playBut()
+            }
         }
     }
 
@@ -123,8 +138,13 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         binding?.playBut?.isEnabled = true
     }
 
+    private fun fillAll(track: Track) {
+        fillAll(track, binding, requireContext())
+        renderLikeBut(track.isFavorite)
+    }
+
     private fun fill(track: Track) {
-        fillPlayerActivity(track, binding, requireContext())
+        fill(track, binding, requireContext())
         renderLikeBut(track.isFavorite)
     }
 }

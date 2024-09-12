@@ -10,6 +10,7 @@
         android:minSdkVersion="34" />
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,7 +19,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.SettingsActivity"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
 
         <activity
             android:name=".presentation.ui.main.StartActivity"
