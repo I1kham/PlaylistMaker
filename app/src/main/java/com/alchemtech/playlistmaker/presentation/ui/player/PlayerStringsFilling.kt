@@ -67,7 +67,7 @@ interface PlayerStringsFilling : MyGlide, TrackUtils {
 
     private fun albumCoverFill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         val albumCover: ImageView? = binding?.playerAlbumCover
-        imageViewFill(track.getArtworkUrl512().toUri(), albumCover, context)
+        imageViewFillBig(track.getArtworkUrl512().toUri(), albumCover, context)
     }
 
     private fun trackTitleFill(track: Track, binding: ActivityPlayerBinding?) {

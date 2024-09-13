@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 interface MyGlide: UiCalculator {
-    fun  imageViewFill( uri: Uri, imageView: ImageView?, context: Context) {
+    fun  imageViewFillBig(uri: Uri, imageView: ImageView?, context: Context) {
         if (imageView != null) {
             Glide.with(context)
                 .load(uri)
@@ -21,5 +21,21 @@ interface MyGlide: UiCalculator {
                 )
                 .into(imageView)
         }
+    }
+
+    fun  imageViewFillSmall(uri: Uri?, imageView: ImageView?, context: Context) {
+        if (imageView != null) {
+            uri?.let {
+            Glide.with(context)
+                .load(it)
+                .placeholder(R.drawable.track_album_default)
+                .centerCrop()
+                .transform(
+                    RoundedCorners(
+                        dpToPx(8f, context)
+                    )
+                )
+                .into(imageView)
+        }}
     }
 }
