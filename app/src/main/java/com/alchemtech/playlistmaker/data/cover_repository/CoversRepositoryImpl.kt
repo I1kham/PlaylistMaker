@@ -15,18 +15,18 @@ class CoversRepositoryImpl (private val context: Context) : CoversRepository {
 
     private companion object {
         const val DIRECTORY_NAME = "playlist_maker"
-        const val FILE_NAME = "cover_"
+        const val FILE_NAME = "cover_of_Playlist_"
         const val FILE_EXTENSION = ".jpg"
         const val COMPRESS_QUALITY = 30
     }
 
-    override suspend fun saveCover( uri: Uri): Uri {
+    override suspend fun saveCover( name :String, uri: Uri): Uri {
         val filePath =
             File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY_NAME)
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, "$FILE_NAME$FILE_EXTENSION")
+        val file = File(filePath, "$FILE_NAME$name$FILE_EXTENSION")
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = withContext(Dispatchers.IO) {
             FileOutputStream(file)

@@ -31,9 +31,10 @@ class PlayListsFragment : Fragment() {
         binding = FragmentPlayListsBinding.inflate(layoutInflater)
         return binding?.root
     }
+
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
-    private var noDataLayout:ConstraintLayout? = null
+    private var noDataLayout: ConstraintLayout? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,8 +92,8 @@ class PlayListsFragment : Fragment() {
     }
 
     private fun renderEmptyState(isVisible: Boolean) {
-        progressBar?.isVisible = isVisible
-        noDataLayout?.isVisible = !isVisible
+        progressBar?.isVisible = !isVisible
+        noDataLayout?.isVisible = isVisible
     }
 
     private fun renderList(playLists: List<PlayList>) {

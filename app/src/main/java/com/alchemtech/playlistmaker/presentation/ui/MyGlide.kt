@@ -7,35 +7,34 @@ import com.alchemtech.playlistmaker.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-interface MyGlide: UiCalculator {
-    fun  imageViewFillBig(uri: Uri, imageView: ImageView?, context: Context) {
+interface MyGlide : UiCalculator {
+    fun imageViewFillBig(uri: Uri?, imageView: ImageView?, context: Context) {
         if (imageView != null) {
-            Glide.with(context)
-                .load(uri)
-                .placeholder(R.drawable.track_album_default_big)
-                .centerCrop()
-                .transform(
-                    RoundedCorners(
-                        dpToPx(8f, context)
+                Glide.with(context)
+                    .load(uri)
+                    .placeholder(R.drawable.track_album_default_big)
+                    .fitCenter()                    .transform(
+                        RoundedCorners(
+                            dpToPx(8f, context)
+                        )
                     )
-                )
-                .into(imageView)
+                    .into(imageView)
+println(uri)
         }
     }
 
-    fun  imageViewFillSmall(uri: Uri?, imageView: ImageView?, context: Context) {
+    fun imageViewFillSmall(uri: Uri?, imageView: ImageView?, context: Context) {
         if (imageView != null) {
-            uri?.let {
-            Glide.with(context)
-                .load(it)
-                .placeholder(R.drawable.track_album_default)
-                .centerCrop()
-                .transform(
-                    RoundedCorners(
-                        dpToPx(8f, context)
+                Glide.with(context)
+                    .load(uri)
+                    .placeholder(R.drawable.track_album_default)
+                    .centerCrop()
+                    .transform(
+                        RoundedCorners(
+                            dpToPx(8f, context)
+                        )
                     )
-                )
-                .into(imageView)
-        }}
+                    .into(imageView)
+        }
     }
 }

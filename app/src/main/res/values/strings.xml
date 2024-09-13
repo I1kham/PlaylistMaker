@@ -8,7 +8,6 @@
     <string name="Share_app">Поделиться приложением</string>
     <string name="to_support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
-    <string name="media_library">Медиатека... Будет....</string>
     <string name="toSupportMailSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="toSupportDefaultMail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="supportMail">4habibulin@gmail.com</string>
@@ -60,8 +59,8 @@
     <string name="cancelAddPlayListCancelButton">Отмена</string>
     <string name="cancelAddPlayYesButton">Завершить</string>
     <string name="Add_play_list_bottom_sheet_title">Добавить в плейлист</string>
+    <string name="playListAdded">Плейлист %1$s создан</string>
 
-    <!-- Этот код мы используем для отладки: когда какой item выбирается системой -->
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>
         <item quantity="one">%1$d трек</item>

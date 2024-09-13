@@ -3,15 +3,15 @@ package com.alchemtech.playlistmaker.presentation.ui.track_card
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.alchemtech.playlistmaker.presentation.ui.MyGlide
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils
 
 
-class TrackCardViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView), UiCalculator {
+class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MyGlide, TrackUtils {
     private var trackTitle: TextView = itemView.findViewById(R.id.plName)
     private var trackArtist: TextView = itemView.findViewById(R.id.plDescription)
     private var trackDuration: TextView = itemView.findViewById(R.id.trackDuration)
@@ -20,14 +20,9 @@ class TrackCardViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView), 
     fun bind(track: Track) {
         trackTitle.text = track.trackName
         trackArtist.text = track.artistName
-        trackDuration.text = "track.getTimeString()"
+        trackDuration.text = track.getTimeString()
 
-        val context = // TODO: glide
-            Glide.with(itemView)
-                .load(track.artworkUrl100)
-                .placeholder(R.drawable.track_album_default)
-                .centerCrop()
-                .transform(RoundedCorners(dpToPx(2f, itemView.context)))
-                .into(albumCover)
+        val context =
+            imageViewFillSmall(track.artworkUrl100?.toUri(),albumCover, itemView.context)
     }
 }

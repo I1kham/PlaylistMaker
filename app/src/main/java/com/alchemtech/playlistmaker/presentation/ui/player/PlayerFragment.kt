@@ -12,12 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.alchemtech.playlistmaker.presentation.ui.playLikstBottomCard.PlayListBottomCardAdapter
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
@@ -26,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
+class PlayerFragment : Fragment(), PlayerStringsFilling {
 
     private val viewModel: PlayerViewModel by viewModel()
     private var binding: ActivityPlayerBinding? = null
@@ -59,11 +57,14 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
         bottomSheetVisible(false)
         prepareAddPlayListButton()
         prepareOverlay()
-        (activity as StartActivity).bottomNavigationVisibility(false)
+        false.bottomNavigatorVisibility()
         prepareRecyclerView()
         prepareNoDataLayout()
         prepareOnItemClick()
 
+    }
+    private fun Boolean.bottomNavigatorVisibility() {
+        (activity as StartActivity).bottomNavigationVisibility(this)
     }
 
     private fun prepareOnItemClick() {
@@ -83,29 +84,30 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
     }
 
     private fun prepareBottomSheet() {
-        bottomSheet = binding?.standardBottomSheet
-        BottomSheetBehavior.from(bottomSheet!!).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        overlay?.visibility = View.GONE
-                    }
+        binding?.let {
+            bottomSheet = it.standardBottomSheet
+            BottomSheetBehavior.from(bottomSheet!!).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    when (newState) {
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            overlay?.visibility = View.GONE
+                        }
 
-                    else -> {
-                        overlay?.visibility = View.VISIBLE
+                        else -> {
+                            overlay?.visibility = View.VISIBLE
+                        }
                     }
                 }
-            }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                overlay?.alpha = 1 - slideOffset * 2f
-            }
-        })
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    overlay?.alpha = 1 - slideOffset * 2f
+                }
+            })
 
+        }
     }
-
     private fun addTopPlayListPrepare() {
         addBut = binding?.playerAddToListBut
         addBut?.isEnabled = true
@@ -132,7 +134,7 @@ class PlayerFragment : Fragment(), UiCalculator, PlayerStringsFilling {
 
     override fun onStop() {
         super.onStop()
-        (activity as StartActivity).bottomNavigationVisibility(true)
+        true.bottomNavigatorVisibility()
     }
 
     private fun prepareBackBut() {

@@ -13,7 +13,7 @@ class PlayLIstInteractorImpl(
 ) : PlayListInteractor {
     override suspend fun addPlayList(playList: PlayList) {
         playList.coverUri?.let {
-            playList.coverUri = coversRepository.saveCover(it)
+            playList.coverUri = coversRepository.saveCover(playList.name, it)
         }
         playListsRepository.addPlayList(playList)
     }
@@ -33,5 +33,4 @@ class PlayLIstInteractorImpl(
     override suspend fun updatePlaylist(name: String, trackList: List<Track>) {
         playListsRepository.updatePlaylist(name, trackList)
     }
-
 }

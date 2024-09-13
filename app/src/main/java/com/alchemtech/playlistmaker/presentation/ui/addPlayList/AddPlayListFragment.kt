@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AddPlayListFragment : Fragment(),MyGlide {
+class AddPlayListFragment : Fragment(), MyGlide {
     private val viewModel: AddPlayListViewModel by viewModel()
     private var binding: MakePlayListBinding? = null
     private val requester = PermissionRequester.instance()
@@ -80,8 +80,10 @@ class AddPlayListFragment : Fragment(),MyGlide {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
 
+
+
     private fun prepareBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
@@ -91,11 +93,11 @@ class AddPlayListFragment : Fragment(),MyGlide {
                         ) {
                             getCheckForCloseOpenWindow()
                         } else {
-                            isEnabled = false
+                            this.isEnabled = false
                             findNavController().popBackStack()
                         }
                     } else {
-                        isEnabled = false
+                        this.isEnabled = false
                         findNavController().popBackStack()
                     }
                 }
@@ -114,7 +116,8 @@ class AddPlayListFragment : Fragment(),MyGlide {
         createBut = binding?.createBut
         createBut?.setOnClickListener {
             val name = nameEditText?.text.toString()
-            Toast.makeText(requireContext(), "Плейлист $name создан", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.playListAdded, name), Toast.LENGTH_LONG).show()
             actionCreateBut()
         }
     }
@@ -221,8 +224,8 @@ class AddPlayListFragment : Fragment(),MyGlide {
     }
 
     private fun setPicture(uri: Uri?) {// TODO:
-            val albumCover: ImageView? = binding?.picAdding
-            imageViewFillSmall(uri,albumCover, requireContext())
+        val albumCover: ImageView? = binding?.picAdding
+        imageViewFillSmall(uri, albumCover, requireContext())
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
