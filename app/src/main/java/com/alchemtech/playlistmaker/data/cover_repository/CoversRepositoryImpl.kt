@@ -13,7 +13,7 @@ import java.io.FileOutputStream
 
 class CoversRepositoryImpl (private val context: Context) : CoversRepository {
 
-    companion object {
+    private companion object {
         const val DIRECTORY_NAME = "playlist_maker"
         const val FILE_NAME = "cover_"
         const val FILE_EXTENSION = ".jpg"

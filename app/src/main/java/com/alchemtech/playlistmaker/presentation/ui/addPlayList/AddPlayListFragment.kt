@@ -28,6 +28,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
+import com.alchemtech.playlistmaker.presentation.ui.MyGlide
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AddPlayListFragment : Fragment() {
+class AddPlayListFragment : Fragment(),MyGlide {
     private val viewModel: AddPlayListViewModel by viewModel()
     private var binding: MakePlayListBinding? = null
     private val requester = PermissionRequester.instance()
@@ -87,8 +88,8 @@ class AddPlayListFragment : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
-                        if (nameEditText?.text!!.isNotEmpty()
-                            || descriptionEditText?.text!!.isNotEmpty()
+                        if (!nameEditText?.text.isNullOrEmpty()
+                            || !descriptionEditText?.text.isNullOrEmpty()
                             || uri != null
                         ) {
                             getCheckForCloseOpenWindow()
@@ -222,7 +223,7 @@ class AddPlayListFragment : Fragment() {
         viewModel.setUri(uri)
     }
 
-    private fun setPicture(uri: Uri?) {
+    private fun setPicture(uri: Uri?) {// TODO:  
         if (uri != null) {
             val albumCover: ImageView? = binding?.picAdding
             if (albumCover != null) {

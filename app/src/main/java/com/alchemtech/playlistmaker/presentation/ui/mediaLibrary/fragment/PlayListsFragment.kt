@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -82,16 +83,16 @@ class PlayListsFragment : Fragment() {
                 renderList(state.playLists)
 
             is PlayListsState.EmptyList ->
-                renderEmptyState()
+                renderEmptyState(true)
 
             is PlayListsState.Loading ->
-                renderLoading()
+                renderEmptyState(false)
         }
     }
 
-    private fun renderEmptyState() {
-        progressBar?.visibility = View.GONE
-        noDataLayout?.visibility = View.VISIBLE
+    private fun renderEmptyState(isVisible: Boolean) {
+        progressBar?.isVisible = isVisible
+        noDataLayout?.isVisible = !isVisible
     }
 
     private fun renderList(playLists: List<PlayList>) {
@@ -99,10 +100,5 @@ class PlayListsFragment : Fragment() {
         noDataLayout?.visibility = View.GONE
         recyclerView?.adapter = PlayListCardAdapter(playLists)
 
-    }
-
-    private fun renderLoading() {
-        progressBar?.visibility = View.VISIBLE
-        noDataLayout?.visibility = View.GONE
     }
 }

@@ -3,17 +3,13 @@ package com.alchemtech.playlistmaker.presentation.ui.player
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import com.alchemtech.playlistmaker.R
+import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getArtworkUrl512
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getReleaseDateString
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getTimeString
-import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.alchemtech.playlistmaker.presentation.ui.MyGlide
+import com.alchemtech.playlistmaker.presentation.ui.TrackUtils
 
-interface PlayerStringsFilling : UiCalculator {
+interface PlayerStringsFilling : MyGlide, TrackUtils {
 
     fun fillAll(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         playTimeFill(track, binding)
@@ -71,18 +67,7 @@ interface PlayerStringsFilling : UiCalculator {
 
     private fun albumCoverFill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         val albumCover: ImageView? = binding?.playerAlbumCover
-        if (albumCover != null) {
-            Glide.with(context)
-                .load(track.getArtworkUrl512())
-                .placeholder(R.drawable.track_album_default_big)
-                .centerCrop()
-                .transform(
-                    RoundedCorners(
-                        dpToPx(8f, context)
-                    )
-                )
-                .into(albumCover)
-        }
+        imageViewFill(track.getArtworkUrl512().toUri(), albumCover, context)
     }
 
     private fun trackTitleFill(track: Track, binding: ActivityPlayerBinding?) {

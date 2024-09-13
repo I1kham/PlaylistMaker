@@ -3,6 +3,7 @@ package com.alchemtech.playlistmaker.presentation.ui.main
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.alchemtech.playlistmaker.R
@@ -29,10 +30,6 @@ class StartActivity : AppCompatActivity() {
 
     }
     fun bottomNavigationVisibility(isVisibile:Boolean){
-     if (isVisibile){
-         binding.bottomNavigation.visibility = View.VISIBLE
-     }   else{
-         binding.bottomNavigation.visibility= View.GONE
-     }
+         binding.bottomNavigation.isVisible = isVisibile
     }
 }
