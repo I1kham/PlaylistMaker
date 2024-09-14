@@ -9,5 +9,5 @@ interface PlayListInteractor {
     suspend fun removePlayList(name: String)
     fun getAllPlayLists(): Flow<List<PlayList>>
     fun getTracks(name: String): Flow<List<Track>>
-    suspend fun updatePlaylist(name: String, trackList: List<Track>)
+    suspend fun addToList(name: String,track: Track):Boolean
 }

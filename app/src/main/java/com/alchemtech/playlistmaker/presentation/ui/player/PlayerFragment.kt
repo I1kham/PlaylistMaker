@@ -61,8 +61,8 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         prepareRecyclerView()
         prepareNoDataLayout()
         prepareOnItemClick()
-
     }
+
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
@@ -195,10 +195,12 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
             is PlayerState.TrackAdded -> {
                 binding?.progressBar?.visibility = View.GONE
-                if (!state.added) {
-                    Toast.makeText(context, "трек добавлен", Toast.LENGTH_SHORT).show()
+                if (state.added) {
+                    Toast.makeText(context,
+                        getString(R.string.addedToPlayList, state.namePlayList), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "трек уже есть в плейлисте", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        getString(R.string.doNotAddtoPlayList, state.namePlayList), Toast.LENGTH_SHORT).show()
                 }
             }
 

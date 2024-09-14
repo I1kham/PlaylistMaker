@@ -250,7 +250,7 @@
             app:layout_constraintBottom_toTopOf="@id/releaseDateText"
             app:layout_constraintLeft_toRightOf="@id/trackAlbum"
             app:layout_constraintRight_toRightOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/trackTimeMillisText" />
+            app:layout_constraintTop_toBottomOf="@id/track_current_position" />
 
         <TextView
             android:id="@+id/trackDuration"
@@ -261,7 +261,7 @@
             app:layout_constraintTop_toBottomOf="@id/playTime" />
 
         <TextView
-            android:id="@+id/trackTimeMillisText"
+            android:id="@+id/track_current_position"
             style="@style/playerTrackData"
             android:layout_marginTop="0dp"
             android:text="@string/TrackDuration"
@@ -277,7 +277,7 @@
             android:text="@string/TrackDuration"
             android:textAlignment="center"
             android:textColor="@color/black_White"
-            app:layout_constraintBottom_toTopOf="@id/trackTimeMillisText"
+            app:layout_constraintBottom_toTopOf="@id/track_current_position"
             app:layout_constraintEnd_toEndOf="@id/playBut"
             app:layout_constraintStart_toStartOf="@id/playBut"
             app:layout_constraintTop_toBottomOf="@id/playBut" />

@@ -19,8 +19,8 @@ interface PlayListDao {
     fun getAllPlayLists(): Flow<List<PlayListEntity>>
 
     @Query("SELECT tracks FROM play_lists_table WHERE name = :name")
-    suspend fun getTracks(name: String): String?
+    suspend fun getTracksIdFromPlayList(name: String): String?
 
-    @Query("UPDATE play_lists_table SET tracks = :trackList WHERE name = :name")
+    @Query("UPDATE play_lists_table SET tracks = :trackList WHERE name = :name ")
     suspend fun updatePlaylist(name: String, trackList: String)
 }

@@ -40,27 +40,24 @@ class PlayerViewModel(
         player.release()
     }
 
+
     internal fun onPause() {
         player.pausePlayer()
     }
 
     internal fun addTrackTo(playList: PlayList) {
-        var isAddeed = false
+
         viewModelScope.launch {
             playTrack?.let {
-
-                playList.tracks.map { track ->
-                    if (track.trackId == playTrack?.trackId) {
-                        isAddeed = true
-                    }
-                }
-                if (!isAddeed) {
-                    var newList = mutableListOf(it)
-                    newList.addAll(playList.tracks)
-                    playListInteractor.updatePlaylist(playList.name,newList)
-                }
+                renderState(
+                    PlayerState.TrackAdded(
+                        playListInteractor.addToList(
+                            playList.name,
+                            it
+                        ), playList.name
+                    )
+                )
             }
-            renderState(PlayerState.TrackAdded(isAddeed))
         }
     }
 
@@ -134,7 +131,7 @@ class PlayerViewModel(
                 pauseConsumer,
                 startConsumer
             )
-            it.previewUrl?.let { player.preparePlayer(it) }
+            player.preparePlayer(it.previewUrl!!)
         }
     }
 

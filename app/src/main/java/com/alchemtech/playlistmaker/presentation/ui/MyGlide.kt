@@ -19,7 +19,6 @@ interface MyGlide : UiCalculator {
                         )
                     )
                     .into(imageView)
-println(uri)
         }
     }
 

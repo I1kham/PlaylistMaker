@@ -32,7 +32,7 @@ interface PlayerStringsFilling : MyGlide, TrackUtils {
     }
 
     private fun trackTimeMillis(track: Track, binding: ActivityPlayerBinding?) {
-        binding?.trackTimeMillisText?.text = track.getTimeString()
+        binding?.trackCurrentPosition?.text = track.getTimeString()
     }
 
     private fun collectionName(track: Track, binding: ActivityPlayerBinding?) {

@@ -21,10 +21,22 @@ class FavoriteTracksRepositoryImpl(
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
+        return tracksDao.getFavoriteTracks().map { trackEntityList: List<TrackEntity> ->
+            trackEntityList.map { trackEntity ->
+                trackDbConvertor.map(trackEntity)
+            }
+        }
+    }
+
+    override fun getAllTrackList(): Flow<List<Track>> {
         return tracksDao.getAllTracks().map { trackEntityList: List<TrackEntity> ->
             trackEntityList.map { trackEntity ->
                 trackDbConvertor.map(trackEntity)
             }
         }
+    }
+
+    override suspend fun getTrackByID(id: String): Track {
+        return trackDbConvertor.map(tracksDao.getTrackByID(id))
     }
 }

@@ -12,7 +12,7 @@ sealed interface PlayerState {
     data class LikeBut(val track: Track): PlayerState
     data class ShowList(val playLists: List<PlayList>) : PlayerState
     data object EmptyList : PlayerState
-    data class TrackAdded(val added: Boolean) : PlayerState
+    data class TrackAdded(val added: Boolean, val namePlayList:String) : PlayerState
     data object LoadingAdd : PlayerState
 
 }

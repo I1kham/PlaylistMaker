@@ -23,9 +23,9 @@ class PlayListsViewModel(
         renderState(PlayListsState.Loading)
         viewModelScope.launch {
 
-            playListInteractor.getAllPlayLists().collect { playList ->
-                if (!playList.isNullOrEmpty()) {
-                    renderState(PlayListsState.ShowList(playList))
+            playListInteractor.getAllPlayLists().collect {
+                if (it.isNotEmpty()) {
+                    renderState(PlayListsState.ShowList(it))
                 } else {
                     renderState(PlayListsState.EmptyList)
                 }

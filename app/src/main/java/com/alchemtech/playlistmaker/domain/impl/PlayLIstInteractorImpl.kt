@@ -30,7 +30,8 @@ class PlayLIstInteractorImpl(
         return playListsRepository.getTracks(name)
     }
 
-    override suspend fun updatePlaylist(name: String, trackList: List<Track>) {
-        playListsRepository.updatePlaylist(name, trackList)
+    override suspend fun addToList(name: String, track: Track): Boolean {
+        return playListsRepository.addToList(name, track)
     }
+
 }

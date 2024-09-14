@@ -21,8 +21,6 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), M
         trackTitle.text = track.trackName
         trackArtist.text = track.artistName
         trackDuration.text = track.getTimeString()
-
-        val context =
-            imageViewFillSmall(track.artworkUrl100?.toUri(),albumCover, itemView.context)
+        imageViewFillSmall(track.artworkUrl100?.toUri(), albumCover, itemView.context)
     }
 }
