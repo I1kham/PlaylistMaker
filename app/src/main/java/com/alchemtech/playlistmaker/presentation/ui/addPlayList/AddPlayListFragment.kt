@@ -15,7 +15,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -76,10 +75,14 @@ class AddPlayListFragment : Fragment(), MyGlide {
         prepareBackPress()
     }
 
+    override fun onResume() {
+        super.onResume()
+        false.bottomNavigatorVisibility()
+    }
+
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
-
 
 
     private fun prepareBackPress() {
@@ -116,8 +119,7 @@ class AddPlayListFragment : Fragment(), MyGlide {
         createBut = binding?.createBut
         createBut?.setOnClickListener {
             val name = nameEditText?.text.toString()
-            Toast.makeText(requireContext(),
-                getString(R.string.playListAdded, name), Toast.LENGTH_LONG).show()
+            showBottomMessage(getString(R.string.playListAdded, name))
             actionCreateBut()
         }
     }
@@ -332,5 +334,9 @@ class AddPlayListFragment : Fragment(), MyGlide {
             is AddPlayListState.SetPic ->
                 setPicture(state.uri)
         }
+    }
+
+    private fun showBottomMessage(message: String) {
+        (activity as StartActivity).bottomSheetShowMessage(message)
     }
 }

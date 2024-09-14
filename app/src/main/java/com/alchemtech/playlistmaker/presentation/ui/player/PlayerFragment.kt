@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -63,6 +62,11 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         prepareOnItemClick()
     }
 
+    override fun onResume() {
+        super.onResume()
+        false.bottomNavigatorVisibility()
+    }
+
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
@@ -86,28 +90,10 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
-            BottomSheetBehavior.from(bottomSheet!!).apply {
-                state = BottomSheetBehavior.STATE_HIDDEN
-            }.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                            overlay?.visibility = View.GONE
-                        }
-
-                        else -> {
-                            overlay?.visibility = View.VISIBLE
-                        }
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    overlay?.alpha = 1 - slideOffset * 2f
-                }
-            })
-
+            BottomSheetBehavior.from(bottomSheet!!).maxHeight = 1000
         }
     }
+
     private fun addTopPlayListPrepare() {
         addBut = binding?.playerAddToListBut
         addBut?.isEnabled = true
@@ -196,11 +182,10 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
             is PlayerState.TrackAdded -> {
                 binding?.progressBar?.visibility = View.GONE
                 if (state.added) {
-                    Toast.makeText(context,
-                        getString(R.string.addedToPlayList, state.namePlayList), Toast.LENGTH_SHORT).show()
+
+                    showBottomMessage(getString(R.string.addedToPlayList, state.namePlayList))
                 } else {
-                    Toast.makeText(context,
-                        getString(R.string.doNotAddtoPlayList, state.namePlayList), Toast.LENGTH_SHORT).show()
+                    showBottomMessage(getString(R.string.doNotAddtoPlayList, state.namePlayList))
                 }
             }
 
@@ -283,5 +268,9 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
             }
 
         }
+    }
+
+    private fun showBottomMessage(message: String) {
+        (activity as StartActivity).bottomSheetShowMessage(message)
     }
 }
