@@ -37,4 +37,19 @@ interface MyGlide : UiCalculator {
                 .into(imageView)
         }
     }
+
+    fun imageViewFillBigNoPlaceHolder(uri: Uri?, imageView: ImageView?, context: Context) {
+        if (imageView != null) {
+            Glide.with(context)
+                .load(uri)
+                .fitCenter()
+                .transform(
+                    RoundedCorners(
+                        dpToPx(8f, context)
+                    )
+                )
+                .into(imageView)
+        }
+    }
+
 }

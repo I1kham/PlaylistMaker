@@ -227,7 +227,7 @@ class AddPlayListFragment : Fragment(), MyGlide {
 
     private fun setPicture(uri: Uri?) {// TODO:
         val albumCover: ImageView? = binding?.picAdding
-        imageViewFillSmall(uri, albumCover, requireContext())
+        imageViewFillBigNoPlaceHolder(uri, albumCover, requireContext())
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
