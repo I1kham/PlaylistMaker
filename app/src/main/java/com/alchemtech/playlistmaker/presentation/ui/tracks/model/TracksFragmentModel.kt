@@ -38,6 +38,9 @@ class TracksFragmentModel(
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 searchText = s.toString()
+                if (s.isNullOrEmpty()) {
+                    oldSearchText = null
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
