@@ -7,6 +7,7 @@ import com.alchemtech.playlistmaker.domain.entity.PlayList
 class PlayListDbConvertor(private val tracksStringConvertor: TracksStringConvertor) {
     fun map(playlist: PlayList): PlayListEntity {
         return PlayListEntity(
+            playListId = playlist.id,
             name = playlist.name,
             description = playlist.description,
             coverUri = playlist.coverUri.toString(),
@@ -16,6 +17,7 @@ class PlayListDbConvertor(private val tracksStringConvertor: TracksStringConvert
 
     fun map(playlist: PlayListEntity): PlayList {
         return PlayList(
+            id = playlist.playListId,
             name = playlist.name,
             description = playlist.description,
             coverUri = playlist.coverUri?.toUri(),

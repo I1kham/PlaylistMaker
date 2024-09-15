@@ -25,6 +25,7 @@ class AddPlayListViewModel(
             viewModelScope.launch {
                 playListInteractor.addPlayList(
                     PlayList(
+                       0,
                         name = playListName,
                         description = playListDescription,
                         uri,

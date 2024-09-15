@@ -51,13 +51,12 @@ class PlayerViewModel(
     }
 
     internal fun addTrackTo(playList: PlayList) {
-
         viewModelScope.launch {
             playTrack?.let {
                 renderState(
                     PlayerState.TrackAdded(
                         playListInteractor.addToList(
-                            playList.name,
+                            playList.id,
                             it
                         ), playList.name
                     )

@@ -23,7 +23,6 @@ var addPlayListViewModule = module {
     single<PlayListInteractor> {
         PlayLIstInteractorImpl(
             playListsRepository = get(),
-            coversRepository = get()
         )
     }
 
@@ -31,7 +30,8 @@ var addPlayListViewModule = module {
         PlayListsRepositoryImpl(
             favoriteTracksRepository = get(),
             playListDao = get(),
-            tracksStringConvertor = get()
+            tracksStringConvertor = get(),
+            coversRepository = get()
         )
     }
 

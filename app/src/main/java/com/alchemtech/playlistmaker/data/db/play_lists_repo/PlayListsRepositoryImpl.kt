@@ -2,6 +2,7 @@ package com.alchemtech.playlistmaker.data.db.play_lists_repo
 
 import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
+import com.alchemtech.playlistmaker.data.cover_repository.CoversRepository
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
 import com.alchemtech.playlistmaker.data.db.entity.PlayListEntity
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
@@ -16,14 +17,19 @@ class PlayListsRepositoryImpl(
     private val favoriteTracksRepository: FavoriteTracksRepository,
     private val playListDao: PlayListDao,
     private val tracksStringConvertor: TracksStringConvertor,
-
+    private val coversRepository: CoversRepository,
     ) : PlayListsRepository {
     override suspend fun addPlayList(playList: PlayList) {
-        playListDao.addPlayList(playList.convertPlaylistIDs())
+        val playListEntity = playList.convertPlaylistIDs()
+        playListEntity.playListId = playListDao.getRowCount()+1
+        playList.coverUri?.let {
+            playList.coverUri = coversRepository.saveCover(playList.id, it)
+        }
+        playListDao.addPlayList(playListEntity)
     }
 
-    override suspend fun removePlayList(name: String) {
-        playListDao.removePlayList(name)
+    override suspend fun removePlayList(id: Long) {
+        playListDao.removePlayList(id)
     }
 
 
@@ -34,23 +40,23 @@ class PlayListsRepositoryImpl(
     }
 
 
-    override fun getTracks(name: String): Flow<List<Track>> = flow {
-        tracksStringConvertor.map(playListDao.getTracksIdFromPlayList(name))
+    override fun getTracks(id: Long): Flow<List<Track>> = flow {
+        tracksStringConvertor.map(playListDao.getTracksIdFromPlayList(id))
 
     }
 
 
-    override suspend fun addToList(name: String, track: Track): Boolean {
+    override suspend fun addToList(id: Long, track: Track): Boolean {
         var isAdded =false
         val mutList = mutableListOf<String>()
         mutList.addAll(
-            tracksStringConvertor.mapIDsListToList(playListDao.getTracksIdFromPlayList(name))
+            tracksStringConvertor.mapIDsListToList(playListDao.getTracksIdFromPlayList(id))
         )
         if (!mutList.contains(track.trackId)) {
             mutList.add(track.trackId)
             favoriteTracksRepository.addToFavoriteList(track)
             playListDao.updatePlaylist(
-                name,
+                id,
                 tracksStringConvertor.mapListIdToString(mutList)
             )
             isAdded = true
@@ -61,6 +67,7 @@ class PlayListsRepositoryImpl(
 
     private fun PlayList.convertPlaylistIDs(): PlayListEntity {
         return PlayListEntity(
+            this.id,
             this.name,
             this.description,
             this.coverUri.toString(),
@@ -70,6 +77,7 @@ class PlayListsRepositoryImpl(
 
     private suspend fun PlayListEntity.convertPlaylistTracks(): PlayList {
         return PlayList(
+            this.playListId,
             this.name,
             this.description,
             this.coverUri?.toUri(),

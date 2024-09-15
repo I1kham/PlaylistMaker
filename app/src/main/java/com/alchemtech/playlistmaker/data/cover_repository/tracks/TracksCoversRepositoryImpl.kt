@@ -22,7 +22,7 @@ class TracksCoversRepositoryImpl(private val context: Context) : TracksCoversRep
         const val COMPRESS_QUALITY = 100
     }
 
-    override suspend fun saveCover(name: String, uri: Uri?): Uri? {
+    override suspend fun saveCover(id: Long, uri: Uri?): Uri? {
         uri?.let {
             val filePath =
                 File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY_NAME)
@@ -38,7 +38,7 @@ class TracksCoversRepositoryImpl(private val context: Context) : TracksCoversRep
                     .submit()
                     .get())
             }
-            val file = File(filePath, "$FILE_NAME$name$FILE_EXTENSION")
+            val file = File(filePath, "$FILE_NAME$id$FILE_EXTENSION")
             val outputStream: OutputStream = FileOutputStream(file)
             cover?.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
 

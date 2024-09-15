@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.domain.impl
 
-import com.alchemtech.playlistmaker.data.cover_repository.CoversRepository
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
@@ -9,28 +8,24 @@ import kotlinx.coroutines.flow.Flow
 
 class PlayLIstInteractorImpl(
     private val playListsRepository: PlayListsRepository,
-    private val coversRepository: CoversRepository,
 ) : PlayListInteractor {
     override suspend fun addPlayList(playList: PlayList) {
-        playList.coverUri?.let {
-            playList.coverUri = coversRepository.saveCover(playList.name, it)
-        }
         playListsRepository.addPlayList(playList)
     }
 
-    override suspend fun removePlayList(name: String) {
-        playListsRepository.removePlayList(name)
+    override suspend fun removePlayList(id: Long) {
+        playListsRepository.removePlayList(id)
     }
 
     override fun getAllPlayLists(): Flow<List<PlayList>> {
         return playListsRepository.getAllPlayLists()
     }
 
-    override fun getTracks(name: String): Flow<List<Track>> {
-        return playListsRepository.getTracks(name)
+    override fun getTracks(id: Long): Flow<List<Track>> {
+        return playListsRepository.getTracks(id)
     }
 
-    override suspend fun addToList(name: String, track: Track): Boolean {
-        return playListsRepository.addToList(name, track)
+    override suspend fun addToList(id: Long, track: Track): Boolean {
+        return playListsRepository.addToList(id, track)
     }
 }
