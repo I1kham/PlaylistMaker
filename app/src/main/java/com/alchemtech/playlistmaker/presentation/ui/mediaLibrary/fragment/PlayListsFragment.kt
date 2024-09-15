@@ -23,6 +23,9 @@ class PlayListsFragment : Fragment() {
 
     private var binding: FragmentPlayListsBinding? = null
     private val viewModel: PlayListsViewModel by viewModel()
+    private var progressBar: ProgressBar? = null
+    private var recyclerView: RecyclerView? = null
+    private var noDataLayout: ConstraintLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +35,6 @@ class PlayListsFragment : Fragment() {
         return binding?.root
     }
 
-    private var progressBar: ProgressBar? = null
-    private var recyclerView: RecyclerView? = null
-    private var noDataLayout: ConstraintLayout? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareProgressBar()
@@ -43,6 +42,11 @@ class PlayListsFragment : Fragment() {
         prepareRecyclerView()
         observeRenderState()
         prepareNoDataLayout()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        binding = null
     }
 
     private fun prepareNoDataLayout() {
@@ -71,11 +75,6 @@ class PlayListsFragment : Fragment() {
             view?.context,
             2
         )
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        binding = null
     }
 
     private fun render(state: PlayListsState) {

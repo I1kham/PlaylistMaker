@@ -56,12 +56,6 @@ class AddPlayListFragment : Fragment() {
         return binding?.root
     }
 
-    private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            setUriToModel(uri)
-            this.uri = uri
-        }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeRenderState()
@@ -79,6 +73,23 @@ class AddPlayListFragment : Fragment() {
         super.onResume()
         false.bottomNavigatorVisibility()
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        binding = null
+    }
+
+
+    override fun onStop() {
+        true.bottomNavigatorVisibility()
+        super.onStop()
+    }
+
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            setUriToModel(uri)
+            this.uri = uri
+        }
 
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
@@ -305,16 +316,6 @@ class AddPlayListFragment : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        binding = null
-    }
-
-
-    override fun onStop() {
-        true.bottomNavigatorVisibility()
-        super.onStop()
-    }
 
 
     private fun observeRenderState() {

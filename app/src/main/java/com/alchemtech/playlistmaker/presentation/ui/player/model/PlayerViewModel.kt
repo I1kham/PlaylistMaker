@@ -24,6 +24,10 @@ class PlayerViewModel(
     private var playTrack: Track? = singleTrackRepository.readTrack()
     private val stateLiveData = MutableLiveData<PlayerState>()
 
+    companion object {
+        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
+    }
+
     init {
         playTrack?.let {
             preparePlayer()
@@ -31,15 +35,16 @@ class PlayerViewModel(
         }
     }
 
-    companion object {
-        private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
-    }
 
     override fun onCleared() {
         super.onCleared()
         player.release()
     }
 
+    fun observeRenderState(): LiveData<PlayerState> = stateLiveData
+    private fun renderState(state: PlayerState) {
+        stateLiveData.postValue(state)
+    }
 
     internal fun onPause() {
         player.pausePlayer()
@@ -90,9 +95,8 @@ class PlayerViewModel(
         }
     }
 
-    fun observeRenderState(): LiveData<PlayerState> = stateLiveData
-    private fun renderState(state: PlayerState) {
-        stateLiveData.postValue(state)
+    internal fun playBut() {
+        player.playbackControl()
     }
 
     private val statePosition = MutableLiveData<String>()
@@ -146,9 +150,5 @@ class PlayerViewModel(
                 renderPosition(playerTimeFormatter(player.currentPosition()))
             }
         })
-    }
-
-    internal fun playBut() {
-        player.playbackControl()
     }
 }

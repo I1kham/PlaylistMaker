@@ -40,7 +40,27 @@ class StartActivity : AppCompatActivity() {
         backPressPrepare()
         prepareBottomSheet()
     }
+    fun bottomNavigationVisibility(isVisibile: Boolean) {
+        binding?.bottomNavigation?.isVisible = isVisibile
+    }
 
+    fun bottomSheetShowMessage(message: String) {
+        bottomSheet?.let {
+            binding?.message?.text = message
+            it.isVisible = true
+            bottomSheetBehavior?.onLayoutChild(
+                binding!!.root,
+                binding!!.standardBottomSheet,
+                binding?.message?.height!!.toInt()
+            )
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            })
+
+
+        }
+    }
     private fun prepareBottomNavView() {
         binding?.let {
             bottomNavigationView = it.bottomNavigation
@@ -84,35 +104,11 @@ class StartActivity : AppCompatActivity() {
         )
     }
 
-    fun bottomNavigationVisibility(isVisibile: Boolean) {
-        binding?.bottomNavigation?.isVisible = isVisibile
-    }
-
-
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!)
             bottomSheetBehavior?.maxHeight = 160
-        }
-    }
-
-
-    fun bottomSheetShowMessage(message: String) {
-        bottomSheet?.let {
-            binding?.message?.text = message
-            it.isVisible = true
-            bottomSheetBehavior?.onLayoutChild(
-                binding!!.root,
-                binding!!.standardBottomSheet,
-                binding?.message?.height!!.toInt()
-            )
-            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-            run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
-                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
-            })
-
-
         }
     }
 }

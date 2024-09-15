@@ -30,5 +30,4 @@ class SingleTrackInteractorImpl(private val historyRepository: HistoryRepository
             tracksList =  tracks
         )
     }
-
 }

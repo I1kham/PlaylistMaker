@@ -27,6 +27,10 @@ class FavoriteTracksFragment : Fragment() {
     private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
     private var trackRecyclerView: RecyclerView? = null
 
+    private companion object {
+        const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -74,7 +78,7 @@ class FavoriteTracksFragment : Fragment() {
                 state.tracks.upDateAdapter()
             }
 
-            FavoriteTracksViewState.Loading ->  binding?.progressBar?.visibility = View.VISIBLE
+            FavoriteTracksViewState.Loading -> binding?.progressBar?.visibility = View.VISIBLE
         }
     }
 
@@ -104,9 +108,5 @@ class FavoriteTracksFragment : Fragment() {
                 /* orientation = */ LinearLayoutManager.VERTICAL,
                 /* reverseLayout = */ false
             )
-    }
-
-    private companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

@@ -12,7 +12,6 @@ class TrackHistoryInteractorImpl(private val historyRepository: HistoryRepositor
         readTrackList()
     }
 
-
     override fun addTrack(track: Track) {
 
         listHistory.remove(track)

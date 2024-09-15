@@ -11,30 +11,13 @@ import kotlinx.coroutines.launch
 
 class AddPlayListViewModel(
     private val playListInteractor: PlayListInteractor,
-    ) : ViewModel() {
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<AddPlayListState>()
     private var playListName: String = ""
     private var playListDescription: String? = null
     private var uri: Uri? = null
 
     fun observeRenderState(): LiveData<AddPlayListState> = stateLiveData
-
-    private fun renderState(state: AddPlayListState) {
-        stateLiveData.postValue(state)
-    }
-
-    internal fun setUri(uri: Uri?) {
-        this.uri = uri
-        renderState(AddPlayListState.SetPic(uri))
-    }
-
-    internal fun setName(name: String) {
-        this.playListName = name
-    }
-
-    internal fun setDescription(description: String) {
-        this.playListDescription = description
-    }
 
     fun savePlayList() {
         if (playListName.isNotEmpty()) {
@@ -50,5 +33,22 @@ class AddPlayListViewModel(
                 renderState(AddPlayListState.Exit)
             }
         }
+    }
+
+    internal fun setUri(uri: Uri?) {
+        this.uri = uri
+        renderState(AddPlayListState.SetPic(uri))
+    }
+
+    internal fun setName(name: String) {
+        this.playListName = name
+    }
+
+    internal fun setDescription(description: String) {
+        this.playListDescription = description
+    }
+
+    private fun renderState(state: AddPlayListState) {
+        stateLiveData.postValue(state)
     }
 }

@@ -27,6 +27,13 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
     private val viewModel: PlayerViewModel by viewModel()
     private var binding: ActivityPlayerBinding? = null
+    private var recyclerView: RecyclerView? = null
+    private var noDataLayout: ConstraintLayout? = null
+    private var bottomSheet: LinearLayout? = null
+    private var addBut: ImageView? = null
+    private var overlay: View? = null
+    private lateinit var onItemClick: (PlayList) -> Unit
+    private lateinit var adapter: PlayListBottomCardAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,14 +43,6 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         binding = ActivityPlayerBinding.inflate(inflater, container, false)
         return binding?.root
     }
-
-    private var recyclerView: RecyclerView? = null
-    private var noDataLayout: ConstraintLayout? = null
-    private var bottomSheet: LinearLayout? = null
-    private var addBut: ImageView? = null
-    private var overlay: View? = null
-    private lateinit var onItemClick: (PlayList) -> Unit
-    private lateinit var adapter: PlayListBottomCardAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +64,21 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
     override fun onResume() {
         super.onResume()
         false.bottomNavigatorVisibility()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        binding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        true.bottomNavigatorVisibility()
     }
 
     private fun Boolean.bottomNavigatorVisibility() {
@@ -102,10 +116,6 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        binding = null
-    }
 
     private fun prepareViewModel() {
         viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
@@ -113,15 +123,6 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        true.bottomNavigatorVisibility()
-    }
 
     private fun prepareBackBut() {
         binding?.playerPreview?.setOnClickListener {

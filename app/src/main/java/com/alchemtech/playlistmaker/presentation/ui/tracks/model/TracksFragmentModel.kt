@@ -33,21 +33,6 @@ class TracksFragmentModel(
     ) { searchText ->
         searchTracks(searchText)
     }
-
-    init {
-        startModelLogic()
-    }
-
-    internal fun clearEditTextButLogic() {
-        renderState(TracksState.InputTextClear(historyInteractor.getTrackList()))
-        tracksList.clear()
-    }
-
-    internal fun clearButSearchHistory() {
-        historyInteractor.clearTracksList()
-        renderState(TracksState.Content(tracksList))
-    }
-
     internal val textWatcher by lazy {
         object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -60,6 +45,23 @@ class TracksFragmentModel(
             }
         }
     }
+
+    init {
+        startModelLogic()
+    }
+
+    fun observeState(): LiveData<TracksState> = stateLiveData
+
+    internal fun clearEditTextButLogic() {
+        renderState(TracksState.InputTextClear(historyInteractor.getTrackList()))
+        tracksList.clear()
+    }
+
+    internal fun clearButSearchHistory() {
+        historyInteractor.clearTracksList()
+        renderState(TracksState.Content(tracksList))
+    }
+
 
     private fun startModelLogic() {
         renderState(TracksState.History(historyInteractor.getTrackList()))
@@ -114,8 +116,6 @@ class TracksFragmentModel(
             tracksSearchDebounce(searchText!!)
         }
     }
-
-    fun observeState(): LiveData<TracksState> = stateLiveData
 
     private fun addTrackToHistoryList(track: Track) {
         historyInteractor.addTrack(track)
