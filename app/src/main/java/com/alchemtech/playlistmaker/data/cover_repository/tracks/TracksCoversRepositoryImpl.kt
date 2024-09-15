@@ -29,7 +29,6 @@ class TracksCoversRepositoryImpl(private val context: Context) : TracksCoversRep
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
-            println(uri)
 
             var cover: Bitmap? = null
             CoroutineScope(Dispatchers.IO).launch {

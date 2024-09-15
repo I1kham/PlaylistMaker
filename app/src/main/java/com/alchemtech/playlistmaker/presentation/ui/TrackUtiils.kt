@@ -4,8 +4,6 @@ import com.alchemtech.playlistmaker.domain.entity.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-interface TrackUtils {
-
     fun Track.getArtworkUrl512(): String {
         return if (artworkUrl100!!.isNotEmpty()) {
             artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
@@ -23,4 +21,3 @@ interface TrackUtils {
             ""
         } else releaseDate.substring(0 until 4) + " год"
     }
-}

@@ -26,7 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
-import com.alchemtech.playlistmaker.presentation.ui.MyGlide
+import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBigNoPlaceHolder
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AddPlayListFragment : Fragment(), MyGlide {
+class AddPlayListFragment : Fragment() {
     private val viewModel: AddPlayListViewModel by viewModel()
     private var binding: MakePlayListBinding? = null
     private val requester = PermissionRequester.instance()
@@ -225,7 +225,7 @@ class AddPlayListFragment : Fragment(), MyGlide {
         viewModel.setUri(uri)
     }
 
-    private fun setPicture(uri: Uri?) {// TODO:
+    private fun setPicture(uri: Uri?) {
         val albumCover: ImageView? = binding?.picAdding
         imageViewFillBigNoPlaceHolder(uri, albumCover, requireContext())
     }

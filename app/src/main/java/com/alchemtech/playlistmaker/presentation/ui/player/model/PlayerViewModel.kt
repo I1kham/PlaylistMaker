@@ -11,7 +11,7 @@ import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
-import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
+import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
@@ -143,7 +143,7 @@ class PlayerViewModel(
         ) {
             if (player.playerIsPlaying()) {
                 currentPositionTask()
-                renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
+                renderPosition(playerTimeFormatter(player.currentPosition()))
             }
         })
     }

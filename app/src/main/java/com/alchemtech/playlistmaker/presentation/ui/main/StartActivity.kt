@@ -5,12 +5,14 @@ import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityStartBinding
 import com.alchemtech.playlistmaker.presentation.ui.main.model.StartViewModel
+import com.alchemtech.playlistmaker.util.debounce
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +24,10 @@ class StartActivity : AppCompatActivity() {
     private var navController: NavController? = null
     private var bottomNavigationView: BottomNavigationView? = null
     private var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
+
+    private companion object {
+        private const val SHOW_MESSAGE_DELAY = 2500L
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,22 +93,7 @@ class StartActivity : AppCompatActivity() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!)
-                bottomSheetBehavior?.maxHeight = 160
-//                bottomSheetBehavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//                override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                    when (newState) {
-//                        BottomSheetBehavior.STATE_EXPANDED -> {}
-//
-//                        else -> {
-//                            bottomSheetBehavior?.state =
-//                                BottomSheetBehavior.STATE_HIDDEN
-//                        }
-//                    }
-//                }
-//
-//                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-//            })
-
+            bottomSheetBehavior?.maxHeight = 160
         }
     }
 
@@ -111,8 +102,17 @@ class StartActivity : AppCompatActivity() {
         bottomSheet?.let {
             binding?.message?.text = message
             it.isVisible = true
-            bottomSheetBehavior?.onLayoutChild(binding!!.root,binding!!.standardBottomSheet,binding?.message?.height!!.toInt())
+            bottomSheetBehavior?.onLayoutChild(
+                binding!!.root,
+                binding!!.standardBottomSheet,
+                binding?.message?.height!!.toInt()
+            )
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            })
+
+
         }
     }
 }

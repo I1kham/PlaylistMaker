@@ -7,7 +7,6 @@ import com.alchemtech.playlistmaker.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-interface MyGlide : UiCalculator {
     fun imageViewFillBig(uri: Uri?, imageView: ImageView?, context: Context) {
         if (imageView != null) {
             Glide.with(context)
@@ -51,5 +50,3 @@ interface MyGlide : UiCalculator {
                 .into(imageView)
         }
     }
-
-}

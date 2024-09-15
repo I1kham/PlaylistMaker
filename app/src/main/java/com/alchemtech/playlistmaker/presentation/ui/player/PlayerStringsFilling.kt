@@ -6,10 +6,12 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.MyGlide
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils
+import com.alchemtech.playlistmaker.presentation.ui.getArtworkUrl512
+import com.alchemtech.playlistmaker.presentation.ui.getReleaseDateString
+import com.alchemtech.playlistmaker.presentation.ui.getTimeString
+import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBig
 
-interface PlayerStringsFilling : MyGlide, TrackUtils {
+interface PlayerStringsFilling  {
 
     fun fillAll(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         playTimeFill(track, binding)

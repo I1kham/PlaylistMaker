@@ -7,11 +7,11 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.MyGlide
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils
+import com.alchemtech.playlistmaker.presentation.ui.getTimeString
+import com.alchemtech.playlistmaker.presentation.ui.imageViewFillSmall
 
 
-class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), MyGlide, TrackUtils {
+class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var trackTitle: TextView = itemView.findViewById(R.id.plName)
     private var trackArtist: TextView = itemView.findViewById(R.id.plDescription)
     private var trackDuration: TextView = itemView.findViewById(R.id.trackDuration)
