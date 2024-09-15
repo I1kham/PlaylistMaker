@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
-class CoversRepositoryImpl (private val context: Context) : CoversRepository {
+class CoversRepositoryImpl(private val context: Context) : CoversRepository {
 
     private companion object {
         const val DIRECTORY_NAME = "playlist_maker"
@@ -20,22 +20,25 @@ class CoversRepositoryImpl (private val context: Context) : CoversRepository {
         const val COMPRESS_QUALITY = 30
     }
 
-    override suspend fun saveCover( name :String, uri: Uri): Uri {
-        val filePath =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY_NAME)
-        if (!filePath.exists()) {
-            filePath.mkdirs()
+    override suspend fun saveCover(name: String, uri: Uri?): Uri? {
+        uri?.let {
+            val filePath =
+                File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY_NAME)
+            if (!filePath.exists()) {
+                filePath.mkdirs()
+            }
+            val file = File(filePath, "$FILE_NAME$name$FILE_EXTENSION")
+            val inputStream = context.contentResolver.openInputStream(it)
+            val outputStream = withContext(Dispatchers.IO) {
+                FileOutputStream(file)
+            }
+            BitmapFactory
+                .decodeStream(inputStream)
+                .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
+            inputStream?.close()
+            outputStream.close()
+            return file.toUri()
         }
-        val file = File(filePath, "$FILE_NAME$name$FILE_EXTENSION")
-        val inputStream = context.contentResolver.openInputStream(uri)
-        val outputStream = withContext(Dispatchers.IO) {
-            FileOutputStream(file)
-        }
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
-        inputStream?.close()
-        outputStream.close()
-        return file.toUri()
+        return null
     }
 }
