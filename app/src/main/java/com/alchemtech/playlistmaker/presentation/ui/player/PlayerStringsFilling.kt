@@ -3,26 +3,28 @@ package com.alchemtech.playlistmaker.presentation.ui.player
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import com.alchemtech.playlistmaker.R
+import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getArtworkUrl512
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getReleaseDateString
-import com.alchemtech.playlistmaker.presentation.ui.TrackUtils.getTimeString
-import com.alchemtech.playlistmaker.presentation.ui.UiCalculator
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.alchemtech.playlistmaker.presentation.ui.getArtworkUrl512
+import com.alchemtech.playlistmaker.presentation.ui.getReleaseDateString
+import com.alchemtech.playlistmaker.presentation.ui.getTimeString
+import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBig
 
-interface PlayerStringsFilling : UiCalculator {
+interface PlayerStringsFilling  {
 
-    fun fillPlayerActivity(track: Track, binding: ActivityPlayerBinding?, context: Context) {
+    fun fillAll(track: Track, binding: ActivityPlayerBinding?, context: Context) {
+        playTimeFill(track, binding)
+        fill(track, binding, context)
+    }
+
+    fun fill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         trackArtist(track, binding)
         trackTimeMillis(track, binding)
         collectionName(track, binding)
         releaseDateFill(track, binding)
         primaryGenreNameFill(track, binding)
         countryFill(track, binding)
-        playTimeFill(track, binding)
         albumCoverFill(track, binding, context)
         trackTitleFill(track, binding)
     }
@@ -32,7 +34,7 @@ interface PlayerStringsFilling : UiCalculator {
     }
 
     private fun trackTimeMillis(track: Track, binding: ActivityPlayerBinding?) {
-        binding?.trackTimeMillisText?.text = track.getTimeString()
+        binding?.trackCurrentPosition?.text = track.getTimeString()
     }
 
     private fun collectionName(track: Track, binding: ActivityPlayerBinding?) {
@@ -67,18 +69,7 @@ interface PlayerStringsFilling : UiCalculator {
 
     private fun albumCoverFill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         val albumCover: ImageView? = binding?.playerAlbumCover
-        if (albumCover != null) {
-            Glide.with(context)
-                .load(track.getArtworkUrl512())
-                .placeholder(R.drawable.track_album_default_big)
-                .centerCrop()
-                .transform(
-                    RoundedCorners(
-                        dpToPx(8f, context)
-                    )
-                )
-                .into(albumCover)
-        }
+        imageViewFillBig(track.getArtworkUrl512().toUri(), albumCover, context)
     }
 
     private fun trackTitleFill(track: Track, binding: ActivityPlayerBinding?) {

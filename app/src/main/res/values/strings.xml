@@ -1,20 +1,16 @@
 <resources>
     <string name="app_name">Playlist Maker</string>
-    <string name="Panel_Header">Playlist maker</string>
-    <string name="Search_button">Поиск</string>
     <string name="media_library_button">Медиатека</string>
     <string name="Settings_button">Настройки</string>
     <string name="Dark_theme_switch_settings">" "Темная тема</string>
     <string name="Share_app">Поделиться приложением</string>
     <string name="to_support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
-    <string name="media_library">Медиатека... Будет....</string>
     <string name="toSupportMailSubject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="toSupportDefaultMail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="supportMail">4habibulin@gmail.com</string>
     <string name="toSupportUri">mailto:</string>
     <string name="buttonShareApp">https://practicum.yandex.ru/android-developer/</string>
-    <string name="buttonShareAppTitle">попробуй и узнаешь</string>
     <string name="linkTermsOfUse">https://yandex.ru/legal/practicum_offer/</string>
     <string name="searchActivityHead">Поиск</string>
     <string name="data_not_found">Ничего не нашлось</string>
@@ -23,25 +19,45 @@
     <string name="updateButNoConnectionText">Обновить</string>
     <string name="SearchHistoryTitle">Вы искали</string>
     <string name="SearchHistoryClearBut">Очистить историю</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="countryStr">Страна</string>
     <string name="primaryGenreName">Жанр</string>
     <string name="TrackYear">Год</string>
     <string name="album">Альбом</string>
-    <string name="TrackDuration">Длительность</string>
+    <string name="TrackDuration">00:30</string>
     <string name="trackName">TrackName</string>
-    <string name="mediaLibPreview">Медиатека</string>
     <string name="emptyMediaLib">Ваша медиатека пуста</string>
     <string name="emptyPlayLists">Вы не создали\nни одного плейлиста</string>
     <string name="addNewPlayListBut">Новый плейлист</string>
     <string name="favorite_tracks_fragment_title">Избранные треки</string>
     <string name="playLists_fragment_title">Плейлисты</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="play_list_name_hint">Название*</string>
+    <string name="playList_description">Описание</string>
+    <string name="createButton">Создать</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="cancel">Отмена</string>
+    <string name="getPermissionTitle">Доступ к файлам изображений</string>
+    <string name="getPermissionMassage">Приложению необходим доступ к чтеню файлов изображений на вашем устройстве\n
+        \nВы готовы предоставить доступ?"</string>
+    <string name="cancelAddPlayListTitle">Завершить создание плейлиста?</string>
+    <string name="cancelAddPlayListMassage">Все несохраненные данные будут потеряны</string>
+    <string name="cancelAddPlayListCancelButton">Отмена</string>
+    <string name="cancelAddPlayYesButton">Завершить</string>
+    <string name="Add_play_list_bottom_sheet_title">Добавить в плейлист</string>
+    <string name="playListAdded">Плейлист %1$s создан</string>
+    <string name="addedToPlayList">Добавлено в плейлист %1$s</string>
+    <string name="doNotAddtoPlayList">Трек уже добавлен в плейлист %1$s</string>
+    <string name="bottom_message">текст сообщения</string>
+
+    <plurals name="plurals_tracks">
+        <item quantity="zero">%1$d треков</item>
+        <item quantity="one">%1$d трек</item>
+        <item quantity="two">%1$d трека</item>
+        <item quantity="few">%1$d трека</item>
+        <item quantity="many">%1$d треков</item>
+        <item quantity="other">%1$d other</item>
+    </plurals>
+
+
 </resources>

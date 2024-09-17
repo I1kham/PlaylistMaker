@@ -1,4 +1,5 @@
 package com.alchemtech.playlistmaker.data.db.entity
+
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -16,8 +17,15 @@ interface TrackDao {
     suspend fun removeTrack(track: TrackEntity)
 
     @Query("SELECT * FROM tracks_table")
-     fun getAllTracks(): Flow<List<TrackEntity>>
+    fun getAllTracks(): Flow<List<TrackEntity>>
+
+    @Query("SELECT * FROM tracks_table WHERE isFavorite = 1")
+    fun getFavoriteTracks(): Flow<List<TrackEntity>>
 
     @Query("SELECT trackId FROM tracks_table")
     suspend fun getIdFavoriteTracks(): List<String>
+
+    @Query("SELECT * FROM tracks_table WHERE trackId=:id")
+    suspend fun getTrackByID(id: String): TrackEntity
+
 }

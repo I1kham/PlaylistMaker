@@ -1,8 +1,8 @@
 package com.alchemtech.playlistmaker.di
 
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewModel
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.MediaLibViewModel
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.PlayListsViewModel
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -22,6 +22,6 @@ var favoriteTracksViewModel = module {
 
 var playListsViewModel = module {
     viewModel<PlayListsViewModel>{
-        PlayListsViewModel()
+        PlayListsViewModel(playListInteractor = get())
     }
 }

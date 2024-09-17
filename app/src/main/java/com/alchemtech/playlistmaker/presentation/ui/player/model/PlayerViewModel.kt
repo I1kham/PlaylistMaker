@@ -7,42 +7,66 @@ import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
+import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
-import com.alchemtech.playlistmaker.presentation.ui.PlayerTimeFormatter
+import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    singleTrackRepository: SingleTrackInteractor,
+    private val singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
     private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
-    private var track: Track? = singleTrackRepository.readTrack()
+    private var playTrack: Track? = singleTrackRepository.readTrack()
     private val stateLiveData = MutableLiveData<PlayerState>()
-
-    init {
-        track?.let {
-            preparePlayer()
-            renderState(PlayerState.Fill(it))
-        }
-    }
 
     companion object {
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
-    internal fun onStop() {
+    init {
+        playTrack?.let {
+            preparePlayer()
+            renderState(PlayerState.Fill(it))
+        }
+    }
+
+
+    override fun onCleared() {
         super.onCleared()
         player.release()
+    }
+
+    fun observeRenderState(): LiveData<PlayerState> = stateLiveData
+    private fun renderState(state: PlayerState) {
+        stateLiveData.postValue(state)
     }
 
     internal fun onPause() {
         player.pausePlayer()
     }
 
+    internal fun addTrackTo(playList: PlayList) {
+        viewModelScope.launch {
+            playTrack?.let {
+                renderState(
+                    PlayerState.TrackAdded(
+                        playListInteractor.addToList(
+                            playList.id,
+                            it
+                        ), playList.name
+                    )
+                )
+            }
+        }
+    }
+
     internal fun onFavoriteClicked() {
-        track?.let {
+        playTrack?.let {
             if (it.isFavorite) {
                 it.isFavorite = false
                 viewModelScope.launch {
@@ -54,14 +78,24 @@ class PlayerViewModel(
                     favoriteTracksInteractor.addToFavoriteList(it)
                 }
             }
-            renderState(PlayerState.likeBut(it.isFavorite))
+            renderState(PlayerState.LikeBut(it))
         }
     }
 
-    fun observeRenderState(): LiveData<PlayerState> = stateLiveData
-    private fun renderState(state: PlayerState) {
-        stateLiveData.postValue(state)
-        stateLiveData.value
+    internal fun addToPlaylist() {
+        viewModelScope.launch {
+            playListInteractor.getAllPlayLists().collect { playList ->
+                if (playList.isNotEmpty()) {
+                    renderState(PlayerState.ShowList(playList))
+                } else {
+                    renderState(PlayerState.EmptyList)
+                }
+            }
+        }
+    }
+
+    internal fun playBut() {
+        player.playbackControl()
     }
 
     private val statePosition = MutableLiveData<String>()
@@ -69,39 +103,39 @@ class PlayerViewModel(
     fun observeCurrentPosition(): LiveData<String> = statePosition
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
-        statePosition.value
     }
 
     private fun preparePlayer() {
+        playTrack?.let {
+            val onPreparedListenerConsumer =
+                PlayerRepository.OnPreparedListenerConsumer {
+                    renderState(PlayerState.OnPrepared(it))
+                }
 
-        val onPreparedListenerConsumer =
-            PlayerRepository.OnPreparedListenerConsumer {
-                renderState(PlayerState.OnPrepared)
-            }
+            val onCompletionListenerConsumer =
+                PlayerRepository.OnCompletionListenerConsumer {
+                    renderState(PlayerState.OnCompletion(it))
+                }
 
-        val onCompletionListenerConsumer =
-            PlayerRepository.OnCompletionListenerConsumer {
-                renderState(PlayerState.OnCompletion)
+            val pauseConsumer = object : PlayerInteractor.PauseConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Pause(it))
+                }
             }
-
-        val pauseConsumer = object : PlayerInteractor.PauseConsumer {
-            override fun consume() {
-                renderState(PlayerState.Pause)
+            val startConsumer = object : PlayerInteractor.StartConsumer {
+                override fun consume() {
+                    renderState(PlayerState.Play(it))
+                    currentPositionTask()
+                }
             }
+            player.setConsumers(
+                onPreparedListenerConsumer,
+                onCompletionListenerConsumer,
+                pauseConsumer,
+                startConsumer
+            )
+            player.preparePlayer(it.previewUrl!!)
         }
-        val startConsumer = object : PlayerInteractor.StartConsumer {
-            override fun consume() {
-                renderState(PlayerState.Play)
-                currentPositionTask()
-            }
-        }
-        player.setConsumers(
-            onPreparedListenerConsumer,
-            onCompletionListenerConsumer,
-            pauseConsumer,
-            startConsumer
-        )
-        track?.previewUrl?.let { player.preparePlayer(it) }
     }
 
     private fun currentPositionTask() {
@@ -112,12 +146,8 @@ class PlayerViewModel(
         ) {
             if (player.playerIsPlaying()) {
                 currentPositionTask()
-                renderPosition(PlayerTimeFormatter.format(player.currentPosition()))
+                renderPosition(playerTimeFormatter(player.currentPosition()))
             }
         })
-    }
-
-    internal fun playBut() {
-        player.playbackControl()
     }
 }

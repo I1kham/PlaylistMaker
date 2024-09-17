@@ -17,18 +17,17 @@ class SingleTrackInteractorImpl(private val historyRepository: HistoryRepository
 
     private fun readTracksList(): List<Track> {
         val dto = historyRepository.getSavedTracks()
-        if (dto.isNullOrEmpty()) {
-            return emptyList()
+        return if (dto.isNullOrEmpty()) {
+            emptyList()
         } else {
-            return dto
+            dto
         }
     }
 
     private fun writeTrackList(list: MutableList<Track>) {
         val tracks = list as List<Track>
         historyRepository.setTracksToSave(
-            objects = tracks
+            tracksList =  tracks
         )
     }
-
 }

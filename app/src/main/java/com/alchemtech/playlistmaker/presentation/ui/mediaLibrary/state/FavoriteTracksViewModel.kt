@@ -1,4 +1,4 @@
-package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model
+package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

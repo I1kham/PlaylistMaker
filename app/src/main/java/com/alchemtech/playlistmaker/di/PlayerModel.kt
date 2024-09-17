@@ -34,6 +34,7 @@ val playerViewModel = module {
             singleTrackRepository = this.get(),
             player = get(),
             favoriteTracksInteractor = this.get<FavoriteTracksInteractor>(),
+            playListInteractor = get()
         )
     }
     single<SingleTrackInteractor> {
@@ -52,7 +53,7 @@ val playerViewModel = module {
         SharedHistoryRepositoryImpl(
             SAVED_TRACK,
             sharedPreferences = this.get(),
-            gson = get()
+            tracksStringConvertor = get()
         )
     }
     factory<SharedPreferences> {

@@ -66,9 +66,7 @@
     <!--        todo mus be gone-->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:indeterminateTint="@color/YP_light_background"
+        style="@style/progressBar"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"

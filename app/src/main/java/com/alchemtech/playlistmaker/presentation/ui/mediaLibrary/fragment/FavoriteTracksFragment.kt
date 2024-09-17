@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewModel
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewState
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewModel
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +26,10 @@ class FavoriteTracksFragment : Fragment() {
     private lateinit var trackAdapter: TrackCardAdapter
     private lateinit var onItemClickToTrackCardDebounce: (Track) -> Unit
     private var trackRecyclerView: RecyclerView? = null
+
+    private companion object {
+        const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +78,7 @@ class FavoriteTracksFragment : Fragment() {
                 state.tracks.upDateAdapter()
             }
 
-            FavoriteTracksViewState.Loading ->  binding?.progressBar?.visibility = View.VISIBLE
+            FavoriteTracksViewState.Loading -> binding?.progressBar?.visibility = View.VISIBLE
         }
     }
 
@@ -104,9 +108,5 @@ class FavoriteTracksFragment : Fragment() {
                 /* orientation = */ LinearLayoutManager.VERTICAL,
                 /* reverseLayout = */ false
             )
-    }
-
-    private companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
