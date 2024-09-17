@@ -46,6 +46,7 @@ class SettingsFragment : Fragment() {
 
 
     private fun darkThemeSwitchWork() {
+        binding?.dayNightSwitch?.isChecked = (getDefaultNightMode() == MODE_NIGHT_YES)
         binding?.dayNightSwitch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 setDefaultNightMode(MODE_NIGHT_YES)

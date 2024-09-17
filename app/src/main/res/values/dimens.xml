@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <dimen name="smallImgViewCorners">2f</dimen>
+    <dimen name="bigImgViewCorners">8f</dimen>
+</resources>

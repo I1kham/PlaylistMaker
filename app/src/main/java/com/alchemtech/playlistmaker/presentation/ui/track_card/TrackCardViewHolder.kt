@@ -7,8 +7,8 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolder
 import com.alchemtech.playlistmaker.presentation.ui.getTimeString
-import com.alchemtech.playlistmaker.presentation.ui.imageViewFillSmall
 
 
 class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,6 +21,6 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackTitle.text = track.trackName
         trackArtist.text = track.artistName
         trackDuration.text = track.getTimeString()
-        imageViewFillSmall(track.artworkUrl100?.toUri(), albumCover, itemView.context)
+        albumCover.fillByUriOrPlaceHolder(track.artworkUrl100?.toUri(),itemView.context,true)
     }
 }

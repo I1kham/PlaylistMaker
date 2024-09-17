@@ -16,12 +16,11 @@
 
         <ImageView
             android:id="@+id/albumCover"
-            style="@style/albumCoverStyle"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="center|start"
             android:layout_marginStart="13dp"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             android:src="@drawable/track_album_default" />
 
 

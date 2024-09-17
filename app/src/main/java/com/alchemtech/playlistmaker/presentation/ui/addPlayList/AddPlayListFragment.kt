@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -26,7 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
-import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBigNoPlaceHolder
+import com.alchemtech.playlistmaker.presentation.ui.fillBy
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
@@ -237,8 +236,7 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setPicture(uri: Uri?) {
-        val albumCover: ImageView? = binding?.picAdding
-        imageViewFillBigNoPlaceHolder(uri, albumCover, requireContext())
+        binding?.picAdding?.fillBy(uri, requireContext())
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -315,7 +313,6 @@ class AddPlayListFragment : Fragment() {
             }
         }
     }
-
 
 
     private fun observeRenderState() {
