@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/YP_white_black"
     android:orientation="vertical"
-    android:theme="@style/Theme.SettingsActivity"
+    android:theme="@style/Theme.MainActivityStyle"
     tools:context=".presentation.ui.mediaLibrary.MediaLibFragment">
 
     <TextView
