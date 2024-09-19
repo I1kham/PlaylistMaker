@@ -145,8 +145,8 @@ class PlayerViewModel(
             useLastParam = false
         ) {
             if (player.playerIsPlaying()) {
-                currentPositionTask()
                 renderPosition(playerTimeFormatter(player.currentPosition()))
+                currentPositionTask()
             }
         })
     }

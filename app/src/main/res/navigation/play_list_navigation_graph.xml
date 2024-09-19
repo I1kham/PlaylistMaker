@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/tracksRecycleFragment">
+
+    <fragment
+        android:id="@+id/playList"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment"
+        android:label="fragment_playlist"
+        tools:layout="@layout/fragment_playlist" >
+        <action
+            android:id="@+id/action_playList_to_tracksRecycleFragment"
+            app:destination="@id/tracksRecycleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tracksRecycleFragment"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment"
+        android:label="fragment_tracks_recycler_view"
+        tools:layout="@layout/fragment_tracks_recycler_view" />
+</navigation>

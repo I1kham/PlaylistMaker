@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_YP_Black"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.playList.PlayListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_end="266dp" />
+
+        <Button
+            android:id="@+id/preview"
+            style="@style/titlePreviewButtonStyle"
+            android:layout_marginBottom="2dp"
+            android:background="@color/transparent"
+            android:padding="12dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black_White"
+            app:icon="@drawable/arrow_back"
+            app:iconSize="24dp"
+            app:iconTint="@color/YP_black_White"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center|start"
+            android:background="@drawable/track_album_default"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/playListName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/playListName"
+            style="@style/createPlayListEditTextTitle"
+            android:text="@string/play_list_name_hint"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/playListDescription"
+            app:layout_constraintLeft_toLeftOf="@+id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@+id/pic" />
+
+        <TextView
+            android:id="@+id/playListDescription"
+            style="@style/createPlayListEditTextTitle"
+            android:text="@string/playList_description"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/playListStaticFrame"
+            app:layout_constraintLeft_toLeftOf="@+id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@+id/playListName" />
+
+
+        <LinearLayout
+            android:id="@+id/playListStaticFrame"
+            android:layout_width="176dp"
+            android:layout_height="21dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/bottomBorder"
+            app:layout_constraintLeft_toLeftOf="@id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@id/playListDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintTop_toTopOf="@id/bottomBorder">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/indicator_bottom_sheet" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_playlist_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            app:navGraph="@navigation/play_list_navigation_graph" />
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

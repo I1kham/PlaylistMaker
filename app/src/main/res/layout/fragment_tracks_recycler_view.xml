@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/YP_white_black"
+    android:theme="@style/Theme.MainActivityStyle"
+    android:id="@+id/searchActivityPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.playList.fragments.TracksRecycleFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackCardsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:listitem="@layout/track_card" />
+        <!--        todo mus be visible-->
+
+
+    <LinearLayout
+        android:id="@+id/noData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <!--        todo mus be gone-->
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/data_not_found"
+            />
+
+        <TextView
+            style="@style/cardTextViewBlackWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="треки пока не добавлены"
+            android:textSize="19sp" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="140dp"
+        android:indeterminateTint="@color/YP_light_background"
+        android:visibility="gone" />
+</LinearLayout>

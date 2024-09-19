@@ -15,6 +15,7 @@ import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.dpToPx
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.alchemtech.playlistmaker.presentation.ui.playLikstBottomCard.PlayListBottomCardAdapter
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerState
@@ -104,7 +105,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
-            BottomSheetBehavior.from(bottomSheet!!).maxHeight = 1000
+            BottomSheetBehavior.from(bottomSheet!!).peekHeight = dpToPx(505f,requireContext() )
         }
     }
 

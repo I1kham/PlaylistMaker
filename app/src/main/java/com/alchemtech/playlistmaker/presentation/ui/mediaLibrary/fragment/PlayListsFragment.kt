@@ -26,7 +26,7 @@ class PlayListsFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
     private var noDataLayout: ConstraintLayout? = null
-
+    private var adapter: PlayListCardAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -98,7 +98,9 @@ class PlayListsFragment : Fragment() {
     private fun renderList(playLists: List<PlayList>) {
         progressBar?.visibility = View.GONE
         noDataLayout?.visibility = View.GONE
-        recyclerView?.adapter = PlayListCardAdapter(playLists)
+        adapter = PlayListCardAdapter(playLists)
+        adapter?.onItemClick = {findNavController().navigate(R.id.action_mediaLibFragment_to_playList)}
+        recyclerView?.adapter = adapter
 
     }
 }
