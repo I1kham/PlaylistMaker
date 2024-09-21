@@ -17,15 +17,16 @@ class PlayListsRepositoryImpl(
     private val favoriteTracksRepository: FavoriteTracksRepository,
     private val playListDao: PlayListDao,
     private val tracksStringConvertor: TracksStringConvertor,
-    private val coversRepository: CoversRepository,
+    private val coversRepository: CoversRepository
     ) : PlayListsRepository {
     override suspend fun addPlayList(playList: PlayList) {
         val playListEntity = playList.convertPlaylistIDs()
         playListEntity.playListId = playListDao.getRowCount()+1
         playList.coverUri?.let {
-            playList.coverUri = coversRepository.saveCover(playList.id, it)
+            println(playListEntity.playListId)
+            playList.coverUri = coversRepository.saveCover(playListEntity.playListId, it)
         }
-        playListDao.addPlayList(playListEntity)
+       return playListDao.addPlayList(playListEntity)
     }
 
     override suspend fun removePlayList(id: Long) {
@@ -40,17 +41,19 @@ class PlayListsRepositoryImpl(
     }
 
 
-    override fun getTracks(id: Long): Flow<List<Track>> = flow {
-        tracksStringConvertor.map(playListDao.getTracksIdFromPlayList(id))
-
+    override suspend fun getTracks(id: Long): Flow<List<Track>>{
+        val tracksId = playListDao.getTracksIdFromPlayList(id)
+        val tracks = tracksStringConvertor.mapIDsStringToList(tracksId)
+        return flow { emit(tracks.map { favoriteTracksRepository.getTrackByID(it) }) }
     }
 
 
     override suspend fun addToList(id: Long, track: Track): Boolean {
-        var isAdded =false
+        var isAdded = false
         val mutList = mutableListOf<String>()
+        val a= playListDao.getTracksIdFromPlayList(id)
         mutList.addAll(
-            tracksStringConvertor.mapIDsListToList(playListDao.getTracksIdFromPlayList(id))
+            tracksStringConvertor.mapIDsStringToList(a)
         )
         if (!mutList.contains(track.trackId)) {
             mutList.add(track.trackId)
@@ -61,7 +64,6 @@ class PlayListsRepositoryImpl(
             )
             isAdded = true
         }
-
         return isAdded
     }
 
@@ -81,8 +83,8 @@ class PlayListsRepositoryImpl(
             this.name,
             this.description,
             this.coverUri?.toUri(),
-            getTackListByIList(
-                tracksStringConvertor.mapIDsListToList(this.tracks)
+            getTacksListByIDList(
+                tracksStringConvertor.mapIDsStringToList(this.tracks)
             )
         )
     }
@@ -91,7 +93,7 @@ class PlayListsRepositoryImpl(
         return favoriteTracksRepository.getTrackByID(id)
     }
 
-    private suspend fun getTackListByIList(idList: List<String>): List<Track> {
+    private suspend fun getTacksListByIDList(idList: List<String>): List<Track> {
         val newTrackList = mutableListOf<Track>()
         for (id in idList) {
             newTrackList.add((getTrackByID(id)))

@@ -6,20 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
 import com.alchemtech.playlistmaker.presentation.ui.addPlayList.AddPlayListState
 import com.alchemtech.playlistmaker.presentation.ui.dpToPx
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayListFragment : Fragment() {
-    //private val viewModel: PlayListViewModel by viewModel()
+    private val viewModel: PlayListViewModel by viewModel()
     private var binding: FragmentPlaylistBinding? = null
     private var bottomSheet: LinearLayout? = null
+    private var navHostFragment: NavHostFragment? = null
+    private var navController: NavController? = null
+    private var bottomNavigationView: BottomNavigationView? = null
 
     //    private val requester = PermissionRequester.instance()
 //    private var nameEditText: EditText? = null
@@ -56,6 +65,14 @@ class PlayListFragment : Fragment() {
         prepareNavHostFragment()
         prepareNavHostController()
 
+        val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to arguments?.getLong(PLAY_LIST_TRANSFER_KEY))
+
+        val recycleFragment = TracksRecycleFragment()
+        recycleFragment.arguments = bundle
+        childFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_playlist_bottom, recycleFragment)
+            .commit()
+
 
     }
 
@@ -76,11 +93,15 @@ class PlayListFragment : Fragment() {
     }
 
     private fun prepareNavHostFragment() {
-        childFragmentManager.beginTransaction()
-            .add(R.id.fragment_container_playlist_bottom, TracksRecycleFragment())
-            .commit()
+//        childFragmentManager.beginTransaction()
+//            .add(R.id.fragment_container_playlist_bottom, TracksRecycleFragment())
+//            .commit()
+
+
+//findNavController().navigate(R.id.action_playList_to_addPlayListFragment2)
 
     }
+
     private fun prepareNavHostController() {
 
     }

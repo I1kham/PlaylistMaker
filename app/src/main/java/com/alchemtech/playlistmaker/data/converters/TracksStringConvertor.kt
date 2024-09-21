@@ -27,7 +27,7 @@ class TracksStringConvertor(private val gson: Gson) {
         return gson.toJson(idsList.toList() as Serializable)
     }
 
-    fun mapIDsListToList(idsList: String?): List<String> {
+    fun mapIDsStringToList(idsList: String?): List<String> {
         val json = idsList
             ?: return emptyList()
         return gson.fromJson<String>(

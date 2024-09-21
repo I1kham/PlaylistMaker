@@ -8,6 +8,6 @@ interface PlayListsRepository {
     suspend fun addPlayList(playList: PlayList)
     suspend fun removePlayList(id: Long)
     fun getAllPlayLists(): Flow<List<PlayList>>
-    fun getTracks(id: Long): Flow<List<Track>>
+    suspend fun getTracks(id: Long): Flow<List<Track>>
     suspend fun addToList(id: Long, track: Track):Boolean
 }

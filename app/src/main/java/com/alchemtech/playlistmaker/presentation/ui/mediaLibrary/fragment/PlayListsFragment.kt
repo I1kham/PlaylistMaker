@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlayListsBinding
 import com.alchemtech.playlistmaker.domain.entity.PlayList
@@ -59,6 +61,7 @@ class PlayListsFragment : Fragment() {
 
     private fun prepareAddPlayListButton() {
         binding?.addPlayListBut?.setOnClickListener {
+
             findNavController().navigate(R.id.action_mediaLibFragment_to_addPlayListFragment)
         }
     }
@@ -99,7 +102,9 @@ class PlayListsFragment : Fragment() {
         progressBar?.visibility = View.GONE
         noDataLayout?.visibility = View.GONE
         adapter = PlayListCardAdapter(playLists)
-        adapter?.onItemClick = {findNavController().navigate(R.id.action_mediaLibFragment_to_playList)}
+        adapter?.onItemClick = {playList :PlayList ->
+            val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playList.id  )
+            findNavController().navigate(R.id.action_mediaLibFragment_to_playList, bundle)}
         recyclerView?.adapter = adapter
 
     }

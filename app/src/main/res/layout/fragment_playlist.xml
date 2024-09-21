@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_YP_Black"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context=".presentation.ui.playList.PlayListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +94,7 @@
         android:background="@drawable/bottom_sheet_background"
         android:orientation="vertical"
         android:visibility="visible"
-        app:behavior_hideable="true"
+        app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintTop_toTopOf="@id/bottomBorder">
 
@@ -106,11 +107,10 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_playlist_bottom"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             app:navGraph="@navigation/play_list_navigation_graph" />
     </LinearLayout>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

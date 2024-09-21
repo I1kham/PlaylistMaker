@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_graph"
-    app:startDestination="@id/tracksRecycleFragment">
+    android:id="@+id/play_list_navigation_graph"
+    app:startDestination="@id/playListActionFragment">
 
     <fragment
         android:id="@+id/playList"
@@ -13,10 +13,26 @@
         <action
             android:id="@+id/action_playList_to_tracksRecycleFragment"
             app:destination="@id/tracksRecycleFragment" />
+        <action
+            android:id="@+id/action_playList_to_playListActionFragment"
+            app:destination="@id/playListActionFragment" />
     </fragment>
     <fragment
         android:id="@+id/tracksRecycleFragment"
         android:name="com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment"
         android:label="fragment_tracks_recycler_view"
-        tools:layout="@layout/fragment_tracks_recycler_view" />
+        tools:layout="@layout/fragment_tracks_recycler_view" >
+        <action
+            android:id="@+id/action_tracksRecycleFragment_to_playListActionFragment"
+            app:destination="@id/playListActionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListActionFragment"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.playList.fragments.PlayListActionFragment"
+        android:label="fragment_play_list_action"
+        tools:layout="@layout/fragment_play_list_action" >
+        <action
+            android:id="@+id/action_playListActionFragment_to_tracksRecycleFragment"
+            app:destination="@id/tracksRecycleFragment" />
+    </fragment>
 </navigation>

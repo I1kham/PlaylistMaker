@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alchemtech.playlistmaker.App.Companion.PLAY_TRACK_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.PlayList
@@ -35,6 +37,8 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
     private var overlay: View? = null
     private lateinit var onItemClick: (PlayList) -> Unit
     private lateinit var adapter: PlayListBottomCardAdapter
+    private var track: Track? = null
+    private var trackId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +51,8 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        trackId = arguments?.getString(PLAY_TRACK_TRANSFER_KEY)
+
         observeRenderState()
         prepareBackBut()
         prepareViewModel()
@@ -105,7 +111,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
-            BottomSheetBehavior.from(bottomSheet!!).peekHeight = dpToPx(505f,requireContext() )
+            BottomSheetBehavior.from(bottomSheet!!).peekHeight = dpToPx(505f, requireContext())
         }
     }
 
@@ -119,6 +125,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
 
     private fun prepareViewModel() {
+        viewModel.prepareModel(trackId)
         viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
             binding?.playTime?.text = it
         }
@@ -153,6 +160,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
             is PlayerState.OnPrepared -> {
                 fillFragment(state.track)
+                binding?.playerProgressBar?.isVisible = false
             }
 
             is PlayerState.OnCompletion -> {
@@ -166,8 +174,9 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
                 playBut()
             }
 
-            is PlayerState.LikeBut ->
+            is PlayerState.LikeBut -> {
                 renderLikeBut(state.track.isFavorite)
+            }
 
             is PlayerState.ShowList -> {
                 binding?.progressBar?.visibility = View.GONE
@@ -191,8 +200,11 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
                 }
             }
 
-            PlayerState.LoadingAdd ->
+            PlayerState.LoadingAdd -> {
                 binding?.progressBar?.visibility = View.VISIBLE
+            }
+
+            is PlayerState.Preparing -> binding?.playerProgressBar?.isVisible = state.prepare
         }
     }
 
