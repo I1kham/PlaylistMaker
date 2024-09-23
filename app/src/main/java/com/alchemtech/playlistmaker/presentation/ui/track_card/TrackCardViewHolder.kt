@@ -13,7 +13,7 @@ import com.alchemtech.playlistmaker.presentation.ui.getTimeString
 
 class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var trackTitle: TextView = itemView.findViewById(R.id.plName)
-    private var trackArtist: TextView = itemView.findViewById(R.id.plDescription)
+    private var trackArtist: TextView = itemView.findViewById(R.id.trackArtist)
     private var trackDuration: TextView = itemView.findViewById(R.id.trackDuration)
     private var albumCover: ImageView = itemView.findViewById(R.id.albumCover)
 

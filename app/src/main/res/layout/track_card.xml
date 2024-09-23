@@ -46,7 +46,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/plDescription"
+                    android:id="@+id/trackArtist"
                     style="@style/cardTextViewGrayWhite"
                     android:maxWidth="250dp"
                     android:textSize="13sp"

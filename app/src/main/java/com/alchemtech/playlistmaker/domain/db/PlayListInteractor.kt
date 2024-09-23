@@ -10,4 +10,6 @@ interface PlayListInteractor {
     fun getAllPlayLists(): Flow<List<PlayList>>
     suspend fun getTracks(id: Long): Flow<List<Track>>
     suspend fun addToList(id: Long,track: Track):Boolean
+    suspend fun getPlayList(id: Long): PlayList
+
 }

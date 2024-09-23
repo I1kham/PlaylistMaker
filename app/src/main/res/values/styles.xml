@@ -234,4 +234,48 @@
         <item name="android:lines">1</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+
+    <style name="PlayListInfoBold">
+        <!--        layout-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_marginVertical">4dp</item>
+        <!--        text-->
+        <item name="android:textColor">@color/all_YP_Black</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="PlayListInfo">
+        <!--        layout-->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">4dp</item>
+        <item name="android:background">@color/transparent</item>
+        <!--        text-->
+        <item name="android:textColor">@color/all_YP_Black</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="PlayListBut">
+        <!--        layout-->
+        <item name="android:theme">@style/Theme.MainActivityStyle</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:background">@color/transparent</item>
+        <!--        text-->
+    </style>
+
 </resources>

@@ -125,10 +125,10 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
 
     private fun prepareViewModel() {
-        viewModel.prepareModel(trackId)
         viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
             binding?.playTime?.text = it
         }
+        viewModel.prepareModel(trackId)
     }
 
 
@@ -275,12 +275,12 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
     private fun bottomSheetVisible(isVisible: Boolean) {
         bottomSheet?.let {
+            BottomSheetBehavior.from(it).maxHeight = dpToPx(505f, requireContext())
             if (isVisible) {
-                BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
             } else {
                 BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_HIDDEN
             }
-
         }
     }
 

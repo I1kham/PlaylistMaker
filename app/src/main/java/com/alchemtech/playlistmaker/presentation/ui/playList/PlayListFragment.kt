@@ -1,22 +1,20 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
-import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
-import com.alchemtech.playlistmaker.presentation.ui.addPlayList.AddPlayListState
 import com.alchemtech.playlistmaker.presentation.ui.dpToPx
+import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolderNoCorners
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
-import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,6 +27,7 @@ class PlayListFragment : Fragment() {
     private var navHostFragment: NavHostFragment? = null
     private var navController: NavController? = null
     private var bottomNavigationView: BottomNavigationView? = null
+    private var playListId: Long? = null
 
     //    private val requester = PermissionRequester.instance()
 //    private var nameEditText: EditText? = null
@@ -58,20 +57,23 @@ class PlayListFragment : Fragment() {
         false.bottomNavigatorVisibility()
         prepareNameText()
         prepareDescriptionText()
+
+
+
+
         binding?.let {
             bottomSheet = it.bottomSheet
         }
-        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(230f, requireContext())
-        prepareNavHostFragment()
-        prepareNavHostController()
+        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(266f, requireContext())
 
-        val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to arguments?.getLong(PLAY_LIST_TRANSFER_KEY))
-
-        val recycleFragment = TracksRecycleFragment()
-        recycleFragment.arguments = bundle
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_playlist_bottom, recycleFragment)
-            .commit()
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+        viewModel.getPlayList(playListId)
+//        val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
+//        val recycleFragment = TracksRecycleFragment()
+//        recycleFragment.arguments = bundle
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container_playlist_bottom, recycleFragment)
+//            .commit()
 
 
     }
@@ -92,24 +94,9 @@ class PlayListFragment : Fragment() {
         super.onStop()
     }
 
-    private fun prepareNavHostFragment() {
-//        childFragmentManager.beginTransaction()
-//            .add(R.id.fragment_container_playlist_bottom, TracksRecycleFragment())
-//            .commit()
-
-
-//findNavController().navigate(R.id.action_playList_to_addPlayListFragment2)
-
-    }
-
-    private fun prepareNavHostController() {
-
-    }
-
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
-
 
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
@@ -149,22 +136,22 @@ class PlayListFragment : Fragment() {
 
 
     private fun observeRenderState() {
-//        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
-//            render(it)
-//        }
+        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
+            render(it)
+        }
     }
 
-    private fun render(state: AddPlayListState) {
-//        when (state) {
-//            is AddPlayListState.Exit ->
-//                findNavController().popBackStack()
-//
-//            is AddPlayListState.Loading ->
-//                progressBar?.isVisible = true
-//
-//            is AddPlayListState.SetPic ->
-//                setPicture(state.uri)
-//        }
+    private fun render(state: PlayListFragmentState) {
+        when (state) {
+            is PlayListFragmentState.Content -> {
+                setPicture(state.playList.coverUri)
+            }
+
+        }
+    }
+
+    private fun setPicture(uri: Uri?) {
+        binding?.pic?.fillByUriOrPlaceHolderNoCorners(uri, requireContext())
     }
 
     private fun showBottomMessage(message: String) {

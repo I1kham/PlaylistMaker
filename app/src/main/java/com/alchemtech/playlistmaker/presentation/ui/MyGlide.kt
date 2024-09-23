@@ -42,6 +42,16 @@ fun ImageView.fillByUriOrPlaceHolder(
         .into(this)
 }
 
+fun ImageView.fillByUriOrPlaceHolderNoCorners(
+    uri: Uri?,
+    context: Context,
+): ViewTarget<ImageView, Drawable> {
+    return Glide.with(context)
+        .load(uri)
+        .placeholder(R.drawable.track_album_default)
+        .fitCenter()
+        .into(this)
+}
 private fun cornersSize(smallCorners: Boolean?): Float {
     return if (smallCorners == null || smallCorners == false) {
         8f

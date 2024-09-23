@@ -23,7 +23,7 @@
     <string name="primaryGenreName">Жанр</string>
     <string name="TrackYear">Год</string>
     <string name="album">Альбом</string>
-    <string name="TrackDuration">00:30</string>
+    <string name="TrackDuration">Длительность</string>
     <string name="trackName">TrackName</string>
     <string name="emptyMediaLib">Ваша медиатека пуста</string>
     <string name="emptyPlayLists">Вы не создали\nни одного плейлиста</string>

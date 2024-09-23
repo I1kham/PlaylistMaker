@@ -26,4 +26,7 @@ interface PlayListDao {
 
     @Query("SELECT COUNT(playListId) FROM play_lists_table")
     suspend fun getRowCount(): Long
+
+    @Query("SELECT * FROM play_lists_table WHERE playListId = :id ")
+    suspend fun getPlayList(id: Long): PlayListEntity
 }

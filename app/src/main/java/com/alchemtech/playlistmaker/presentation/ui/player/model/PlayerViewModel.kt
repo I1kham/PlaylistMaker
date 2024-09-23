@@ -39,6 +39,7 @@ class PlayerViewModel(
 
     internal fun prepareModel(trackId: String?) {
         viewModelScope.launch {
+            println(trackId)
             trackId?.let {
                 playTrack = searchInteractor.searchTracks(trackId).first().first?.get(0)
                 playTrack?.let {
