@@ -26,7 +26,6 @@
     <Button
         android:id="@+id/buttonShareApp"
         style="@style/settingsActivityButtonsStyle"
-        android:drawableTint="@color/all_YP_Black"
         android:text="@string/Share_app"
         app:icon="@drawable/share_app" />
 

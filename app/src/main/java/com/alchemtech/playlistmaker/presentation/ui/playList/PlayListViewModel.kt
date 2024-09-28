@@ -10,10 +10,7 @@ import kotlinx.coroutines.launch
 class PlayListViewModel(
     private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
-
     private val stateLiveData = MutableLiveData<PlayListFragmentState>()
-
-
     private var playListId: Long? = null
 
     internal fun getPlayList(playListId: Long?) {

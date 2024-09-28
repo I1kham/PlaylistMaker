@@ -49,6 +49,9 @@
     <string name="addedToPlayList">Добавлено в плейлист %1$s</string>
     <string name="doNotAddtoPlayList">Трек уже добавлен в плейлист %1$s</string>
     <string name="bottom_message">текст сообщения</string>
+    <string name="playList_share_but">Поделиться</string>
+    <string name="playList_edit_information_but">Редактировать информацию</string>
+    <string name="playList_delete_but">Удалить плйлист</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>

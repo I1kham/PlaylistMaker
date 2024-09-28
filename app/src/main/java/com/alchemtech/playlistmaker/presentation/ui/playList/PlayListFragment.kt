@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
+import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
 import com.alchemtech.playlistmaker.presentation.ui.dpToPx
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolderNoCorners
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
+import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.PlayListActionFragment
+import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -59,8 +63,6 @@ class PlayListFragment : Fragment() {
         prepareDescriptionText()
 
 
-
-
         binding?.let {
             bottomSheet = it.bottomSheet
         }
@@ -68,12 +70,17 @@ class PlayListFragment : Fragment() {
 
         playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
         viewModel.getPlayList(playListId)
-//        val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
-//        val recycleFragment = TracksRecycleFragment()
-//        recycleFragment.arguments = bundle
-//        childFragmentManager.beginTransaction()
-//            .replace(R.id.fragment_container_playlist_bottom, recycleFragment)
-//            .commit()
+
+        binding?.let {
+            it.menu.setOnClickListener {
+                BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(383f, requireContext())
+                prepareBackPress()
+                val playListActionFragment = PlayListActionFragment()
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_playlist_bottom, playListActionFragment)
+                    .commit()
+            }
+        }
 
 
     }
@@ -154,6 +161,27 @@ class PlayListFragment : Fragment() {
         binding?.pic?.fillByUriOrPlaceHolderNoCorners(uri, requireContext())
     }
 
+    private fun prepareBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isEnabled) {
+                        this.isEnabled = false
+                        val tracksRecycleFragment = TracksRecycleFragment()
+                        childFragmentManager.beginTransaction()
+                            .replace(
+                                R.id.fragment_container_playlist_bottom,
+                                tracksRecycleFragment
+                            )
+                            .commit()
+                        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(266f, requireContext())
+                    }
+                }
+
+
+            }
+        )
+    }
     private fun showBottomMessage(message: String) {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }

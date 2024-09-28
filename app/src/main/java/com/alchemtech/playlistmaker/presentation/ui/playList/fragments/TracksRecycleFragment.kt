@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.databinding.FragmentTracksRecyclerViewBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.TracksRecycleFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.TracksRecycleFragmentState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
@@ -22,7 +23,7 @@ class TracksRecycleFragment : Fragment() {
     private lateinit var trackAdapter: TrackCardAdapter
     private lateinit var onItemLongClick: (Track) -> Unit
     private var trackRecyclerView: RecyclerView? = null
-private var listId : Long? = null
+    private var listId: Long? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,8 +36,14 @@ private var listId : Long? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         println("TracksRecycleFragment onViewCreated")
+        false.bottomNavigatorVisibility()
 
-        listId = parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+
+
+        listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+        if (listId == null) {
+            listId = parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+        }
         println(listId)
         prepareTrackRecyclerView()
 
@@ -76,4 +83,7 @@ private var listId : Long? = null
             )
     }
 
+    private fun Boolean.bottomNavigatorVisibility() {
+        (activity as StartActivity).bottomNavigationVisibility(this)
+    }
 }
