@@ -6,7 +6,7 @@
         <item name="android:layout_height">56dp</item>
     </style>
 
-    <style name="settingsActivityButtonsStyle">
+    <style name="textButtonsStyle">
         <!--        layout-->
         <item name="android:theme">@style/Theme.MainActivityStyle</item>
         <item name="android:layout_width">match_parent</item>

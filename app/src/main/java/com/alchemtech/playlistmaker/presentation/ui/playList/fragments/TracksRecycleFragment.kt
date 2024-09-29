@@ -12,6 +12,7 @@ import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.databinding.FragmentTracksRecyclerViewBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
+import com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.TracksRecycleFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.TracksRecycleFragmentState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
@@ -24,6 +25,8 @@ class TracksRecycleFragment : Fragment() {
     private lateinit var onItemLongClick: (Track) -> Unit
     private var trackRecyclerView: RecyclerView? = null
     private var listId: Long? = null
+    private val bottomSheetSize = 266f
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,10 +38,7 @@ class TracksRecycleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println("TracksRecycleFragment onViewCreated")
         false.bottomNavigatorVisibility()
-
-
 
         listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
         if (listId == null) {
@@ -53,7 +53,20 @@ class TracksRecycleFragment : Fragment() {
         listId?.let {
             viewModel.getTracks(it)
         }
+        bottomSheetMaxHeight()
+
+//        run(
+//            debounce(300,lifecycleScope,false){
+//                findNavController().navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
+//            }
+//        )
     }
+
+    override fun onResume() {
+        super.onResume()
+        bottomSheetMaxHeight()
+    }
+
 
     private fun render(state: TracksRecycleFragmentState) {
         when (state) {
@@ -85,5 +98,15 @@ class TracksRecycleFragment : Fragment() {
 
     private fun Boolean.bottomNavigatorVisibility() {
         (activity as StartActivity).bottomNavigationVisibility(this)
+    }
+
+    private fun bottomSheetMaxHeight() {
+        try {
+            (parentFragment?.parentFragment as PlayListFragment).setBottomSheetMaxHeight(
+                bottomSheetSize
+            )
+        } catch (e: Exception) {
+            (parentFragment as PlayListFragment).setBottomSheetMaxHeight(bottomSheetSize)
+        }
     }
 }

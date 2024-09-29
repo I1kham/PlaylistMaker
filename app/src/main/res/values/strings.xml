@@ -52,6 +52,8 @@
     <string name="playList_share_but">Поделиться</string>
     <string name="playList_edit_information_but">Редактировать информацию</string>
     <string name="playList_delete_but">Удалить плйлист</string>
+    <string name="save">Сохранить</string>
+    <string name="play_list_saved">Плейлист %1$s сохранен</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>

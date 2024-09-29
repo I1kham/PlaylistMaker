@@ -65,7 +65,7 @@ class PlayListsRepositoryImpl(
         if (!mutList.contains(track.trackId)) {
             mutList.add(track.trackId)
             favoriteTracksRepository.addToFavoriteList(track)
-            playListDao.updatePlaylist(
+            playListDao.updatePlaylistTracks(
                 id,
                 tracksStringConvertor.mapListIdToString(mutList)
             )
@@ -76,6 +76,17 @@ class PlayListsRepositoryImpl(
 
     override suspend fun getPlayList(id: Long): PlayList {
         return playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
+    }
+
+    override suspend fun updatePlaylistInfo(
+        id: Long,
+        playListName: String,
+        playListDescription: String?,
+        uri: String?,
+    ) {
+
+        val coverUri = coversRepository.saveCover(id, uri?.toUri())
+        playListDao.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
     }
 
     private suspend fun PlayListEntity.convertPlaylistEntityToPlayList(): PlayList {

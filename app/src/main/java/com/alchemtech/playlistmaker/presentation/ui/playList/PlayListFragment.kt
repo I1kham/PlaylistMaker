@@ -48,10 +48,10 @@ class PlayListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
-
-
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+//        val navController = navHostFragment.navController
         return binding?.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,23 +66,17 @@ class PlayListFragment : Fragment() {
         binding?.let {
             bottomSheet = it.bottomSheet
         }
-        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(266f, requireContext())
-
         playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
         viewModel.getPlayList(playListId)
 
-        binding?.let {
-            it.menu.setOnClickListener {
-                BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(383f, requireContext())
-                prepareBackPress()
-                val playListActionFragment = PlayListActionFragment()
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_playlist_bottom, playListActionFragment)
-                    .commit()
-            }
+        prepareBackPress()
+
+        binding?.menu?.setOnClickListener {
+            val playListActionFragment = PlayListActionFragment()
+            childFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_playlist_bottom, playListActionFragment)
+                .commit()
         }
-
-
     }
 
     override fun onResume() {
@@ -108,37 +102,15 @@ class PlayListFragment : Fragment() {
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
-
         }
     }
 
     private fun prepareNameText() {
-//        binding?.let {
-//            nameEditText = it.playListName
-//            nameEditText?.isActivated = false
-//            nameTitle = it.playListplayListNameTitle
-//            nameTitle?.isVisible = false
-//            nameEditText?.doOnTextChanged { text, _, _, _ ->
-//                viewModel.setName(text.toString())
-//                nameEditText?.isActivated = !text.isNullOrEmpty()
-//                nameTitle?.isVisible = !text.isNullOrEmpty()
-//                createBut?.isEnabled = !text.isNullOrEmpty()
-//            }
-//        }
+
     }
 
     private fun prepareDescriptionText() {
-        binding?.let {
-//            descriptionEditText = it.playListDescription
-//            descriptionEditText?.isActivated = false
-//            descriptionTitle = it.playListDescriptionTitle
-//            descriptionTitle?.isVisible = false
-//            descriptionEditText?.doOnTextChanged { text, _, _, _ ->
-//                viewModel.setDescription(text.toString())
-//                descriptionEditText?.isActivated = !text.isNullOrEmpty()
-//                descriptionTitle?.isVisible = !text.isNullOrEmpty()
-//        }
-        }
+
     }
 
 
@@ -167,6 +139,7 @@ class PlayListFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
                         this.isEnabled = false
+                        println( childFragmentManager.fragments)
                         val tracksRecycleFragment = TracksRecycleFragment()
                         childFragmentManager.beginTransaction()
                             .replace(
@@ -174,15 +147,18 @@ class PlayListFragment : Fragment() {
                                 tracksRecycleFragment
                             )
                             .commit()
-                        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(266f, requireContext())
                     }
                 }
-
-
             }
         )
     }
+
     private fun showBottomMessage(message: String) {
         (activity as StartActivity).bottomSheetShowMessage(message)
+    }
+
+    fun setBottomSheetMaxHeight(size: Float) {
+        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(size, requireContext())
+
     }
 }

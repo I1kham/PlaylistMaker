@@ -62,5 +62,9 @@
         android:id="@+id/playList"
         android:name="com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment"
         android:label="fragment_playlist"
-        tools:layout="@layout/fragment_playlist" />
+        tools:layout="@layout/fragment_playlist" >
+        <action
+            android:id="@+id/action_playList_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+    </fragment>
 </navigation>

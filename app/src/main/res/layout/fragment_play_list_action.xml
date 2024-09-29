@@ -26,18 +26,18 @@
             tools:listitem="@layout/play_list_bottom_sheet_card" />
         <!--        todo must be visible-->
     <Button
-        android:id="@+id/buttonShareApp"
-        style="@style/settingsActivityButtonsStyle"
+        android:id="@+id/buttonSharePlayList"
+        style="@style/textButtonsStyle"
         android:text="@string/playList_share_but" />
 
     <Button
-        android:id="@+id/buttonToSupport"
-        style="@style/settingsActivityButtonsStyle"
+        android:id="@+id/buttonEditPlayList"
+        style="@style/textButtonsStyle"
         android:text="@string/playList_edit_information_but" />
 
     <Button
-        android:id="@+id/buttonTermsOfUse"
-        style="@style/settingsActivityButtonsStyle"
+        android:id="@+id/buttonDeletePlaylist"
+        style="@style/textButtonsStyle"
         android:text="@string/playList_delete_but" />
 
 

@@ -6,18 +6,6 @@
     app:startDestination="@id/tracksRecycleFragment">
 
     <fragment
-        android:id="@+id/playList"
-        android:name="com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment"
-        android:label="fragment_playlist"
-        tools:layout="@layout/fragment_playlist" >
-        <action
-            android:id="@+id/action_playList_to_tracksRecycleFragment"
-            app:destination="@id/tracksRecycleFragment" />
-        <action
-            android:id="@+id/action_playList_to_playListActionFragment"
-            app:destination="@id/playListActionFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/tracksRecycleFragment"
         android:name="com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment"
         android:label="fragment_tracks_recycler_view"
@@ -30,9 +18,5 @@
         android:id="@+id/playListActionFragment"
         android:name="com.alchemtech.playlistmaker.presentation.ui.playList.fragments.PlayListActionFragment"
         android:label="fragment_play_list_action"
-        tools:layout="@layout/fragment_play_list_action" >
-        <action
-            android:id="@+id/action_playListActionFragment_to_tracksRecycleFragment"
-            app:destination="@id/tracksRecycleFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_play_list_action" />
 </navigation>

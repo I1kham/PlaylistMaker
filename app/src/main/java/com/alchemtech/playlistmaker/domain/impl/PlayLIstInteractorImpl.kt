@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.domain.impl
 
+import android.net.Uri
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
@@ -31,5 +32,14 @@ class PlayLIstInteractorImpl(
 
     override suspend fun getPlayList(id: Long): PlayList {
         return playListsRepository.getPlayList(id)
+    }
+
+    override suspend fun updatePlaylistInfo(
+        id: Long,
+        playListName: String,
+        playListDescription: String?,
+        coverUri: Uri?
+    ) {
+        playListsRepository.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
     }
 }

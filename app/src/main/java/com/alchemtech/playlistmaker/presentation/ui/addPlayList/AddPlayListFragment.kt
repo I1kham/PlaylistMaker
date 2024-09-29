@@ -23,6 +23,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
 import com.alchemtech.playlistmaker.presentation.ui.fillBy
@@ -45,6 +46,7 @@ class AddPlayListFragment : Fragment() {
     private var createBut: Button? = null
     private var progressBar: ProgressBar? = null
     private var uri: Uri? = null
+    private var playListId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +68,10 @@ class AddPlayListFragment : Fragment() {
         prepareNameText()
         prepareDescriptionText()
         prepareBackPress()
+
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+        viewModel.editPlaylist(playListId)
+
     }
 
     override fun onResume() {
@@ -135,7 +141,7 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun actionCreateBut() {
-        viewModel.savePlayList()
+        viewModel.addPlayList()
     }
 
     private fun preparePictureLayOut() {
@@ -331,6 +337,18 @@ class AddPlayListFragment : Fragment() {
 
             is AddPlayListState.SetPic ->
                 setPicture(state.uri)
+
+            is AddPlayListState.Content -> {
+                setPicture(state.playList.coverUri)
+                nameEditText?.setText(state.playList.name)
+                descriptionEditText?.setText(state.playList.description)
+                binding?.preview?.text = null
+                createBut?.text = getString(R.string.save)
+                createBut?.setOnClickListener{
+                    viewModel.savePlaylist()
+                    showBottomMessage(getString(R.string.play_list_saved, state.playList.name))
+                }
+            }
         }
     }
 
