@@ -16,22 +16,48 @@ class AddPlayListViewModel(
     private var playListName: String = ""
     private var playListDescription: String? = null
     private var uri: Uri? = null
+    private var playListIdVm: Long = 0
 
     fun observeRenderState(): LiveData<AddPlayListState> = stateLiveData
 
-    fun savePlayList() {
+    fun addPlayList() {
         if (playListName.isNotEmpty()) {
             renderState(AddPlayListState.Loading)
             viewModelScope.launch {
                 playListInteractor.addPlayList(
                     PlayList(
-                       0,
+                        playListIdVm,
                         name = playListName,
                         description = playListDescription,
                         uri,
                     )
                 )
                 renderState(AddPlayListState.Exit)
+            }
+        }
+    }
+
+    fun savePlaylist() {
+        viewModelScope.launch {
+            renderState(AddPlayListState.Loading)
+            playListInteractor.updatePlaylistInfo(
+                playListIdVm,
+                playListName,
+                playListDescription,
+                uri
+            )
+        }
+        renderState(AddPlayListState.Exit)
+    }
+
+
+    internal fun editPlaylist(playListID: Long?) {
+        playListID?.let {
+            viewModelScope.launch {
+                val playList = playListInteractor.getPlayList(it)
+                uri = playList.coverUri
+                playListIdVm = playListID
+                renderState(AddPlayListState.Content(playList))
             }
         }
     }

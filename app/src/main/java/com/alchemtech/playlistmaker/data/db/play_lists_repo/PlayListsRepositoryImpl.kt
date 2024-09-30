@@ -18,14 +18,22 @@ class PlayListsRepositoryImpl(
     private val playListDao: PlayListDao,
     private val tracksStringConvertor: TracksStringConvertor,
     private val coversRepository: CoversRepository,
-    ) : PlayListsRepository {
+) : PlayListsRepository {
     override suspend fun addPlayList(playList: PlayList) {
-        val playListEntity = playList.convertPlaylistIDs()
-        playListEntity.playListId = playListDao.getRowCount()+1
-        playList.coverUri?.let {
-            playList.coverUri = coversRepository.saveCover(playList.id, it)
-        }
-        playListDao.addPlayList(playListEntity)
+        val name = playList.name
+        val id = playListDao.getRowCount() + 1
+        val description = playList.description
+        val coverUri = coversRepository.saveCover(id, playList.coverUri).toString()
+        val tracksId = tracksStringConvertor.mapListToIDs(playList.tracks)
+        return playListDao.addPlayList(
+            PlayListEntity(
+                id,
+                name,
+                description,
+                coverUri,
+                tracksId
+            )
+        )
     }
 
     override suspend fun removePlayList(id: Long) {
@@ -35,66 +43,68 @@ class PlayListsRepositoryImpl(
 
     override fun getAllPlayLists(): Flow<List<PlayList>> {
         return playListDao.getAllPlayLists().map { playListEntity: List<PlayListEntity> ->
-            playListEntity.map { playList -> playList.convertPlaylistTracks() }
+            playListEntity.map { playList -> playList.convertPlaylistEntityToPlayList() }
         }
     }
 
 
-    override fun getTracks(id: Long): Flow<List<Track>> = flow {
-        tracksStringConvertor.map(playListDao.getTracksIdFromPlayList(id))
-
+    override suspend fun getTracks(id: Long): Flow<List<Track>> {
+        val tracksId = playListDao.getTracksIdFromPlayList(id)
+        val tracks = tracksStringConvertor.mapIDsStringToList(tracksId)
+        return flow { emit(tracks.map { favoriteTracksRepository.getTrackByID(it) }) }
     }
 
 
     override suspend fun addToList(id: Long, track: Track): Boolean {
-        var isAdded =false
+        var isAdded = false
         val mutList = mutableListOf<String>()
+        val a = playListDao.getTracksIdFromPlayList(id)
         mutList.addAll(
-            tracksStringConvertor.mapIDsListToList(playListDao.getTracksIdFromPlayList(id))
+            tracksStringConvertor.mapIDsStringToList(a)
         )
         if (!mutList.contains(track.trackId)) {
             mutList.add(track.trackId)
             favoriteTracksRepository.addToFavoriteList(track)
-            playListDao.updatePlaylist(
+            playListDao.updatePlaylistTracks(
                 id,
                 tracksStringConvertor.mapListIdToString(mutList)
             )
             isAdded = true
         }
-
         return isAdded
     }
 
-    private fun PlayList.convertPlaylistIDs(): PlayListEntity {
-        return PlayListEntity(
-            this.id,
-            this.name,
-            this.description,
-            this.coverUri.toString(),
-            tracksStringConvertor.mapListToIDs(this.tracks)
-        )
+    override suspend fun getPlayList(id: Long): PlayList {
+        return playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
     }
 
-    private suspend fun PlayListEntity.convertPlaylistTracks(): PlayList {
+    override suspend fun updatePlaylistInfo(
+        id: Long,
+        playListName: String,
+        playListDescription: String?,
+        uri: String?,
+    ) {
+
+        val coverUri = coversRepository.saveCover(id, uri?.toUri())
+        playListDao.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
+    }
+
+    private suspend fun PlayListEntity.convertPlaylistEntityToPlayList(): PlayList {
         return PlayList(
             this.playListId,
             this.name,
             this.description,
             this.coverUri?.toUri(),
-            getTackListByIList(
-                tracksStringConvertor.mapIDsListToList(this.tracks)
+            getTacksListByIDList(
+                tracksStringConvertor.mapIDsStringToList(this.tracks)
             )
         )
     }
 
-    private suspend fun getTrackByID(id: String): Track {
-        return favoriteTracksRepository.getTrackByID(id)
-    }
-
-    private suspend fun getTackListByIList(idList: List<String>): List<Track> {
+    private suspend fun getTacksListByIDList(idList: List<String>): List<Track> {
         val newTrackList = mutableListOf<Track>()
         for (id in idList) {
-            newTrackList.add((getTrackByID(id)))
+            newTrackList.add((favoriteTracksRepository.getTrackByID(id)))
         }
         return newTrackList
     }

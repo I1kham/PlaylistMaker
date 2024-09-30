@@ -18,7 +18,7 @@
             android:layout_height="45dp"
             android:layout_marginVertical="8dp"
             android:layout_marginStart="13dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/track_album_default" />
 
         <LinearLayout

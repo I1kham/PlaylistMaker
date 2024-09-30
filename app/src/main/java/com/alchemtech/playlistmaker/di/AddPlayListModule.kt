@@ -31,7 +31,7 @@ var addPlayListViewModule = module {
             favoriteTracksRepository = get(),
             playListDao = get(),
             tracksStringConvertor = get(),
-            coversRepository = get()
+            coversRepository = get(),
         )
     }
 

@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -24,9 +23,10 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
-import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBigNoPlaceHolder
+import com.alchemtech.playlistmaker.presentation.ui.fillBy
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
@@ -46,6 +46,7 @@ class AddPlayListFragment : Fragment() {
     private var createBut: Button? = null
     private var progressBar: ProgressBar? = null
     private var uri: Uri? = null
+    private var playListId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,7 +59,7 @@ class AddPlayListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeRenderState()
+        prepareViewModel()
         prepareBackBut()
         false.bottomNavigatorVisibility()
         prepareProgressBar()
@@ -133,10 +134,13 @@ class AddPlayListFragment : Fragment() {
             showBottomMessage(getString(R.string.playListAdded, name))
             actionCreateBut()
         }
+        if (playListId!=null){
+            createBut?.text = getString(R.string.save)
+        }
     }
 
     private fun actionCreateBut() {
-        viewModel.savePlayList()
+        viewModel.addPlayList()
     }
 
     private fun preparePictureLayOut() {
@@ -237,8 +241,7 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setPicture(uri: Uri?) {
-        val albumCover: ImageView? = binding?.picAdding
-        imageViewFillBigNoPlaceHolder(uri, albumCover, requireContext())
+        binding?.picAdding?.fillBy(uri, requireContext())
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -283,7 +286,9 @@ class AddPlayListFragment : Fragment() {
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
-
+        }
+        if(playListId!=null){
+            binding?.preview?.text = null
         }
     }
 
@@ -317,11 +322,14 @@ class AddPlayListFragment : Fragment() {
     }
 
 
-
-    private fun observeRenderState() {
+    private fun prepareViewModel() {
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
         }
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
+                parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+        viewModel.editPlaylist(playListId)
     }
 
     private fun render(state: AddPlayListState) {
@@ -334,6 +342,16 @@ class AddPlayListFragment : Fragment() {
 
             is AddPlayListState.SetPic ->
                 setPicture(state.uri)
+
+            is AddPlayListState.Content -> {
+                setPicture(state.playList.coverUri)
+                nameEditText?.setText(state.playList.name)
+                descriptionEditText?.setText(state.playList.description)
+                createBut?.setOnClickListener{
+                    viewModel.savePlaylist()
+                    showBottomMessage(getString(R.string.play_list_saved, state.playList.name))
+                }
+            }
         }
     }
 

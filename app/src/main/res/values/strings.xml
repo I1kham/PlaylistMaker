@@ -23,7 +23,7 @@
     <string name="primaryGenreName">Жанр</string>
     <string name="TrackYear">Год</string>
     <string name="album">Альбом</string>
-    <string name="TrackDuration">00:30</string>
+    <string name="TrackDuration">Длительность</string>
     <string name="trackName">TrackName</string>
     <string name="emptyMediaLib">Ваша медиатека пуста</string>
     <string name="emptyPlayLists">Вы не создали\nни одного плейлиста</string>
@@ -49,6 +49,11 @@
     <string name="addedToPlayList">Добавлено в плейлист %1$s</string>
     <string name="doNotAddtoPlayList">Трек уже добавлен в плейлист %1$s</string>
     <string name="bottom_message">текст сообщения</string>
+    <string name="playList_share_but">Поделиться</string>
+    <string name="playList_edit_information_but">Редактировать информацию</string>
+    <string name="playList_delete_but">Удалить плйлист</string>
+    <string name="save">Сохранить</string>
+    <string name="play_list_saved">Плейлист %1$s сохранен</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>
