@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
@@ -16,6 +17,7 @@ import com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.TracksRecycleFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.TracksRecycleFragmentState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
+import com.alchemtech.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksRecycleFragment : Fragment() {
@@ -40,11 +42,10 @@ class TracksRecycleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         false.bottomNavigatorVisibility()
 
-        listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-        if (listId == null) {
-            listId = parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-        }
-        println(listId)
+        listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
+                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+
         prepareTrackRecyclerView()
 
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
@@ -55,11 +56,11 @@ class TracksRecycleFragment : Fragment() {
         }
         bottomSheetMaxHeight()
 
-//        run(
-//            debounce(300,lifecycleScope,false){
-//                findNavController().navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
-//            }
-//        )
+        run(
+            debounce(300, lifecycleScope, false) {
+                //        findNavController().navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
+            }
+        )
     }
 
     override fun onResume() {

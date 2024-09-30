@@ -29,7 +29,7 @@ class PlayListActionFragment : Fragment() {
     private lateinit var adapter: PlayListBottomCardAdapter
     private var binding: FragmentPlayListActionBinding? = null
     private val bottomSheetSize = 383f
-
+    private var playListId: Long? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,12 +44,15 @@ class PlayListActionFragment : Fragment() {
         false.bottomNavigatorVisibility()
         observeRenderState()
         prepareRecyclerView()
-        val playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+        playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
+                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+
         viewModel.getPlayList(playListId)
 
         val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
         binding?.buttonEditPlayList?.setOnClickListener {
-           findNavController().navigate(R.id.action_playList_to_addPlayListFragment, bundle)
+            parentFragment?.parentFragment?.findNavController()?.navigate(R.id.action_playList_to_addPlayListFragment, bundle)
         }
 
         bottomSheetMaxHeight()
@@ -110,7 +113,15 @@ class PlayListActionFragment : Fragment() {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }
 
-    private fun bottomSheetMaxHeight(){
-        (parentFragment as PlayListFragment).setBottomSheetMaxHeight(bottomSheetSize)
+    private fun bottomSheetMaxHeight() {
+        try {
+
+            (parentFragment as PlayListFragment).setBottomSheetMaxHeight(bottomSheetSize)
+        } catch (e: Exception) {
+            (parentFragment?.parentFragment as PlayListFragment).setBottomSheetMaxHeight(
+                bottomSheetSize
+            )
+
+        }
     }
 }

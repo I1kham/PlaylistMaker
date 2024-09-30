@@ -59,7 +59,7 @@ class AddPlayListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeRenderState()
+        prepareViewModel()
         prepareBackBut()
         false.bottomNavigatorVisibility()
         prepareProgressBar()
@@ -68,10 +68,6 @@ class AddPlayListFragment : Fragment() {
         prepareNameText()
         prepareDescriptionText()
         prepareBackPress()
-
-        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-        viewModel.editPlaylist(playListId)
-
     }
 
     override fun onResume() {
@@ -137,6 +133,9 @@ class AddPlayListFragment : Fragment() {
             val name = nameEditText?.text.toString()
             showBottomMessage(getString(R.string.playListAdded, name))
             actionCreateBut()
+        }
+        if (playListId!=null){
+            createBut?.text = getString(R.string.save)
         }
     }
 
@@ -287,7 +286,9 @@ class AddPlayListFragment : Fragment() {
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
-
+        }
+        if(playListId!=null){
+            binding?.preview?.text = null
         }
     }
 
@@ -321,10 +322,14 @@ class AddPlayListFragment : Fragment() {
     }
 
 
-    private fun observeRenderState() {
+    private fun prepareViewModel() {
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
         }
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
+                parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+        viewModel.editPlaylist(playListId)
     }
 
     private fun render(state: AddPlayListState) {
@@ -342,8 +347,6 @@ class AddPlayListFragment : Fragment() {
                 setPicture(state.playList.coverUri)
                 nameEditText?.setText(state.playList.name)
                 descriptionEditText?.setText(state.playList.description)
-                binding?.preview?.text = null
-                createBut?.text = getString(R.string.save)
                 createBut?.setOnClickListener{
                     viewModel.savePlaylist()
                     showBottomMessage(getString(R.string.play_list_saved, state.playList.name))

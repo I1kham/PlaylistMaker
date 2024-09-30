@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -17,7 +16,6 @@ import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
 import com.alchemtech.playlistmaker.presentation.ui.dpToPx
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolderNoCorners
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
-import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.PlayListActionFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -30,27 +28,14 @@ class PlayListFragment : Fragment() {
     private var bottomSheet: LinearLayout? = null
     private var navHostFragment: NavHostFragment? = null
     private var navController: NavController? = null
-    private var bottomNavigationView: BottomNavigationView? = null
     private var playListId: Long? = null
 
-    //    private val requester = PermissionRequester.instance()
-//    private var nameEditText: EditText? = null
-//    private var nameTitle: TextView? = null
-//    private var descriptionEditText: EditText? = null
-//    private var descriptionTitle: TextView? = null
-//    private var createBut: Button? = null
-    private var progressBar: ProgressBar? = null
-
-    //    private var uri: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
-//        val navHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
-//        val navController = navHostFragment.navController
         return binding?.root
     }
 
@@ -61,7 +46,7 @@ class PlayListFragment : Fragment() {
         false.bottomNavigatorVisibility()
         prepareNameText()
         prepareDescriptionText()
-
+        prepareNavController()
 
         binding?.let {
             bottomSheet = it.bottomSheet
@@ -69,14 +54,18 @@ class PlayListFragment : Fragment() {
         playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
         viewModel.getPlayList(playListId)
 
-        prepareBackPress()
 
         binding?.menu?.setOnClickListener {
-            val playListActionFragment = PlayListActionFragment()
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_playlist_bottom, playListActionFragment)
-                .commit()
+            prepareBackPress()
+            navController?.navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
         }
+    }
+
+    private fun prepareNavController() {
+        navHostFragment =
+            childFragmentManager.findFragmentById(R.id.fragment_container_playlist_bottom) as NavHostFragment
+        navController = navHostFragment?.navController
+
     }
 
     override fun onResume() {
@@ -139,7 +128,7 @@ class PlayListFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
                         this.isEnabled = false
-                        println( childFragmentManager.fragments)
+                        println(childFragmentManager.fragments)
                         val tracksRecycleFragment = TracksRecycleFragment()
                         childFragmentManager.beginTransaction()
                             .replace(
