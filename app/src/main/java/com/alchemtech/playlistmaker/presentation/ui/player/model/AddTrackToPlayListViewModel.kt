@@ -27,11 +27,9 @@ class AddTrackToPlayListViewModel(
     }
 
     fun setTrackID(id: String?) {
-        println(id)
         viewModelScope.launch {
             id?.let {
                 track = tracksDbInteractor.getTrackById(it)
-                println("AddTrackToPlayListViewModel "+track)
             }
         }
         startLogic()
