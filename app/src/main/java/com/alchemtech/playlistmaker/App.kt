@@ -3,6 +3,7 @@ package com.alchemtech.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.di.addPlayListViewModule
+import com.alchemtech.playlistmaker.di.addTrackToPlayListModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
 import com.alchemtech.playlistmaker.di.playListActionModule
@@ -38,6 +39,7 @@ class App : Application() {
                 playListViewModel,
                 tracksRecycleFragmentModel,
                 playListActionModule,
+                addTrackToPlayListModule,
             )
         }
         switchTheme()

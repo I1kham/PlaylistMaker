@@ -1,7 +1,5 @@
 package com.alchemtech.playlistmaker.di
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.alchemtech.playlistmaker.data.converters.TrackDbConvertor
@@ -9,14 +7,10 @@ import com.alchemtech.playlistmaker.data.db.entity.AppDatabase
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
 import com.alchemtech.playlistmaker.data.db.favorite_list_repo.FavoriteTracksRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.PlayerRepositoryImpl
-import com.alchemtech.playlistmaker.data.repository.SharedHistoryRepositoryImpl
-import com.alchemtech.playlistmaker.domain.api.HistoryRepository
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
-import com.alchemtech.playlistmaker.domain.impl.FavoriteTracksInteractorImpl
-import com.alchemtech.playlistmaker.domain.impl.SingleTrackInteractorImpl
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
+import com.alchemtech.playlistmaker.domain.impl.TracksDbInteractorImpl
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractorImlp
 import com.alchemtech.playlistmaker.presentation.ui.player.model.PlayerViewModel
@@ -25,22 +19,15 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private const val SAVED_TRACK = "SAVED_TRACK"
-private const val TRACK = "TRACK"
-
 val playerViewModel = module {
     viewModel<PlayerViewModel> {
         PlayerViewModel(
-            singleTrackRepository = this.get(),
             player = get(),
-            favoriteTracksInteractor = this.get<FavoriteTracksInteractor>(),
-            playListInteractor = get(),
+            tracksDbInteractor = this.get<TracksDbInteractor>(),
             searchInteractor = get()
         )
     }
-    single<SingleTrackInteractor> {
-        SingleTrackInteractorImpl(historyRepository = this.get())
-    }
+
     factory<PlayerInteractor> {
         PlayerInteractorImlp(playerRepository = get())
     }
@@ -50,23 +37,12 @@ val playerViewModel = module {
     factory<MediaPlayer> {
         MediaPlayer()
     }
-    factory<HistoryRepository> {
-        SharedHistoryRepositoryImpl(
-            SAVED_TRACK,
-            sharedPreferences = this.get(),
-            tracksStringConvertor = get()
-        )
-    }
-    factory<SharedPreferences> {
-        androidContext().getSharedPreferences(
-            TRACK, Context.MODE_PRIVATE
-        )
-    }
+
     single<Gson> {
         Gson()
     }
-    single<FavoriteTracksInteractor> {
-        FavoriteTracksInteractorImpl(
+    single<TracksDbInteractor> {
+        TracksDbInteractorImpl(
             favoriteTracksRepository = get()
         )
     }

@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.PlayList
-import com.alchemtech.playlistmaker.presentation.ui.convertListSize
+import com.alchemtech.playlistmaker.presentation.ui.convertListPlurals
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolder
 
 class PlayListBottomCardViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -17,7 +17,7 @@ class PlayListBottomCardViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
     fun bind(playList: PlayList) {
         title.text = playList.name
-        description.text = playList.tracks.size.convertListSize(itemView.context)
+        description.text = playList.tracks.size.convertListPlurals(itemView.context)
         image.fillByUriOrPlaceHolder(playList.coverUri, itemView.context,true)
     }
 }

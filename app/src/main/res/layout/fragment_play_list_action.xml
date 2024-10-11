@@ -39,9 +39,6 @@
         android:id="@+id/buttonDeletePlaylist"
         style="@style/textButtonsStyle"
         android:text="@string/playList_delete_but" />
-
-
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="44dp"
@@ -52,6 +49,4 @@
         android:visibility="gone" />
 
 </LinearLayout>
-
-
 </LinearLayout>

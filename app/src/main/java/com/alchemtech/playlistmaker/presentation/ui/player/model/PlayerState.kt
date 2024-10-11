@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.player.model
 
-import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 
 sealed interface PlayerState {
@@ -10,9 +9,5 @@ sealed interface PlayerState {
     data class OnCompletion(val track: Track) : PlayerState
     data class Fill(val track: Track) : PlayerState
     data class LikeBut(val track: Track) : PlayerState
-    data class ShowList(val playLists: List<PlayList>) : PlayerState
-    data object EmptyList : PlayerState
-    data class TrackAdded(val added: Boolean, val namePlayList: String) : PlayerState
-    data object LoadingAdd : PlayerState
     data class Preparing(val prepare: Boolean): PlayerState
 }

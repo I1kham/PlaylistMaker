@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
-import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
-import com.alchemtech.playlistmaker.domain.entity.PlayList
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
@@ -18,10 +15,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
-    private val favoriteTracksInteractor: FavoriteTracksInteractor,
-    private val playListInteractor: PlayListInteractor,
+    private val tracksDbInteractor: TracksDbInteractor,
     private val searchInteractor: TracksInteractor,
 
     ) : ViewModel() {
@@ -43,7 +38,8 @@ class PlayerViewModel(
             trackId?.let {
                 playTrack = searchInteractor.searchTracks(trackId).first().first?.get(0)
                 playTrack?.let {
-                    preparePlayer(playTrack)
+                    tracksDbInteractor.addToFavoriteList(it)
+                    preparePlayer(it)
                     renderState(PlayerState.Fill(it))
                 }
             } // TODO: if transfer hass problems
@@ -59,49 +55,24 @@ class PlayerViewModel(
         player.pausePlayer()
     }
 
-    internal fun addTrackTo(playList: PlayList) {
-        viewModelScope.launch {
-            playTrack?.let {
-                renderState(
-                    PlayerState.TrackAdded(
-                        playListInteractor.addToList(
-                            playList.id,
-                            it
-                        ), playList.name
-                    )
-                )
-            }
-        }
-    }
 
     internal fun onFavoriteClicked() {
         playTrack?.let {
             if (it.isFavorite) {
                 it.isFavorite = false
                 viewModelScope.launch {
-                    favoriteTracksInteractor.removeFromFavoriteList(it)
+                    tracksDbInteractor.removeFromFavoriteList(it)
                 }
             } else {
                 it.isFavorite = true
                 viewModelScope.launch {
-                    favoriteTracksInteractor.addToFavoriteList(it)
+                    tracksDbInteractor.addToFavoriteList(it)
                 }
             }
             renderState(PlayerState.LikeBut(it))
         }
     }
 
-    internal fun addToPlaylist() {
-        viewModelScope.launch {
-            playListInteractor.getAllPlayLists().collect { playList ->
-                if (playList.isNotEmpty()) {
-                    renderState(PlayerState.ShowList(playList))
-                } else {
-                    renderState(PlayerState.EmptyList)
-                }
-            }
-        }
-    }
 
     internal fun playBut() {
         player.playbackControl()

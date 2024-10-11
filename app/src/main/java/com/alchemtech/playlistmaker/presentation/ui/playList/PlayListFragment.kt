@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.activity.OnBackPressedCallback
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
+import com.alchemtech.playlistmaker.presentation.ui.convertDurationPlurals
+import com.alchemtech.playlistmaker.presentation.ui.convertListPlurals
 import com.alchemtech.playlistmaker.presentation.ui.dpToPx
+import com.alchemtech.playlistmaker.presentation.ui.durationFormatter
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolderNoCorners
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
-import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.TracksRecycleFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,7 +30,10 @@ class PlayListFragment : Fragment() {
     private var navHostFragment: NavHostFragment? = null
     private var navController: NavController? = null
     private var playListId: Long? = null
-
+    private var plDurationText: TextView? = null
+    private var plCount: TextView? = null
+    private var plName: TextView? = null
+    private var plDescription: TextView? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +52,7 @@ class PlayListFragment : Fragment() {
         prepareDescriptionText()
         prepareNavController()
 
+
         binding?.let {
             bottomSheet = it.bottomSheet
         }
@@ -56,9 +61,13 @@ class PlayListFragment : Fragment() {
 
 
         binding?.menu?.setOnClickListener {
-            prepareBackPress()
             navController?.navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
         }
+
+        plDurationText = binding?.plDuration
+        plCount = binding?.tracksCount
+        plName = binding?.playListName
+        plDescription = binding?.playListDescription
     }
 
     private fun prepareNavController() {
@@ -112,7 +121,12 @@ class PlayListFragment : Fragment() {
     private fun render(state: PlayListFragmentState) {
         when (state) {
             is PlayListFragmentState.Content -> {
-                setPicture(state.playList.coverUri)
+                setPicture(state.playListCover)
+                plCount?.text = state.count.convertListPlurals(requireContext())
+                plDurationText?.text = state.duration.durationFormatter().toInt()
+                    .convertDurationPlurals(requireContext())
+                plName?.text = state.name
+                plDescription?.text = state.description
             }
 
         }
@@ -122,25 +136,6 @@ class PlayListFragment : Fragment() {
         binding?.pic?.fillByUriOrPlaceHolderNoCorners(uri, requireContext())
     }
 
-    private fun prepareBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (isEnabled) {
-                        this.isEnabled = false
-                        println(childFragmentManager.fragments)
-                        val tracksRecycleFragment = TracksRecycleFragment()
-                        childFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.fragment_container_playlist_bottom,
-                                tracksRecycleFragment
-                            )
-                            .commit()
-                    }
-                }
-            }
-        )
-    }
 
     private fun showBottomMessage(message: String) {
         (activity as StartActivity).bottomSheetShowMessage(message)

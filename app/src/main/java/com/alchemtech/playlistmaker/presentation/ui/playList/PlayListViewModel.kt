@@ -12,12 +12,25 @@ class PlayListViewModel(
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<PlayListFragmentState>()
     private var playListId: Long? = null
+    private var playListDuration: Long = 0L
 
     internal fun getPlayList(playListId: Long?) {
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
-                renderState(PlayListFragmentState.Content(playListInteractor.getPlayList(it)))
+                val playList = playListInteractor.getPlayList(it)
+                playList.tracks.map {
+                    playListDuration += it.trackTimeMillis
+                }
+                renderState(
+                    PlayListFragmentState.Content(
+                        playList.coverUri,
+                        playList.name,
+                        playList.description,
+                        playListDuration,
+                        playList.tracks.size
+                    )
+                )
             }
         }
     }

@@ -64,7 +64,6 @@
         <TextView
             android:id="@+id/playListName"
             style="@style/PlayListInfoBold"
-
             android:text="@string/play_list_name_hint"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/playListDescription"

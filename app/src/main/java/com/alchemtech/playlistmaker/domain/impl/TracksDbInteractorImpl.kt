@@ -1,13 +1,13 @@
 package com.alchemtech.playlistmaker.domain.impl
 
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
 import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 
-class FavoriteTracksInteractorImpl(
+class TracksDbInteractorImpl(
     private val favoriteTracksRepository: FavoriteTracksRepository,
-) : FavoriteTracksInteractor {
+) : TracksDbInteractor {
     override suspend fun addToFavoriteList(track: Track) {
         favoriteTracksRepository.addToFavoriteList(track)
     }
@@ -16,11 +16,15 @@ class FavoriteTracksInteractorImpl(
         favoriteTracksRepository.removeFromFavoriteList(track)
     }
 
-    override suspend fun getFavoriteTrackList(): Flow<List<Track>> {
+    override  fun getFavoriteTrackList(): Flow<List<Track>> {
         return favoriteTracksRepository.getFavoriteTrackList()
     }
 
-    override suspend fun getAllTrackList(): Flow<List<Track>> {
+    override  fun getAllTrackList(): Flow<List<Track>> {
         return favoriteTracksRepository.getAllTrackList()
+    }
+
+    override suspend fun getTrackById(id: String): Track {
+       return favoriteTracksRepository.getTrackByID(id)
     }
 }

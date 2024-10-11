@@ -19,17 +19,16 @@ import com.alchemtech.playlistmaker.presentation.ui.playLikstBottomCard.PlayList
 import com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.PlayListActionFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.PlayListActionFragmentState
-import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListActionFragment : Fragment() {
     private val viewModel: PlayListActionFragmentModel by viewModel()
-    private lateinit var trackAdapter: TrackCardAdapter
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: PlayListBottomCardAdapter
     private var binding: FragmentPlayListActionBinding? = null
     private val bottomSheetSize = 383f
     private var playListId: Long? = null
+    private var delBut: View?= null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +43,11 @@ class PlayListActionFragment : Fragment() {
         false.bottomNavigatorVisibility()
         observeRenderState()
         prepareRecyclerView()
+
+        delBut = binding?.buttonDeletePlaylist
+        delBut?.setOnClickListener{
+            viewModel.deletePlayList(playListId)
+        }
         playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
                 parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
                 )
@@ -87,6 +91,9 @@ class PlayListActionFragment : Fragment() {
                 state.playList?.upDateAdapter()
             }
 
+            PlayListActionFragmentState.Exit -> {
+                parentFragment?.parentFragment?.findNavController()?.popBackStack()
+            }
         }
     }
 
@@ -115,7 +122,6 @@ class PlayListActionFragment : Fragment() {
 
     private fun bottomSheetMaxHeight() {
         try {
-
             (parentFragment as PlayListFragment).setBottomSheetMaxHeight(bottomSheetSize)
         } catch (e: Exception) {
             (parentFragment?.parentFragment as PlayListFragment).setBottomSheetMaxHeight(

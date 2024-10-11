@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.launch
 
 class FavoriteTracksViewModel(
-    private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val tracksDbInteractor: TracksDbInteractor,
     private val singleTrackInteractor: SingleTrackInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<FavoriteTracksViewState>()
@@ -32,7 +32,7 @@ class FavoriteTracksViewModel(
     private fun getFavoriteTracksList() {
         renderState(FavoriteTracksViewState.Loading)
         viewModelScope.launch {
-            favoriteTracksInteractor.getFavoriteTrackList().collect { list ->
+            tracksDbInteractor.getFavoriteTrackList().collect { list ->
                 if (list.isNotEmpty()) {
                     renderState(FavoriteTracksViewState.TracksList(list.asReversed()))
                 } else {

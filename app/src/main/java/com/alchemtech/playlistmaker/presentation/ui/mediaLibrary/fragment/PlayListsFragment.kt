@@ -61,7 +61,6 @@ class PlayListsFragment : Fragment() {
 
     private fun prepareAddPlayListButton() {
         binding?.addPlayListBut?.setOnClickListener {
-
             findNavController().navigate(R.id.action_mediaLibFragment_to_addPlayListFragment)
         }
     }
