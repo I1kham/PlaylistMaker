@@ -18,18 +18,14 @@ class AddTrackToPlayListViewModel(
     var track: Track? = null
     private val stateLiveData = MutableLiveData<AddTrackToPlayListFragmentState>()
 
-    companion object {
-    }
-
+    companion object
 
 
     fun observeRenderState(): LiveData<AddTrackToPlayListFragmentState> = stateLiveData
     private fun renderState(state: AddTrackToPlayListFragmentState) {
         stateLiveData.postValue(state)
     }
-    override fun onCleared() {
-        super.onCleared()
-    }
+
     fun setTrackID(id: String?) {
         println(id)
         viewModelScope.launch {

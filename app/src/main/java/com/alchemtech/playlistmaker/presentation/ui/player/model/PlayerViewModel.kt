@@ -34,7 +34,6 @@ class PlayerViewModel(
 
     internal fun prepareModel(trackId: String?) {
         viewModelScope.launch {
-            println(trackId)
             trackId?.let {
                 playTrack = searchInteractor.searchTracks(trackId).first().first?.get(0)
                 playTrack?.let {
@@ -42,7 +41,9 @@ class PlayerViewModel(
                     preparePlayer(it)
                     renderState(PlayerState.Fill(it))
                 }
-            } // TODO: if transfer hass problems
+            } ?: run {
+                renderState(PlayerState.Error)
+            }
         }
     }
 

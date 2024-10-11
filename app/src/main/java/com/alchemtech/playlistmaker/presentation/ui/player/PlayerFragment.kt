@@ -169,6 +169,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
             }
 
             is PlayerState.Preparing -> binding?.playerProgressBar?.isVisible = state.prepare
+            PlayerState.Error -> showBottomMessage(getString(R.string.no_internet_bottom_message))
         }
     }
 
@@ -225,5 +226,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
             }
         }
     }
-
+    private fun showBottomMessage(message: String) {
+        (activity as StartActivity).bottomSheetShowMessage(message)
+    }
 }

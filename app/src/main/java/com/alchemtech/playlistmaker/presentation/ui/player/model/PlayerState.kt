@@ -10,4 +10,5 @@ sealed interface PlayerState {
     data class Fill(val track: Track) : PlayerState
     data class LikeBut(val track: Track) : PlayerState
     data class Preparing(val prepare: Boolean): PlayerState
+    data object Error: PlayerState
 }

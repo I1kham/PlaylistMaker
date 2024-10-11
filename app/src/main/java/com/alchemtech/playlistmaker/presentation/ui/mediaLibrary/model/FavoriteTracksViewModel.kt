@@ -1,17 +1,15 @@
-package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state
+package com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
-import com.alchemtech.playlistmaker.domain.entity.Track
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewState
 import kotlinx.coroutines.launch
 
 class FavoriteTracksViewModel(
     private val tracksDbInteractor: TracksDbInteractor,
-    private val singleTrackInteractor: SingleTrackInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<FavoriteTracksViewState>()
 
@@ -20,10 +18,6 @@ class FavoriteTracksViewModel(
     }
 
     fun observeState(): LiveData<FavoriteTracksViewState> = stateLiveData
-
-    fun clickOnTrack(track: Track) {
-        singleTrackInteractor.writeTrack(track)
-    }
 
     private fun startModelLogic() {
         getFavoriteTracksList()
