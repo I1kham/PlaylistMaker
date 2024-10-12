@@ -5,7 +5,7 @@ import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
 import com.alchemtech.playlistmaker.data.cover_repository.CoversRepository
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
 import com.alchemtech.playlistmaker.data.db.entity.PlayListEntity
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
+import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class PlayListsRepositoryImpl(
-    private val favoriteTracksRepository: FavoriteTracksRepository,
+    private val tracksDbRepository: TracksDbRepository,
     private val playListDao: PlayListDao,
     private val tracksStringConvertor: TracksStringConvertor,
     private val coversRepository: CoversRepository,
@@ -51,7 +51,7 @@ class PlayListsRepositoryImpl(
     override suspend fun getTracks(id: Long): Flow<List<Track>> {
         val tracksId = playListDao.getTracksIdFromPlayList(id)
         val tracks = tracksStringConvertor.mapIDsStringToList(tracksId)
-        return flow { emit(tracks.map { favoriteTracksRepository.getTrackByID(it) }) }
+        return flow { emit(tracks.map { tracksDbRepository.getTrackByID(it) }) }
     }
 
 
@@ -64,7 +64,7 @@ class PlayListsRepositoryImpl(
         )
         if (!mutList.contains(track.trackId)) {
             mutList.add(track.trackId)
-            favoriteTracksRepository.addToFavoriteList(track)
+            tracksDbRepository.addToTracksDb(track)
             playListDao.updatePlaylistTracks(
                 id,
                 tracksStringConvertor.mapListIdToString(mutList)
@@ -104,7 +104,7 @@ class PlayListsRepositoryImpl(
     private suspend fun getTacksListByIDList(idList: List<String>): List<Track> {
         val newTrackList = mutableListOf<Track>()
         for (id in idList) {
-            newTrackList.add((favoriteTracksRepository.getTrackByID(id)))
+            newTrackList.add((tracksDbRepository.getTrackByID(id)))
         }
         return newTrackList
     }

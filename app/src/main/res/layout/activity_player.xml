@@ -24,7 +24,7 @@
             android:id="@+id/playerProgressBar"
             style="@style/progressBar"
             android:elevation="0.1dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/playBut"
             app:layout_constraintLeft_toLeftOf="@+id/playBut"
             app:layout_constraintRight_toRightOf="@+id/playBut"

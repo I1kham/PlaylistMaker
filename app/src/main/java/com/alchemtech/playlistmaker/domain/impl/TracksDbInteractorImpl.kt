@@ -1,30 +1,43 @@
 package com.alchemtech.playlistmaker.domain.impl
 
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
 import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
+import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
 
 class TracksDbInteractorImpl(
-    private val favoriteTracksRepository: FavoriteTracksRepository,
+    private val tracksDbRepository: TracksDbRepository,
 ) : TracksDbInteractor {
-    override suspend fun addToFavoriteList(track: Track) {
-        favoriteTracksRepository.addToFavoriteList(track)
+    override suspend fun addToTrackDb(track: Track) {
+        tracksDbRepository.addToTracksDb(track)
     }
 
-    override suspend fun removeFromFavoriteList(track: Track) {
-        favoriteTracksRepository.removeFromFavoriteList(track)
+
+
+    override fun getFavoriteTrackList(): Flow<List<Track>> {
+        return tracksDbRepository.getFavoriteTrackList()
     }
 
-    override  fun getFavoriteTrackList(): Flow<List<Track>> {
-        return favoriteTracksRepository.getFavoriteTrackList()
+    override fun getAllTrackList(): Flow<List<Track>> {
+        return tracksDbRepository.getAllTrackList()
     }
 
-    override  fun getAllTrackList(): Flow<List<Track>> {
-        return favoriteTracksRepository.getAllTrackList()
+    // TODO: new start
+    override suspend fun likeTrack(trackId: String) {
+        tracksDbRepository.likeTRack(trackId)
     }
+
+    override suspend fun deleteTrack(trackId: String) {
+        tracksDbRepository.deleteTrack(trackId)
+    }
+
+    override suspend fun unLikeTrack(trackId: String) {
+        tracksDbRepository.unLikeTrack(trackId)
+    }
+
+    // TODO: new end
 
     override suspend fun getTrackById(id: String): Track {
-       return favoriteTracksRepository.getTrackByID(id)
+        return tracksDbRepository.getTrackByID(id)
     }
 }

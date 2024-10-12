@@ -48,26 +48,39 @@ class PlayListFragment : Fragment() {
         observeRenderState()
         prepareBackBut()
         false.bottomNavigatorVisibility()
-        prepareNameText()
-        prepareDescriptionText()
         prepareNavController()
+        prepareBottomSheet()
+        getPlayListId()
+        setPlayListIdToViewModel()
+        prepareMenuButton()
+        prepareTextViews()
+    }
 
-
-        binding?.let {
-            bottomSheet = it.bottomSheet
-        }
-        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-        viewModel.getPlayList(playListId)
-
-
-        binding?.menu?.setOnClickListener {
-            navController?.navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
-        }
-
+    private fun prepareTextViews() {
         plDurationText = binding?.plDuration
         plCount = binding?.tracksCount
         plName = binding?.playListName
         plDescription = binding?.playListDescription
+    }
+
+    private fun prepareMenuButton() {
+        binding?.menu?.setOnClickListener {
+            navController?.navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
+        }
+    }
+
+    private fun setPlayListIdToViewModel() {
+        viewModel.getPlayList(playListId)
+    }
+
+    private fun getPlayListId() {
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+    }
+
+    private fun prepareBottomSheet() {
+        binding?.let {
+            bottomSheet = it.bottomSheet
+        }
     }
 
     private fun prepareNavController() {
@@ -102,15 +115,6 @@ class PlayListFragment : Fragment() {
             requireActivity().onBackPressed()
         }
     }
-
-    private fun prepareNameText() {
-
-    }
-
-    private fun prepareDescriptionText() {
-
-    }
-
 
     private fun observeRenderState() {
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {

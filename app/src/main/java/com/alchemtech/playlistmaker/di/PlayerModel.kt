@@ -5,11 +5,11 @@ import androidx.room.Room
 import com.alchemtech.playlistmaker.data.converters.TrackDbConvertor
 import com.alchemtech.playlistmaker.data.db.entity.AppDatabase
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
-import com.alchemtech.playlistmaker.data.db.favorite_list_repo.FavoriteTracksRepositoryImpl
+import com.alchemtech.playlistmaker.data.db.favorite_list_repo.TracksDbRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.PlayerRepositoryImpl
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksRepository
 import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
+import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.impl.TracksDbInteractorImpl
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractorImlp
@@ -23,8 +23,7 @@ val playerViewModel = module {
     viewModel<PlayerViewModel> {
         PlayerViewModel(
             player = get(),
-            tracksDbInteractor = this.get<TracksDbInteractor>(),
-            searchInteractor = get()
+            tracksDbInteractor = get<TracksDbInteractor>(),
         )
     }
 
@@ -43,11 +42,11 @@ val playerViewModel = module {
     }
     single<TracksDbInteractor> {
         TracksDbInteractorImpl(
-            favoriteTracksRepository = get()
+            tracksDbRepository = get()
         )
     }
-    single<FavoriteTracksRepository> {
-        FavoriteTracksRepositoryImpl(
+    single<TracksDbRepository> {
+        TracksDbRepositoryImpl(
             tracksDao = get(),
             trackDbConvertor = get()
         )

@@ -5,20 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
 import com.alchemtech.playlistmaker.util.debounce
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val player: PlayerInteractor,
     private val tracksDbInteractor: TracksDbInteractor,
-    private val searchInteractor: TracksInteractor,
-
     ) : ViewModel() {
     private var playTrack: Track? = null
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -34,10 +30,9 @@ class PlayerViewModel(
 
     internal fun prepareModel(trackId: String?) {
         viewModelScope.launch {
-            trackId?.let {
-                playTrack = searchInteractor.searchTracks(trackId).first().first?.get(0)
+            trackId?.let { it ->
+                playTrack = tracksDbInteractor.getTrackById(it)
                 playTrack?.let {
-                    tracksDbInteractor.addToFavoriteList(it)
                     preparePlayer(it)
                     renderState(PlayerState.Fill(it))
                 }
@@ -56,18 +51,17 @@ class PlayerViewModel(
         player.pausePlayer()
     }
 
-
     internal fun onFavoriteClicked() {
         playTrack?.let {
             if (it.isFavorite) {
                 it.isFavorite = false
                 viewModelScope.launch {
-                    tracksDbInteractor.removeFromFavoriteList(it)
+                    tracksDbInteractor.unLikeTrack(it.trackId)
                 }
             } else {
                 it.isFavorite = true
                 viewModelScope.launch {
-                    tracksDbInteractor.addToFavoriteList(it)
+                    tracksDbInteractor.likeTrack(it.trackId)
                 }
             }
             renderState(PlayerState.LikeBut(it))
@@ -81,14 +75,14 @@ class PlayerViewModel(
 
     private val statePosition = MutableLiveData<String>()
 
-    fun observeCurrentPosition(): LiveData<String> = statePosition
+    internal fun observeCurrentPosition(): LiveData<String> = statePosition
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
     }
 
     private fun preparePlayer(track: Track?) {
+        renderState(PlayerState.Preparing(true))
         track?.let {
-            renderState(PlayerState.Preparing(true))
             val onPreparedListenerConsumer =
                 PlayerRepository.OnPreparedListenerConsumer {
                     renderState(PlayerState.OnPrepared(it))

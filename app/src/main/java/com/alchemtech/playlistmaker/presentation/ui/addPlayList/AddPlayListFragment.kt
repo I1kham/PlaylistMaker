@@ -47,6 +47,7 @@ class AddPlayListFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var uri: Uri? = null
     private var playListId: Long? = null
+    private var edited = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -134,7 +135,7 @@ class AddPlayListFragment : Fragment() {
             showBottomMessage(getString(R.string.playListAdded, name))
             actionCreateBut()
         }
-        if (playListId!=null){
+        if (playListId != null) {
             createBut?.text = getString(R.string.save)
         }
     }
@@ -262,9 +263,10 @@ class AddPlayListFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getCheckForCloseOpenWindow() {
+        if (edited){
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getString(R.string.cancelAddPlayListTitle))
+            .setTitle(getCurrentTitle())
             .setMessage(
                 getString(R.string.cancelAddPlayListMassage)
             )
@@ -274,7 +276,7 @@ class AddPlayListFragment : Fragment() {
             }
             .show()
     }
-
+}
 
     private fun openAppPermission() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -287,7 +289,7 @@ class AddPlayListFragment : Fragment() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
         }
-        if(playListId!=null){
+        if (playListId != null) {
             binding?.preview?.text = null
         }
     }
@@ -300,9 +302,11 @@ class AddPlayListFragment : Fragment() {
             nameTitle?.isVisible = false
             nameEditText?.doOnTextChanged { text, _, _, _ ->
                 viewModel.setName(text.toString())
+                edited = true
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
                 createBut?.isEnabled = !text.isNullOrEmpty()
+
             }
         }
     }
@@ -317,6 +321,10 @@ class AddPlayListFragment : Fragment() {
                 viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
+                edited = true
+                if(playListId!=null){
+                    createBut?.isEnabled = edited
+                }
             }
         }
     }
@@ -326,7 +334,7 @@ class AddPlayListFragment : Fragment() {
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
         }
-        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
                 parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
                 )
         viewModel.editPlaylist(playListId)
@@ -347,11 +355,21 @@ class AddPlayListFragment : Fragment() {
                 setPicture(state.playList.coverUri)
                 nameEditText?.setText(state.playList.name)
                 descriptionEditText?.setText(state.playList.description)
-                createBut?.setOnClickListener{
+                createBut?.setOnClickListener {
                     viewModel.savePlaylist()
                     showBottomMessage(getString(R.string.play_list_saved, state.playList.name))
                 }
+                edited = false
+                createBut?.isEnabled = edited
             }
+        }
+    }
+
+    private fun getCurrentTitle(): String {
+        playListId?.let {
+            return getString(R.string.cancelAddPlayListTitle2)
+        } ?: run {
+            return getString(R.string.cancelAddPlayListTitle)
         }
     }
 

@@ -73,7 +73,7 @@ class TracksFragmentModel(
     internal fun clickOnTrack(track: Track) {
         addTrackToHistoryList(track)
         viewModelScope.launch {
-            tracksDb.addToFavoriteList(track)
+            tracksDb.addToTrackDb(track)
         }
     }
 

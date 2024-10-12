@@ -54,8 +54,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        trackId = arguments?.getString(PLAY_TRACK_TRANSFER_KEY)
-
+        getTrackId()
         observeRenderState()
         prepareBackBut()
         prepareViewModel()
@@ -64,6 +63,10 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         prepareBottomSheet()
         prepareOverlay()
         false.bottomNavigatorVisibility()
+    }
+
+    private fun getTrackId() {
+        trackId = arguments?.getString(PLAY_TRACK_TRANSFER_KEY)
     }
 
     override fun onResume() {
@@ -90,19 +93,14 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         (activity as StartActivity).bottomNavigationVisibility(this)
     }
 
-
     private fun prepareOverlay() {
         overlay = binding?.overlay
     }
 
-
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
-
-
             BottomSheetBehavior.from(bottomSheet!!).addBottomSheetCallback(bottomSheetCallback)
-
         }
     }
 
@@ -114,14 +112,12 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         }
     }
 
-
     private fun prepareViewModel() {
         viewModel.observeCurrentPosition().observe(getViewLifecycleOwner()) {
             binding?.playTime?.text = it
         }
         viewModel.prepareModel(trackId)
     }
-
 
     private fun prepareBackBut() {
         binding?.playerPreview?.setOnClickListener {
@@ -226,6 +222,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
             }
         }
     }
+
     private fun showBottomMessage(message: String) {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }
