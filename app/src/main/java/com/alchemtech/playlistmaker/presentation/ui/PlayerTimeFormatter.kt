@@ -9,3 +9,10 @@ import java.util.Locale
             Locale.getDefault()
         ).format(int)
     }
+
+fun Long.durationFormatter(): String{
+    return SimpleDateFormat(
+        "m",
+        Locale.getDefault()
+    ).format(this)
+}
