@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -145,8 +146,13 @@ class PlayListFragment : Fragment() {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }
 
-    fun setBottomSheetMaxHeight(size: Float) {
+    internal fun setBottomSheetMaxHeight(size: Float) {
         BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(size, requireContext())
+    }
 
+    internal fun setBlackoutOverlayVisibility(isVisible: Boolean) {
+        binding?.let {
+            it.overlay.isVisible = isVisible
+        }
     }
 }

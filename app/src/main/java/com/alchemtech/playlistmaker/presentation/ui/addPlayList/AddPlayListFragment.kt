@@ -25,7 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
+import com.alchemtech.playlistmaker.databinding.FragmentAddPlayListBinding
 import com.alchemtech.playlistmaker.presentation.ui.fillBy
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -37,7 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddPlayListFragment : Fragment() {
     private val viewModel: AddPlayListViewModel by viewModel()
-    private var binding: MakePlayListBinding? = null
+    private var binding: FragmentAddPlayListBinding? = null
     private val requester = PermissionRequester.instance()
     private var nameEditText: EditText? = null
     private var nameTitle: TextView? = null
@@ -48,13 +48,17 @@ class AddPlayListFragment : Fragment() {
     private var uri: Uri? = null
     private var playListId: Long? = null
     private var edited = false
+        set(value) {
+            field = value
+            createBut?.isEnabled = value
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = MakePlayListBinding.inflate(inflater, container, false)
+        binding = FragmentAddPlayListBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -238,9 +242,11 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setUriToModel(uri: Uri?) {
-        viewModel.setUri(uri)
+        uri?.let {
+            viewModel.setUri(uri)
+            edited = true
+        }
     }
-
     private fun setPicture(uri: Uri?) {
         binding?.picAdding?.fillBy(uri, requireContext())
     }
@@ -263,20 +269,22 @@ class AddPlayListFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getCheckForCloseOpenWindow() {
-        if (edited){
-        MaterialAlertDialogBuilder(requireContext())
-            .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getCurrentTitle())
-            .setMessage(
-                getString(R.string.cancelAddPlayListMassage)
-            )
-            .setNeutralButton(getString(R.string.cancelAddPlayListCancelButton)) { _, _ -> }
-            .setPositiveButton(getString(R.string.cancelAddPlayYesButton)) { _, _ ->
-                findNavController().popBackStack()
-            }
-            .show()
+        if (edited) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setBackground(resources.getDrawable((R.drawable.background)))
+                .setTitle(getCurrentTitle())
+                .setMessage(
+                    getString(R.string.cancelAddPlayListMassage)
+                )
+                .setNeutralButton(getString(R.string.cancelAddPlayListCancelButton)) { _, _ -> }
+                .setPositiveButton(getString(R.string.cancelAddPlayYesButton)) { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .show()
+        } else {
+            findNavController().popBackStack()
+        }
     }
-}
 
     private fun openAppPermission() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -305,7 +313,6 @@ class AddPlayListFragment : Fragment() {
                 edited = true
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
-                createBut?.isEnabled = !text.isNullOrEmpty()
 
             }
         }
@@ -322,7 +329,7 @@ class AddPlayListFragment : Fragment() {
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
                 edited = true
-                if(playListId!=null){
+                if (playListId != null) {
                     createBut?.isEnabled = edited
                 }
             }
@@ -360,7 +367,6 @@ class AddPlayListFragment : Fragment() {
                     showBottomMessage(getString(R.string.play_list_saved, state.playList.name))
                 }
                 edited = false
-                createBut?.isEnabled = edited
             }
         }
     }

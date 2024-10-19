@@ -12,4 +12,5 @@
     <color name="YP_AAL_gray">#AEAFB4</color>
     <color name="YP_light_background">#3772E7</color>
     <color name="gray_White">#FFFFFF</color>
+    <color name="blackout_overlay">#99000000</color>
    </resources>

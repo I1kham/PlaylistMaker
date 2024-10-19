@@ -57,6 +57,7 @@
     <string name="no_internet_bottom_message">Отсутствует интернет соединение</string>
     <string name="cancelAddPlayListTitle2">Завершить редактирование плейлиста?</string>
     <string name="no_tracks">треки пока не добавлены</string>
+    <string name="del_playlist_message">Хотите удалить плейлист?</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>

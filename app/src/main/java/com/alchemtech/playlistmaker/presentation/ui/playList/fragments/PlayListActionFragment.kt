@@ -30,7 +30,7 @@ class PlayListActionFragment : Fragment() {
     private var binding: FragmentPlayListActionBinding? = null
     private val bottomSheetSize = 383f
     private var playListId: Long? = null
-    private var delBut: View?= null
+    private var delBut: View? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,10 +47,10 @@ class PlayListActionFragment : Fragment() {
         prepareRecyclerView()
 
         delBut = binding?.buttonDeletePlaylist
-        delBut?.setOnClickListener{
+        delBut?.setOnClickListener {
             deleteOpenWindow()
         }
-        playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)?:(
+        playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
                 parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
                 )
 
@@ -58,10 +58,12 @@ class PlayListActionFragment : Fragment() {
 
         val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
         binding?.buttonEditPlayList?.setOnClickListener {
-            parentFragment?.parentFragment?.findNavController()?.navigate(R.id.action_playList_to_addPlayListFragment, bundle)
+            parentFragment?.parentFragment?.findNavController()
+                ?.navigate(R.id.action_playList_to_addPlayListFragment, bundle)
         }
 
         bottomSheetMaxHeight()
+        true.setBlackoutOverlayVisibility()
     }
 
     override fun onResume() {
@@ -72,6 +74,7 @@ class PlayListActionFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        false.setBlackoutOverlayVisibility()
         binding = null
     }
 
@@ -132,17 +135,29 @@ class PlayListActionFragment : Fragment() {
 
         }
     }
+
+    private fun Boolean.setBlackoutOverlayVisibility() {
+        try {
+            (parentFragment as PlayListFragment).setBlackoutOverlayVisibility(this)
+        } catch (e: Exception) {
+            (parentFragment?.parentFragment as PlayListFragment).setBlackoutOverlayVisibility(
+                this
+            )
+        }
+    }
+
+
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun deleteOpenWindow() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle("Удалить плейлист")
+            .setTitle(getString(R.string.playList_delete_but))
             .setMessage(
-             "Хотите удалить плейлист?"
+                getString(R.string.del_playlist_message)
             )
-            .setNegativeButton("Нет") { _, _ ->
+            .setNegativeButton(R.string.no) { _, _ ->
             }
-            .setPositiveButton("Да") { _, _ ->
+            .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.deletePlayList(playListId)
             }
             .show()
