@@ -32,4 +32,9 @@ interface PlayListDao {
 
     @Query("UPDATE play_lists_table SET name = :playListName,description = :playListDescription, coverUri =:uri WHERE playListId = :id ")
     suspend fun updatePlaylistInfo(id: Long, playListName: String, playListDescription: String?, uri: String?)
+
+    // TODO: test
+    @Query("SELECT tracks FROM play_lists_table")
+    suspend fun getAllTracksIdFromAllPlayList(): List<String>
+
 }

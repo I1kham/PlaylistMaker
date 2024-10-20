@@ -4,4 +4,5 @@ import android.net.Uri
 
 interface CoversRepository {
     suspend fun saveCover(id: Long, uri: Uri?): Uri?
+    suspend fun deleteCover(id: Long?): Boolean
 }

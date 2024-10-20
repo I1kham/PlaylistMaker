@@ -5,8 +5,8 @@ import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
 import com.alchemtech.playlistmaker.data.cover_repository.CoversRepository
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
 import com.alchemtech.playlistmaker.data.db.entity.PlayListEntity
-import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
+import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +19,17 @@ class PlayListsRepositoryImpl(
     private val tracksStringConvertor: TracksStringConvertor,
     private val coversRepository: CoversRepository,
 ) : PlayListsRepository {
+private  val usedTracksIds = HashSet<String>()
+
+//
+//    val hashSet = HashSet<String>()
+//    playListDao.getAllTracksIdFromAllPlayList().map {
+//        println(it)
+//        tracksStringConvertor.mapIDsStringToList(it).map { hashSet.add(it) }
+//    }
+//    println("try" + hashSet)
+//
+
     override suspend fun addPlayList(playList: PlayList) {
         val name = playList.name
         val id = playListDao.getRowCount() + 1
@@ -38,6 +49,7 @@ class PlayListsRepositoryImpl(
 
     override suspend fun removePlayList(id: Long) {
         playListDao.removePlayList(id)
+        coversRepository.deleteCover(id)
     }
 
 

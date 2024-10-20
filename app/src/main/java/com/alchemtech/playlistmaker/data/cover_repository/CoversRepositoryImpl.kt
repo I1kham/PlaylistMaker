@@ -22,7 +22,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
 
     override suspend fun saveCover(id: Long, uri: Uri?): Uri? {
         uri?.let {
-            if (uri.toString().replaceAfter(':', "") == "file:") {
+            if (uri.toString().replaceAfter(':', "") != "file:") {
                 val filePath =
                     File(
                         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -47,5 +47,21 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
             }
         }
         return null
+    }
+
+    override suspend fun deleteCover(id: Long?): Boolean {
+        var deleted = false
+        val filePath =
+            File(
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                DIRECTORY_NAME
+            )
+
+        filePath.listFiles()?.map {
+            if (it.name == "$FILE_NAME$id$FILE_EXTENSION") {
+                deleted = it.delete()
+            }
+        }
+        return deleted
     }
 }
