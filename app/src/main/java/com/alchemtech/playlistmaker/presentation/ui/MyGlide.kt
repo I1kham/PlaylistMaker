@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.ImageView
 import com.alchemtech.playlistmaker.R
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.ViewTarget
 
@@ -16,6 +17,7 @@ fun ImageView.fillBy(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
         .fitCenter()
         .transform(
             RoundedCorners(
@@ -32,6 +34,7 @@ fun ImageView.fillByUriOrPlaceHolder(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
         .placeholder(R.drawable.track_album_default)
         .fitCenter()
         .transform(
@@ -48,9 +51,11 @@ fun ImageView.fillByUriOrPlaceHolderNoCorners(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
         .placeholder(R.drawable.track_album_default)
         .fitCenter()
         .into(this)
+
 }
 private fun cornersSize(smallCorners: Boolean?): Float {
     return if (smallCorners == null || smallCorners == false) {

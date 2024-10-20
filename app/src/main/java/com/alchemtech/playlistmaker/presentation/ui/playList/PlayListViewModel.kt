@@ -18,19 +18,33 @@ class PlayListViewModel(
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
-                val playList = playListInteractor.getPlayList(it)
-                playList.tracks.map {
-                    playListDuration += it.trackTimeMillis
-                }
-                renderState(
-                    PlayListFragmentState.Content(
-                        playList.coverUri,
-                        playList.name,
-                        playList.description,
-                        playListDuration,
-                        playList.tracks.size
+                //val playList =
+                playListInteractor.getPlayList(it).collect{
+                    it.tracks.map {
+                        playListDuration += it.trackTimeMillis
+                    }
+                    renderState(
+                        PlayListFragmentState.Content(
+                            it.coverUri,
+                            it.name,
+                            it.description,
+                            playListDuration,
+                            it.tracks.size
+                        )
                     )
-                )
+                }
+//                playList.tracks.map {
+//                    playListDuration += it.trackTimeMillis
+//                }
+//                renderState(
+//                    PlayListFragmentState.Content(
+//                        playList.coverUri,
+//                        playList.name,
+//                        playList.description,
+//                        playListDuration,
+//                        playList.tracks.size
+//                    )
+//                )
             }
         }
     }

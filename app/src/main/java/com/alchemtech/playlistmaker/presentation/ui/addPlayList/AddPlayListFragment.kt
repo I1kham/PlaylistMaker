@@ -331,10 +331,7 @@ class AddPlayListFragment : Fragment() {
                 viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
-                edited = true
-                if (playListId != null) {
-                    createBut?.isEnabled = edited
-                }
+                edited = playListId != null
             }
         }
     }

@@ -86,8 +86,8 @@ private  val usedTracksIds = HashSet<String>()
         return isAdded
     }
 
-    override suspend fun getPlayList(id: Long): PlayList {
-        return playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
+    override suspend fun getPlayList(id: Long): Flow<PlayList> {
+        return playListDao.getPlayList(id).map { it.convertPlaylistEntityToPlayList() }
     }
 
     override suspend fun updatePlaylistInfo(

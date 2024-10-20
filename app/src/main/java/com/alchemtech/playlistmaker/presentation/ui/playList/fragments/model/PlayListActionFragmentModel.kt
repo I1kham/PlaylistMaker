@@ -16,7 +16,9 @@ class PlayListActionFragmentModel(val playListInteractor: PlayListInteractor) : 
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
-                renderState(PlayListActionFragmentState.Content(playListInteractor.getPlayList(it)))
+                playListInteractor.getPlayList(it).collect {
+                    renderState(PlayListActionFragmentState.Content(it))
+                }
             }
         }
     }

@@ -14,12 +14,13 @@ class PlayListsViewModel(
     private val stateLiveData = MutableLiveData<PlayListsState>()
 
     init {
-        getFavoriteTracksList()
+        getAllPlayLists()
     }
 
     fun observeState(): LiveData<PlayListsState> = stateLiveData
 
-    private fun getFavoriteTracksList() {
+
+    private fun getAllPlayLists() {
         renderState(PlayListsState.Loading)
         viewModelScope.launch {
 

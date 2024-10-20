@@ -45,31 +45,45 @@ class PlayListActionFragment : Fragment() {
         false.bottomNavigatorVisibility()
         observeRenderState()
         prepareRecyclerView()
+        prepareDeleteButton()
+        getPlayListId()
+        setPlayListIdToViewModel()
+        prepareEditPlayListInfoButton()
+        bottomSheetMaxHeight()
+        true.setBlackoutOverlayVisibility()
+    }
 
-        delBut = binding?.buttonDeletePlaylist
-        delBut?.setOnClickListener {
-            deleteOpenWindow()
-        }
-        playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
-                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-                )
-
-        viewModel.getPlayList(playListId)
-
+    private fun prepareEditPlayListInfoButton() {
         val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
         binding?.buttonEditPlayList?.setOnClickListener {
             parentFragment?.parentFragment?.findNavController()
                 ?.navigate(R.id.action_playList_to_addPlayListFragment, bundle)
         }
+    }
 
-        bottomSheetMaxHeight()
-        true.setBlackoutOverlayVisibility()
+    private fun setPlayListIdToViewModel() {
+        viewModel.getPlayList(playListId)
+    }
+
+    private fun getPlayListId() {
+        playListId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
+                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+
+    }
+
+    private fun prepareDeleteButton() {
+        delBut = binding?.buttonDeletePlaylist
+        delBut?.setOnClickListener {
+            deleteOpenWindow()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         false.bottomNavigatorVisibility()
         bottomSheetMaxHeight()
+        setPlayListIdToViewModel()
     }
 
     override fun onDetach() {

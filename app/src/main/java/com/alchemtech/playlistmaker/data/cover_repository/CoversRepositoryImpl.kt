@@ -23,6 +23,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
     override suspend fun saveCover(id: Long, uri: Uri?): Uri? {
         uri?.let {
             if (uri.toString().replaceAfter(':', "") != "file:") {
+                deleteCover(id)
                 val filePath =
                     File(
                         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
