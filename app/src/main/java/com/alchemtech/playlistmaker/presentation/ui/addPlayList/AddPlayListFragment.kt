@@ -244,9 +244,12 @@ class AddPlayListFragment : Fragment() {
     private fun setUriToModel(uri: Uri?) {
         uri?.let {
             viewModel.setUri(uri)
-            edited = true
+            playListId?.let {
+                edited = true
+            }
         }
     }
+
     private fun setPicture(uri: Uri?) {
         binding?.picAdding?.fillBy(uri, requireContext())
     }
