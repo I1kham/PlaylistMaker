@@ -9,9 +9,11 @@ import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class PlayListsRepositoryImpl(
     private val tracksDbRepository: TracksDbRepository,
@@ -19,16 +21,25 @@ class PlayListsRepositoryImpl(
     private val tracksStringConvertor: TracksStringConvertor,
     private val coversRepository: CoversRepository,
 ) : PlayListsRepository {
-private  val usedTracksIds = HashSet<String>()
 
-//
-//    val hashSet = HashSet<String>()
-//    playListDao.getAllTracksIdFromAllPlayList().map {
-//        println(it)
-//        tracksStringConvertor.mapIDsStringToList(it).map { hashSet.add(it) }
-//    }
-//    println("try" + hashSet)
-//
+    override suspend fun cleaning() {
+        withContext(Dispatchers.IO) {
+            val usedTracksIds = HashSet<String>()
+            playListDao.getAllTracksIdFromAllPlayList().map {
+                tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
+            }
+            tracksDbRepository.getAllTrackList().collect { listTracks ->
+                listTracks.map {
+                    if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
+                        println("deleting ${it.trackId}")
+                        tracksDbRepository.deleteTrack(it.trackId)
+                    }
+                }
+
+            }
+
+        }
+    }
 
     override suspend fun addPlayList(playList: PlayList) {
         val name = playList.name

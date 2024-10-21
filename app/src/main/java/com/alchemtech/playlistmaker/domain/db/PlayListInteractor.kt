@@ -10,7 +10,14 @@ interface PlayListInteractor {
     suspend fun removePlayList(id: Long)
     fun getAllPlayLists(): Flow<List<PlayList>>
     suspend fun getTracks(id: Long): Flow<List<Track>>
-    suspend fun addToList(id: Long,track: Track):Boolean
+    suspend fun addToList(id: Long, track: Track): Boolean
     suspend fun getPlayList(id: Long): Flow<PlayList>
-    suspend fun updatePlaylistInfo(id: Long, playListName: String, playListDescription: String?, coverUri: Uri?)
+    suspend fun updatePlaylistInfo(
+        id: Long,
+        playListName: String,
+        playListDescription: String?,
+        coverUri: Uri?,
+    )
+
+    suspend fun cleaningDb()
 }

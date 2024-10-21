@@ -42,4 +42,8 @@ class PlayLIstInteractorImpl(
     ) {
         playListsRepository.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
     }
+
+    override suspend fun cleaningDb() {
+        playListsRepository.cleaning()
+    }
 }
