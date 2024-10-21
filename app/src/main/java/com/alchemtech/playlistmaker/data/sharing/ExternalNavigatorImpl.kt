@@ -20,7 +20,6 @@ class ExternalNavigatorImpl(val context: Context) : ExternalNavigator {
     }
 
     override fun openLink(link: String) {
-
         startActivity(
             context,
             Intent(

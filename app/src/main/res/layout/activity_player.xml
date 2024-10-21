@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/white_YP_Black"
     android:orientation="vertical"
-    android:animateLayoutChanges="true"
     tools:context=".presentation.ui.player.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,10 +17,19 @@
             android:id="@+id/overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#99000000"
-            android:visibility="gone"
-            />
+            android:background="@color/blackout_overlay"
+            android:visibility="gone" />
 
+        <ProgressBar
+            android:id="@+id/playerProgressBar"
+            style="@style/progressBar"
+            android:elevation="0.1dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/playBut"
+            app:layout_constraintLeft_toLeftOf="@+id/playBut"
+            app:layout_constraintRight_toRightOf="@+id/playBut"
+            app:layout_constraintTop_toTopOf="@+id/playBut" />
+        <!--        todo mus be gone-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
             android:layout_width="wrap_content"
@@ -80,13 +89,12 @@
 
         <ImageView
             android:id="@+id/playerAlbumCover"
-            style="@style/albumCoverStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center|start"
             android:layout_marginTop="26dp"
             android:layout_marginBottom="24dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/track_album_default_big"
             app:layout_constraintBottom_toTopOf="@+id/playerTrackName"
             app:layout_constraintEnd_toEndOf="@id/secondRightBorder"
@@ -127,7 +135,7 @@
 
         <ImageView
             android:id="@+id/playBut"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@color/transparent"
@@ -290,8 +298,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_background"
         android:orientation="vertical"
+        android:visibility="gone"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="505dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
@@ -301,76 +309,12 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/indicator_bottom_sheet" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginVertical="12dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/Add_play_list_bottom_sheet_title"
-            android:textColor="@color/black_White"
-            android:textFontWeight="500"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/addPlayListBut"
-            style="@style/roundedBlackWhiteBut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            android:text="@string/addNewPlayListBut" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/noDataLay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="24dp"
-            android:background="@color/transparent"
-            android:orientation="vertical"
-            android:visibility="visible">
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/progressBar"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone" />
-            <!--        todo mus be gone-->
-            <ImageView
-                android:id="@+id/noDataImg"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@color/transparent"
-                android:src="@drawable/data_not_found"
-                app:layout_constraintBottom_toTopOf="@+id/noDataText"
-                app:layout_constraintLeft_toLeftOf="@+id/noDataLay"
-                app:layout_constraintRight_toRightOf="@+id/noDataLay"
-                app:layout_constraintTop_toTopOf="@+id/noDataLay" />
-
-            <TextView
-                android:id="@+id/noDataText"
-                style="@style/fragmentText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:lines="2"
-                android:text="@string/emptyPlayLists"
-                app:layout_constraintBottom_toBottomOf="@id/noDataLay"
-                app:layout_constraintLeft_toLeftOf="@id/noDataLay"
-                app:layout_constraintRight_toRightOf="@id/noDataLay"
-                app:layout_constraintTop_toBottomOf="@id/noDataImg" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playListRecyclerView"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_player_bottom"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/play_list_bottom_sheet_card" />
-
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/player_navigation_graph" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

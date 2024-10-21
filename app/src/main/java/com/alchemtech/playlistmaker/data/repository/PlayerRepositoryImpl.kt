@@ -35,7 +35,7 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
     }
 
     override fun pause() {
-        if (isPrepared&& mediaPlayer.isPlaying) {
+        if (isPrepared && mediaPlayer.isPlaying) {
             mediaPlayer.pause()
         }
     }
@@ -51,14 +51,16 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
         onCompletionListenerConsumer: PlayerRepository.OnCompletionListenerConsumer,
         source: String,
     ) {
-        mediaPlayer.setDataSource(source)
-        mediaPlayer.setOnPreparedListener {
-            onPreparedListenerConsumer.consume()
-            isPrepared = true
+        if (!isPrepared) {
+            mediaPlayer.setDataSource(source)
+            mediaPlayer.setOnPreparedListener {
+                onPreparedListenerConsumer.consume()
+                isPrepared = true
+            }
+            mediaPlayer.setOnCompletionListener {
+                onCompletionListenerConsumer.consume()
+            }
+            mediaPlayer.prepareAsync()
         }
-        mediaPlayer.setOnCompletionListener {
-            onCompletionListenerConsumer.consume()
-        }
-        mediaPlayer.prepareAsync()
     }
 }

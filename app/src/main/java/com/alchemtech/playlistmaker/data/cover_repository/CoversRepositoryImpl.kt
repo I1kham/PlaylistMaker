@@ -22,23 +22,47 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
 
     override suspend fun saveCover(id: Long, uri: Uri?): Uri? {
         uri?.let {
-            val filePath =
-                File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DIRECTORY_NAME)
-            if (!filePath.exists()) {
-                filePath.mkdirs()
+            if (uri.toString().replaceAfter(':', "") != "file:") {
+                deleteCover(id)
+                val filePath =
+                    File(
+                        context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                        DIRECTORY_NAME
+                    )
+                if (!filePath.exists()) {
+                    filePath.mkdirs()
+                }
+                val file = File(filePath, "$FILE_NAME$id$FILE_EXTENSION")
+                val inputStream = context.contentResolver.openInputStream(it)
+                val outputStream = withContext(Dispatchers.IO) {
+                    FileOutputStream(file)
+                }
+                BitmapFactory
+                    .decodeStream(inputStream)
+                    .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
+                inputStream?.close()
+                outputStream.close()
+                return file.toUri()
+            } else {
+                return uri
             }
-            val file = File(filePath, "$FILE_NAME$id$FILE_EXTENSION")
-            val inputStream = context.contentResolver.openInputStream(it)
-            val outputStream = withContext(Dispatchers.IO) {
-                FileOutputStream(file)
-            }
-            BitmapFactory
-                .decodeStream(inputStream)
-                .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
-            inputStream?.close()
-            outputStream.close()
-            return file.toUri()
         }
         return null
+    }
+
+    override suspend fun deleteCover(id: Long?): Boolean {
+        var deleted = false
+        val filePath =
+            File(
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                DIRECTORY_NAME
+            )
+
+        filePath.listFiles()?.map {
+            if (it.name == "$FILE_NAME$id$FILE_EXTENSION") {
+                deleted = it.delete()
+            }
+        }
+        return deleted
     }
 }

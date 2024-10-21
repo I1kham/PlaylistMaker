@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mainActivityBackground">#1A1B22</color>
     <color name="allWhite">#FFFFFF</color>
     <color name="all_YP_Black">#1A1B22</color>
     <color name="transparent">#00000000</color>
@@ -11,7 +10,7 @@
     <color name="grayBlack">#1A1B22</color>
     <color name="YP_white_black">#1A1B22</color>
     <color name="YP_AAL_gray">#AEAFB4</color>
-    <color name="icon_lightGray_darkGray">#535459</color>
     <color name="YP_light_background">#3772E7</color>
     <color name="gray_White">#FFFFFF</color>
+    <color name="blackout_overlay">#99000000</color>
    </resources>
