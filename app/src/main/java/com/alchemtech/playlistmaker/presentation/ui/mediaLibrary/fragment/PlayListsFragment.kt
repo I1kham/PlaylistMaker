@@ -43,8 +43,7 @@ class PlayListsFragment : Fragment() {
         prepareAddPlayListButton()
         prepareRecyclerView()
         observeRenderState()
-        prepareNoDataLayout()
-    }
+        prepareNoDataLayout() }
 
     override fun onDetach() {
         super.onDetach()

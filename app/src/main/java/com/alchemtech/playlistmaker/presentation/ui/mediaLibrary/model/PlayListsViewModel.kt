@@ -23,13 +23,13 @@ class PlayListsViewModel(
     private fun getAllPlayLists() {
         renderState(PlayListsState.Loading)
         viewModelScope.launch {
-
             playListInteractor.getAllPlayLists().collect {
-                if (it.isNotEmpty()) {
-                    renderState(PlayListsState.ShowList(it))
-                } else {
-                    renderState(PlayListsState.EmptyList)
-                }
+                    if (it.isNotEmpty()) {
+                        renderState(PlayListsState.ShowList(it))
+
+                    } else {
+                        renderState(PlayListsState.EmptyList)
+                    }
             }
         }
     }

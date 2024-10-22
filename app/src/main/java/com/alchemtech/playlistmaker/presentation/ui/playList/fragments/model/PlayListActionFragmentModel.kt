@@ -16,19 +16,9 @@ class PlayListActionFragmentModel(val playListInteractor: PlayListInteractor) : 
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
-                playListInteractor.getPlayList(it).collect {
-                    renderState(PlayListActionFragmentState.Content(it))
-                }
+                renderState(PlayListActionFragmentState.Content(playListInteractor.getPlayList(it)))
             }
-        }
-    }
 
-    fun deletePlayList(id: Long?) {
-        viewModelScope.launch {
-            id?.let {
-                playListInteractor.removePlayList(it)
-                renderState(PlayListActionFragmentState.Exit)
-            }
         }
     }
 

@@ -13,7 +13,8 @@ data class Track(
     val previewUrl: String?, //случайные 30 сек трека
     var isFavorite: Boolean = false, //метка любимых
 )
-//{
+
+
 //    override fun equals(other: Any?): Boolean {
 //        return if (other is Track) {
 //            (trackId == other.trackId )
@@ -35,4 +36,3 @@ data class Track(
 //        result = 31 * result + (previewUrl?.hashCode() ?: 0)
 //        return result
 //    }
-//}

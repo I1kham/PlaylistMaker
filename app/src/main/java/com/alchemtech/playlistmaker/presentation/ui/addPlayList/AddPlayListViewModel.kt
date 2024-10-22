@@ -54,13 +54,15 @@ class AddPlayListViewModel(
     internal fun editPlaylist(playListID: Long?) {
         playListID?.let {
             viewModelScope.launch {
-                playListInteractor.getPlayList(it).collect{it->
-                uri = it.coverUri
-                playListIdVm = playListID
-                renderState(AddPlayListState.Content(it))
-            }}
-        }
-    }
+                    val playList = playListInteractor.getPlayList(it)
+                    uri = playList.coverUri
+                    playListIdVm = playListID
+                    renderState(AddPlayListState.Content(playList))
+                }
+                }
+            }
+
+
 
     internal fun setUri(uri: Uri?) {
         this.uri = uri

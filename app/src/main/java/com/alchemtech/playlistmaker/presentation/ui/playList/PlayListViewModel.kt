@@ -13,40 +13,36 @@ class PlayListViewModel(
     private val stateLiveData = MutableLiveData<PlayListFragmentState>()
     private var playListId: Long? = null
     private var playListDuration: Long = 0L
+    private var playListName: String? = null
 
     internal fun getPlayList(playListId: Long?) {
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
-                //val playList =
-                playListInteractor.getPlayList(it).collect{
-                    it.tracks.map {
-                        playListDuration += it.trackTimeMillis
-                    }
-                    renderState(
-                        PlayListFragmentState.Content(
-                            it.coverUri,
-                            it.name,
-                            it.description,
-                            playListDuration,
-                            it.tracks.size
-                        )
-                    )
+                val playList = playListInteractor.getPlayList(it)
+                playListName = playList.name
+                playList.tracks.map {
+                    playListDuration += it.trackTimeMillis
                 }
-//                playList.tracks.map {
-//                    playListDuration += it.trackTimeMillis
-//                }
-//                renderState(
-//                    PlayListFragmentState.Content(
-//                        playList.coverUri,
-//                        playList.name,
-//                        playList.description,
-//                        playListDuration,
-//                        playList.tracks.size
-//                    )
-//                )
+                renderState(
+                    PlayListFragmentState.Content(
+                        playList.coverUri,
+                        playList.name,
+                        playList.description,
+                        playListDuration,
+                        playList.tracks.size
+                    )
+                )
             }
         }
+    }
+
+    fun deletePlayList(id: Long) = viewModelScope.launch {
+        playListName?.let {
+            renderState(PlayListFragmentState.Deleted(it))
+        }
+        playListInteractor.removePlayList(id)
+        renderState(PlayListFragmentState.Exit)
     }
 
     fun observeRenderState(): LiveData<PlayListFragmentState> = stateLiveData

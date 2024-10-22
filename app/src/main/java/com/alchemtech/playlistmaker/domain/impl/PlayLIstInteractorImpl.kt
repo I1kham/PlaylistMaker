@@ -30,7 +30,7 @@ class PlayLIstInteractorImpl(
         return playListsRepository.addToList(id, track)
     }
 
-    override suspend fun getPlayList(id: Long): Flow<PlayList> {
+    override suspend fun getPlayList(id: Long): PlayList {
         return playListsRepository.getPlayList(id)
     }
 

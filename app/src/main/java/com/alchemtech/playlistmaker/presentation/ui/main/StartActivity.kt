@@ -19,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StartActivity : AppCompatActivity() {
+    private val viewModel: StartViewModel by viewModel()
     private var binding: ActivityStartBinding? = null
     private var bottomSheet: LinearLayout? = null
     private var navHostFragment: NavHostFragment? = null
@@ -32,14 +33,13 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModel<StartViewModel>()
-
         prepareBinding()
         prepareNavHostFragment()
         prepareNavHostController()
         prepareBottomNavView()
         backPressPrepare()
         prepareBottomSheet()
+        viewModel.cleanDb()
     }
 
     fun bottomNavigationVisibility(isVisibile: Boolean) {
@@ -59,8 +59,6 @@ class StartActivity : AppCompatActivity() {
             run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
             })
-
-
         }
     }
 

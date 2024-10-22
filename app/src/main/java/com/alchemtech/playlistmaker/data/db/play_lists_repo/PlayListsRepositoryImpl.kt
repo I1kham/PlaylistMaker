@@ -23,6 +23,7 @@ class PlayListsRepositoryImpl(
 ) : PlayListsRepository {
 
     override suspend fun cleaning() {
+        println("cleaning")
         withContext(Dispatchers.IO) {
             val usedTracksIds = HashSet<String>()
             playListDao.getAllTracksIdFromAllPlayList().map {
@@ -97,8 +98,8 @@ class PlayListsRepositoryImpl(
         return isAdded
     }
 
-    override suspend fun getPlayList(id: Long): Flow<PlayList> {
-        return playListDao.getPlayList(id).map { it.convertPlaylistEntityToPlayList() }
+    override suspend fun getPlayList(id: Long): PlayList {
+        return playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
     }
 
     override suspend fun updatePlaylistInfo(

@@ -1,5 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentPlaylistBinding
@@ -21,6 +23,7 @@ import com.alchemtech.playlistmaker.presentation.ui.durationFormatter
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolderNoCorners
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -134,6 +137,12 @@ class PlayListFragment : Fragment() {
                 plDescription?.text = state.description
             }
 
+            is PlayListFragmentState.Deleted -> showBottomMessage(
+                getString(
+                    R.string.play_list_del_message,
+                    state.message
+                ))
+            PlayListFragmentState.Exit -> findNavController().popBackStack()
         }
     }
 
@@ -154,5 +163,23 @@ class PlayListFragment : Fragment() {
         binding?.let {
             it.overlay.isVisible = isVisible
         }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    internal fun deletePlaylist() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setBackground(resources.getDrawable((R.drawable.background)))
+            .setTitle(getString(R.string.playList_delete_but))
+            .setMessage(
+                getString(R.string.del_playlist_message)
+            )
+            .setNegativeButton(R.string.no) { _, _ ->
+            }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                playListId?.let {
+                    viewModel.deletePlayList(it)
+                }
+            }
+            .show()
     }
 }

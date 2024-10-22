@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ import com.alchemtech.playlistmaker.presentation.ui.playLikstBottomCard.PlayList
 import com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.PlayListActionFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.PlayListActionFragmentState
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListActionFragment : Fragment() {
@@ -31,6 +29,7 @@ class PlayListActionFragment : Fragment() {
     private val bottomSheetSize = 383f
     private var playListId: Long? = null
     private var delBut: View? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,7 +82,6 @@ class PlayListActionFragment : Fragment() {
         super.onResume()
         false.bottomNavigatorVisibility()
         bottomSheetMaxHeight()
-        setPlayListIdToViewModel()
     }
 
     override fun onDetach() {
@@ -151,30 +149,14 @@ class PlayListActionFragment : Fragment() {
     }
 
     private fun Boolean.setBlackoutOverlayVisibility() {
-        try {
-            (parentFragment as PlayListFragment).setBlackoutOverlayVisibility(this)
-        } catch (e: Exception) {
-            (parentFragment?.parentFragment as PlayListFragment).setBlackoutOverlayVisibility(
-                this
-            )
-        }
+        (parentFragment?.parentFragment as PlayListFragment).setBlackoutOverlayVisibility(
+            this
+        )
     }
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun deleteOpenWindow() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getString(R.string.playList_delete_but))
-            .setMessage(
-                getString(R.string.del_playlist_message)
-            )
-            .setNegativeButton(R.string.no) { _, _ ->
-            }
-            .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.deletePlayList(playListId)
-            }
-            .show()
+        (parentFragment?.parentFragment as PlayListFragment).deletePlaylist()
+        findNavController().popBackStack()
     }
-
 }

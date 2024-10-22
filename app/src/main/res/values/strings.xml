@@ -58,6 +58,7 @@
     <string name="cancelAddPlayListTitle2">Завершить редактирование плейлиста?</string>
     <string name="no_tracks">треки пока не добавлены</string>
     <string name="del_playlist_message">Хотите удалить плейлист?</string>
+    <string name="play_list_del_message">Плейлист «%1$s» успешно удален</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>
