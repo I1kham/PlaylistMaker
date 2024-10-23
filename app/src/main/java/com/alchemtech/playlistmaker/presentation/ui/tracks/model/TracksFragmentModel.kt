@@ -21,7 +21,6 @@ class TracksFragmentModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
-
     private var searchText: String? = null
     private var oldSearchText: String? = null
     private val tracksList = mutableListOf<Track>()

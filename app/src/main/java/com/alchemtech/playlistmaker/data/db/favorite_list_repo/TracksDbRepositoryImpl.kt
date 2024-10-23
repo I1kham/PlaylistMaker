@@ -13,7 +13,7 @@ class TracksDbRepositoryImpl(
     private val trackDbConvertor: TrackDbConvertor,
 ) : TracksDbRepository {
     override suspend fun addToTracksDb(track: Track) {
-        tracksDao.addTrack(trackDbConvertor.map(track))
+            tracksDao.addTrack(trackDbConvertor.map(track))
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
@@ -34,10 +34,6 @@ class TracksDbRepositoryImpl(
 
     override suspend fun getTrackByID(id: String): Track {
         return trackDbConvertor.map(tracksDao.getTrackByID(id))
-    }
-
-    override suspend fun likeTRack(trackId: String) {
-        tracksDao.likeTrack(trackId)
     }
 
     override suspend fun deleteTrack(trackId: String) {

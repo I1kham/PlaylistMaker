@@ -61,7 +61,7 @@ class PlayerViewModel(
             } else {
                 it.isFavorite = true
                 viewModelScope.launch {
-                    tracksDbInteractor.likeTrack(it.trackId)
+                    tracksDbInteractor.addToTrackDb(it)
                 }
             }
             renderState(PlayerState.LikeBut(it))

@@ -9,20 +9,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrackDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy. IGNORE)
     suspend fun addTrack(tracks: TrackEntity)
 
-    // TODO: new start
     @Query("DELETE FROM tracks_table WHERE trackId = :trackId")
     suspend fun deleteTrack(trackId: String)
 
     @Query("UPDATE tracks_table SET isFavorite = 0  WHERE trackId = :trackId")
     suspend fun unLikeTrack(trackId: String)
-
-    @Query("UPDATE tracks_table SET isFavorite = 1  WHERE trackId = :trackId")
-    suspend fun likeTrack(trackId: String)
-    // TODO: new end
-
 
     @Query("SELECT * FROM tracks_table")
     fun getAllTracks(): Flow<List<TrackEntity>>
@@ -35,5 +29,4 @@ interface TrackDao {
 
     @Query("SELECT * FROM tracks_table WHERE trackId=:id")
     suspend fun getTrackByID(id: String): TrackEntity
-
 }

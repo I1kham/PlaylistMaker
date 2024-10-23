@@ -76,8 +76,8 @@ class TracksFragment : Fragment() {
             useLastParam = true
         ) { track ->
             val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId  )
-            findNavController().navigate(R.id.action_tracksFragment_to_playerActivity, bundle)
             viewModel.clickOnTrack(track)
+            findNavController().navigate(R.id.action_tracksFragment_to_playerActivity, bundle)
         }
     }
 

@@ -22,11 +22,6 @@ class TracksDbInteractorImpl(
         return tracksDbRepository.getAllTrackList()
     }
 
-    // TODO: new start
-    override suspend fun likeTrack(trackId: String) {
-        tracksDbRepository.likeTRack(trackId)
-    }
-
     override suspend fun deleteTrack(trackId: String) {
         tracksDbRepository.deleteTrack(trackId)
     }

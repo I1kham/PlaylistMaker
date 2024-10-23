@@ -10,6 +10,7 @@ import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -32,8 +33,9 @@ class PlayListsRepositoryImpl(
             tracksDbRepository.getAllTrackList().collect { listTracks ->
                 listTracks.map {
                     if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
-                        println("deleting ${it.trackId}")
-                        tracksDbRepository.deleteTrack(it.trackId)
+                            delay(500)
+                            println("deleting ${it.trackId}")
+                            tracksDbRepository.deleteTrack(it.trackId)
                     }
                 }
 
