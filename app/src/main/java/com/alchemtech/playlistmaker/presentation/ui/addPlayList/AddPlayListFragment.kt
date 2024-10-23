@@ -150,7 +150,7 @@ class AddPlayListFragment : Fragment() {
 
     private fun preparePictureLayOut() {
         binding?.picAdding?.setOnClickListener {
-            getPictureUri()
+            playListId?.let { } ?: getPictureUri()
         }
     }
 
@@ -313,7 +313,7 @@ class AddPlayListFragment : Fragment() {
             nameTitle?.isVisible = false
             nameEditText?.doOnTextChanged { text, _, _, _ ->
                 viewModel.setName(text.toString())
-                edited = true
+                edited = !text.isNullOrEmpty()
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
 
@@ -349,8 +349,10 @@ class AddPlayListFragment : Fragment() {
 
     private fun render(state: AddPlayListState) {
         when (state) {
-            is AddPlayListState.Exit ->
+            is AddPlayListState.Exit -> {
+                showBottomMessage(getString(R.string.play_list_saved, state.message))
                 findNavController().popBackStack()
+            }
 
             is AddPlayListState.Loading ->
                 progressBar?.isVisible = true
@@ -364,7 +366,6 @@ class AddPlayListFragment : Fragment() {
                 descriptionEditText?.setText(state.playList.description)
                 createBut?.setOnClickListener {
                     viewModel.savePlaylist()
-                    showBottomMessage(getString(R.string.play_list_saved, state.playList.name))
                 }
                 edited = false
             }

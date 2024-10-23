@@ -32,7 +32,7 @@ class AddPlayListViewModel(
                         uri,
                     )
                 )
-                renderState(AddPlayListState.Exit)
+                renderState(AddPlayListState.Exit(playListName))
             }
         }
     }
@@ -47,21 +47,20 @@ class AddPlayListViewModel(
                 uri
             )
         }
-        renderState(AddPlayListState.Exit)
+        renderState(AddPlayListState.Exit(playListName))
     }
 
 
     internal fun editPlaylist(playListID: Long?) {
         playListID?.let {
             viewModelScope.launch {
-                    val playList = playListInteractor.getPlayList(it)
-                    uri = playList.coverUri
-                    playListIdVm = playListID
-                    renderState(AddPlayListState.Content(playList))
-                }
-                }
+                val playList = playListInteractor.getPlayList(it)
+                uri = playList.coverUri
+                playListIdVm = playListID
+                renderState(AddPlayListState.Content(playList))
             }
-
+        }
+    }
 
 
     internal fun setUri(uri: Uri?) {

@@ -55,6 +55,7 @@ class PlayListActionFragment : Fragment() {
     private fun prepareEditPlayListInfoButton() {
         val bundle = bundleOf(PLAY_LIST_TRANSFER_KEY to playListId)
         binding?.buttonEditPlayList?.setOnClickListener {
+            findNavController().popBackStack()
             parentFragment?.parentFragment?.findNavController()
                 ?.navigate(R.id.action_playList_to_addPlayListFragment, bundle)
         }
