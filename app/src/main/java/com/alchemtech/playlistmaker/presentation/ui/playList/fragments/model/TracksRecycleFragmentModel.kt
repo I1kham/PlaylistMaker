@@ -19,13 +19,18 @@ class TracksRecycleFragmentModel(
 
         viewModelScope.launch {
             playListInteractor.getTracks(id).collect {
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     renderState(TracksRecycleFragmentState.Content(it))
-                }else{
+                } else {
                     renderState(TracksRecycleFragmentState.Empty)
                 }
 
             }
+        }
+    }
+
+    internal fun deleteTrack(trackId: String) {
+        viewModelScope.launch {
         }
     }
 

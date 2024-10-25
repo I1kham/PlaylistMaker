@@ -9,10 +9,9 @@ class TracksDbInteractorImpl(
     private val tracksDbRepository: TracksDbRepository,
 ) : TracksDbInteractor {
     override suspend fun addToTrackDb(track: Track) {
+        println(track)
         tracksDbRepository.addToTracksDb(track)
     }
-
-
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
         return tracksDbRepository.getFavoriteTrackList()
@@ -29,8 +28,6 @@ class TracksDbInteractorImpl(
     override suspend fun unLikeTrack(trackId: String) {
         tracksDbRepository.unLikeTrack(trackId)
     }
-
-    // TODO: new end
 
     override suspend fun getTrackById(id: String): Track {
         return tracksDbRepository.getTrackByID(id)

@@ -69,7 +69,9 @@ class PlayListFragment : Fragment() {
 
     private fun prepareMenuButton() {
         binding?.menu?.setOnClickListener {
-            navController?.navigate(R.id.action_tracksRecycleFragment_to_playListActionFragment)
+            navController?.navigate(
+                R.id.action_tracksRecycleFragment_to_playListActionFragment,
+            )
         }
     }
 
@@ -84,6 +86,36 @@ class PlayListFragment : Fragment() {
     private fun prepareBottomSheet() {
         binding?.let {
             bottomSheet = it.bottomSheet
+            val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    when (newState) {
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            setBlackoutOverlayVisibility(false)
+                            navController?.popBackStack()
+                        }
+
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                        }
+
+                        BottomSheetBehavior.STATE_DRAGGING -> {
+                        }
+
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                        }
+
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        }
+
+                        BottomSheetBehavior.STATE_SETTLING -> {
+                        }
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    // Do something for slide offset.
+                }
+            }
+            BottomSheetBehavior.from(bottomSheet!!).addBottomSheetCallback(bottomSheetCallback)
         }
     }
 
@@ -91,7 +123,6 @@ class PlayListFragment : Fragment() {
         navHostFragment =
             childFragmentManager.findFragmentById(R.id.fragment_container_playlist_bottom) as NavHostFragment
         navController = navHostFragment?.navController
-
     }
 
     override fun onResume() {
@@ -141,8 +172,11 @@ class PlayListFragment : Fragment() {
                 getString(
                     R.string.play_list_del_message,
                     state.message
-                ))
+                )
+            )
+
             PlayListFragmentState.Exit -> findNavController().popBackStack()
+            else -> {}
         }
     }
 
@@ -155,8 +189,9 @@ class PlayListFragment : Fragment() {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }
 
-    internal fun setBottomSheetMaxHeight(size: Float) {
-        BottomSheetBehavior.from(bottomSheet!!).maxHeight = dpToPx(size, requireContext())
+    internal fun setBottomTuning(size: Float, hideable: Boolean) {
+        BottomSheetBehavior.from(bottomSheet!!).peekHeight = dpToPx(size, requireContext())
+        BottomSheetBehavior.from(bottomSheet!!).isHideable = hideable
     }
 
     internal fun setBlackoutOverlayVisibility(isVisible: Boolean) {

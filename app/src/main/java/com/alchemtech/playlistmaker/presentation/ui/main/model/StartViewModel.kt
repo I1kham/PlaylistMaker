@@ -6,7 +6,9 @@ import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import kotlinx.coroutines.launch
 
 class StartViewModel(val playListInteractor: PlayListInteractor) : ViewModel() {
-    fun cleanDb() {
+
+
+    fun cleaningDb() {
         viewModelScope.launch {
             playListInteractor.cleaningDb()
         }

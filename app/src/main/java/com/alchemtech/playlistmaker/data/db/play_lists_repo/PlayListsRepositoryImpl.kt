@@ -33,9 +33,9 @@ class PlayListsRepositoryImpl(
             tracksDbRepository.getAllTrackList().collect { listTracks ->
                 listTracks.map {
                     if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
-                            delay(500)
-                            println("deleting ${it.trackId}")
-                            tracksDbRepository.deleteTrack(it.trackId)
+                        delay(500)
+                        println("deleting ${it.trackId}")
+                        tracksDbRepository.deleteTrack(it.trackId)
                     }
                 }
 
@@ -83,21 +83,30 @@ class PlayListsRepositoryImpl(
 
     override suspend fun addToList(id: Long, track: Track): Boolean {
         var isAdded = false
-        val mutList = mutableListOf<String>()
-        val a = playListDao.getTracksIdFromPlayList(id)
-        mutList.addAll(
-            tracksStringConvertor.mapIDsStringToList(a)
+        val tracksList = HashSet<String>()
+        tracksList.addAll(
+            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(id))
         )
-        if (!mutList.contains(track.trackId)) {
-            mutList.add(track.trackId)
-            tracksDbRepository.addToTracksDb(track)
-            playListDao.updatePlaylistTracks(
-                id,
-                tracksStringConvertor.mapListIdToString(mutList)
-            )
-            isAdded = true
-        }
+        isAdded = tracksList.add(track.trackId)
+        playListDao.updatePlaylistTracks(
+            id,
+            tracksStringConvertor.mapListIdToString(tracksList.toList())
+        )
         return isAdded
+    }
+
+    override suspend fun removeFromList(listId: Long, trackId: Long): Boolean {
+        var removed = false
+        val tracksList = HashSet<String>()
+        tracksList.addAll(
+            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(trackId))
+        )
+        removed = tracksList.remove(trackId.toString())
+        playListDao.updatePlaylistTracks(
+            listId,
+            tracksStringConvertor.mapListIdToString(tracksList.toList())
+        )
+        return removed
     }
 
     override suspend fun getPlayList(id: Long): PlayList {

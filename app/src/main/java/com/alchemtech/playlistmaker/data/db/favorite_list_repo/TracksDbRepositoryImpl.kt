@@ -13,6 +13,7 @@ class TracksDbRepositoryImpl(
     private val trackDbConvertor: TrackDbConvertor,
 ) : TracksDbRepository {
     override suspend fun addToTracksDb(track: Track) {
+        println(track)
             tracksDao.addTrack(trackDbConvertor.map(track))
     }
 

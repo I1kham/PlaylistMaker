@@ -146,7 +146,6 @@
         android:background="@drawable/bottom_sheet_background"
         android:orientation="vertical"
         android:visibility="visible"
-        app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintTop_toTopOf="@id/bottomBorder">
 

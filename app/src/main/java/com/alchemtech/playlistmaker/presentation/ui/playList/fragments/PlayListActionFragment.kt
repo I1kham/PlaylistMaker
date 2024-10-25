@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -48,8 +49,21 @@ class PlayListActionFragment : Fragment() {
         getPlayListId()
         setPlayListIdToViewModel()
         prepareEditPlayListInfoButton()
-        bottomSheetMaxHeight()
+        bottomSheetTune()
         true.setBlackoutOverlayVisibility()
+        prepareBackPress()
+    }
+
+    private fun prepareBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isEnabled) {
+                        parentFragment?.parentFragment?.findNavController()?.popBackStack()
+                    }
+                }
+            }
+        )
     }
 
     private fun prepareEditPlayListInfoButton() {
@@ -82,7 +96,7 @@ class PlayListActionFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         false.bottomNavigatorVisibility()
-        bottomSheetMaxHeight()
+        bottomSheetTune()
     }
 
     override fun onDetach() {
@@ -138,14 +152,13 @@ class PlayListActionFragment : Fragment() {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }
 
-    private fun bottomSheetMaxHeight() {
+    private fun bottomSheetTune() {
         try {
-            (parentFragment as PlayListFragment).setBottomSheetMaxHeight(bottomSheetSize)
+            (parentFragment as PlayListFragment).setBottomTuning(bottomSheetSize, true)
         } catch (e: Exception) {
-            (parentFragment?.parentFragment as PlayListFragment).setBottomSheetMaxHeight(
-                bottomSheetSize
+            (parentFragment?.parentFragment as PlayListFragment).setBottomTuning(
+                bottomSheetSize, true
             )
-
         }
     }
 

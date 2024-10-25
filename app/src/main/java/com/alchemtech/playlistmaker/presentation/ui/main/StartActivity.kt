@@ -39,7 +39,7 @@ class StartActivity : AppCompatActivity() {
         prepareBottomNavView()
         backPressPrepare()
         prepareBottomSheet()
-        viewModel.cleanDb()
+        viewModel.cleaningDb()
     }
 
     fun bottomNavigationVisibility(isVisibile: Boolean) {
