@@ -28,10 +28,10 @@ var addPlayListViewModule = module {
 
     single<PlayListsRepository> {
         PlayListsRepositoryImpl(
-            favoriteTracksRepository = get(),
+            tracksDbRepository = get(),
             playListDao = get(),
             tracksStringConvertor = get(),
-            coversRepository = get()
+            coversRepository = get(),
         )
     }
 

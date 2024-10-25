@@ -23,7 +23,7 @@
     <string name="primaryGenreName">Жанр</string>
     <string name="TrackYear">Год</string>
     <string name="album">Альбом</string>
-    <string name="TrackDuration">00:30</string>
+    <string name="TrackDuration">Длительность</string>
     <string name="trackName">TrackName</string>
     <string name="emptyMediaLib">Ваша медиатека пуста</string>
     <string name="emptyPlayLists">Вы не создали\nни одного плейлиста</string>
@@ -45,10 +45,20 @@
     <string name="cancelAddPlayListCancelButton">Отмена</string>
     <string name="cancelAddPlayYesButton">Завершить</string>
     <string name="Add_play_list_bottom_sheet_title">Добавить в плейлист</string>
-    <string name="playListAdded">Плейлист %1$s создан</string>
-    <string name="addedToPlayList">Добавлено в плейлист %1$s</string>
-    <string name="doNotAddtoPlayList">Трек уже добавлен в плейлист %1$s</string>
+    <string name="playListAdded">Плейлист «%1$s» создан</string>
+    <string name="addedToPlayList">Добавлено в плейлист «%1$s»</string>
+    <string name="doNotAddtoPlayList">Трек уже добавлен в плейлист «%1$s»</string>
     <string name="bottom_message">текст сообщения</string>
+    <string name="playList_share_but">Поделиться</string>
+    <string name="playList_edit_information_but">Редактировать информацию</string>
+    <string name="playList_delete_but">Удалить плейлист</string>
+    <string name="save">Сохранить</string>
+    <string name="play_list_saved">Плейлист «%1$s» сохранен</string>
+    <string name="no_internet_bottom_message">Отсутствует интернет соединение</string>
+    <string name="cancelAddPlayListTitle2">Завершить редактирование плейлиста?</string>
+    <string name="no_tracks">треки пока не добавлены</string>
+    <string name="del_playlist_message">Хотите удалить плейлист?</string>
+    <string name="play_list_del_message">Плейлист «%1$s» успешно удален</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>
@@ -59,5 +69,12 @@
         <item quantity="other">%1$d other</item>
     </plurals>
 
-
+    <plurals name="plurals_minutes">
+        <item quantity="zero">%1$d минут</item>
+        <item quantity="one">%1$d минута</item>
+        <item quantity="two">%1$d минуты</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d other</item>
+    </plurals>
 </resources>

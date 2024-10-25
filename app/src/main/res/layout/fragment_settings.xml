@@ -16,7 +16,7 @@
 
     <Switch
         android:id="@+id/dayNightSwitch"
-        style="@style/settingsActivityButtonsStyle"
+        style="@style/textButtonsStyle"
         android:layout_marginStart="16dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="16dp"
@@ -25,20 +25,19 @@
 
     <Button
         android:id="@+id/buttonShareApp"
-        style="@style/settingsActivityButtonsStyle"
-        android:drawableTint="@color/all_YP_Black"
+        style="@style/textButtonsStyle"
         android:text="@string/Share_app"
         app:icon="@drawable/share_app" />
 
     <Button
         android:id="@+id/buttonToSupport"
-        style="@style/settingsActivityButtonsStyle"
+        style="@style/textButtonsStyle"
         android:text="@string/to_support"
         app:icon="@drawable/support" />
 
     <Button
         android:id="@+id/buttonTermsOfUse"
-        style="@style/settingsActivityButtonsStyle"
+        style="@style/textButtonsStyle"
         android:text="@string/terms_of_use"
         app:icon="@drawable/terms_of_use" />
 </LinearLayout>

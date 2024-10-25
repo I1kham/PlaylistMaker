@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    id ("androidx.navigation.safeargs.kotlin")
+    id ("kotlin-parcelize")
+
 }
 
 android {
@@ -53,9 +56,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
-    implementation("androidx.activity:activity-ktx:1.9.2")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.0")
+    implementation("androidx.activity:activity-ktx:1.9.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
 
     implementation("com.github.bumptech.glide:glide:4.14.2")
     ksp("com.github.bumptech.glide:ksp:4.14.2")
@@ -66,11 +69,8 @@ dependencies {
 
     implementation("io.insert-koin:koin-android:3.3.0")
 
-    implementation ("androidx.fragment:fragment-ktx:1.8.3")
+    implementation ("androidx.fragment:fragment-ktx:1.8.4")
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
-
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.0")
-    implementation( "androidx.navigation:navigation-ui-ktx:2.8.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.9.0")

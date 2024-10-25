@@ -31,6 +31,7 @@ class SettingsFragment : Fragment() {
         toSupportButWork()
         shareAppButWork()
         termsOfUseButWork()
+        setThemeSwitcherChecked()
         darkThemeSwitchWork()
     }
 
@@ -44,6 +45,11 @@ class SettingsFragment : Fragment() {
         binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        darkThemeSwitchWork()
+    }
+
 
     private fun darkThemeSwitchWork() {
         binding?.dayNightSwitch?.setOnCheckedChangeListener { _, isChecked ->
@@ -53,7 +59,6 @@ class SettingsFragment : Fragment() {
                 setDefaultNightMode(MODE_NIGHT_NO)
             }
         }
-        setThemeSwitcherChecked()
     }
 
     private fun termsOfUseButWork() {

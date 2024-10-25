@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mediaLibFragment_to_addPlayListFragment"
             app:destination="@id/addPlayListFragment" />
+        <action
+            android:id="@+id/action_mediaLibFragment_to_playList"
+            app:destination="@id/playList" />
     </fragment>
     <fragment
         android:id="@+id/tracksFragment"
@@ -54,5 +57,17 @@
         android:id="@+id/addPlayListFragment"
         android:name="com.alchemtech.playlistmaker.presentation.ui.addPlayList.AddPlayListFragment"
         android:label="make_play_list"
-        tools:layout="@layout/make_play_list" />
+        tools:layout="@layout/fragment_add_play_list" />
+    <fragment
+        android:id="@+id/playList"
+        android:name="com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment"
+        android:label="fragment_playlist"
+        tools:layout="@layout/fragment_playlist" >
+        <action
+            android:id="@+id/action_playList_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+        <action
+            android:id="@+id/action_playList_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
 </navigation>

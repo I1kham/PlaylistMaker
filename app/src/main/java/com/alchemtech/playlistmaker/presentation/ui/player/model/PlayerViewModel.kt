@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.api.PlayerRepository
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
-import com.alchemtech.playlistmaker.domain.db.FavoriteTracksInteractor
-import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
-import com.alchemtech.playlistmaker.domain.entity.PlayList
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.player.PlayerInteractor
 import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
@@ -16,29 +13,33 @@ import com.alchemtech.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
-    private val singleTrackRepository: SingleTrackInteractor,
     private val player: PlayerInteractor,
-    private val favoriteTracksInteractor: FavoriteTracksInteractor,
-    private val playListInteractor: PlayListInteractor,
-) : ViewModel() {
-    private var playTrack: Track? = singleTrackRepository.readTrack()
+    private val tracksDbInteractor: TracksDbInteractor,
+    ) : ViewModel() {
+    private var playTrack: Track? = null
     private val stateLiveData = MutableLiveData<PlayerState>()
 
     companion object {
         private const val DEBOUNCE_GET_CURRENT_POSITION = 300L
     }
 
-    init {
-        playTrack?.let {
-            preparePlayer()
-            renderState(PlayerState.Fill(it))
-        }
-    }
-
-
     override fun onCleared() {
         super.onCleared()
         player.release()
+    }
+
+    internal fun prepareModel(trackId: String?) {
+        viewModelScope.launch {
+            trackId?.let { it ->
+                playTrack = tracksDbInteractor.getTrackById(it)
+                playTrack?.let {
+                    preparePlayer(it)
+                    renderState(PlayerState.Fill(it))
+                }
+            } ?: run {
+                renderState(PlayerState.Error)
+            }
+        }
     }
 
     fun observeRenderState(): LiveData<PlayerState> = stateLiveData
@@ -50,49 +51,23 @@ class PlayerViewModel(
         player.pausePlayer()
     }
 
-    internal fun addTrackTo(playList: PlayList) {
-        viewModelScope.launch {
-            playTrack?.let {
-                renderState(
-                    PlayerState.TrackAdded(
-                        playListInteractor.addToList(
-                            playList.id,
-                            it
-                        ), playList.name
-                    )
-                )
-            }
-        }
-    }
-
     internal fun onFavoriteClicked() {
         playTrack?.let {
             if (it.isFavorite) {
                 it.isFavorite = false
                 viewModelScope.launch {
-                    favoriteTracksInteractor.removeFromFavoriteList(it)
+                    tracksDbInteractor.unLikeTrack(it.trackId)
                 }
             } else {
                 it.isFavorite = true
                 viewModelScope.launch {
-                    favoriteTracksInteractor.addToFavoriteList(it)
+                    tracksDbInteractor.addToTrackDb(it)
                 }
             }
             renderState(PlayerState.LikeBut(it))
         }
     }
 
-    internal fun addToPlaylist() {
-        viewModelScope.launch {
-            playListInteractor.getAllPlayLists().collect { playList ->
-                if (playList.isNotEmpty()) {
-                    renderState(PlayerState.ShowList(playList))
-                } else {
-                    renderState(PlayerState.EmptyList)
-                }
-            }
-        }
-    }
 
     internal fun playBut() {
         player.playbackControl()
@@ -100,13 +75,14 @@ class PlayerViewModel(
 
     private val statePosition = MutableLiveData<String>()
 
-    fun observeCurrentPosition(): LiveData<String> = statePosition
+    internal fun observeCurrentPosition(): LiveData<String> = statePosition
     private fun renderPosition(state: String) {
         statePosition.postValue(state)
     }
 
-    private fun preparePlayer() {
-        playTrack?.let {
+    private fun preparePlayer(track: Track?) {
+        renderState(PlayerState.Preparing(true))
+        track?.let {
             val onPreparedListenerConsumer =
                 PlayerRepository.OnPreparedListenerConsumer {
                     renderState(PlayerState.OnPrepared(it))
@@ -145,8 +121,8 @@ class PlayerViewModel(
             useLastParam = false
         ) {
             if (player.playerIsPlaying()) {
-                currentPositionTask()
                 renderPosition(playerTimeFormatter(player.currentPosition()))
+                currentPositionTask()
             }
         })
     }

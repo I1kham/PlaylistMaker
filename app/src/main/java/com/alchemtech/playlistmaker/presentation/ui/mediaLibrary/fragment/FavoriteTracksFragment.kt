@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alchemtech.playlistmaker.App.Companion.PLAY_TRACK_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
-import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewModel
+import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.model.FavoriteTracksViewModel
 import com.alchemtech.playlistmaker.presentation.ui.mediaLibrary.state.FavoriteTracksViewState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
 import com.alchemtech.playlistmaker.util.debounce
@@ -95,8 +97,8 @@ class FavoriteTracksFragment : Fragment() {
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
         ) { track ->
-            findNavController().navigate(R.id.action_mediaLibFragment_to_playerActivity)
-            viewModel.clickOnTrack(track)
+            val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId  )
+            findNavController().navigate(R.id.action_mediaLibFragment_to_playerActivity,bundle )
         }
     }
 

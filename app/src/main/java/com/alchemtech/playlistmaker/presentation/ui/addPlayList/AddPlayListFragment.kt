@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -24,9 +23,10 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.alchemtech.playlistmaker.App.Companion.PLAY_LIST_TRANSFER_KEY
 import com.alchemtech.playlistmaker.R
-import com.alchemtech.playlistmaker.databinding.MakePlayListBinding
-import com.alchemtech.playlistmaker.presentation.ui.imageViewFillBigNoPlaceHolder
+import com.alchemtech.playlistmaker.databinding.FragmentAddPlayListBinding
+import com.alchemtech.playlistmaker.presentation.ui.fillBy
 import com.alchemtech.playlistmaker.presentation.ui.main.StartActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
@@ -37,7 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddPlayListFragment : Fragment() {
     private val viewModel: AddPlayListViewModel by viewModel()
-    private var binding: MakePlayListBinding? = null
+    private var binding: FragmentAddPlayListBinding? = null
     private val requester = PermissionRequester.instance()
     private var nameEditText: EditText? = null
     private var nameTitle: TextView? = null
@@ -46,19 +46,25 @@ class AddPlayListFragment : Fragment() {
     private var createBut: Button? = null
     private var progressBar: ProgressBar? = null
     private var uri: Uri? = null
+    private var playListId: Long? = null
+    private var edited = false
+        set(value) {
+            field = value
+            createBut?.isEnabled = value
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = MakePlayListBinding.inflate(inflater, container, false)
+        binding = FragmentAddPlayListBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeRenderState()
+        prepareViewModel()
         prepareBackBut()
         false.bottomNavigatorVisibility()
         prepareProgressBar()
@@ -133,15 +139,18 @@ class AddPlayListFragment : Fragment() {
             showBottomMessage(getString(R.string.playListAdded, name))
             actionCreateBut()
         }
+        if (playListId != null) {
+            createBut?.text = getString(R.string.save)
+        }
     }
 
     private fun actionCreateBut() {
-        viewModel.savePlayList()
+        viewModel.addPlayList()
     }
 
     private fun preparePictureLayOut() {
         binding?.picAdding?.setOnClickListener {
-            getPictureUri()
+            playListId?.let { } ?: getPictureUri()
         }
     }
 
@@ -233,12 +242,16 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setUriToModel(uri: Uri?) {
-        viewModel.setUri(uri)
+        uri?.let {
+            viewModel.setUri(uri)
+            playListId?.let {
+                edited = true
+            }
+        }
     }
 
     private fun setPicture(uri: Uri?) {
-        val albumCover: ImageView? = binding?.picAdding
-        imageViewFillBigNoPlaceHolder(uri, albumCover, requireContext())
+        binding?.picAdding?.fillBy(uri, requireContext())
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -259,19 +272,22 @@ class AddPlayListFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getCheckForCloseOpenWindow() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle(getString(R.string.cancelAddPlayListTitle))
-            .setMessage(
-                getString(R.string.cancelAddPlayListMassage)
-            )
-            .setNeutralButton(getString(R.string.cancelAddPlayListCancelButton)) { _, _ -> }
-            .setPositiveButton(getString(R.string.cancelAddPlayYesButton)) { _, _ ->
-                findNavController().popBackStack()
-            }
-            .show()
+        if (edited) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setBackground(resources.getDrawable((R.drawable.background)))
+                .setTitle(getCurrentTitle())
+                .setMessage(
+                    getString(R.string.cancelAddPlayListMassage)
+                )
+                .setNeutralButton(getString(R.string.cancelAddPlayListCancelButton)) { _, _ -> }
+                .setPositiveButton(getString(R.string.cancelAddPlayYesButton)) { _, _ ->
+                    findNavController().popBackStack()
+                }
+                .show()
+        } else {
+            findNavController().popBackStack()
+        }
     }
-
 
     private fun openAppPermission() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -283,7 +299,9 @@ class AddPlayListFragment : Fragment() {
     private fun prepareBackBut() {
         binding?.preview?.setOnClickListener {
             requireActivity().onBackPressed()
-
+        }
+        if (playListId != null) {
+            binding?.preview?.text = null
         }
     }
 
@@ -295,9 +313,10 @@ class AddPlayListFragment : Fragment() {
             nameTitle?.isVisible = false
             nameEditText?.doOnTextChanged { text, _, _, _ ->
                 viewModel.setName(text.toString())
+                edited = !text.isNullOrEmpty()
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
-                createBut?.isEnabled = !text.isNullOrEmpty()
+
             }
         }
     }
@@ -312,28 +331,52 @@ class AddPlayListFragment : Fragment() {
                 viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
+                edited = playListId != null
             }
         }
     }
 
 
-
-    private fun observeRenderState() {
+    private fun prepareViewModel() {
         viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
             render(it)
         }
+        playListId = arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
+                parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
+        viewModel.editPlaylist(playListId)
     }
 
     private fun render(state: AddPlayListState) {
         when (state) {
-            is AddPlayListState.Exit ->
+            is AddPlayListState.Exit -> {
+                showBottomMessage(getString(R.string.play_list_saved, state.message))
                 findNavController().popBackStack()
+            }
 
             is AddPlayListState.Loading ->
                 progressBar?.isVisible = true
 
             is AddPlayListState.SetPic ->
                 setPicture(state.uri)
+
+            is AddPlayListState.Content -> {
+                setPicture(state.playList.coverUri)
+                nameEditText?.setText(state.playList.name)
+                descriptionEditText?.setText(state.playList.description)
+                createBut?.setOnClickListener {
+                    viewModel.savePlaylist()
+                }
+                edited = false
+            }
+        }
+    }
+
+    private fun getCurrentTitle(): String {
+        playListId?.let {
+            return getString(R.string.cancelAddPlayListTitle2)
+        } ?: run {
+            return getString(R.string.cancelAddPlayListTitle)
         }
     }
 
