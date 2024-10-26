@@ -19,6 +19,7 @@ class PlayListViewModel(
         this.playListId = playListId
         this.playListId?.let {
             viewModelScope.launch {
+                playListDuration = 0
                 val playList = playListInteractor.getPlayList(it)
                 playListName = playList.name
                 playList.tracks.map {
@@ -33,22 +34,27 @@ class PlayListViewModel(
                         playList.tracks.size
                     )
                 )
+
             }
         }
     }
 
-    fun deletePlayList(id: Long) = viewModelScope.launch {
-        playListName?.let {
-            renderState(PlayListFragmentState.Deleted(it))
+    fun deletePlayList(id: Long) {
+        viewModelScope.launch {
+            playListName?.let {
+                renderState(PlayListFragmentState.Deleted(it))
+            }
+            playListInteractor.removePlayList(id)
+            playListId = null
+            playListInteractor.removePlayList(id)
+            renderState(PlayListFragmentState.Exit)
         }
-        playListInteractor.removePlayList(id)
-        renderState(PlayListFragmentState.Exit)
     }
 
     fun deleteTrack(trackId: Long) {
         viewModelScope.launch {
             playListId?.let {
-                playListInteractor.removeFromList(it, trackId)
+                playListInteractor.removeFromList(it, trackId).let { getPlayList(playListId) }
             }
         }
     }

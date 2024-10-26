@@ -1,14 +1,14 @@
 package com.alchemtech.playlistmaker.data.db.favorite_list_repo
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.alchemtech.playlistmaker.data.converters.TrackDbConvertor
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
 import com.alchemtech.playlistmaker.data.db.entity.TrackEntity
 import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class TracksDbRepositoryImpl(
     private val tracksDao: TrackDao,
@@ -16,15 +16,16 @@ class TracksDbRepositoryImpl(
 ) : TracksDbRepository {
 
     override suspend fun addToTracksDb(track: Track) {
-        Log.d(TAG, "addToTracksDb: ")
-        tracksDao.addTrack(trackDbConvertor.map(track))
+        withContext(Dispatchers.IO) {
+            tracksDao.addTrack(trackDbConvertor.map(track))
+        }
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
-        return tracksDao.getFavoriteTracks().map { trackEntityList: List<TrackEntity> ->
-            trackEntityList.map { trackEntity ->
-                trackDbConvertor.map(trackEntity)
-            }
+            return tracksDao.getFavoriteTracks().map { trackEntityList: List<TrackEntity> ->
+                trackEntityList.map { trackEntity ->
+                    trackDbConvertor.map(trackEntity)
+                }
         }
     }
 
@@ -41,10 +42,14 @@ class TracksDbRepositoryImpl(
     }
 
     override suspend fun deleteTrack(trackId: String) {
-        tracksDao.deleteTrack(trackId)
+        withContext(Dispatchers.IO) {
+            tracksDao.deleteTrack(trackId)
+        }
     }
 
     override suspend fun unLikeTrack(trackId: String) {
-        tracksDao.unLikeTrack(trackId)
+        withContext(Dispatchers.IO) {
+            tracksDao.unLikeTrack(trackId)
+        }
     }
 }

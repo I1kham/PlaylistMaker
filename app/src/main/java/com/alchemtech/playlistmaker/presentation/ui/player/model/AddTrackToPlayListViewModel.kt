@@ -42,7 +42,7 @@ class AddTrackToPlayListViewModel(
                     AddTrackToPlayListFragmentState.TrackAdded(
                         playListInteractor.addToList(
                             playList.id,
-                            it
+                            it.trackId
                         ), playList.name
                     )
                 )

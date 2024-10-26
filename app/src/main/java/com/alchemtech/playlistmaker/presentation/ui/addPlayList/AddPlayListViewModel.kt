@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.addPlayList
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,26 +12,26 @@ class AddPlayListViewModel(
     private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<AddPlayListState>()
-    private var playListName: String = ""
+    private var playListName: String? = null
     private var playListDescription: String? = null
-    private var uri: Uri? = null
+    private var uri: String? = null
     private var playListIdVm: Long = 0
 
     fun observeRenderState(): LiveData<AddPlayListState> = stateLiveData
 
     fun addPlayList() {
-        if (playListName.isNotEmpty()) {
+        playListName?.let {
             renderState(AddPlayListState.Loading)
             viewModelScope.launch {
                 playListInteractor.addPlayList(
                     PlayList(
                         playListIdVm,
-                        name = playListName,
+                        name = it,
                         description = playListDescription,
                         uri,
                     )
                 )
-                renderState(AddPlayListState.Exit(playListName))
+                renderState(AddPlayListState.Exit(it))
             }
         }
     }
@@ -40,30 +39,32 @@ class AddPlayListViewModel(
     fun savePlaylist() {
         viewModelScope.launch {
             renderState(AddPlayListState.Loading)
-            playListInteractor.updatePlaylistInfo(
-                playListIdVm,
-                playListName,
-                playListDescription,
-                uri
-            )
+            playListName?.let {
+                playListInteractor.updatePlaylistInfo(
+                    playListIdVm,
+                    it,
+                    playListDescription,
+                    uri
+                )
+                renderState(AddPlayListState.Exit(it))
+            }
         }
-        renderState(AddPlayListState.Exit(playListName))
     }
-
 
     internal fun editPlaylist(playListID: Long?) {
         playListID?.let {
             viewModelScope.launch {
-                val playList = playListInteractor.getPlayList(it)
-                uri = playList.coverUri
-                playListIdVm = playListID
-                renderState(AddPlayListState.Content(playList))
+                playListInteractor.getPlayList(it).let{
+                    uri = it.coverUri
+                    playListIdVm = playListID
+                    renderState(AddPlayListState.Content(it))
+                }
             }
         }
     }
 
 
-    internal fun setUri(uri: Uri?) {
+    internal fun setUri(uri: String?) {
         this.uri = uri
         renderState(AddPlayListState.SetPic(uri))
     }

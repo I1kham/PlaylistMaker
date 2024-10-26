@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.domain.impl
 
-import android.net.Uri
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
@@ -22,33 +21,33 @@ class PlayLIstInteractorImpl(
         return playListsRepository.getAllPlayLists()
     }
 
-    override suspend fun getTracks(id: Long): Flow<List<Track>> {
-        return playListsRepository.getTracks(id)
+    override suspend fun getTracks(listId: Long): Flow<List<Track>> {
+        return playListsRepository.getTracks(listId)
     }
 
-    override suspend fun addToList(id: Long, track: Track): Boolean {
-        return playListsRepository.addToList(id, track)
+    override suspend fun addToList(listId: Long, trackId: String): Boolean {
+        return playListsRepository.addToList(listId, trackId)
     }
 
     override suspend fun removeFromList(listId: Long, trackId: Long): Boolean {
         return playListsRepository.removeFromList(listId, trackId)
     }
 
-    override suspend fun getPlayList(id: Long): PlayList {
-        return playListsRepository.getPlayList(id)
+    override suspend fun getPlayList(listId: Long): PlayList {
+        return playListsRepository.getPlayList(listId)
     }
 
     override suspend fun updatePlaylistInfo(
-        id: Long,
+        listId: Long,
         playListName: String,
         playListDescription: String?,
-        coverUri: Uri?,
+        coverUri: String?,
     ) {
         playListsRepository.updatePlaylistInfo(
-            id,
+            listId,
             playListName,
             playListDescription,
-            coverUri.toString()
+            coverUri
         )
     }
 

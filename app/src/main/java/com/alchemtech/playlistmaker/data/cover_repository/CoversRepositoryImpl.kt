@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.data.cover_repository
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Environment
 import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +19,9 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
         const val COMPRESS_QUALITY = 30
     }
 
-    override suspend fun saveCover(id: Long, uri: Uri?): Uri? {
-        if (uri.toString()!="null") if (uri.toString().replaceAfter(':', "") != "file:") {
+    override suspend fun saveCover(id: Long, uri: String?): String? {
+        println(uri)
+        if (!uri.isNullOrEmpty()) if (uri.contains( "$FILE_NAME$id$FILE_EXTENSION".toRegex()) ) {
             deleteCover(id)
             val filePath =
                 File(
@@ -32,7 +32,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
                 filePath.mkdirs()
             }
             val file = File(filePath, "$FILE_NAME$id$FILE_EXTENSION")
-            val inputStream = context.contentResolver.openInputStream(uri!!)
+            val inputStream = context.contentResolver.openInputStream(uri.toUri())
             val outputStream = withContext(Dispatchers.IO) {
                 FileOutputStream(file)
             }
@@ -41,7 +41,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
                 .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
             inputStream?.close()
             outputStream.close()
-            return file.toUri()
+            return file.toString()
         } else {
             return uri
         } else return null

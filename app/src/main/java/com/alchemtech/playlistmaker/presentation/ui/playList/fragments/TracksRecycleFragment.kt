@@ -21,7 +21,6 @@ import com.alchemtech.playlistmaker.presentation.ui.playList.PlayListFragment
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model.TracksRecycleFragmentModel
 import com.alchemtech.playlistmaker.presentation.ui.playList.fragments.state.TracksRecycleFragmentState
 import com.alchemtech.playlistmaker.presentation.ui.track_card.TrackCardAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksRecycleFragment : Fragment() {
@@ -79,7 +78,6 @@ class TracksRecycleFragment : Fragment() {
         super.onResume()
         bottomSheetTuning()
     }
-
 
 
     private fun prepareOnItemClickToTrackCard() {
@@ -145,20 +143,23 @@ class TracksRecycleFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun deleteTrack(trackId: Long) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle("Удалить трек")
-            .setMessage(
-                "Хотите удалить трек?"
-            )
-            .setNegativeButton(R.string.no) { _, _ ->
-            }
-            .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.deleteTrack(trackId)
-                showBottomMessage("Трек удален")
-            }
-            .show()
+//        MaterialAlertDialogBuilder(requireContext())
+//            .setBackground(resources.getDrawable((R.drawable.background)))
+//            .setTitle("Удалить трек")
+//            .setMessage(
+//                "Хотите удалить трек?"
+//            )
+//            .setNegativeButton(R.string.no) { _, _ ->
+//            }
+//            .setPositiveButton(R.string.yes) { _, _ ->
+//                viewModel.deleteTrack(trackId)
+//                showBottomMessage("Трек удален")
+//            }
+//            .show()
+        (parentFragment?.parentFragment as PlayListFragment).deleteTrack(trackId)
+
     }
+
     private fun showBottomMessage(message: String) {
         (activity as StartActivity).bottomSheetShowMessage(message)
     }

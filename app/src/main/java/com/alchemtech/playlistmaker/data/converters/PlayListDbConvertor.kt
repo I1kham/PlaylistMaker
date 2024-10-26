@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.data.converters
 
-import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.data.db.entity.PlayListEntity
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 
@@ -10,7 +9,7 @@ class PlayListDbConvertor(private val tracksStringConvertor: TracksStringConvert
             playListId = playlist.id,
             name = playlist.name,
             description = playlist.description,
-            coverUri = playlist.coverUri.toString(),
+            coverUri = playlist.coverUri,
             tracks = tracksStringConvertor.map(playlist.tracks)
         )
     }
@@ -20,7 +19,7 @@ class PlayListDbConvertor(private val tracksStringConvertor: TracksStringConvert
             id = playlist.playListId,
             name = playlist.name,
             description = playlist.description,
-            coverUri = playlist.coverUri?.toUri(),
+            coverUri = playlist.coverUri,
             tracks = tracksStringConvertor.map(playlist.tracks)
         )
     }

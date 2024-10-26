@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.presentation.ui.player
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.databinding.ActivityPlayerBinding
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolder
@@ -69,7 +68,7 @@ interface PlayerStringsFilling  {
 
     private fun albumCoverFill(track: Track, binding: ActivityPlayerBinding?, context: Context) {
         val albumCover: ImageView? = binding?.playerAlbumCover
-        albumCover?.fillByUriOrPlaceHolder(track.getArtworkUrl512().toUri(),context) }
+        albumCover?.fillByUriOrPlaceHolder(track.getArtworkUrl512(),context) }
 
     private fun trackTitleFill(track: Track, binding: ActivityPlayerBinding?) {
         binding?.playerTrackName?.text = track.trackName

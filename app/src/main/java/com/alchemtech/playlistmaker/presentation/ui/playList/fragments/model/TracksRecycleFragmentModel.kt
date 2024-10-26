@@ -37,7 +37,7 @@ class TracksRecycleFragmentModel(
         viewModelScope.launch {
             playlistId?.let {
                 playListInteractor.removeFromList(it, trackId).and(true)
-                        getTracks(it)
+                getTracks(it)
             }
         }
     }

@@ -170,7 +170,7 @@ class PlayListActionFragment : Fragment() {
 
 
     private fun deleteOpenWindow() {
-        (parentFragment?.parentFragment as PlayListFragment).deleteTrack()
+        (parentFragment?.parentFragment as PlayListFragment).deletePlayList()
         findNavController().popBackStack()
     }
 }

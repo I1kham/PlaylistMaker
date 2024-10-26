@@ -3,7 +3,6 @@ package com.alchemtech.playlistmaker.presentation.ui.track_card
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.entity.Track
@@ -21,6 +20,6 @@ class TrackCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackTitle.text = track.trackName
         trackArtist.text = track.artistName
         trackDuration.text = track.getTimeString()
-        albumCover.fillByUriOrPlaceHolder(track.artworkUrl100?.toUri(),itemView.context,true)
+        albumCover.fillByUriOrPlaceHolder(track.artworkUrl100,itemView.context,true)
     }
 }

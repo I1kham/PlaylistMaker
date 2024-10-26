@@ -1,7 +1,6 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -175,12 +174,13 @@ class PlayListFragment : Fragment() {
                 )
             )
 
-            PlayListFragmentState.Exit -> findNavController().popBackStack()
-            else -> {}
+            PlayListFragmentState.Exit -> {
+                findNavController().popBackStack()
+            }
         }
     }
 
-    private fun setPicture(uri: Uri?) {
+    private fun setPicture(uri: String?) {
         binding?.pic?.fillByUriOrPlaceHolderNoCorners(uri, requireContext())
     }
 
@@ -201,7 +201,7 @@ class PlayListFragment : Fragment() {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    internal fun deleteTrack() {
+    internal fun deletePlayList() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
             .setTitle(getString(R.string.playList_delete_but))
@@ -217,4 +217,22 @@ class PlayListFragment : Fragment() {
             }
             .show()
     }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+     fun deleteTrack(trackId: Long) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setBackground(resources.getDrawable((R.drawable.background)))
+            .setTitle("Удалить трек")
+            .setMessage(
+                "Хотите удалить трек?"
+            )
+            .setNegativeButton(R.string.no) { _, _ ->
+            }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                viewModel.deleteTrack(trackId)
+                showBottomMessage("Трек удален")
+            }
+            .show()
+    }
+
 }

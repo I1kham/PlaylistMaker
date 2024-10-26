@@ -26,7 +26,6 @@ class PlayListsViewModel(
             playListInteractor.getAllPlayLists().collect {
                     if (it.isNotEmpty()) {
                         renderState(PlayListsState.ShowList(it))
-
                     } else {
                         renderState(PlayListsState.EmptyList)
                     }

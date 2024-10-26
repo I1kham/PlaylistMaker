@@ -18,7 +18,6 @@ class PlayListActionFragmentModel(val playListInteractor: PlayListInteractor) : 
             viewModelScope.launch {
                 renderState(PlayListActionFragmentState.Content(playListInteractor.getPlayList(it)))
             }
-
         }
     }
 

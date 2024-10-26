@@ -1,10 +1,8 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList
 
-import android.net.Uri
-
 sealed interface PlayListFragmentState {
     data class Content(
-        val playListCover: Uri?,
+        val playListCover: String?,
         val name: String,
         val description: String?,
         val duration: Long,

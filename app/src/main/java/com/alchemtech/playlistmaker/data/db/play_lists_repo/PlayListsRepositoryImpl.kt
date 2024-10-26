@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.data.db.play_lists_repo
 
-import androidx.core.net.toUri
 import com.alchemtech.playlistmaker.data.converters.TracksStringConvertor
 import com.alchemtech.playlistmaker.data.cover_repository.CoversRepository
 import com.alchemtech.playlistmaker.data.db.entity.PlayListDao
@@ -9,9 +8,10 @@ import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class PlayListsRepositoryImpl(
     private val tracksDbRepository: TracksDbRepository,
@@ -21,42 +21,46 @@ class PlayListsRepositoryImpl(
 ) : PlayListsRepository {
 
     override suspend fun cleaning() {
-        println("cleaning")
-        val usedTracksIds = HashSet<String>()
-        playListDao.getAllTracksIdFromAllPlayList().map {
-            tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
-        }
-        tracksDbRepository.getAllTrackList().collect { listTracks ->
-            listTracks.map {
-                if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
-                    println("deleting ${it.trackId}")
-                    tracksDbRepository.deleteTrack(it.trackId)
-                }
+        withContext(Dispatchers.IO) {
+            val usedTracksIds = HashSet<String>()
+            playListDao.getAllTracksIdFromAllPlayList().map {
+                tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
             }
+            tracksDbRepository.getAllTrackList().collect { listTracks ->
+                listTracks.map {
+                    if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
+                        tracksDbRepository.deleteTrack(it.trackId)
+                    }
+                }
 
+            }
         }
     }
 
     override suspend fun addPlayList(playList: PlayList) {
-        val name = playList.name
-        val id = playListDao.getRowCount() + 1
-        val description = playList.description
-        val coverUri = coversRepository.saveCover(id, playList.coverUri).toString()
-        val tracksId = tracksStringConvertor.mapListToIDs(playList.tracks)
-        return playListDao.addPlayList(
-            PlayListEntity(
-                id,
-                name,
-                description,
-                coverUri,
-                tracksId
+        withContext(Dispatchers.IO) {
+            val name = playList.name
+            val id = playListDao.getRowCount() + 1
+            val description = playList.description
+            val coverUri = coversRepository.saveCover(id, playList.coverUri).toString()
+            val tracksId = tracksStringConvertor.mapListToIDs(playList.tracks)
+            playListDao.addPlayList(
+                PlayListEntity(
+                    id,
+                    name,
+                    description,
+                    coverUri,
+                    tracksId
+                )
             )
-        )
+        }
     }
 
     override suspend fun removePlayList(id: Long) {
-        playListDao.removePlayList(id)
-        coversRepository.deleteCover(id)
+        withContext(Dispatchers.IO) {
+            playListDao.removePlayList(id)
+            coversRepository.deleteCover(id)
+        }
     }
 
 
@@ -68,42 +72,51 @@ class PlayListsRepositoryImpl(
 
 
     override suspend fun getTracks(id: Long): Flow<List<Track>> {
-        val tracksId = playListDao.getTracksIdFromPlayList(id)
-        val tracks = tracksStringConvertor.mapIDsStringToList(tracksId)
-        return flow { emit(tracks.map { tracksDbRepository.getTrackByID(it) }) }
+        return playListDao.getTracksFlowIdFromPlayList(id).map {
+            tracksStringConvertor.mapIDsStringToList(it).map { tracksDbRepository.getTrackByID(it) }
+        }
     }
 
 
-    override suspend fun addToList(id: Long, track: Track): Boolean {
-        var isAdded: Boolean = false
-        val tracksList = HashSet<String>()
-        tracksList.addAll(
-            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(id))
-        )
-        isAdded = tracksList.add(track.trackId)
-        playListDao.updatePlaylistTracks(
-            id,
-            tracksStringConvertor.mapListIdToString(tracksList.toList())
-        )
-        return isAdded
+    override suspend fun addToList(playListId: Long, trackId: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            var isAdded: Boolean = false
+            val tracksList =
+                tracksStringConvertor
+                    .mapIDsStringToList(
+                        playListDao.getTracksIdFromPlayList(playListId)
+                    )
+                    .toHashSet()
+            isAdded = tracksList.add(trackId)
+            playListDao.updatePlaylistTracks(
+                playListId,
+                tracksStringConvertor.mapListIdToString(tracksList.toList())
+            )
+            isAdded
+        }
     }
 
     override suspend fun removeFromList(listId: Long, trackId: Long): Boolean {
-        var removed = false
-        val tracksList = HashSet<String>()
-        tracksList.addAll(
-            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(listId))
-        )
-        removed = tracksList.remove(trackId.toString())
-        playListDao.updatePlaylistTracks(
-            listId,
-            tracksStringConvertor.mapListIdToString(tracksList.toList())
-        )
-        return removed
+        return withContext(Dispatchers.IO) {
+            var removed = false
+            val tracksList =
+                tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(listId))
+                    .toHashSet()
+            removed = tracksList.remove(trackId.toString())
+            playListDao.updatePlaylistTracks(
+                listId,
+                tracksStringConvertor.mapListIdToString(tracksList.toList())
+            )
+            removed
+        }
     }
 
     override suspend fun getPlayList(id: Long): PlayList {
-        return playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
+        return withContext(Dispatchers.Default) {
+            playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
+
+
+        }
     }
 
     override suspend fun updatePlaylistInfo(
@@ -112,9 +125,15 @@ class PlayListsRepositoryImpl(
         playListDescription: String?,
         uri: String?,
     ) {
-
-        val coverUri = coversRepository.saveCover(id, uri?.toUri())
-        playListDao.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
+        withContext(Dispatchers.IO) {
+            val coverUri = coversRepository.saveCover(id, uri)
+            playListDao.updatePlaylistInfo(
+                id,
+                playListName,
+                playListDescription,
+                coverUri.toString()
+            )
+        }
     }
 
     private suspend fun PlayListEntity.convertPlaylistEntityToPlayList(): PlayList {
@@ -122,7 +141,7 @@ class PlayListsRepositoryImpl(
             this.playListId,
             this.name,
             this.description,
-            this.coverUri?.toUri(),
+            this.coverUri,
             getTacksListByIDList(
                 tracksStringConvertor.mapIDsStringToList(this.tracks)
             )
@@ -130,10 +149,12 @@ class PlayListsRepositoryImpl(
     }
 
     private suspend fun getTacksListByIDList(idList: List<String>): List<Track> {
-        val newTrackList = mutableListOf<Track>()
-        for (id in idList) {
-            newTrackList.add((tracksDbRepository.getTrackByID(id)))
+        return withContext(Dispatchers.IO) {
+            val newTrackList = mutableListOf<Track>()
+            for (id in idList) {
+                newTrackList.add((tracksDbRepository.getTrackByID(id)))
+            }
+            newTrackList
         }
-        return newTrackList
     }
 }

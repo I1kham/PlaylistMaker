@@ -93,7 +93,7 @@ class AddPlayListFragment : Fragment() {
 
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            setUriToModel(uri)
+            setUriToModel(uri.toString())
             this.uri = uri
         }
 
@@ -241,7 +241,7 @@ class AddPlayListFragment : Fragment() {
         )
     }
 
-    private fun setUriToModel(uri: Uri?) {
+    private fun setUriToModel(uri: String?) {
         uri?.let {
             viewModel.setUri(uri)
             playListId?.let {
@@ -250,7 +250,7 @@ class AddPlayListFragment : Fragment() {
         }
     }
 
-    private fun setPicture(uri: Uri?) {
+    private fun setPicture(uri: String?) {
         binding?.picAdding?.fillBy(uri, requireContext())
     }
 
@@ -331,7 +331,7 @@ class AddPlayListFragment : Fragment() {
                 viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
-                edited = playListId != null
+                edited = true
             }
         }
     }
