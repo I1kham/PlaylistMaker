@@ -48,20 +48,31 @@ class TracksRecycleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         false.bottomNavigatorVisibility()
         prepareOnItemClickToTrackCard()
-        listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
-                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
-                )
-
+        prepareOnItemLongClickToTrackCard()
+        getListId()
         prepareTrackRecyclerView()
+        prepareViewModel()
+        getTracksListByPlayListId()
+        bottomSheetTuning()
 
-        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
-            render(it)
-        }
+    }
+
+    private fun getTracksListByPlayListId() {
         listId?.let {
             viewModel.getTracks(it)
         }
-        bottomSheetTuning()
+    }
 
+    private fun prepareViewModel() {
+        viewModel.observeRenderState().observe(getViewLifecycleOwner()) {
+            render(it)
+        }
+    }
+
+    private fun getListId() {
+        listId = parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY) ?: (
+                parentFragment?.parentFragment?.arguments?.getLong(PLAY_LIST_TRANSFER_KEY)
+                )
     }
 
     override fun onResume() {
@@ -69,10 +80,19 @@ class TracksRecycleFragment : Fragment() {
         bottomSheetTuning()
     }
 
+
+
     private fun prepareOnItemClickToTrackCard() {
         onItemClickToTrackCard = { track ->
-            val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId  )
-            parentFragment?.parentFragment?.findNavController()?.navigate(R.id.action_playList_to_playerActivity, bundle)
+            val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId)
+            parentFragment?.parentFragment?.findNavController()
+                ?.navigate(R.id.action_playList_to_playerActivity, bundle)
+        }
+    }
+
+    private fun prepareOnItemLongClickToTrackCard() {
+        onItemLongClick = { track ->
+            deleteTrack(track.trackId.toLong())
         }
     }
 
@@ -83,7 +103,10 @@ class TracksRecycleFragment : Fragment() {
                 state.tracks.upDateAdapter()
             }
 
-            TracksRecycleFragmentState.Empty -> binding?.noData?.isVisible = true
+            TracksRecycleFragmentState.Empty -> {
+                binding?.noData?.isVisible = true
+                trackRecyclerView?.isVisible = false
+            }
         }
     }
 
@@ -92,7 +115,7 @@ class TracksRecycleFragment : Fragment() {
         trackRecyclerView?.isVisible = true
         trackRecyclerView?.adapter = trackAdapter
         onItemClickToTrackCard.also { trackAdapter.onItemClick = it }
-       // onItemLongClick.also { trackAdapter.onItemLongClick = it }
+        onItemLongClick.also { trackAdapter.onItemLongClick = it }
     }
 
     private fun prepareTrackRecyclerView() {
@@ -119,22 +142,24 @@ class TracksRecycleFragment : Fragment() {
         }
     }
 
+
     @SuppressLint("UseCompatLoadingForDrawables")
-    internal fun deletePlaylist(trackId : String) {
+    private fun deleteTrack(trackId: Long) {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
             .setTitle("Удалить трек")
             .setMessage(
-               "Хотите удалить трек?"
+                "Хотите удалить трек?"
             )
             .setNegativeButton(R.string.no) { _, _ ->
             }
             .setPositiveButton(R.string.yes) { _, _ ->
-                    viewModel.deleteTrack(trackId)
-
+                viewModel.deleteTrack(trackId)
+                showBottomMessage("Трек удален")
             }
             .show()
     }
-
-
+    private fun showBottomMessage(message: String) {
+        (activity as StartActivity).bottomSheetShowMessage(message)
+    }
 }

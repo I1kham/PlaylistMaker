@@ -9,12 +9,9 @@ import com.alchemtech.playlistmaker.domain.db.PlayListsRepository
 import com.alchemtech.playlistmaker.domain.db.TracksDbRepository
 import com.alchemtech.playlistmaker.domain.entity.PlayList
 import com.alchemtech.playlistmaker.domain.entity.Track
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 class PlayListsRepositoryImpl(
     private val tracksDbRepository: TracksDbRepository,
@@ -25,20 +22,16 @@ class PlayListsRepositoryImpl(
 
     override suspend fun cleaning() {
         println("cleaning")
-        withContext(Dispatchers.IO) {
-            val usedTracksIds = HashSet<String>()
-            playListDao.getAllTracksIdFromAllPlayList().map {
-                tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
-            }
-            tracksDbRepository.getAllTrackList().collect { listTracks ->
-                listTracks.map {
-                    if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
-                        delay(500)
-                        println("deleting ${it.trackId}")
-                        tracksDbRepository.deleteTrack(it.trackId)
-                    }
+        val usedTracksIds = HashSet<String>()
+        playListDao.getAllTracksIdFromAllPlayList().map {
+            tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
+        }
+        tracksDbRepository.getAllTrackList().collect { listTracks ->
+            listTracks.map {
+                if (!usedTracksIds.contains(it.trackId) && !it.isFavorite) {
+                    println("deleting ${it.trackId}")
+                    tracksDbRepository.deleteTrack(it.trackId)
                 }
-
             }
 
         }
@@ -82,7 +75,7 @@ class PlayListsRepositoryImpl(
 
 
     override suspend fun addToList(id: Long, track: Track): Boolean {
-        var isAdded = false
+        var isAdded: Boolean = false
         val tracksList = HashSet<String>()
         tracksList.addAll(
             tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(id))
@@ -99,7 +92,7 @@ class PlayListsRepositoryImpl(
         var removed = false
         val tracksList = HashSet<String>()
         tracksList.addAll(
-            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(trackId))
+            tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(listId))
         )
         removed = tracksList.remove(trackId.toString())
         playListDao.updatePlaylistTracks(

@@ -30,6 +30,10 @@ class PlayLIstInteractorImpl(
         return playListsRepository.addToList(id, track)
     }
 
+    override suspend fun removeFromList(listId: Long, trackId: Long): Boolean {
+        return playListsRepository.removeFromList(listId, trackId)
+    }
+
     override suspend fun getPlayList(id: Long): PlayList {
         return playListsRepository.getPlayList(id)
     }
@@ -38,9 +42,14 @@ class PlayLIstInteractorImpl(
         id: Long,
         playListName: String,
         playListDescription: String?,
-        coverUri: Uri?
+        coverUri: Uri?,
     ) {
-        playListsRepository.updatePlaylistInfo(id, playListName, playListDescription, coverUri.toString())
+        playListsRepository.updatePlaylistInfo(
+            id,
+            playListName,
+            playListDescription,
+            coverUri.toString()
+        )
     }
 
     override suspend fun cleaningDb() {

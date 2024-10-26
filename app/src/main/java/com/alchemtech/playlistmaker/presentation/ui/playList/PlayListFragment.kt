@@ -201,7 +201,7 @@ class PlayListFragment : Fragment() {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    internal fun deletePlaylist() {
+    internal fun deleteTrack() {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
             .setTitle(getString(R.string.playList_delete_but))

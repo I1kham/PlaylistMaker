@@ -1,5 +1,7 @@
 package com.alchemtech.playlistmaker.data.db.favorite_list_repo
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.alchemtech.playlistmaker.data.converters.TrackDbConvertor
 import com.alchemtech.playlistmaker.data.db.entity.TrackDao
 import com.alchemtech.playlistmaker.data.db.entity.TrackEntity
@@ -12,9 +14,10 @@ class TracksDbRepositoryImpl(
     private val tracksDao: TrackDao,
     private val trackDbConvertor: TrackDbConvertor,
 ) : TracksDbRepository {
+
     override suspend fun addToTracksDb(track: Track) {
-        println(track)
-            tracksDao.addTrack(trackDbConvertor.map(track))
+        Log.d(TAG, "addToTracksDb: ")
+        tracksDao.addTrack(trackDbConvertor.map(track))
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
@@ -42,5 +45,6 @@ class TracksDbRepositoryImpl(
     }
 
     override suspend fun unLikeTrack(trackId: String) {
-tracksDao.unLikeTrack(trackId)    }
+        tracksDao.unLikeTrack(trackId)
+    }
 }

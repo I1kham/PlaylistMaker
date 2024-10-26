@@ -45,6 +45,14 @@ class PlayListViewModel(
         renderState(PlayListFragmentState.Exit)
     }
 
+    fun deleteTrack(trackId: Long) {
+        viewModelScope.launch {
+            playListId?.let {
+                playListInteractor.removeFromList(it, trackId)
+            }
+        }
+    }
+
     fun observeRenderState(): LiveData<PlayListFragmentState> = stateLiveData
     private fun renderState(state: PlayListFragmentState) {
         stateLiveData.postValue(state)
