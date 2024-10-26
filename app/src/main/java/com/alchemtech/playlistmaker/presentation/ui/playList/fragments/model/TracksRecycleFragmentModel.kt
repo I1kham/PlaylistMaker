@@ -1,7 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList.fragments.model
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,12 +17,11 @@ class TracksRecycleFragmentModel(
 
 
     internal fun getTracks(id: Long) {
-        println("get tracks")
         playlistId = id
         viewModelScope.launch {
             playListInteractor.getTracks(id).collect {
                 if (it.isNotEmpty()) {
-                    renderState(TracksRecycleFragmentState.Content(it))
+                    renderState(TracksRecycleFragmentState.Content(it.asReversed()))
                 } else {
                     renderState(TracksRecycleFragmentState.Empty)
                 }
@@ -33,7 +30,6 @@ class TracksRecycleFragmentModel(
     }
 
     internal fun deleteTrack(trackId: Long) {
-        Log.d(TAG, "deleteTrack: ")
         viewModelScope.launch {
             playlistId?.let {
                 playListInteractor.removeFromList(it, trackId).and(true)

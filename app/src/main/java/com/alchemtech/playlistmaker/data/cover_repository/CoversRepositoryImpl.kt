@@ -20,8 +20,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
     }
 
     override suspend fun saveCover(id: Long, uri: String?): String? {
-        println(uri)
-        if (!uri.isNullOrEmpty()) if (uri.contains( "$FILE_NAME$id$FILE_EXTENSION".toRegex()) ) {
+        if (!uri.isNullOrEmpty()) if (uri.contains( fileNameRule(id).toRegex()) ) {
             deleteCover(id)
             val filePath =
                 File(
@@ -31,7 +30,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
-            val file = File(filePath, "$FILE_NAME$id$FILE_EXTENSION")
+            val file = File(filePath, fileNameRule(id))
             val inputStream = context.contentResolver.openInputStream(uri.toUri())
             val outputStream = withContext(Dispatchers.IO) {
                 FileOutputStream(file)
@@ -47,7 +46,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
         } else return null
     }
 
-    override suspend fun deleteCover(id: Long?): Boolean {
+    override suspend fun deleteCover(id: Long): Boolean {
         var deleted = false
         val filePath =
             File(
@@ -56,10 +55,12 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
             )
 
         filePath.listFiles()?.map {
-            if (it.name == "$FILE_NAME$id$FILE_EXTENSION") {
+            if (it.name == fileNameRule(id)) {
                 deleted = it.delete()
             }
         }
         return deleted
     }
+    private fun fileNameRule(id: Long):String {
+        return "$FILE_NAME$id$FILE_EXTENSION" }
 }
