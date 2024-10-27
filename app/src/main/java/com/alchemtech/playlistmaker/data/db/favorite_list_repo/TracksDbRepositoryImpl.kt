@@ -22,10 +22,10 @@ class TracksDbRepositoryImpl(
     }
 
     override fun getFavoriteTrackList(): Flow<List<Track>> {
-            return tracksDao.getFavoriteTracks().map { trackEntityList: List<TrackEntity> ->
-                trackEntityList.map { trackEntity ->
-                    trackDbConvertor.map(trackEntity)
-                }
+        return tracksDao.getFavoriteTracks().map { trackEntityList: List<TrackEntity> ->
+            trackEntityList.map { trackEntity ->
+                trackDbConvertor.map(trackEntity)
+            }
         }
     }
 
@@ -38,7 +38,7 @@ class TracksDbRepositoryImpl(
     }
 
     override suspend fun getTrackByID(id: String): Track {
-        return trackDbConvertor.map(tracksDao.getTrackByID(id))
+        return withContext(Dispatchers.IO) { trackDbConvertor.map(tracksDao.getTrackByID(id)) }
     }
 
     override suspend fun deleteTrack(trackId: String) {

@@ -97,7 +97,7 @@ class TracksRecycleFragment : Fragment() {
         when (state) {
             is TracksRecycleFragmentState.Content -> {
                 binding?.noData?.isVisible = false
-                state.tracks.upDateAdapter()
+                state.tracks.reversed().upDateAdapter()
             }
 
             TracksRecycleFragmentState.Empty -> {

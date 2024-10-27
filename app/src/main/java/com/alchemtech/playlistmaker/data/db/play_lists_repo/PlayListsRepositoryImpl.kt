@@ -85,13 +85,14 @@ class PlayListsRepositoryImpl(
                 tracksStringConvertor
                     .mapIDsStringToList(
                         playListDao.getTracksIdFromPlayList(playListId)
-                    )
-                    .toHashSet()
-            isAdded = tracksList.add(trackId)
-            playListDao.updatePlaylistTracks(
-                playListId,
-                tracksStringConvertor.mapListIdToString(tracksList.toList())
-            )
+                    ).toMutableList()
+            if ((!tracksList.contains(trackId)).also { isAdded = it }) {
+                tracksList.add(0, trackId)
+                playListDao.updatePlaylistTracks(
+                    playListId,
+                    tracksStringConvertor.mapListIdToString(tracksList.toList())
+                )
+            }
             isAdded
         }
     }
@@ -100,13 +101,16 @@ class PlayListsRepositoryImpl(
         return withContext(Dispatchers.IO) {
             var removed = false
             val tracksList =
-                tracksStringConvertor.mapIDsStringToList(playListDao.getTracksIdFromPlayList(listId))
-                    .toHashSet()
-            removed = tracksList.remove(trackId.toString())
-            playListDao.updatePlaylistTracks(
-                listId,
-                tracksStringConvertor.mapListIdToString(tracksList.toList())
-            )
+                tracksStringConvertor
+                    .mapIDsStringToList(
+                        playListDao.getTracksIdFromPlayList(listId)
+                    ).toMutableList()
+            if ((!tracksList.remove(trackId.toString())).also { removed = it }) {
+                playListDao.updatePlaylistTracks(
+                    listId,
+                    tracksStringConvertor.mapListIdToString(tracksList)
+                )
+            }
             removed
         }
     }
