@@ -63,6 +63,7 @@
     <string name="track_del_dialog_title">Удалить трек</string>
     <string name="track_del_dialog_message">«Вы уверены, что хотите удалить трек из плейлиста?</string>
     <string name="delete">Удалить</string>
+    <string name="no_tracks_for_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>

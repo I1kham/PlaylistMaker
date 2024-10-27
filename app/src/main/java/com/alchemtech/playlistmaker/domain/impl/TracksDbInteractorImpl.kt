@@ -28,6 +28,10 @@ class TracksDbInteractorImpl(
         tracksDbRepository.unLikeTrack(trackId)
     }
 
+    override suspend fun likeTrack(trackId: String) {
+        tracksDbRepository.likeTrack(trackId)
+    }
+
     override suspend fun getTrackById(id: String): Track {
         return tracksDbRepository.getTrackByID(id)
     }

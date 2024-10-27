@@ -37,6 +37,8 @@ class PlayListFragment : Fragment() {
     private var plCount: TextView? = null
     private var plName: TextView? = null
     private var plDescription: TextView? = null
+    private var trackCount = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,12 +59,12 @@ class PlayListFragment : Fragment() {
         setPlayListIdToViewModel()
         prepareMenuButton()
         prepareTextViews()
-        prepareShareBut()
+        prepareShareButton()
     }
 
-    private fun prepareShareBut() {
+    private fun prepareShareButton() {
         binding?.share?.setOnClickListener {
-            viewModel.sharePlayList()
+            sharePlayList()
         }
     }
 
@@ -172,6 +174,7 @@ class PlayListFragment : Fragment() {
                     .convertDurationPlurals(requireContext())
                 plName?.text = state.name
                 plDescription?.text = state.description
+                trackCount = state.count
             }
 
             is PlayListFragmentState.Message -> showBottomMessage(
@@ -249,6 +252,10 @@ class PlayListFragment : Fragment() {
     }
 
     fun sharePlayList() {
-        viewModel.sharePlayList()
+        if (trackCount > 0) {
+            viewModel.sharePlayList()
+        } else {
+            showBottomMessage(getString(R.string.no_tracks_for_share))
+        }
     }
 }

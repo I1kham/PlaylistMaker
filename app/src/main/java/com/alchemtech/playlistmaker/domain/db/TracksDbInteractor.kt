@@ -10,4 +10,5 @@ interface TracksDbInteractor {
     fun getAllTrackList(): Flow<List<Track>>
     suspend fun deleteTrack(trackId: String)
     suspend fun unLikeTrack(trackId: String)
+    suspend fun likeTrack(trackId: String)
 }

@@ -18,6 +18,9 @@ interface TrackDao {
     @Query("UPDATE tracks_table SET isFavorite = 0  WHERE trackId = :trackId")
     suspend fun unLikeTrack(trackId: String)
 
+    @Query("UPDATE tracks_table SET isFavorite = 1  WHERE trackId = :trackId")
+    suspend fun likeTrack(trackId: String)
+
     @Query("SELECT * FROM tracks_table")
     fun getAllTracks(): Flow<List<TrackEntity>>
 

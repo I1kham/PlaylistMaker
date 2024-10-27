@@ -52,4 +52,10 @@ class TracksDbRepositoryImpl(
             tracksDao.unLikeTrack(trackId)
         }
     }
+
+    override suspend fun likeTrack(trackId: String) {
+        withContext(Dispatchers.IO) {
+            tracksDao.likeTrack(trackId)
+        }
+    }
 }

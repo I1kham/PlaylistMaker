@@ -33,19 +33,19 @@ class SharingPlayListRepositoryImpl(
         description: String?,
         tracks: List<Track>,
     ): String {
-        val tracksCountPluralEnding = context.resources.getQuantityString(
+        val tracksCountPlurals = context.resources.getQuantityString(
             R.plurals.plurals_tracks,
-            tracks.count(),
-            tracks.count()
+             tracks.size,
+            tracks.size
         )
-        val tracksCountText = "${tracks.count()} $tracksCountPluralEnding"
-        val tracksInfoText = getTracksInfoText(tracks)
+        val tracksCount = "${tracks.count()} $tracksCountPlurals"
+        val tracksInfoStr = getTracksInfoStr(tracks)
             var ret = ""
             description?.let { ret = description }
-        return "$name\n$ret\n$tracksCountText\n$tracksInfoText"
+        return "$name\n$ret\n$tracksCount\n$tracksInfoStr"
     }
 
-    private fun getTracksInfoText(tracks: List<Track>): String {
+    private fun getTracksInfoStr(tracks: List<Track>): String {
         return tracks.mapIndexed { index: Int, track: Track ->
             "${index + 1}. " +
                     "${track.artistName} - " +
