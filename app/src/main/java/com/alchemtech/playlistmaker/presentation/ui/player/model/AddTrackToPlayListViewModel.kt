@@ -36,32 +36,34 @@ class AddTrackToPlayListViewModel(
     }
 
     internal fun addTrackTo(playList: PlayList) {
+        var added = false
         viewModelScope.launch {
             track?.let {
-                renderState(
-                    AddTrackToPlayListFragmentState.TrackAdded(
-                        playListInteractor.addToList(
-                            playList.id,
-                            it.trackId
-                        ), playList.name
-                    )
+                added = playListInteractor.addToList(
+                    playList.id,
+                    it.trackId
                 )
             }
+        }.invokeOnCompletion {
+            renderState(
+                AddTrackToPlayListFragmentState.TrackAdded(
+                    added, playList.name
+                )
+            )
         }
     }
+
+
     private fun startLogic() {
+        renderState(AddTrackToPlayListFragmentState.Loading(true))
         viewModelScope.launch {
-            renderState(AddTrackToPlayListFragmentState.Loading(true))
-            playListInteractor.getAllPlayLists().collect { playList ->
-                if (playList.isNotEmpty()) {
-                    renderState(AddTrackToPlayListFragmentState.ShowList(playList))
+            playListInteractor.getAllPlayLists().collect { listPlayList ->
+                if (listPlayList.isNotEmpty()) {
+                    renderState(AddTrackToPlayListFragmentState.ShowList(listPlayList))
                 } else {
                     renderState(AddTrackToPlayListFragmentState.Empty)
                 }
             }
         }
     }
-
-
-
 }

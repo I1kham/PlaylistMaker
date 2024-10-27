@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val player: PlayerInteractor,
     private val tracksDbInteractor: TracksDbInteractor,
-    ) : ViewModel() {
+) : ViewModel() {
     private var playTrack: Track? = null
     private val stateLiveData = MutableLiveData<PlayerState>()
 
@@ -32,12 +32,13 @@ class PlayerViewModel(
         viewModelScope.launch {
             trackId?.let { it ->
                 playTrack = tracksDbInteractor.getTrackById(it)
-                playTrack?.let {
-                    preparePlayer(it)
-                    renderState(PlayerState.Fill(it))
-                }
             } ?: run {
                 renderState(PlayerState.Error)
+            }
+        }.invokeOnCompletion {
+            playTrack?.let {
+                preparePlayer(it)
+                renderState(PlayerState.Fill(it))
             }
         }
     }

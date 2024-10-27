@@ -75,9 +75,10 @@ class TracksFragment : Fragment() {
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
         ) { track ->
-            val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId  )
-            viewModel.clickOnTrack(track)
-            findNavController().navigate(R.id.action_tracksFragment_to_playerActivity, bundle)
+            val bundle = bundleOf(PLAY_TRACK_TRANSFER_KEY to track.trackId)
+            viewModel.clickOnTrack(track).invokeOnCompletion {
+                findNavController().navigate(R.id.action_tracksFragment_to_playerActivity, bundle)
+            }
         }
     }
 
@@ -138,15 +139,16 @@ class TracksFragment : Fragment() {
             progressBar = it.progressBar
         }
     }
-        private fun prepareClearHistBut() {
-            binding?.let {
-                clearHistoryBut = it.clearHistoryBut
-                clearHistoryBut.setOnClickListener {
-                    viewModel.clearButSearchHistory()
-                }
-            }
 
+    private fun prepareClearHistBut() {
+        binding?.let {
+            clearHistoryBut = it.clearHistoryBut
+            clearHistoryBut.setOnClickListener {
+                viewModel.clearButSearchHistory()
+            }
         }
+
+    }
 
     private fun prepareTrackRecyclerView() {
         binding?.let {
@@ -162,12 +164,12 @@ class TracksFragment : Fragment() {
 
     private fun prepareInputedText() {
         binding?.let {
-        inputEditText = it.inputTextForSearching
-        inputEditText.addTextChangedListener(viewModel.textWatcher)
-        inputEditText.doOnTextChanged { text, _, _, _ ->
-            clearButton.isVisible = !text.isNullOrEmpty()
+            inputEditText = it.inputTextForSearching
+            inputEditText.addTextChangedListener(viewModel.textWatcher)
+            inputEditText.doOnTextChanged { text, _, _, _ ->
+                clearButton.isVisible = !text.isNullOrEmpty()
+            }
         }
-    }
     }
 
     private fun prepareViewModel() {

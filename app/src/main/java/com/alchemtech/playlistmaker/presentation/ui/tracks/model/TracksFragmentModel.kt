@@ -11,6 +11,7 @@ import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.util.debounce
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class TracksFragmentModel(
@@ -69,9 +70,10 @@ class TracksFragmentModel(
         renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
-    internal fun clickOnTrack(track: Track) {
-        addTrackToHistoryList(track)
-        viewModelScope.launch {
+    internal fun clickOnTrack(track: Track):Job {
+       return viewModelScope.launch {
+            addTrackToHistoryList(track)
+
             tracksDb.addToTrackDb(track)
         }
     }

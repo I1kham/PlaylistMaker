@@ -55,6 +55,7 @@ class PlayListViewModel(
                 renderState(PlayListFragmentState.Message(it))
             }
             playListInteractor.removePlayList(id)
+        }.invokeOnCompletion {
             renderState(PlayListFragmentState.Exit)
         }
     }
@@ -62,11 +63,14 @@ class PlayListViewModel(
     fun deleteTrack(trackId: Long, name: String) {
         viewModelScope.launch {
             playListId?.let {
-                playListInteractor.removeFromList(it, trackId).let { getPlayList(playListId)
-                renderState(PlayListFragmentState.DelMessage(
-                        name
-                    ))}
+                playListInteractor.removeFromList(it, trackId)
+
             }
+        }.invokeOnCompletion {
+            getPlayList(playListId)
+            renderState(PlayListFragmentState.DelMessage(
+                name
+            ))
         }
     }
 

@@ -105,12 +105,11 @@ class PlayListsRepositoryImpl(
                     .mapIDsStringToList(
                         playListDao.getTracksIdFromPlayList(listId)
                     ).toMutableList()
-            if ((!tracksList.remove(trackId.toString())).also { removed = it }) {
+            tracksList.remove(trackId.toString())
                 playListDao.updatePlaylistTracks(
                     listId,
                     tracksStringConvertor.mapListIdToString(tracksList)
                 )
-            }
             removed
         }
     }
@@ -118,8 +117,6 @@ class PlayListsRepositoryImpl(
     override suspend fun getPlayList(id: Long): PlayList {
         return withContext(Dispatchers.Default) {
             playListDao.getPlayList(id).convertPlaylistEntityToPlayList()
-
-
         }
     }
 
