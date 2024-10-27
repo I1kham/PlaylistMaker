@@ -59,6 +59,10 @@
     <string name="no_tracks">треки пока не добавлены</string>
     <string name="del_playlist_message">Хотите удалить плейлист?</string>
     <string name="play_list_del_message">Плейлист «%1$s» успешно удален</string>
+    <string name="trak_deleteg_message">Трек %1$s удален</string>
+    <string name="track_del_dialog_title">Удалить трек</string>
+    <string name="track_del_dialog_message">«Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
 
     <plurals name="plurals_tracks">
         <item quantity="zero">%1$d треков</item>

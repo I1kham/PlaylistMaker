@@ -6,18 +6,18 @@ import com.alchemtech.playlistmaker.domain.api.PlayerRepository
 class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerRepository {
     private var isPrepared = false
     override fun currentPosition(): Int {
-        if (isPrepared) {
-            return mediaPlayer.currentPosition
+        return if (isPrepared) {
+            mediaPlayer.currentPosition
         } else {
-            return 0
+            0
         }
     }
 
     override fun duration(): Int {
-        if (isPrepared) {
-            return mediaPlayer.duration
+        return if (isPrepared) {
+            mediaPlayer.duration
         } else {
-            return 0
+            0
         }
     }
 
@@ -27,10 +27,10 @@ class PlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : PlayerReposit
     }
 
     override fun playerIsPlaying(): Boolean {
-        if (isPrepared) {
-            return mediaPlayer.isPlaying
+        return if (isPrepared) {
+            mediaPlayer.isPlaying
         } else {
-            return true
+            true
         }
     }
 

@@ -1,6 +1,5 @@
 package com.alchemtech.playlistmaker.presentation.ui.playList.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,7 +89,7 @@ class TracksRecycleFragment : Fragment() {
 
     private fun prepareOnItemLongClickToTrackCard() {
         onItemLongClick = { track ->
-            deleteTrack(track.trackId.toLong())
+            deleteTrack(track.trackId.toLong(), track.trackName)
         }
     }
 
@@ -141,22 +140,8 @@ class TracksRecycleFragment : Fragment() {
     }
 
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun deleteTrack(trackId: Long) {
-//        MaterialAlertDialogBuilder(requireContext())
-//            .setBackground(resources.getDrawable((R.drawable.background)))
-//            .setTitle("Удалить трек")
-//            .setMessage(
-//                "Хотите удалить трек?"
-//            )
-//            .setNegativeButton(R.string.no) { _, _ ->
-//            }
-//            .setPositiveButton(R.string.yes) { _, _ ->
-//                viewModel.deleteTrack(trackId)
-//                showBottomMessage("Трек удален")
-//            }
-//            .show()
-        (parentFragment?.parentFragment as PlayListFragment).deleteTrack(trackId)
+    private fun deleteTrack(trackId: Long, name: String) {
+        (parentFragment?.parentFragment as PlayListFragment).deleteTrack(trackId, name)
 
     }
 

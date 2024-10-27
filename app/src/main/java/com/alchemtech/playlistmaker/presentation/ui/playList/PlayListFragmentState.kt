@@ -9,6 +9,7 @@ sealed interface PlayListFragmentState {
         val count: Int,
     ) : PlayListFragmentState
 
-    data class Deleted(val message: String) : PlayListFragmentState
+    data class Message(val message: String) : PlayListFragmentState
+    data class DelMessage(val message: String) : PlayListFragmentState
     data object Exit : PlayListFragmentState
 }

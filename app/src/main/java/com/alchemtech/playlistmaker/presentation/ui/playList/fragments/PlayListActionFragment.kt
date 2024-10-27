@@ -52,6 +52,13 @@ class PlayListActionFragment : Fragment() {
         bottomSheetTune()
         true.setBlackoutOverlayVisibility()
         prepareBackPress()
+        prepareShareBut()
+    }
+
+    private fun prepareShareBut() {
+        binding?.buttonSharePlayList?.setOnClickListener {
+            (parentFragment?.parentFragment as PlayListFragment).sharePlayList()
+        }
     }
 
     private fun prepareBackPress() {

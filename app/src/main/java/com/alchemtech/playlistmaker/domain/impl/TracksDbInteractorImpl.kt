@@ -9,7 +9,6 @@ class TracksDbInteractorImpl(
     private val tracksDbRepository: TracksDbRepository,
 ) : TracksDbInteractor {
     override suspend fun addToTrackDb(track: Track) {
-        println(track)
         tracksDbRepository.addToTracksDb(track)
     }
 

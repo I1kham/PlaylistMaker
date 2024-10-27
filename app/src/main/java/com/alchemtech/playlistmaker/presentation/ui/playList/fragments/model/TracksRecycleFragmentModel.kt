@@ -29,15 +29,6 @@ class TracksRecycleFragmentModel(
         }
     }
 
-    internal fun deleteTrack(trackId: Long) {
-        viewModelScope.launch {
-            playlistId?.let {
-                playListInteractor.removeFromList(it, trackId).and(true)
-                getTracks(it)
-            }
-        }
-    }
-
     fun observeRenderState(): LiveData<TracksRecycleFragmentState> = stateLiveData
     private fun renderState(state: TracksRecycleFragmentState) {
         stateLiveData.postValue(state)

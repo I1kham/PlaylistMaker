@@ -57,6 +57,13 @@ class PlayListFragment : Fragment() {
         setPlayListIdToViewModel()
         prepareMenuButton()
         prepareTextViews()
+        prepareShareBut()
+    }
+
+    private fun prepareShareBut() {
+        binding?.share?.setOnClickListener {
+            viewModel.sharePlayList()
+        }
     }
 
     private fun prepareTextViews() {
@@ -167,7 +174,7 @@ class PlayListFragment : Fragment() {
                 plDescription?.text = state.description
             }
 
-            is PlayListFragmentState.Deleted -> showBottomMessage(
+            is PlayListFragmentState.Message -> showBottomMessage(
                 getString(
                     R.string.play_list_del_message,
                     state.message
@@ -177,6 +184,13 @@ class PlayListFragment : Fragment() {
             PlayListFragmentState.Exit -> {
                 findNavController().popBackStack()
             }
+
+            is PlayListFragmentState.DelMessage -> showBottomMessage(
+                getString(
+                    R.string.trak_deleteg_message,
+                    state.message
+                )
+            )
         }
     }
 
@@ -219,20 +233,22 @@ class PlayListFragment : Fragment() {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-     fun deleteTrack(trackId: Long) {
+    fun deleteTrack(trackId: Long, name: String) {
         MaterialAlertDialogBuilder(requireContext())
             .setBackground(resources.getDrawable((R.drawable.background)))
-            .setTitle("Удалить трек")
+            .setTitle(getString(R.string.track_del_dialog_title))
             .setMessage(
-                "Хотите удалить трек?"
+                getString(R.string.track_del_dialog_message)
             )
-            .setNegativeButton(R.string.no) { _, _ ->
+            .setNegativeButton(R.string.cancel) { _, _ ->
             }
-            .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.deleteTrack(trackId)
-                showBottomMessage("Трек удален")
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                viewModel.deleteTrack(trackId, name)
             }
             .show()
     }
 
+    fun sharePlayList() {
+        viewModel.sharePlayList()
+    }
 }

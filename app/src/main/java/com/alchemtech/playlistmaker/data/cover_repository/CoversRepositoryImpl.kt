@@ -20,7 +20,7 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
     }
 
     override suspend fun saveCover(id: Long, uri: String?): String? {
-        if (!uri.isNullOrEmpty()) if (uri.contains( fileNameRule(id).toRegex()) ) {
+        if (!uri.isNullOrEmpty()) if (!uri.contains( fileNameRule(id).toRegex()) ) {
             deleteCover(id)
             val filePath =
                 File(
