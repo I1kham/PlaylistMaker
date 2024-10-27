@@ -20,7 +20,7 @@ init {
      private fun getAllPlayLists() {
         renderState(PlayListsState.Loading)
         viewModelScope.launch {
-            playListInteractor.getAllPlayLists().collect()  {
+            playListInteractor.getAllPlayLists().collect  {
                     if (it.isNotEmpty()) {
                         renderState(PlayListsState.ShowList(it))
                     } else {

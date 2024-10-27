@@ -140,13 +140,8 @@ class TracksRecycleFragment : Fragment() {
         }
     }
 
-
     private fun deleteTrack(trackId: Long, name: String) {
         (parentFragment?.parentFragment as PlayListFragment).deleteTrack(trackId, name)
 
-    }
-
-    private fun showBottomMessage(message: String) {
-        (activity as StartActivity).bottomSheetShowMessage(message)
     }
 }

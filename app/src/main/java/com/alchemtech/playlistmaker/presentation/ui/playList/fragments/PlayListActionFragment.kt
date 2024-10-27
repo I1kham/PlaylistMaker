@@ -154,11 +154,6 @@ class PlayListActionFragment : Fragment() {
         )
     }
 
-
-    private fun showBottomMessage(message: String) {
-        (activity as StartActivity).bottomSheetShowMessage(message)
-    }
-
     private fun bottomSheetTune() {
         try {
             (parentFragment as PlayListFragment).setBottomTuning(bottomSheetSize, true)

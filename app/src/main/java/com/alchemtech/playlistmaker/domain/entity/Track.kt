@@ -20,4 +20,19 @@ data class Track(
             super.equals(other)
         }
     }
+
+    override fun hashCode(): Int {
+        var result = trackName.hashCode()
+        result = 31 * result + artistName.hashCode()
+        result = 31 * result + trackTimeMillis.hashCode()
+        result = 31 * result + (artworkUrl100?.hashCode() ?: 0)
+        result = 31 * result + trackId.hashCode()
+        result = 31 * result + (collectionName?.hashCode() ?: 0)
+        result = 31 * result + (releaseDate?.hashCode() ?: 0)
+        result = 31 * result + primaryGenreName.hashCode()
+        result = 31 * result + country.hashCode()
+        result = 31 * result + (previewUrl?.hashCode() ?: 0)
+        result = 31 * result + isFavorite.hashCode()
+        return result
+    }
 }

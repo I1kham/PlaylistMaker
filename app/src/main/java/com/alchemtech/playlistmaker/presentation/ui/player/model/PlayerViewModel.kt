@@ -30,7 +30,7 @@ class PlayerViewModel(
 
     internal fun prepareModel(trackId: String?) {
         viewModelScope.launch {
-            trackId?.let { it ->
+            trackId?.let {
                 playTrack = tracksDbInteractor.getTrackById(it)
             } ?: run {
                 renderState(PlayerState.Error)

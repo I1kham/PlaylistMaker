@@ -23,7 +23,7 @@ class PlayListsRepositoryImpl(
     override suspend fun cleaning() {
         withContext(Dispatchers.IO) {
             val usedTracksIds = HashSet<String>()
-            playListDao.getAllTracksIdFromAllPlayList().map {
+            playListDao.getAllTracksIdFromAllPlayList().map { it ->
                 tracksStringConvertor.mapIDsStringToList(it).map { usedTracksIds.add(it) }
             }
             tracksDbRepository.getAllTrackList().collect { listTracks ->
@@ -78,7 +78,7 @@ class PlayListsRepositoryImpl(
 
     override suspend fun addToList(playListId: Long, trackId: String): Boolean {
         return withContext(Dispatchers.IO) {
-            var isAdded: Boolean = false
+            var isAdded = false
             val tracksList =
                 tracksStringConvertor
                     .mapIDsStringToList(

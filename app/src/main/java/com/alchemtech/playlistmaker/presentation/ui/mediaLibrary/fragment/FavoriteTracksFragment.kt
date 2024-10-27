@@ -92,7 +92,7 @@ class FavoriteTracksFragment : Fragment() {
     }
 
     private fun prepareOnItemClickToTrackCardDebounce() {
-        onItemClickToTrackCardDebounce = debounce<Track>(
+        onItemClickToTrackCardDebounce = debounce(
             delayMillis = CLICK_DEBOUNCE_DELAY,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = true
