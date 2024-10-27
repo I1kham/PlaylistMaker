@@ -2,10 +2,10 @@ package com.alchemtech.playlistmaker.data.sharing
 
 import android.content.Context
 import android.content.Intent
-import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.domain.sharing.SharingPlayListRepository
+import com.alchemtech.playlistmaker.presentation.ui.convertListPlurals
 import com.alchemtech.playlistmaker.presentation.ui.playerTimeFormatter
 
 class SharingPlayListRepositoryImpl(
@@ -33,16 +33,10 @@ class SharingPlayListRepositoryImpl(
         description: String?,
         tracks: List<Track>,
     ): String {
-        val tracksCountPlurals = context.resources.getQuantityString(
-            R.plurals.plurals_tracks,
-             tracks.size,
-            tracks.size
-        )
-        val tracksCount = "${tracks.count()} $tracksCountPlurals"
+        val tracksCountPlurals = tracks.size.convertListPlurals(context)
         val tracksInfoStr = getTracksInfoStr(tracks)
-            var ret = ""
-            description?.let { ret = description }
-        return "$name\n$ret\n$tracksCount\n$tracksInfoStr"
+
+        return "$name\n$description\n$tracksCountPlurals\n$tracksInfoStr"
     }
 
     private fun getTracksInfoStr(tracks: List<Track>): String {
