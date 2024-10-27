@@ -45,6 +45,7 @@ class StartActivity : AppCompatActivity() {
         viewModel.cleaningDb()
         super.onStop()
     }
+
     fun bottomNavigationVisibility(isVisibile: Boolean) {
         binding?.bottomNavigation?.isVisible = isVisibile
     }
@@ -59,6 +60,9 @@ class StartActivity : AppCompatActivity() {
                 binding?.message?.height!!.toInt()
             )
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            it.setOnClickListener {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            }
             run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
             })
