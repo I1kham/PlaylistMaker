@@ -75,6 +75,7 @@ class TracksRecycleFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        getTracksListByPlayListId()
         bottomSheetTuning()
     }
 

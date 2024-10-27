@@ -50,6 +50,23 @@ class PlayListsFragment : Fragment() {
         binding = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding = null
+    }
+
+    override fun onResume() {
+        println("onResume")
+        super.onResume()
+        viewModel.getAllPlayLists()
+
+    }
+
     private fun prepareNoDataLayout() {
         noDataLayout = binding?.noDataLay
     }

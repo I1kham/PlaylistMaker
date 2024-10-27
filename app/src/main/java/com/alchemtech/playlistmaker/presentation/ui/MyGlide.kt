@@ -16,8 +16,9 @@ fun ImageView.fillBy(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
-        .fitCenter()
         .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
+        .fitCenter()
         .transform(
             RoundedCorners(
                 dpToPx(cornersSize(smallCorners), context)
@@ -33,8 +34,9 @@ fun ImageView.fillByUriOrPlaceHolder(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
-        .placeholder(R.drawable.track_album_default)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
+        .placeholder(R.drawable.track_album_default)
         .fitCenter()
         .transform(
             RoundedCorners(
@@ -50,12 +52,14 @@ fun ImageView.fillByUriOrPlaceHolderNoCorners(
 ): ViewTarget<ImageView, Drawable> {
     return Glide.with(context)
         .load(uri)
-        .placeholder(R.drawable.track_album_default)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
+        .placeholder(R.drawable.track_album_default)
         .fitCenter()
         .into(this)
 
 }
+
 private fun cornersSize(smallCorners: Boolean?): Float {
     return if (smallCorners == null || smallCorners == false) {
         8f

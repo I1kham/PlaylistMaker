@@ -64,12 +64,10 @@ class PlayListsRepositoryImpl(
     }
 
 
-    override fun getAllPlayLists(): Flow<List<PlayList>> {
-        return playListDao.getAllPlayLists().map { playListEntity: List<PlayListEntity> ->
+    override fun getAllPlayLists(): Flow<List<PlayList>> =
+         playListDao.getAllPlayLists().map { playListEntity: List<PlayListEntity> ->
             playListEntity.map { playList -> playList.convertPlaylistEntityToPlayList() }
         }
-    }
-
 
     override suspend fun getTracks(id: Long): Flow<List<Track>> {
         return playListDao.getTracksFlowIdFromPlayList(id).map {
@@ -106,10 +104,10 @@ class PlayListsRepositoryImpl(
                         playListDao.getTracksIdFromPlayList(listId)
                     ).toMutableList()
             tracksList.remove(trackId.toString())
-                playListDao.updatePlaylistTracks(
-                    listId,
-                    tracksStringConvertor.mapListIdToString(tracksList)
-                )
+            playListDao.updatePlaylistTracks(
+                listId,
+                tracksStringConvertor.mapListIdToString(tracksList)
+            )
             removed
         }
     }
@@ -128,11 +126,15 @@ class PlayListsRepositoryImpl(
     ) {
         withContext(Dispatchers.IO) {
             val coverUri = coversRepository.saveCover(id, uri)
-            playListDao.updatePlaylistInfo(
-                id,
-                playListName,
-                playListDescription,
-                coverUri.toString()
+            val oldPlayList = playListDao.getPlayList(id)
+            playListDao.addPlayList(
+                PlayListEntity(
+                    id,
+                    playListName,
+                    playListDescription,
+                    coverUri.toString(),
+                    oldPlayList.tracks
+                )
             )
         }
     }

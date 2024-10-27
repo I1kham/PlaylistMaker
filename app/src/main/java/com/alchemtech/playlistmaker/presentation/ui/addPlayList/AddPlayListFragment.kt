@@ -150,7 +150,7 @@ class AddPlayListFragment : Fragment() {
 
     private fun preparePictureLayOut() {
         binding?.picAdding?.setOnClickListener {
-            playListId?.let { } ?: getPictureUri()
+            getPictureUri()
         }
     }
 

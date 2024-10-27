@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alchemtech.playlistmaker.domain.db.PlayListInteractor
 import com.alchemtech.playlistmaker.domain.entity.PlayList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddPlayListViewModel(
     private val playListInteractor: PlayListInteractor,
@@ -37,16 +39,18 @@ class AddPlayListViewModel(
     }
 
     fun savePlaylist() {
-        viewModelScope.launch {
-            renderState(AddPlayListState.Loading)
-            playListName?.let {
+        playListName?.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                renderState(AddPlayListState.Loading)
                 playListInteractor.updatePlaylistInfo(
                     playListIdVm,
                     it,
                     playListDescription,
                     uri
-                )
-                renderState(AddPlayListState.Exit(it))
+                )}
+            }.invokeOnCompletion {
+                renderState(AddPlayListState.Exit(playListName!!))
             }
         }
     }
@@ -54,7 +58,7 @@ class AddPlayListViewModel(
     internal fun editPlaylist(playListID: Long?) {
         playListID?.let {
             viewModelScope.launch {
-                playListInteractor.getPlayList(it).let{
+                playListInteractor.getPlayList(it).let {
                     uri = it.coverUri
                     playListIdVm = playListID
                     renderState(AddPlayListState.Content(it))

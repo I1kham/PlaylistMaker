@@ -11,7 +11,7 @@ import com.alchemtech.playlistmaker.presentation.ui.fillByUriOrPlaceHolder
 
 class PlayListBottomCardViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
-    private val image: ImageView = itemView.findViewById(R.id.PlCover)
+    private val image: ImageView = itemView.findViewById(R.id.plCover)
     private val title: TextView = itemView.findViewById(R.id.plName)
     private val description: TextView = itemView.findViewById(R.id.plDescription)
 
