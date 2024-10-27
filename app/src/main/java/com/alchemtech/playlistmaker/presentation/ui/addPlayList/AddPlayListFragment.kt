@@ -49,8 +49,8 @@ class AddPlayListFragment : Fragment() {
     private var playListId: Long? = null
     private var edited = false
         set(value) {
-            field = value
-            createBut?.isEnabled = value
+            field = !nameEditText?.text.toString().isNullOrEmpty()
+            createBut?.isEnabled = field
         }
 
     override fun onCreateView(
@@ -331,7 +331,7 @@ class AddPlayListFragment : Fragment() {
                 viewModel.setDescription(text.toString())
                 descriptionEditText?.isActivated = !text.isNullOrEmpty()
                 descriptionTitle?.isVisible = !text.isNullOrEmpty()
-                edited = true
+                edited = !text.isNullOrEmpty()
             }
         }
     }
@@ -367,7 +367,7 @@ class AddPlayListFragment : Fragment() {
                 createBut?.setOnClickListener {
                     viewModel.savePlaylist()
                 }
-                edited = false
+                edited = true
             }
         }
     }
