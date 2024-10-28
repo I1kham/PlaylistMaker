@@ -36,7 +36,7 @@ class SharingPlayListRepositoryImpl(
         val tracksCountPlurals = tracks.size.convertListPlurals(context)
         val tracksInfoStr = getTracksInfoStr(tracks)
 
-        return "$name\n$description\n$tracksCountPlurals\n$tracksInfoStr"
+        return "$name\n${transformDescription(description)}\n$tracksCountPlurals\n$tracksInfoStr"
     }
 
     private fun getTracksInfoStr(tracks: List<Track>): String {
@@ -46,5 +46,10 @@ class SharingPlayListRepositoryImpl(
                     "${track.trackName} " +
                     "(${track.trackTimeMillis.playerTimeFormatter()})\n"
         }.joinToString(separator = "")
+    }
+    private fun transformDescription(description: String?):String{
+      return  if (description.isNullOrEmpty()){
+            return ""
+        }else description
     }
 }

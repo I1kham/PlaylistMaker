@@ -20,32 +20,35 @@ class CoversRepositoryImpl(private val context: Context) : CoversRepository {
     }
 
     override suspend fun saveCover(id: Long, uri: String?): String? {
-        deleteCover(id).let {
-return withContext(Dispatchers.IO){
-            if (uri != "null" && !uri.isNullOrEmpty()) if (!uri.contains(fileNameRule(id).toRegex())) {
-                val filePath =
-                    File(
-                        context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                        DIRECTORY_NAME
-                    )
-                if (!filePath.exists()) {
-                    filePath.mkdirs()
-                }
-                val file = File(filePath, fileNameRule(id))
-                val inputStream = context.contentResolver.openInputStream(uri.toUri())
-                val outputStream = FileOutputStream(file)
 
-                BitmapFactory
-                    .decodeStream(inputStream)
-                    .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
+        return withContext(Dispatchers.IO) {
+            if (uri != "null" && !uri.isNullOrEmpty()) if (!uri.contains(FILE_NAME.toRegex())) {
+                deleteCover(id).let {
+                    val filePath =
+                        File(
+                            context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                            DIRECTORY_NAME
+                        )
+                    if (!filePath.exists()) {
+                        filePath.mkdirs()
+                    }
+                    val file = File(filePath, fileNameRule(id))
+                    val inputStream = context.contentResolver.openInputStream(uri.toUri())
+                    val outputStream = FileOutputStream(file)
+
+                    BitmapFactory
+                        .decodeStream(inputStream)
+                        .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
                     inputStream?.close()
                     outputStream.close()
-                 file.toString()
+                    file.toString()
+                }
             } else {
-                 uri
-            } else  null
-        }}
+                uri
+            } else null
+        }
     }
+
     override suspend fun deleteCover(id: Long): Boolean {
         return withContext(Dispatchers.IO) {
             var deleted = false
