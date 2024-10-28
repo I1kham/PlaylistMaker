@@ -53,7 +53,6 @@ class AddTrackToPlayListViewModel(
         }
     }
 
-
     private fun startLogic() {
         renderState(AddTrackToPlayListFragmentState.Loading(true))
         viewModelScope.launch {

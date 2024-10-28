@@ -40,7 +40,6 @@ return withContext(Dispatchers.IO){
                     .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
                     inputStream?.close()
                     outputStream.close()
-                println(file)
                  file.toString()
             } else {
                  uri
@@ -58,9 +57,7 @@ return withContext(Dispatchers.IO){
 
             filePath.listFiles()?.map {
                 if (it.name == fileNameRule(id)) {
-                    println(it)
                     deleted = it.delete()
-                    println(deleted)
                 }
             }
             deleted

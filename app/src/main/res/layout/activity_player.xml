@@ -238,10 +238,7 @@
             app:layout_constraintBottom_toTopOf="@id/primaryGenreNameText"
             app:layout_constraintLeft_toRightOf="@id/release_date"
             app:layout_constraintRight_toRightOf="@id/rightBorder"
-            app:layout_constraintTop_toBottomOf="@id/collectionNameText"
-
-            />
-
+            app:layout_constraintTop_toBottomOf="@id/collectionNameText"/>
 
         <TextView
             android:id="@+id/trackAlbum"

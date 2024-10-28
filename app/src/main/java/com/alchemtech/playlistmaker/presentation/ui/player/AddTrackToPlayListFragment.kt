@@ -94,6 +94,9 @@ class AddTrackToPlayListFragment : Fragment() {
 
             is AddTrackToPlayListFragmentState.TrackAdded -> {
                 if (state.added) {
+                    (parentFragment?.parentFragment as PlayerFragment).playerBottomSheetVisible(
+                        false
+                    )
                     showBottomMessage(getString(R.string.addedToPlayList, state.namePlayList))
                 } else {
                     showBottomMessage(getString(R.string.doNotAddtoPlayList, state.namePlayList))

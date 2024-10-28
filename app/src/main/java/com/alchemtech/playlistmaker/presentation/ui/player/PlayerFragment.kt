@@ -108,7 +108,7 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         addBut = binding?.playerAddToListBut
         addBut?.isEnabled = true
         addBut?.setOnClickListener {
-            true.playerBottomSheetVisible()
+            playerBottomSheetVisible(true)
         }
     }
 
@@ -210,12 +210,12 @@ class PlayerFragment : Fragment(), PlayerStringsFilling {
         renderLikeBut(track.isFavorite)
     }
 
-    private fun Boolean.playerBottomSheetVisible() {
+     fun playerBottomSheetVisible(isVisible : Boolean) {
         BottomSheetBehavior.from(bottomSheet!!).maxHeight =
             dpToPx(BOTTOM_FRAGMENT_SIZE, requireContext())
-        bottomSheet?.isVisible = this
+        bottomSheet?.isVisible = isVisible
         bottomSheet?.let {
-            if (this) {
+            if (isVisible) {
                 BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_EXPANDED
             } else {
                 BottomSheetBehavior.from(it).state = BottomSheetBehavior.STATE_HIDDEN
