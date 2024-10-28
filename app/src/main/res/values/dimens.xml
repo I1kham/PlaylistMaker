@@ -1,3 +1,4 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="smallImgViewCorners">2f</dimen>
+    <dimen name="bigImgViewCorners">8f</dimen>
 </resources>

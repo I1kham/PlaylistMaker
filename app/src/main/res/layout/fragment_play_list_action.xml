@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white_YP_Black"
+    android:theme="@style/Theme.MainActivityStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.playList.fragments.PlayListActionFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackCardsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:itemCount="1"
+            tools:listitem="@layout/play_list_bottom_sheet_card" />
+        <!--        todo must be visible-->
+    <Button
+        android:id="@+id/buttonSharePlayList"
+        style="@style/textButtonsStyle"
+        android:text="@string/playList_share_but" />
+
+    <Button
+        android:id="@+id/buttonEditPlayList"
+        style="@style/textButtonsStyle"
+        android:text="@string/playList_edit_information_but" />
+
+    <Button
+        android:id="@+id/buttonDeletePlaylist"
+        style="@style/textButtonsStyle"
+        android:text="@string/playList_delete_but" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="140dp"
+        android:indeterminateTint="@color/YP_light_background"
+        android:visibility="gone" />
+
+</LinearLayout>
+</LinearLayout>

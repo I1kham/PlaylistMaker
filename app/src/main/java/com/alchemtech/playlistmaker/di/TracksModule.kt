@@ -9,11 +9,9 @@ import com.alchemtech.playlistmaker.data.network.TrackApiService
 import com.alchemtech.playlistmaker.data.repository.SharedHistoryRepositoryImpl
 import com.alchemtech.playlistmaker.data.repository.TracksRepositoryImpl
 import com.alchemtech.playlistmaker.domain.api.HistoryRepository
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksRepository
-import com.alchemtech.playlistmaker.domain.impl.SingleTrackInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.alchemtech.playlistmaker.domain.impl.TracksInteractorImpl
 import com.alchemtech.playlistmaker.presentation.ui.tracks.model.TracksFragmentModel
@@ -22,6 +20,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 private const val SEARCH_BASE_URL = "https://itunes.apple.com"
 private const val SAVED_TRACKS = "SAVED_TRACKS"
 private const val SAVED_LIST = "SAVED_LIST"
@@ -30,21 +29,18 @@ val tracksActivityViewModel = module {
         TracksFragmentModel(
             historyInteractor = get(),
             searchInteractor = get(),
-            singleTrackInteractor = this.get(),
+            tracksDb = get()
         )
     }
-    single<SingleTrackInteractor> {
-        SingleTrackInteractorImpl(historyRepository = this.get())
-    }
 
-    factory <TrackHistoryInteractor> {
+    factory<TrackHistoryInteractor> {
         TrackHistoryInteractorImpl(historyRepository = get())
     }
 
     factory<HistoryRepository> {
         SharedHistoryRepositoryImpl(
             SAVED_LIST,
-            sharedPreferences = this.get (),
+            sharedPreferences = this.get(),
             tracksStringConvertor = get()
         )
     }

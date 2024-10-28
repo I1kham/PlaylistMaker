@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val startViewModel = module{
        viewModel<StartViewModel> {
-           StartViewModel()
+           StartViewModel(playListInteractor = get())
        }
    }

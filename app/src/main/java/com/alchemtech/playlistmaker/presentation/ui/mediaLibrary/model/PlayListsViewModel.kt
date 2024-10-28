@@ -12,23 +12,20 @@ class PlayListsViewModel(
     private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<PlayListsState>()
-
-    init {
-        getFavoriteTracksList()
-    }
-
+init {
+    getAllPlayLists()
+}
     fun observeState(): LiveData<PlayListsState> = stateLiveData
 
-    private fun getFavoriteTracksList() {
+     private fun getAllPlayLists() {
         renderState(PlayListsState.Loading)
         viewModelScope.launch {
-
-            playListInteractor.getAllPlayLists().collect {
-                if (it.isNotEmpty()) {
-                    renderState(PlayListsState.ShowList(it))
-                } else {
-                    renderState(PlayListsState.EmptyList)
-                }
+            playListInteractor.getAllPlayLists().collect  {
+                    if (it.isNotEmpty()) {
+                        renderState(PlayListsState.ShowList(it))
+                    } else {
+                        renderState(PlayListsState.EmptyList)
+                    }
             }
         }
     }

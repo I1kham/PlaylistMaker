@@ -6,22 +6,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alchemtech.playlistmaker.domain.api.SingleTrackInteractor
 import com.alchemtech.playlistmaker.domain.api.TrackHistoryInteractor
 import com.alchemtech.playlistmaker.domain.api.TracksInteractor
+import com.alchemtech.playlistmaker.domain.db.TracksDbInteractor
 import com.alchemtech.playlistmaker.domain.entity.Track
 import com.alchemtech.playlistmaker.util.debounce
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class TracksFragmentModel(
     private val historyInteractor: TrackHistoryInteractor,
     private val searchInteractor: TracksInteractor,
-    private val singleTrackInteractor: SingleTrackInteractor,
+    private val tracksDb: TracksDbInteractor,
 ) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
-
     private var searchText: String? = null
     private var oldSearchText: String? = null
     private val tracksList = mutableListOf<Track>()
@@ -70,9 +70,12 @@ class TracksFragmentModel(
         renderState(TracksState.History(historyInteractor.getTrackList()))
     }
 
-    internal fun clickOnTrack(track: Track) {
-        addTrackToHistoryList(track)
-        singleTrackInteractor.writeTrack(track)
+    internal fun clickOnTrack(track: Track):Job {
+       return viewModelScope.launch {
+            addTrackToHistoryList(track)
+
+            tracksDb.addToTrackDb(track)
+        }
     }
 
     internal fun updateResponse() {

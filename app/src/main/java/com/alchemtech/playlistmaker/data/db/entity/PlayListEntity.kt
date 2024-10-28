@@ -10,4 +10,5 @@ data class PlayListEntity(
     val name: String,
     val description: String?,
     val coverUri: String?,
-    val tracks: String?)
+    val tracks: String?
+)

@@ -3,13 +3,17 @@ package com.alchemtech.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.alchemtech.playlistmaker.di.addPlayListViewModule
+import com.alchemtech.playlistmaker.di.addTrackToPlayListModule
 import com.alchemtech.playlistmaker.di.favoriteTracksViewModel
 import com.alchemtech.playlistmaker.di.mediaLibViewModel
+import com.alchemtech.playlistmaker.di.playListActionModule
+import com.alchemtech.playlistmaker.di.playListViewModel
 import com.alchemtech.playlistmaker.di.playListsViewModel
 import com.alchemtech.playlistmaker.di.playerViewModel
 import com.alchemtech.playlistmaker.di.settingsActivityModule
 import com.alchemtech.playlistmaker.di.startViewModel
 import com.alchemtech.playlistmaker.di.tracksActivityViewModel
+import com.alchemtech.playlistmaker.di.tracksRecycleFragmentModel
 import com.alchemtech.playlistmaker.domain.settings.SettingsInteractor
 import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.android.inject
@@ -31,7 +35,11 @@ class App : Application() {
                 addPlayListViewModule,
                 /*Fragments*/
                 favoriteTracksViewModel,
-                playListsViewModel
+                playListsViewModel,
+                playListViewModel,
+                tracksRecycleFragmentModel,
+                playListActionModule,
+                addTrackToPlayListModule,
             )
         }
         switchTheme()
@@ -44,5 +52,11 @@ class App : Application() {
         if (theme != -1) {
             setDefaultNightMode(theme)
         }
+    }
+
+    companion object{
+        const val PLAY_LIST_TRANSFER_KEY = "play_list_id"
+        const val PLAY_TRACK_TRANSFER_KEY = "play_track_id"
+
     }
 }

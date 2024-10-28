@@ -10,5 +10,4 @@ sealed interface TracksState {
     data class History(val tracks: List<Track>) : TracksState
     data class Error(val errorCode: Int) : TracksState
     data class InputTextClear(val tracks: List<Track>) : TracksState
-
 }

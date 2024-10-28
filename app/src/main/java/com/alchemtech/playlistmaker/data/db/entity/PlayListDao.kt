@@ -19,11 +19,23 @@ interface PlayListDao {
     fun getAllPlayLists(): Flow<List<PlayListEntity>>
 
     @Query("SELECT tracks FROM play_lists_table WHERE playListId = :id")
-    suspend fun getTracksIdFromPlayList(id: Long): String?
+     fun getTracksFlowIdFromPlayList(id: Long): Flow<String>
+
+    @Query("SELECT tracks FROM play_lists_table WHERE playListId = :id")
+    fun getTracksIdFromPlayList(id: Long): String
 
     @Query("UPDATE play_lists_table SET tracks = :trackList WHERE playListId = :id ")
-    suspend fun updatePlaylist(id: Long, trackList: String)
+    suspend fun updatePlaylistTracks(id: Long, trackList: String)
 
     @Query("SELECT COUNT(playListId) FROM play_lists_table")
-    suspend fun getRowCount(): Long
+     fun getRowCount(): Long
+
+    @Query("SELECT * FROM play_lists_table WHERE playListId = :id ")
+     fun getPlayList(id: Long): PlayListEntity
+
+    @Query("UPDATE play_lists_table SET name = :playListName,description = :playListDescription, coverUri =:uri WHERE playListId = :id ")
+    suspend fun updatePlaylistInfo(id: Long, playListName: String, playListDescription: String?, uri: String?)
+
+    @Query("SELECT tracks FROM play_lists_table")
+    suspend fun getAllTracksIdFromAllPlayList(): List<String>
 }

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.alchemtech.playlistmaker.R
 import com.alchemtech.playlistmaker.databinding.ActivityStartBinding
+import com.alchemtech.playlistmaker.presentation.ui.dpToPx
 import com.alchemtech.playlistmaker.presentation.ui.main.model.StartViewModel
 import com.alchemtech.playlistmaker.util.debounce
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StartActivity : AppCompatActivity() {
+    private val viewModel: StartViewModel by viewModel()
     private var binding: ActivityStartBinding? = null
     private var bottomSheet: LinearLayout? = null
     private var navHostFragment: NavHostFragment? = null
@@ -31,8 +33,6 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModel<StartViewModel>()
-
         prepareBinding()
         prepareNavHostFragment()
         prepareNavHostController()
@@ -40,6 +40,12 @@ class StartActivity : AppCompatActivity() {
         backPressPrepare()
         prepareBottomSheet()
     }
+
+    override fun onStop() {
+        viewModel.cleaningDb()
+        super.onStop()
+    }
+
     fun bottomNavigationVisibility(isVisibile: Boolean) {
         binding?.bottomNavigation?.isVisible = isVisibile
     }
@@ -54,13 +60,15 @@ class StartActivity : AppCompatActivity() {
                 binding?.message?.height!!.toInt()
             )
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+            it.setOnClickListener {
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            }
             run(debounce<Any>(SHOW_MESSAGE_DELAY, lifecycleScope, true) {
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
             })
-
-
         }
     }
+
     private fun prepareBottomNavView() {
         binding?.let {
             bottomNavigationView = it.bottomNavigation
@@ -94,7 +102,8 @@ class StartActivity : AppCompatActivity() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (isEnabled) {
-                        navController?.navigateUp()
+                        isEnabled = navController?.navigateUp() == true
+
                     } else {
                         onBackPressed()
                     }
@@ -108,7 +117,7 @@ class StartActivity : AppCompatActivity() {
         binding?.let {
             bottomSheet = it.standardBottomSheet
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!)
-            bottomSheetBehavior?.maxHeight = 160
+            bottomSheetBehavior?.maxHeight = dpToPx(80f, this)
         }
     }
 }

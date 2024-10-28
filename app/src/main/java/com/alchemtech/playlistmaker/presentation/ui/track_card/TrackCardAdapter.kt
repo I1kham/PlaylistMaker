@@ -10,6 +10,7 @@ class TrackCardAdapter(private val trackListOf: List<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
 
     var onItemClick = { _: Track -> }
+    var onItemLongClick = { _: Track -> }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TrackCardViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -21,6 +22,13 @@ class TrackCardAdapter(private val trackListOf: List<Track>) :
 
     override fun onBindViewHolder(viewHolder: TrackCardViewHolder, position: Int) {
         viewHolder.bind(trackListOf[position])
-        viewHolder.itemView.setOnClickListener { onItemClick.invoke(trackListOf[position]) }
+        viewHolder.itemView.apply {
+            setOnClickListener { onItemClick.invoke(trackListOf[position]) }
+            setOnLongClickListener {
+                onItemLongClick(trackListOf[position])
+                true
+            }
+        }
+
     }
 }
