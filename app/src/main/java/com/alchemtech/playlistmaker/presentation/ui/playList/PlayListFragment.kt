@@ -190,7 +190,7 @@ class PlayListFragment : Fragment() {
 
             is PlayListFragmentState.DelMessage -> showBottomMessage(
                 getString(
-                    R.string.trak_deleteg_message,
+                    R.string.track_deleted_message,
                     state.message
                 )
             )

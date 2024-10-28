@@ -47,11 +47,15 @@ class AddPlayListFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var uri: Uri? = null
     private var playListId: Long? = null
+    private var nameEdited = false
     private var edited = false
         set(value) {
-            field = !nameEditText?.text.toString().isNullOrEmpty()
-            createBut?.isEnabled = field
+            field = value
+            if(nameEdited){
+                field = nameEdited
+            }
         }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -194,7 +198,7 @@ class AddPlayListFragment : Fragment() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getPermissionOpenWindowUpper33() {
         MaterialAlertDialogBuilder(requireContext())
-            .setBackground(resources.getDrawable((R.drawable.background)))
+            .setBackground(resources.getDrawable(R.drawable.background))
             .setTitle(getString(R.string.getPermissionTitle))
             .setMessage(
                 getString(R.string.getPermissionMassage)
@@ -242,12 +246,8 @@ class AddPlayListFragment : Fragment() {
     }
 
     private fun setUriToModel(uri: String?) {
-        uri?.let {
             viewModel.setUri(uri)
-            playListId?.let {
                 edited = true
-            }
-        }
     }
 
     private fun setPicture(uri: String?) {
@@ -272,10 +272,10 @@ class AddPlayListFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun getCheckForCloseOpenWindow() {
-        if (edited) {
+        if (edited && playListId == null) {
             MaterialAlertDialogBuilder(requireContext())
                 .setBackground(resources.getDrawable((R.drawable.background)))
-                .setTitle(getCurrentTitle())
+                .setTitle(getString(R.string.cancelAddPlayListTitle))
                 .setMessage(
                     getString(R.string.cancelAddPlayListMassage)
                 )
@@ -314,9 +314,10 @@ class AddPlayListFragment : Fragment() {
             nameEditText?.doOnTextChanged { text, _, _, _ ->
                 viewModel.setName(text.toString())
                 edited = !text.isNullOrEmpty()
+                nameEdited = !text.isNullOrEmpty()
                 nameEditText?.isActivated = !text.isNullOrEmpty()
                 nameTitle?.isVisible = !text.isNullOrEmpty()
-
+                createBut?.isEnabled = !text.isNullOrEmpty()
             }
         }
     }
@@ -367,16 +368,7 @@ class AddPlayListFragment : Fragment() {
                 createBut?.setOnClickListener {
                     viewModel.savePlaylist()
                 }
-                edited = true
             }
-        }
-    }
-
-    private fun getCurrentTitle(): String {
-        playListId?.let {
-            return getString(R.string.cancelAddPlayListTitle2)
-        } ?: run {
-            return getString(R.string.cancelAddPlayListTitle)
         }
     }
 
